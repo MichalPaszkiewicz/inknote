@@ -1,0 +1,31 @@
+html, body{
+	padding:0;
+	margin: 0;
+}
+
+canvas{
+    cursor: crosshair;
+    position: absolute;
+	top: 0;
+	left: 0;
+}
+
+a{
+    cursor: pointer;
+}
+
+#list{
+	position: fixed;
+	top: 50px;
+	right: 50px;
+	background: rgb(231, 234, 240);
+	border-radius: 10px;
+	padding: 20px;
+}
+
+#list ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
