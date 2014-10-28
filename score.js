@@ -33,7 +33,7 @@ var canvasModule = angular.module('app', []).
 				$scope.bars.splice(before, 0, tempBar);
 			}	
 			
-			$scope.drawBars($scope.bars);
+			$scope.draw();
 		}
 		
 		$scope.action = function(e){
@@ -49,8 +49,6 @@ var canvasModule = angular.module('app', []).
 			}
 			
 			$scope.addNote(5,$scope.bars[0]);
-			
-			
 		}
 		
 		$scope.addNote = function(note, bar){
@@ -64,7 +62,7 @@ var canvasModule = angular.module('app', []).
 			var tempNote = {id: id, note: note, bar: bar, x: null, y: null};
 			$scope.bars[bar.id].notes.push(tempNote);
 			
-			$scope.drawBars($scope.bars);
+			$scope.draw();
 		}
 		
 		$scope.removeNote = function(bar, note){
@@ -97,11 +95,31 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.drawInit = function(){
 			$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars});
+			
+			for(var i = 0; i < $scope.lines.length; i++){
+				var tempLine = $scope.lines[i];
+				var tempX = 0;
+				var xSplitting = canvas.width - 2 * $scope.margin;
+				for(var j = 0; j < tempLine.bars.length; j++){
+					var tempBar = tempLine.bars[j];
+					tempBar.y = tempLine.y;
+					tempBar.x = tempX;
+					tempX = tempX + xSplitting;
+					var tempNoteX = 0;
+					for(var k = 0; k < tempBar.notes.length; k++){
+						var tempNote = tempBar.notes[k];
+						tempNote.x = tempBar.x + tempNoteX;
+						tempNoteX += 5;
+					}
+				}
+			}	
 		}
 		
 		$scope.drawLines = function(){
 			for(var i = 0; i < $scope.lines.length; i++){
 				$scope.drawLine($scope.lines[i]);
+				
+				$scope.drawBars($scope.drawBars($scope.lines[i].bars))
 			};
 		}
 		
@@ -134,13 +152,13 @@ var canvasModule = angular.module('app', []).
 		{
 			context.beginPath();
 			context.fillStyle = "red";
-			context.arc(50, 20 * note.id, 6, 0, 2 * Math.PI, false);
+			context.arc(note.x, note.y, 6, 0, 2 * Math.PI, false);
 			context.fill();
 		}
 		
 		$scope.draw();
 		$scope.addBar();
-		$scope.drawBars($scope.bars);	
+		//$scope.drawBars($scope.bars);	
 	});
 	//.factory('Note', function( line ){	});
 	
