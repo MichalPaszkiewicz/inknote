@@ -49,10 +49,10 @@ var canvasModule = angular.module('app', []).
 				$scope.addBar();
 			}
 			
-			$scope.addNote(5,$scope.bars[$scope.bars.length - 1]);
+			$scope.addNote(y, $scope.bars[$scope.bars.length - 1]);
 		}
 		
-		$scope.addNote = function(note, bar){
+		$scope.addNote = function(value, bar){
 			var thisBar = bar;
 			
 			if(bar.notes.length > 3){
@@ -66,7 +66,7 @@ var canvasModule = angular.module('app', []).
 			if(tempNotes.length > 0) {
 				id = tempNotes[tempNotes.length-1].id + 1;
 			}
-			var tempNote = {id: id, note: note, bar: bar, x: null, y: null};
+			var tempNote = {id: id, value: value, bar: bar, x: null, y: null};
 			thisBar.notes.push(tempNote);
 			
 			$scope.draw();
@@ -167,7 +167,7 @@ var canvasModule = angular.module('app', []).
 		{
 			context.beginPath();
 			context.fillStyle = "red";
-			context.arc(note.x, note.y, 6, 0, 2 * Math.PI, false);
+			context.arc(note.x, note.value, 6, 0, 2 * Math.PI, false);
 			context.fill();
 		}
 		
