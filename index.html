@@ -23,9 +23,9 @@
 		<canvas id="canvas" style="border: 1px gray solid; float: left" ng-click="action($event)"></canvas>
 		<div id="list">
 			<ul>
-				<li ng-repeat="line in lines">				
+				<li ng-repeat="bar in bars">				
 					<ul>
-						<li ng-repeat="note in line.notes">[{{line.id}}, {{note.id}}] <a ng-click="removeNote(line, note)">[x]</a></li>
+						<li ng-repeat="note in bar.notes">[{{bar.id}}, {{note.id}}] <a ng-click="removeNote(bar, note)">[x]</a></li>
 					<ul>
 				</li>
 			</ul>
