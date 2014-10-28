@@ -52,15 +52,21 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.addNote = function(note, bar){
-		
+			var thisBar = bar;
+			
+			if(bar.notes.length > 4){
+				$scope.addBar();
+				var thisBar = $scope.bars[$scope.bars.length - 1];
+			}
+			
 			var id = 0;
-			var tempNotes = $scope.bars[bar.id].notes;
+			var tempNotes = thisBar.notes;
 			
 			if(tempNotes.length > 0) {
 				id = tempNotes[tempNotes.length-1].id + 1;
 			}
 			var tempNote = {id: id, note: note, bar: bar, x: null, y: null};
-			$scope.bars[bar.id].notes.push(tempNote);
+			thisBar.notes.push(tempNote);
 			
 			$scope.draw();
 		}
