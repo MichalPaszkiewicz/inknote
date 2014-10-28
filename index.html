@@ -20,7 +20,7 @@
 	  <div ng-controller="canvasCtrl">
 		<h1>InkNote</h1>     
 		
-		<canvas id="canvas" style="border: 1px gray solid; float: left" ng-click="action($event)"></canvas>
+		<canvas id="canvas" ng-click="action($event)"></canvas>
 		<div id="list">
 			<ul>
 				<li ng-repeat="bar in bars">				
