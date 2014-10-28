@@ -89,12 +89,12 @@ var canvasModule = angular.module('app', []).
 				}
 			}
 			
-			context.clearRect(0,0,canvas.width,canvas.height);
 			$scope.draw();
 			console.log($scope.bars);
 		}
 		
 		$scope.draw = function(){
+			context.clearRect(0,0,canvas.width,canvas.height);
 			$scope.drawInit();
 			$scope.drawLines();
 		}
