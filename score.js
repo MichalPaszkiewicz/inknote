@@ -100,17 +100,17 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawInit = function(){
-			$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars});
+			$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars, xSplitting: null});
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
 				var tempX = 0;
-				var xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.bars.length;
+				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.bars.length;
 				for(var j = 0; j < tempLine.bars.length; j++){
 					var tempBar = tempLine.bars[j];
 					tempBar.y = tempLine.y;
 					tempBar.x = tempX + tempLine.x;
-					tempX = tempX + xSplitting;
+					tempX = tempX + tempLine.xSplitting;
 					var tempNoteX = 0;
 					for(var k = 0; k < tempBar.notes.length; k++){
 						var tempNote = tempBar.notes[k];
