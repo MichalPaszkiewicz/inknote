@@ -49,7 +49,9 @@ var canvasModule = angular.module('app', []).
 				$scope.addBar();
 			}
 			
-			$scope.addNote(y, $scope.bars[$scope.bars.length - 1]);
+			var noteY = (lineHeight/8) * Math.round(y / (lineHeight/8));
+			
+			$scope.addNote(noteY, $scope.bars[$scope.bars.length - 1]);
 		}
 		
 		$scope.addNote = function(value, bar){
