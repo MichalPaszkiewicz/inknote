@@ -54,7 +54,7 @@ var canvasModule = angular.module('app', []).
 		$scope.addNote = function(note, bar){
 			var thisBar = bar;
 			
-			if(bar.notes.length > 4){
+			if(bar.notes.length > 3){
 				$scope.addBar();
 				var thisBar = $scope.bars[$scope.bars.length - 1];
 			}
@@ -105,7 +105,7 @@ var canvasModule = angular.module('app', []).
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
 				var tempX = 0;
-				var xSplitting = canvas.width - 2 * $scope.margin;
+				var xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.bars.length;
 				for(var j = 0; j < tempLine.bars.length; j++){
 					var tempBar = tempLine.bars[j];
 					tempBar.y = tempLine.y;
