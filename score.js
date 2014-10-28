@@ -13,23 +13,27 @@ var canvasModule = angular.module('app', []).
 		   
 		];
 		
-		$scope.addLine = function(before) {
+		$scope.bars = [
+			
+		];
+		
+		$scope.addBar = function(before) {
 			var id = 0;
-			if($scope.lines.length > 0) {
-				id = $scope.lines[$scope.lines.length-1].id + 1;
+			if($scope.bars.length > 0) {
+				id = $scope.bars[$scope.bars.length-1].id + 1;
 			}
-			var tempLine = {id: id, notes: []};
+			var tempBar = {id: id, notes: []};
 			if(before == null || before == undefined){			
-				$scope.lines.push(tempLine)
+				$scope.bars.push(tempBar)
 			}
 			else if( isNaN(before) ){
-				throw "addLine() only accepts numbers, or nothing!";
+				throw "addBar() only accepts numbers, or nothing!";
 			}
 			else{
-				$scope.lines.splice(before, 0, tempLine);
+				$scope.bars.splice(before, 0, tempBar);
 			}	
 			
-			$scope.drawLines($scope.lines);
+			$scope.drawBars($scope.bars);
 		}
 		
 		$scope.action = function(e){
@@ -39,59 +43,59 @@ var canvasModule = angular.module('app', []).
             var amount = 10;
             console.log("[" + x + "," + y + "]");
 			
-			if($scope.lines.length < 1)
+			if($scope.bars.length < 1)
 			{
-				$scope.addLine();
+				$scope.addBar();
 			}
 			
-			$scope.addNote(5,$scope.lines[0]);
+			$scope.addNote(5,$scope.bars[0]);
 		}
 		
-		$scope.addNote = function(note, line){
+		$scope.addNote = function(note, bar){
 		
 			var id = 0;
-			var tempNotes = $scope.lines[line.id].notes;
+			var tempNotes = $scope.bars[bar.id].notes;
 			
 			if(tempNotes.length > 0) {
 				id = tempNotes[tempNotes.length-1].id + 1;
 			}
-			var tempNote = {id: id, note: note, line: line};
-			$scope.lines[line.id].notes.push(tempNote);
+			var tempNote = {id: id, note: note, bar: bar};
+			$scope.bars[bar.id].notes.push(tempNote);
 			
-			$scope.drawLines($scope.lines);
+			$scope.drawBars($scope.bars);
 		}
 		
-		$scope.removeNote = function(line, note){
-			console.log("[" + line + "," + note + "]");
+		$scope.removeNote = function(bar, note){
+			console.log("[" + bar + "," + note + "]");
 			
-			var tempLine = {};
-			for(var i=0; i<$scope.lines.length; i++)
+			var tempBar = {};
+			for(var i=0; i<$scope.bars.length; i++)
 			{
-				if($scope.lines[i].id == line.id){
-					tempLine = $scope.lines[i];
+				if($scope.bars[i].id == bar.id){
+					tempBar = $scope.bars[i];
 				}
 			}
 			
-			for(var i=0; i<tempLine.notes.length; i++) {
-				if(tempLine.notes[i].id === note.id) {
+			for(var i=0; i<tempBar.notes.length; i++) {
+				if(tempBar.notes[i].id === note.id) {
 					console.log("removing item at position: "+i);
-					tempLine.notes.splice(i, 1);    
+					tempBar.notes.splice(i, 1);    
 				}
 			}
 			
 			context.clearRect(0,0,600,400);
-			$scope.drawLines($scope.lines);
-			console.log($scope.lines);
+			$scope.drawBars($scope.bars);
+			console.log($scope.bars);
 		}
 		
-		$scope.drawLines = function(lines){
-			for(var i = 0; i < lines.length; i++)
+		$scope.drawBars = function(bars){
+			for(var i = 0; i < bars.length; i++)
 			{
-				$scope.drawLine(lines[i]);
+				$scope.drawBar(bars[i]);
 			}
 		}
 		
-		$scope.drawLine = function(line){
+		$scope.drawBar = function(bar){
 			var x = $scope.margin; 
 			var y = 200;
 			
@@ -105,13 +109,13 @@ var canvasModule = angular.module('app', []).
 			}
 		}
 		
-		$scope.drawNote = function(line, note)
+		$scope.drawNote = function(bar, note)
 		{
 		
 		}
 		
-		$scope.addLine();
-		$scope.drawLines($scope.lines);	
+		$scope.addBar();
+		$scope.drawBars($scope.bars);	
 	});
 	//.factory('Note', function( line ){	});
 	
