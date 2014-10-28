@@ -111,7 +111,7 @@ var canvasModule = angular.module('app', []).
 			}
 			
 			for(var i = 0; i < bar.notes.length; i++){
-				drawNote(bar, bar.notes[i]);
+				$scope.drawNote(bar, bar.notes[i]);
 			}
 		}
 		
