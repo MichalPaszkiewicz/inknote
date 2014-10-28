@@ -118,7 +118,7 @@ var canvasModule = angular.module('app', []).
 					var tempNoteX = 0;
 					for(var k = 0; k < tempBar.notes.length; k++){
 						var tempNote = tempBar.notes[k];
-						tempNote.x = tempBar.x + tempNoteX;
+						tempNote.x = tempBar.x + tempNoteX + 50;
 						tempNote.y = tempBar.y;
 						tempNoteX += 50;
 					}
