@@ -38,10 +38,10 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.action = function(e){
 			var tempCanvas = document.getElementById('canvas');
-            var x = e.clientX - tempCanvas.offsetLeft;
-            var y = e.clientY - tempCanvas.offsetTop;    
-            var amount = 10;
-            console.log("[" + x + "," + y + "]");
+			var x = e.clientX - tempCanvas.offsetLeft;
+			var y = e.clientY - tempCanvas.offsetTop;    
+			var amount = 10;
+			console.log("[" + x + "," + y + "]");
 			
 			if($scope.bars.length < 1)
 			{
@@ -49,6 +49,8 @@ var canvasModule = angular.module('app', []).
 			}
 			
 			$scope.addNote(5,$scope.bars[0]);
+			
+			
 		}
 		
 		$scope.addNote = function(note, bar){
@@ -107,11 +109,18 @@ var canvasModule = angular.module('app', []).
 				context.stroke();
 				y += 8;
 			}
+			
+			for(var i = 0; i < bar.notes.length; i++){
+				drawNote(bar, bar.notes[i]);
+			}
 		}
 		
 		$scope.drawNote = function(bar, note)
 		{
-		
+			ctx.beginPath();
+			ctx.fillStyle = red;
+			ctx.arc(50, 20 * note, 6, 0, 2 * Math.PI, false);
+			ctx.fill();
 		}
 		
 		$scope.addBar();
