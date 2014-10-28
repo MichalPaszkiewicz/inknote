@@ -118,7 +118,7 @@ var canvasModule = angular.module('app', []).
 		$scope.drawNote = function(bar, note)
 		{
 			context.beginPath();
-			context.fillStyle = red;
+			context.fillStyle = "red";
 			context.arc(50, 20 * note, 6, 0, 2 * Math.PI, false);
 			context.fill();
 		}
