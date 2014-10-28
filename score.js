@@ -22,7 +22,7 @@ var canvasModule = angular.module('app', []).
 			if($scope.bars.length > 0) {
 				id = $scope.bars[$scope.bars.length-1].id + 1;
 			}
-			var tempBar = {id: id, notes: []};
+			var tempBar = {id: id, notes: [], x: null, y: null};
 			if(before == null || before == undefined){			
 				$scope.bars.push(tempBar)
 			}
@@ -61,7 +61,7 @@ var canvasModule = angular.module('app', []).
 			if(tempNotes.length > 0) {
 				id = tempNotes[tempNotes.length-1].id + 1;
 			}
-			var tempNote = {id: id, note: note, bar: bar};
+			var tempNote = {id: id, note: note, bar: bar, x: null, y: null};
 			$scope.bars[bar.id].notes.push(tempNote);
 			
 			$scope.drawBars($scope.bars);
@@ -90,6 +90,33 @@ var canvasModule = angular.module('app', []).
 			console.log($scope.bars);
 		}
 		
+		$scope.draw = function(){
+			$scope.drawInit();
+			$scope.drawLines();
+		}
+		
+		$scope.drawInit = function(){
+			$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars});
+		}
+		
+		$scope.drawLines = function(){
+			for(var i = 0; i < lines.length; i++){
+				$scope.drawLine(lines[i]);
+			};
+		}
+		
+		$scope.drawLine = function(line){
+			var tempY = parseInt(line.y);
+			for(var j = 0; j < 5; i++)
+			{
+				context.beginPath();
+				context.moveTo(line.x, tempY);
+				context.lineTo(canvas.width - $scope.margin, tempY);
+				context.stroke();
+				tempY += 8;
+			}
+		}
+		
 		$scope.drawBars = function(bars){
 			for(var i = 0; i < bars.length; i++)
 			{
@@ -98,18 +125,6 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawBar = function(bar){
-			var x = $scope.margin; 
-			var y = 200;
-			
-			for(var i = 0; i < 5; i++)
-			{
-				context.beginPath();
-				context.moveTo(x, y);
-				context.lineTo(canvas.width - $scope.margin, y);
-				context.stroke();
-				y += 8;
-			}
-			
 			for(var i = 0; i < bar.notes.length; i++){
 				$scope.drawNote(bar, bar.notes[i]);
 			}
