@@ -101,7 +101,10 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawInit = function(){
-			$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars, xSplitting: null});
+			if($scope.lines.length < 1)
+			{
+				$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.bars, xSplitting: null});
+			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
