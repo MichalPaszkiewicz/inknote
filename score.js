@@ -8,6 +8,7 @@ var canvasModule = angular.module('app', []).
 		var context = canvas.getContext('2d');
 			
 		$scope.margin = 50;
+		$scope.lineHeight = 32;
 		
 		$scope.lines = [
 		   
@@ -138,7 +139,7 @@ var canvasModule = angular.module('app', []).
 				context.moveTo(line.x, tempY);
 				context.lineTo(canvas.width - $scope.margin, tempY);
 				context.stroke();
-				tempY += 8;
+				tempY += $scope.lineHeight / 4;
 			}
 		}
 		
