@@ -138,6 +138,7 @@ var canvasModule = angular.module('app', []).
 			context.fill();
 		}
 		
+		$scope.draw();
 		$scope.addBar();
 		$scope.drawBars($scope.bars);	
 	});
