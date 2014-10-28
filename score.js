@@ -169,7 +169,7 @@ var canvasModule = angular.module('app', []).
 		{
 			context.beginPath();
 			context.fillStyle = "red";
-			context.arc(note.x, bar.y note.value, 6, 0, 2 * Math.PI, false);
+			context.arc(note.x, bar.y + note.value, 6, 0, 2 * Math.PI, false);
 			context.fill();
 		}
 		
