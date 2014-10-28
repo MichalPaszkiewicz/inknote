@@ -107,7 +107,7 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.drawLine = function(line){
 			var tempY = parseInt(line.y);
-			for(var j = 0; j < 5; i++)
+			for(var j = 0; j < 5; j++)
 			{
 				context.beginPath();
 				context.moveTo(line.x, tempY);
