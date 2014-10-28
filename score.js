@@ -117,10 +117,10 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.drawNote = function(bar, note)
 		{
-			ctx.beginPath();
-			ctx.fillStyle = red;
-			ctx.arc(50, 20 * note, 6, 0, 2 * Math.PI, false);
-			ctx.fill();
+			context.beginPath();
+			context.fillStyle = red;
+			context.arc(50, 20 * note, 6, 0, 2 * Math.PI, false);
+			context.fill();
 		}
 		
 		$scope.addBar();
