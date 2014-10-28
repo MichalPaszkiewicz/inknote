@@ -100,8 +100,8 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawLines = function(){
-			for(var i = 0; i < lines.length; i++){
-				$scope.drawLine(lines[i]);
+			for(var i = 0; i < $scope.lines.length; i++){
+				$scope.drawLine($scope.lines[i]);
 			};
 		}
 		
