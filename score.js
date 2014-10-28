@@ -8,7 +8,7 @@ var canvasModule = angular.module('app', []).
 		var context = canvas.getContext('2d');
 			
 		$scope.margin = 50;
-		$scope.lineHeight = 40;
+		$scope.lineHeight = 48;
 		
 		$scope.lines = [
 		   
