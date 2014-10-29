@@ -223,7 +223,7 @@ var canvasModule = angular.module('app', []).
 					context.fillText("inknote", canvas.width / 2, canvas.height / 2);
 					var dataURL = canvas.toDataURL();
       					canvaspic.src = dataURL;
-      					context.clearRect(0,0,canvas.width, canvas.height;
+      					context.clearRect(0,0,canvas.width, canvas.height);
       					$timeout($scope.startup, 10);
 				}
 				else if(time > 100 && time < 200){
