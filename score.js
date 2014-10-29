@@ -225,6 +225,7 @@ var canvasModule = angular.module('app', []).
       					canvaspic.src = dataURL;
       					context.clearRect(0,0,canvas.width, canvas.height);
       					$timeout($scope.startup, 10);
+      					time++;
 				}
 				else if(time > 100 && time < 200){
 					canvaspic.style.left = (time - 100) * (-canvas.width + 10) / 100;
