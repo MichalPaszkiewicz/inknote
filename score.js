@@ -30,7 +30,7 @@ var canvasModule = angular.module('app', []).
 				id = $scope.instruments[$scope.instruments.length-1].id + 1;
 			}
 			
-			$scope.instruments.push({name: instrumentName, id: id, bars = []});
+			$scope.instruments.push({name: instrumentName, id: id, bars: []});
 		}
 		
 		$scope.addBar = function(instrumentNo, before) {
