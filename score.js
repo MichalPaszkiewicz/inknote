@@ -211,13 +211,27 @@ var canvasModule = angular.module('app', []).
 			});
 		}
 		
+		var canvaspic = document.getElementById('canvasImg');
+		canvaspic.style.position = "absolute";
+		canvaspic.style.left = 0;
+		canvaspic.style.top = 0;
+		
 		$scope.startup = function(){
 				if(time == 100){
 					context.fillStyle = "white";
 					context.font = "bold 16px Arial";
 					context.fillText("inknote", canvas.width / 2, canvas.height / 2);
 					var dataURL = canvas.toDataURL();
-      					document.getElementById('canvasImg').src = dataURL;
+      					canvaspic.src = dataURL;
+      					context.clearRect(0,0,canvas.width(), canvas.height());
+      					$timeout($scope.startup, 10);
+				}
+				else if(time > 100 && time < 200){
+					canvaspic.style.left = (time - 100) * (-canvas.width + 10) / 100;
+					canvaspic.style.top = (time - 100) * (-canvas.height + 30) / 100;
+				}
+				else if(time == 200){
+					$scope.draw();
 				}
 				else{
 					animate(particles, delta, last);
