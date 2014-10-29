@@ -24,7 +24,16 @@ var canvasModule = angular.module('app', []).
 			
 		];
 		
-		$scope.addBar = function(before) {
+		$scope.addInstrument = function(instrumentName){
+			var id = 0;
+			if($scope.instruments.length > 0){
+				id = $scope.instruments[$scope.instruments.length-1].id + 1;
+			}
+			
+			$scope.instruments.push({name: instrumentName, id: id, bars = []});
+		}
+		
+		$scope.addBar = function(instrumentNo, before) {
 			var id = 0;
 			if($scope.bars.length > 0) {
 				id = $scope.bars[$scope.bars.length-1].id + 1;
@@ -34,7 +43,7 @@ var canvasModule = angular.module('app', []).
 				$scope.bars.push(tempBar)
 			}
 			else if( isNaN(before) ){
-				throw "addBar() only accepts numbers, or nothing!";
+				throw "addBar(0) also only accepts numbers, or nothing!";
 			}
 			else{
 				$scope.bars.splice(before, 0, tempBar);
@@ -50,9 +59,14 @@ var canvasModule = angular.module('app', []).
 			var amount = 10;
 			console.log("[" + x + "," + y + "]");
 			
+			if($scope.instruments.length < 1)
+			{
+				$scope.addInstrument("piano");
+			}
+			
 			if($scope.bars.length < 1)
 			{
-				$scope.addBar();
+				$scope.addBar(0);
 			}
 			
 			var noteY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
@@ -64,7 +78,7 @@ var canvasModule = angular.module('app', []).
 			var thisBar = bar;
 			
 			if(bar.notes.length > 3){
-				$scope.addBar();
+				$scope.addBar(0);
 				var thisBar = $scope.bars[$scope.bars.length - 1];
 			}
 			
@@ -180,7 +194,7 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.draw();
-		$scope.addBar();
+		$scope.addBar(0);
 		//$scope.drawBars($scope.bars);	
 	});
 	//.factory('Note', function( line ){	});
