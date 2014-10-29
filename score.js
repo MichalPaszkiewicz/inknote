@@ -195,11 +195,17 @@ var canvasModule = angular.module('app', []).
 			context.fill();
 		}
 		
-		splashscreen(canvas, context);
-		$scope.addInstrument("piano");
-		$scope.addBar(0);
-		$scope.draw();
-		//$scope.drawBars($scope.bars);	
+		var time = 0;
+		var timer = setTimeout(function(){
+			splashscreen(canvas, context, time);
+			if(time == 1000){
+				clearTimeout(timer);
+				$scope.addInstrument("piano");
+				$scope.addBar(0);
+				$scope.draw();	
+			}
+			time++;
+		}, 20);
 	});
 	//.factory('Note', function( line ){	});
 	
