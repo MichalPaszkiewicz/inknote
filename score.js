@@ -197,14 +197,27 @@ var canvasModule = angular.module('app', []).
 		
 		var time = 0;
 		
+		var particles = [];
+		var delta = 0;
+		var last = Date.now();
+		
+		for(var i = 0; i < 36 * 2; i++){
+			particles.push({
+				x: canvas.width / 2,
+				y: canvas.height / 2,
+				angle: i * 5,
+				size : 5 + Math.random() * 3,
+				line : 200 + Math.random() * 50
+			});
+		}
+		
 		$scope.startup = function(){
-				splashscreen(canvas, context, time);
 				if(time == 1000){
-					$scope.addInstrument("piano");
-					$scope.addBar(0);
-					$scope.draw();	
+					
 				}
 				else{
+					animate(particles, delta, last);
+					render(context, particles);
 					time++;
 					$timeout($scope.startup, 10);
 				}
