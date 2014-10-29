@@ -206,11 +206,11 @@ var canvasModule = angular.module('app', []).
 				}
 				else{
 					time++;
-					$timeout($scope.startup, 20);
+					$timeout($scope.startup, 10);
 				}
 		}
 		
-		$timeout($scope.startup, 20);
+		$timeout($scope.startup, 10);
 	});
 	//.factory('Note', function( line ){	});
 	
