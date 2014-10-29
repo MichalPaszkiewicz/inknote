@@ -212,7 +212,7 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.startup = function(){
-				if(time == 200){
+				if(time == 100){
 					context.fillStyle = "white";
 					context.font = "bold 16px Arial";
 					context.fillText("inknote", canvas.width / 2, canvas.height / 2);
