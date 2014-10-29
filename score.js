@@ -195,9 +195,9 @@ var canvasModule = angular.module('app', []).
 			context.fill();
 		}
 		
+		var time = 0;
+		
 		$scope.startup = function(){
-			var time = 0;
-			var timer = $timeout(function(){
 				splashscreen(canvas, context, time);
 				if(time == 1000){
 					$timeout.cancel(timer);
@@ -205,11 +205,13 @@ var canvasModule = angular.module('app', []).
 					$scope.addBar(0);
 					$scope.draw();	
 				}
-				time++;
-			}, 100);
+				else{
+					time++;
+					$timeout($scope.startup());
+				}
 		}
 		
-		$scope.startup();
+		$timeout($scope.startup(), 100);
 	});
 	//.factory('Note', function( line ){	});
 	
