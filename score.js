@@ -14,6 +14,10 @@ var canvasModule = angular.module('app', []).
 		   
 		];
 		
+		$scope.instruments = [
+			
+		];
+		
 		$scope.bars = [
 			
 		];
