@@ -197,10 +197,10 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.startup = function(){
 			var time = 0;
-			var timer = setTimeout(function(){
+			var timer = $timeout(function(){
 				splashscreen(canvas, context, time);
 				if(time == 1000){
-					clearTimeout(timer);
+					$timeout.cancel(timer);
 					$scope.addInstrument("piano");
 					$scope.addBar(0);
 					$scope.draw();	
@@ -208,6 +208,8 @@ var canvasModule = angular.module('app', []).
 				time++;
 			}, 100);
 		}
+		
+		$scope.startup();
 	});
 	//.factory('Note', function( line ){	});
 	
