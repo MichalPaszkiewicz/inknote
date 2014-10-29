@@ -207,7 +207,7 @@ var canvasModule = angular.module('app', []).
 				y: canvas.height / 2,
 				angle: i * 5,
 				size : 15 + Math.random() * 9,
-				line : 600 + Math.random() * 150
+				life : 700 + Math.random() * 150
 			});
 		}
 		
