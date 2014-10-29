@@ -195,9 +195,9 @@ var canvasModule = angular.module('app', []).
 			context.fill();
 		}
 		
-		$scope.draw();
 		$scope.addInstrument("piano");
 		$scope.addBar(0);
+		$scope.draw();
 		//$scope.drawBars($scope.bars);	
 	});
 	//.factory('Note', function( line ){	});
