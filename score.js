@@ -232,6 +232,7 @@ var canvasModule = angular.module('app', []).
 					var tright = (time - 100) * (-canvas.height + 30) / 100;
 					canvaspic.style.left = tleft + "px";
 					canvaspic.style.top = tright + "px";
+					time++;
 				}
 				else if(time == 200){
 					$scope.draw();
