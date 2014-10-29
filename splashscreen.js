@@ -16,7 +16,7 @@ var splashscreen = function(canvas, context, time){
 			}
 		}
 		else{
-			tempWidth = 120;
+			tempWidth = 110;
 		}
 		
 		context.clearRect(0,0,canvas.width,canvas.height);
