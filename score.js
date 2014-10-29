@@ -213,7 +213,9 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.startup = function(){
 				if(time == 1000){
-					
+					context.fillStyle = "white";
+					context.font = "bold 16px Arial";
+					context.fillText("inknote", 100, 100);
 				}
 				else{
 					animate(particles, delta, last);
