@@ -11,11 +11,20 @@ var splashscreen = function(canvas, context, time){
 		}
 		else if(time < 150){
 			tempWidth = 10 + (time - 140) * 10;
+			oneX = (time - 140) * 13;
+			oneY = (time - 140) * 11;
+			oneW = (time - 140) * 3;
 		}
 		else if(time < 170){
 			tempWidth = 110;
+			oneX = 130;
+			oneY = 110;
+			oneW = 30;
 			for(var i = 0; i < time - 160; i++){
 				tempWidth += 5 / (i - 190);
+				oneX += 7 / (i - 190);
+				oneY += 7 / (i - 190);
+				oneW += 3 / (i - 190);
 			}
 		}
 		else{
