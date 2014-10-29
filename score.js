@@ -10,10 +10,12 @@ var canvasModule = angular.module('app', []).
 		$scope.margin = 50;
 		$scope.lineHeight = 48;
 		
+		//lines are for visual display only
 		$scope.lines = [
 		   
 		];
 		
+		//eventually there will be a possibility of many instruments
 		$scope.instruments = [
 			
 		];
