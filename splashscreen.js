@@ -2,7 +2,10 @@ var splashscreen = function(canvas, context, time){
 	
 	var tempWidth = 0;
 	
-	if( time < 300){
+	var oneX = 0, oneY = 0, oneW = 0;
+	var twoX = 0, twoY = 0, twoW = 0;
+	
+	if( time < 200){
 		if(time < 140){
 			tempWidth = 80 - time / 2;
 		}
@@ -24,6 +27,16 @@ var splashscreen = function(canvas, context, time){
 		context.fillStyle = "black";
 		context.arc(canvas.width / 2, canvas.height / 2, tempWidth, 0, 2 * Math.PI, false);
 		context.fill();
+		
+		if(time > 145){
+			context.beginPath();
+			context.arc(canvas.width / 2 + oneX, canvas.height / 2 + oneY, oneW, 0, 2 * Math.PI, false);
+			context.fill();
+			
+			context.beginPath();
+			context.arc(canvas.width / 2 + twoX, canvas.height / 2 + twoY, twoW, 0, 2 * Math.PI, false);
+			context.fill();
+		}
 	}
 	else{
 		
