@@ -1,4 +1,4 @@
-var splashscreen = function(canvas, ctx){
+var splashscreen = function(canvas, context){
 	var tempWidth = 100;
 
 
