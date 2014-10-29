@@ -7,7 +7,7 @@ function animate(particles, delta, last)
         var p = particles[i];
         p.x += Math.cos(p.angle) * 4 + Math.random() * 2 - Math.random() * 2;
         p.y += Math.sin(p.angle) * 4 + Math.random() * 2 - Math.random() * 2;
-        p.life -= delta / 100;
+        p.life -= delta / 10;
         p.size -= delta / 400;
         
         if (p.size <= 0)
