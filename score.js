@@ -216,6 +216,8 @@ var canvasModule = angular.module('app', []).
 					context.fillStyle = "white";
 					context.font = "bold 16px Arial";
 					context.fillText("inknote", canvas.width / 2, canvas.height / 2);
+					var dataURL = canvas.toDataURL();
+      					document.getElementById('canvasImg').src = dataURL;
 				}
 				else{
 					animate(particles, delta, last);
