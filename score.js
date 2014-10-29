@@ -195,6 +195,7 @@ var canvasModule = angular.module('app', []).
 			context.fill();
 		}
 		
+		splashscreen(context);
 		$scope.addInstrument("piano");
 		$scope.addBar(0);
 		$scope.draw();
