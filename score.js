@@ -228,8 +228,8 @@ var canvasModule = angular.module('app', []).
       					$timeout($scope.startup, 10);
 				}
 				else if(time > 100 && time < 200){
-					var tleft = (time - 100) * (-canvas.width + 10) / 100;
-					var tright = (time - 100) * (-canvas.height + 30) / 100;
+					var tleft = (time - 100) * (-canvas.width / 2 + 10) / 100;
+					var tright = (time - 100) * (-canvas.height / 2 + 30) / 100;
 					canvaspic.style.left = tleft + "px";
 					canvaspic.style.top = tright + "px";
 					time++;
