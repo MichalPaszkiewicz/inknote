@@ -236,6 +236,8 @@ var canvasModule = angular.module('app', []).
 					$timeout($scope.startup, 10);
 				}
 				else if(time == 200){
+					$scope.addInstrument("piano");
+					$scope.addBar(0);
 					$scope.draw();
 				}
 				else{
