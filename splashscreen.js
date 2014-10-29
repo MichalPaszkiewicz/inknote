@@ -11,8 +11,8 @@ var splashscreen = function(canvas, context, time){
 		}
 		else if(time < 150){
 			tempWidth = 10 + (time - 140) * 10;
-			oneX = (time - 140) * 13;
-			oneY = (time - 140) * 11;
+			oneX = (time - 140) * 12;
+			oneY = (time - 140) * 10;
 			oneW = (time - 140) * 3;
 		}
 		else if(time < 170){
@@ -20,7 +20,7 @@ var splashscreen = function(canvas, context, time){
 			oneX = 130;
 			oneY = 110;
 			oneW = 30;
-			for(var i = 0; i < time - 160; i++){
+			for(var i = 0; i < time - 150; i++){
 				tempWidth += 5 / (i - 190);
 				oneX += 7 / (i - 190);
 				oneY += 7 / (i - 190);
@@ -28,7 +28,11 @@ var splashscreen = function(canvas, context, time){
 			}
 		}
 		else{
-			tempWidth = 110;
+			tempWidth = 120;
+			
+			oneX = 140;
+			oneY = 120;
+			oneW = 40;
 		}
 		
 		context.clearRect(0,0,canvas.width,canvas.height);
