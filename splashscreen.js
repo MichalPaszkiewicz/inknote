@@ -15,7 +15,7 @@ var splashscreen = function(canvas, context, time){
 			oneY = (time - 140) * 10;
 			oneW = (time - 140) * 3;
 		}
-		else if(time < 170){
+		else if(time < 190){
 			tempWidth = 110;
 			oneX = 130;
 			oneY = 110;
