@@ -205,7 +205,7 @@ var canvasModule = angular.module('app', []).
 				$scope.draw();	
 			}
 			time++;
-		}, 20);
+		}, 100);
 	});
 	//.factory('Note', function( line ){	});
 	
