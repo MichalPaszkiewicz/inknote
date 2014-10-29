@@ -21,10 +21,10 @@ var splashscreen = function(canvas, context, time){
 			oneY = 110;
 			oneW = 30;
 			for(var i = 0; i < time - 150; i++){
-				tempWidth += 5 / (i - 190);
-				oneX += 7 / (i - 190);
-				oneY += 7 / (i - 190);
-				oneW += 3 / (i - 190);
+				tempWidth += 5 / (i - 150);
+				oneX += 7 / (i - 150);
+				oneY += 7 / (i - 150);
+				oneW += 3 / (i - 150);
 			}
 		}
 		else{
