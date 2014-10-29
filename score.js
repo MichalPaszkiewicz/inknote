@@ -81,7 +81,7 @@ var canvasModule = angular.module('app', []).
 			
 			if(bar.notes.length > 3){
 				$scope.addBar(0);
-				var thisBar = $scope.bars[$scope.instruments[0].bars.length - 1];
+				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			
 			var id = 0;
