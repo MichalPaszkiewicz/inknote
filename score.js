@@ -206,7 +206,7 @@ var canvasModule = angular.module('app', []).
 				x: canvas.width / 2,
 				y: canvas.height / 2,
 				angle: i * 5,
-				size : 15 + Math.random() * 12,
+				size : 15 + Math.random() * 15,
 				life : 500 + Math.random() * 1500
 			});
 		}
@@ -248,7 +248,7 @@ var canvasModule = angular.module('app', []).
 					animate(particles, delta, last);
 					render(context, particles);
 					time++;
-					$timeout($scope.startup, 40);
+					$timeout($scope.startup, 10);
 				}
 		}
 		
