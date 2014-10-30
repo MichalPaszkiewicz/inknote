@@ -54,8 +54,25 @@ a{
 	bottom: 0px;
 }
 
-.instruments-menu{
+.menu-item{
+	
+}
+
+.menu-item-name{
+	padding: 10px;
+	list-style: none;
+	background: rgb(241, 255, 233);
+	box-sizing: border-box;
+	box-shadow: 0 0 5px 1px darkgreen;
+}
+
+.instruments-menu ul{
 	margin: 0;
+	display: none;
+}
+
+.menu-item:hover .instruments-menu ul{
+	display: block;
 }
 
 .instrument{
