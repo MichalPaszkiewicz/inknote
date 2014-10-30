@@ -42,11 +42,16 @@ a{
 
 .menu-container .menu{
 	float: right;
-	display: none;
+	/* display: none; */
+	bottom: 40px;
+	position: absolute;
+	right: 0;
+	transition: 0.1s bottom;
 }
 
 .menu-container:hover .menu{
-	display: block;
+	//display: block;
+	bottom: 0px;
 }
 
 .instruments-menu{
