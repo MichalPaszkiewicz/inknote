@@ -19,8 +19,8 @@
 	  <div ng-controller="canvasCtrl">
 	  
 	  	<div class="menu-container">
-		  	<div class="menu">
-		  		<div class="instruments-menu menu-item">
+		  	<div class="menu" ng-class='{"selected":tog==2}' ng-click='tog=2'>
+		  		<div class="instruments-menu menu-item" ng-class='{"selected":tog==1}' ng-click='tog=1'>
 		  			<div class="menu-item-name">Instruments</div>
 			  		<ul>
 			  			<li class="instrument" ng-repeat="instrument in instruments">
