@@ -6,6 +6,7 @@ var canvasModule = angular.module('app', []).
 		canvas.width = $window.innerWidth;
 		canvas.height = $window.innerHeight;
 		var context = canvas.getContext('2d');
+		var drawOn = false;
 			
 		$scope.margin = 50;
 		$scope.lineHeight = 48;
@@ -34,24 +35,27 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.addBar = function(instrumentNo, before) {
-			var id = 0;
-			var instrument = $scope.instruments[instrumentNo];
-			
-			if(instrument.bars.length > 0) {
-				id = instrument.bars[instrument.bars.length-1].id + 1;
+			if(drawOn){
+				var id = 0;
+				var instrument = $scope.instruments[instrumentNo];
+				
+				if(instrument.bars.length > 0) {
+					id = instrument.bars[instrument.bars.length-1].id + 1;
+				}
+				var tempBar = {id: id, notes: [], x: null, y: null};
+				if(before == null || before == undefined){			
+					instrument.bars.push(tempBar)
+				}
+				else if( isNaN(before) ){
+					throw "addBar(0) also only accepts numbers, or nothing!";
+				}
+				else{
+					instrument.bars.splice(before, 0, tempBar);
+				}	
+				
+				$scope.draw();
 			}
-			var tempBar = {id: id, notes: [], x: null, y: null};
-			if(before == null || before == undefined){			
-				instrument.bars.push(tempBar)
-			}
-			else if( isNaN(before) ){
-				throw "addBar(0) also only accepts numbers, or nothing!";
-			}
-			else{
-				instrument.bars.splice(before, 0, tempBar);
-			}	
-			
-			$scope.draw();
+			else{return};
 		}
 		
 		$scope.action = function(e){
