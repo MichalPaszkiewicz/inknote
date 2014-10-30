@@ -247,6 +247,7 @@ var canvasModule = angular.module('app', []).
 					$scope.addInstrument("piano");
 					$scope.addBar(0);
 					$scope.draw();
+					drawOn = true;
 				}
 				else{
 					animate(particles, delta, last);
