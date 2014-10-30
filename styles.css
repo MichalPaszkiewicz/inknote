@@ -9,6 +9,7 @@ canvas{
     position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 10;
 }
 
 a{
@@ -32,6 +33,11 @@ a{
 
 .menu-container{
 	height: 40px;
+	z-index: 50;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
 }
 
 .menu-container .menu{
