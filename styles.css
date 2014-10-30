@@ -49,7 +49,7 @@ a{
 	transition: 0.1s top;
 }
 
-.menu-container:hover .menu{
+.menu-container:hover .menu, .menu-container.selected .menu{
 	//display: block;
 	top: 0px
 }
@@ -73,7 +73,7 @@ a{
 	padding: 0;
 }
 
-.menu-item:hover ul{
+.menu-item:hover ul, .menu-item.selected ul{
 	display: block;
 }
 
