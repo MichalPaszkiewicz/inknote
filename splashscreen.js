@@ -28,7 +28,7 @@ function render(ctx, particles)
     ctx.fillStyle = "black";
     for (var i = 0; i < particles.length; i++)
     {
-        if (Math.random() < 0.5)
+        if (Math.random() < 0.7)
         {
             continue;
         }
