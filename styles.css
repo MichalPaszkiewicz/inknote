@@ -71,7 +71,7 @@ a{
 	display: none;
 }
 
-.menu-item:hover .instruments-menu ul{
+.menu-item:hover ul{
 	display: block;
 }
 
