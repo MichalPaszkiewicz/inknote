@@ -36,7 +36,7 @@ a{
 
 .menu-container .menu{
 	float: right;
-	display: hidden;
+	display: none;
 }
 
 .menu-container:hover .menu{
