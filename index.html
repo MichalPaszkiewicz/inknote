@@ -19,8 +19,8 @@
 	  <div ng-controller="canvasCtrl">
 	  
 	  	<div class="menu-container">
-		  	<div class="menu" ng-class='{"selected":menu==true}' ng-click='menu=!menu ?? true'>
-		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem==true}' ng-click='menuitem==!menuitem ?? true'>
+		  	<div class="menu" ng-class='{"selected":menu}' ng-click='menu= (menu == null) ? true : !menu'>
+		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem}' ng-click='menuitem = (menuitem == null) ? true : !menuitem'>
 		  			<div class="menu-item-name">Instruments</div>
 			  		<ul>
 			  			<li class="instrument" ng-repeat="instrument in instruments">
