@@ -43,7 +43,7 @@ a{
 .menu-container .menu{
 	float: right;
 	/* display: none; */
-	bottom: 40px;
+	top: -40px;
 	position: absolute;
 	right: 0;
 	transition: 0.1s bottom;
@@ -51,7 +51,7 @@ a{
 
 .menu-container:hover .menu{
 	//display: block;
-	bottom: 0px;
+	top: 0px
 }
 
 .menu-item{
