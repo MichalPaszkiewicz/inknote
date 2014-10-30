@@ -33,3 +33,15 @@ a{
 .menu-container .menu{
 	float: right;
 }
+
+.instruments-menu{
+	margin: 0;
+}
+
+.instrument{
+	padding: 10px;
+	list-style: none;
+	background: rgb(241, 255, 233);
+	box-sizing: border-box;
+	box-shadow: 0 0 5px 1px darkgreen;
+}
