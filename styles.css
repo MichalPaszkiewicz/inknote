@@ -30,3 +30,6 @@ a{
 	list-style: none;
 }
 
+.menu-container .menu{
+	float: right;
+}
