@@ -248,7 +248,7 @@ var canvasModule = angular.module('app', []).
 					animate(particles, delta, last);
 					render(context, particles);
 					time++;
-					$timeout($scope.startup, 20);
+					$timeout($scope.startup, 40);
 				}
 		}
 		
