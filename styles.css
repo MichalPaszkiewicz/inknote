@@ -30,8 +30,17 @@ a{
 	list-style: none;
 }
 
+.menu-container{
+	height: 40px;
+}
+
 .menu-container .menu{
 	float: right;
+	display: hidden;
+}
+
+.menu-container:hover .menu{
+	display: block;
 }
 
 .instruments-menu{
