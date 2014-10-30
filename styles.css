@@ -49,7 +49,7 @@ a{
 	transition: 0.1s top;
 }
 
-.menu-container:hover .menu, .menu-container.selected .menu{
+.menu-container:hover .menu, .menu.selected{
 	//display: block;
 	top: 0px
 }
