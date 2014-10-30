@@ -227,7 +227,10 @@ var canvasModule = angular.module('app', []).
       					time++;
       					$timeout($scope.startup, 10);
 				}
-				else if(time > 80 && time < 150){}
+				else if(time > 80 && time < 150){
+					time++;
+					$timeout($scope.startup, 10);
+				}
 				else if(time > 150 && time < 250){
 					var tleft = (time - 150) * (-canvas.width / 2 + 10) / 100;
 					var tright = (time - 150) * (-canvas.height / 2 + 30) / 100;
@@ -236,7 +239,7 @@ var canvasModule = angular.module('app', []).
 					time++;
 					$timeout($scope.startup, 10);
 				}
-				else if(time == 200){
+				else if(time == 250){
 					$scope.addInstrument("piano");
 					$scope.addBar(0);
 					$scope.draw();
