@@ -18,12 +18,14 @@
 		 <img id="canvasImg">
 	  <div ng-controller="canvasCtrl">
 	  
-	  	<div class="menu">
-	  		<ul>
-	  			<li class="instrument" ng-repeat="instrument in instruments">
-	  				[{{instrument.name}}, {{instrument.id}}]
-	  			</li>
-	  		</ul>
+	  	<div class="menu-container">
+		  	<div class="menu">
+		  		<ul>
+		  			<li class="instrument" ng-repeat="instrument in instruments">
+		  				[{{instrument.name}}, {{instrument.id}}]
+		  			</li>
+		  		</ul>
+		  	</div>
 	  	</div>
 		
 		<canvas id="canvas" ng-click="action($event)"></canvas>
