@@ -46,7 +46,7 @@ a{
 	top: -40px;
 	position: absolute;
 	right: 0;
-	transition: 0.1s bottom;
+	transition: 0.1s top;
 }
 
 .menu-container:hover .menu{
