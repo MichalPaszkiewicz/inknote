@@ -64,6 +64,7 @@ a{
 	background: rgb(241, 255, 233);
 	box-sizing: border-box;
 	box-shadow: 0 0 5px 1px darkgreen;
+	cursor: pointer;
 }
 
 .instruments-menu ul{
