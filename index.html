@@ -20,11 +20,14 @@
 	  
 	  	<div class="menu-container">
 		  	<div class="menu">
-		  		<ul class="instruments-menu">
-		  			<li class="instrument" ng-repeat="instrument in instruments">
-		  				[{{instrument.name}}, {{instrument.id}}]
-		  			</li>
-		  		</ul>
+		  		<div class="instruments-menu">
+		  			<div class="menu-item">Instruments</div>
+			  		<ul>
+			  			<li class="instrument" ng-repeat="instrument in instruments">
+			  				[{{instrument.name}}, {{instrument.id}}]
+			  			</li>
+			  		</ul>
+		  		</div>
 		  	</div>
 	  	</div>
 		
