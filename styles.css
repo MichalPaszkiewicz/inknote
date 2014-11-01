@@ -63,10 +63,14 @@ a{
 .menu-item-name{
 	padding: 10px;
 	list-style: none;
-	background: rgb(241, 255, 233);
+	background: rgb(221, 222, 255);
 	box-sizing: border-box;
-	box-shadow: 0 0 5px 1px darkgreen;
+	box-shadow: 0 0 5px 1px black;
 	cursor: pointer;
+}
+
+.menu-item-name:hover, .instrument:hover{
+	background: rgb(176, 176, 229);
 }
 
 .instruments-menu ul{
@@ -82,9 +86,9 @@ a{
 .instrument{
 	padding: 10px;
 	list-style: none;
-	background: rgb(241, 255, 233);
+	background: rgb(221, 222, 255);
 	box-sizing: border-box;
-	box-shadow: 0 0 5px 1px darkgreen;
+	box-shadow: 0 0 5px 1px black;
 	cursor: pointer;
 }
 
