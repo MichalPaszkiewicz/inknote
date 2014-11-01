@@ -16,13 +16,13 @@
 </head>
 <body>
 	<div id="main-container" ng-app="app">
-		<div id="new-instrument" ng-show="openInstrumentName()">
-			<input ng-model="instrumentName"></input>
-			<button ng-click="addInstrument(instrumentName); toggleNewInstrument();">Save</button><button ng-click="toggleNewInstrument();">Cancel</button>
-		</div>
 		 <img id="canvasImg">
 	  <div ng-controller="canvasCtrl">
 	  
+	  	<div id="new-instrument" ng-show="openInstrumentName()">
+			<input ng-model="instrumentName"></input>
+			<button ng-click="addInstrument(instrumentName); toggleNewInstrument();">Save</button><button ng-click="toggleNewInstrument();">Cancel</button>
+		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
 		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem}' ng-click='menuitem = (menuitem == null) ? true : !menuitem; menu= (menu == null) ? true : !menu;'>
