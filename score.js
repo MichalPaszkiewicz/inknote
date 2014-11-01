@@ -7,6 +7,16 @@ var canvasModule = angular.module('app', []).
 		canvas.height = $window.innerHeight;
 		var context = canvas.getContext('2d');
 		var drawOn = false;
+		
+		var isNewInstrument = false;
+		
+		$scope.toggleNewInstrument = function () {
+		        isNewInstrument = !isNewInstrument;  
+		};
+
+		$scope.openInstrumentName = function () {
+			return isNewInstrument;
+		};
 			
 		$scope.margin = 50;
 		$scope.lineHeight = 48;
