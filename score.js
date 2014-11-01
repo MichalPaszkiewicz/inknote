@@ -131,15 +131,15 @@ var canvasModule = angular.module('app', []).
 		$scope.drawInit = function(){
 			if($scope.lines.length < 1)
 			{
-				$scope.lines.push({x: $scope.margin, y: 200, bars: $scope.instruments[0].bars, xSplitting: null});
+				$scope.lines.push({x: $scope.margin, y: 200, instruments: $scope.instruments, xSplitting: null});
 			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
 				var tempX = 0;
-				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.bars.length;
-				for(var j = 0; j < tempLine.bars.length; j++){
-					var tempBar = tempLine.bars[j];
+				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.instruments[0].bars.length;
+				for(var j = 0; j < tempLine.instruments[0].bars.length; j++){
+					var tempBar = tempLine.instruments[0].bars[j];
 					tempBar.y = tempLine.y;
 					tempBar.x = tempX + tempLine.x;
 					tempX = tempX + tempLine.xSplitting;
