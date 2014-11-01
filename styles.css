@@ -35,7 +35,7 @@ a{
 
 .menu-container{
 	height: 40px;
-	z-index: 50;
+	z-index: 500;
 	position: absolute;
 	left: 0;
 	top: 0;
