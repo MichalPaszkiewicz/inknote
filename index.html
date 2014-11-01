@@ -25,7 +25,7 @@
 		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
-		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem}' ng-click='menuitem = (menuitem == null) ? true : !menuitem; menu= (menu == null) ? true : !menu;'>
+		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem}' ng-click='menuitem = (menuitem == null) ? true : !menuitem;'>
 		  			<div class="menu-item-name">Instruments</div>
 			  		<ul>
 			  			<li class="instrument">
@@ -38,6 +38,9 @@
 			  				New instrument
 			  			</li>
 			  		</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name" ng-click="menu= (menu == null) ? true : !menu;">Toggle menu</div>
 		  		</div>
 		  	</div>
 	  	</div>
