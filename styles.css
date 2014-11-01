@@ -116,4 +116,7 @@ a{
 .button-container .button{
 	display: inline-block;
 	padding: 10px;
+	background: rgb(221, 222, 255);
+	cursor: pointer;
+	border-radius: 5px;
 }
