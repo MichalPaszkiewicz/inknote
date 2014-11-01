@@ -57,7 +57,7 @@ a{
 }
 
 .menu-item{
-	
+	float: left;
 }
 
 .menu-item-name{
