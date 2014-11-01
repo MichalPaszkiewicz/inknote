@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div id="main-container" ng-app="app">
-		<div id="new-instrument" ngShow="newInstrument">
+		<div id="new-instrument" ng-show="newInstrument">
 			<input ng-model="instrumentName"></input>
 			<button ng-click="addInstrument(instrumentName); newInstrument=false;">Save</button><button ng-click="newInstrument=false;">Cancel</button>
 		</div>
