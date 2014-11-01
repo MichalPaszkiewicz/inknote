@@ -23,6 +23,8 @@ a{
 	background: rgb(231, 234, 240);
 	border-radius: 10px;
 	padding: 20px;
+	z-index: 100;
+	opacity: 0.8;
 }
 
 #list ul{
