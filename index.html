@@ -16,6 +16,10 @@
 </head>
 <body>
 	<div id="main-container" ng-app="app">
+		<div id="new-instrument" ngShow="newInstrument">
+			<input ng-model="instrumentName"></input>
+			<button ng-click="addInstrument(instrumentName); newInstrument=false;">Save</button><button ng-click="newInstrument=false;">Cancel</button>
+		</div>
 		 <img id="canvasImg">
 	  <div ng-controller="canvasCtrl">
 	  
@@ -26,6 +30,9 @@
 			  		<ul>
 			  			<li class="instrument" ng-repeat="instrument in instruments">
 			  				[{{instrument.name}}, {{instrument.id}}]
+			  			</li>
+			  			<li class="instrument" ng-click='newInstrument=true'>
+			  				New instrument
 			  			</li>
 			  		</ul>
 		  		</div>
