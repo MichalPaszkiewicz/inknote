@@ -108,3 +108,12 @@ a{
 	border-radius: 20px;
 	box-shadow: 0 0 5px 1px;
 }
+
+.button-container{
+	clear:both;
+}
+
+.button-container .button{
+	display: inline-block;
+	padding: 10px;
+}
