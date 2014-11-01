@@ -21,7 +21,10 @@
 	  
 	  	<div id="new-instrument" ng-show="openInstrumentName()">
 			<input ng-model="instrumentName"></input>
-			<button ng-click="addInstrument(instrumentName); toggleNewInstrument();">Save</button><button ng-click="toggleNewInstrument();">Cancel</button>
+			<div class="button-container">
+				<div class="button" ng-click="addInstrument(instrumentName); toggleNewInstrument();">Save</div>
+				<div class="button" ng-click="toggleNewInstrument();">Cancel</div>
+			</div>
 		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
