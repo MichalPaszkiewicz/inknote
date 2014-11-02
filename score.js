@@ -270,7 +270,8 @@ var canvasModule = angular.module('app', []).
 		$timeout($scope.startup, 10);
 		
 		$scope.files = [
-		
+			{name: "file one"},
+			{name: "file two"}
 		];
 		
 	});
