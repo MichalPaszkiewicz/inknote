@@ -75,8 +75,8 @@
 		  					<div class="sub-item-name">{{collaborator.name}}</div>
 		  					<ul class="sub-sub-items">
 		  						<li class="sub-sub-item no-pad">
-		  							<div class="half" ng-class="{'green': collaborator.permission == 'Read'}">Read</div>
-		  							<div class="half" ng-class="{'green': collaborator.permission == 'Write'}">Write</div>
+		  							<div class="half" ng-click="collaborator.permission='Read'" ng-class="{'green': collaborator.permission == 'Read'}">Read</div>
+		  							<div class="half" ng-click="collaborator.permission='Write'" ng-class="{'green': collaborator.permission == 'Write'}">Write</div>
 		  						</li>
 		  						<li class="sub-sub-item">
 		  							Assign
@@ -87,6 +87,9 @@
 		  					</ul>
 		  				</li>
 		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Help</div>
 		  		</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name" ng-click="menu= (menu == null) ? true : !menu;">Toggle menu</div>
