@@ -74,8 +74,9 @@
 		  				<li class="sub-item smaller" ng-repeat="collaborator in collaborators">
 		  					<div class="sub-item-name">{{collaborator.name}}</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item">
-		  							{{collaborator.permission}}
+		  						<li class="sub-sub-item no-pad">
+		  							<div class="half" ng-class="{'green', collaborator.permission == 'Read'}">Read</div>
+		  							<div class="half" ng-class="{'green', collaborator.permission == 'Write'}">Write</div>
 		  						</li>
 		  						<li class="sub-sub-item">
 		  							Assign
