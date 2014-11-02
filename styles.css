@@ -69,7 +69,7 @@ a{
 	cursor: pointer;
 }
 
-.menu-item-name:hover, .sub-item:hover .sub-sub-item:hover{
+.menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover{
 	background: rgb(176, 176, 229);
 }
 
