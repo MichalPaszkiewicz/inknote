@@ -66,6 +66,28 @@
 			  		</ul>
 		  		</div>
 		  		<div class="menu-item">
+		  			<div class="menu-item-name">Collaborate</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					
+		  				</li>
+		  				<li class="sub-item" ng-repeat="collaborator in collaborators">
+		  					<div class="sub-item-name">{{collaborator.name}}</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item">
+		  							{{collaborator.permission}}
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Assign
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Kick
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
 		  			<div class="menu-item-name" ng-click="menu= (menu == null) ? true : !menu;">Toggle menu</div>
 		  		</div>
 		  	</div>
