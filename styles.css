@@ -84,7 +84,7 @@ ul.sub-items, ul.sub-sub-items{
 	display: block;
 }
 
-ul.sub-item:hover, ul.sub-item.selected{
+ul.sub-item:hover .sub-sub-items, ul.sub-item.selected .sub-sub-items{
 	display: block;
 }
 
