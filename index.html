@@ -30,20 +30,31 @@
 		  	<div class="menu" ng-class='{"selected":menu}'>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name">File</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Open</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item" ng-repeat="file in files">{{file.name}}</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Save</div>
+		  				</li>
+		  			</ul>
 		  		</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name">Edit</div>
 		  		</div>
 		  		<div class="instruments-menu menu-item" ng-class='{"selected":menuitem}' ng-click='menuitem = (menuitem == null) ? true : !menuitem;'>
 		  			<div class="menu-item-name">Instruments</div>
-			  		<ul>
-			  			<li class="instrument">
+			  		<ul class="sub-items">
+			  			<li class="instrument sub-item">
 			  				All instruments
 			  			</li>
-			  			<li class="instrument" ng-repeat="instrument in instruments">
+			  			<li class="instrument sub-item" ng-repeat="instrument in instruments">
 			  				[{{instrument.name}}, {{instrument.id}}]
 			  			</li>
-			  			<li class="instrument" ng-click='toggleNewInstrument()'>
+			  			<li class="instrument sub-item" ng-click='toggleNewInstrument()'>
 			  				New instrument
 			  			</li>
 			  		</ul>
