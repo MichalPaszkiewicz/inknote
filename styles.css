@@ -71,15 +71,20 @@ a{
 
 .menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover{
 	background: rgb(176, 176, 229);
+	z-index: 1000;
 }
 
-ul.sub-items{
+ul.sub-items, ul.sub-sub-items{
 	margin: 0;
 	display: none;
 	padding: 0;
 }
 
 .menu-item:hover ul.sub-items, .menu-item.selected ul.sub-items{
+	display: block;
+}
+
+ul.sub-item:hover, ul.sub-item.selected{
 	display: block;
 }
 
@@ -90,6 +95,14 @@ ul.sub-items{
 	box-sizing: border-box;
 	box-shadow: 0 0 5px 1px black;
 	cursor: pointer;
+}
+
+.sub-sub-items{
+	position: absolute;
+	left: 100%;
+	top: 0;
+	padding: 0;
+	width: 140px;
 }
 
 .sub-sub-item{
