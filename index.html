@@ -37,7 +37,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Open</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item" ng-repeat="file in files">{{file.name}}</li>
+		  						<li class="sub-sub-item smaller" ng-repeat="file in files">{{file.name}}</li>
 		  					</ul>
 		  				</li>
 		  				<li class="sub-item">
@@ -57,7 +57,7 @@
 			  			<li class="instrument sub-item">
 			  				All instruments
 			  			</li>
-			  			<li class="instrument sub-item" ng-repeat="instrument in instruments">
+			  			<li class="instrument sub-item smaller" ng-repeat="instrument in instruments">
 			  				[{{instrument.name}}, {{instrument.id}}]
 			  			</li>
 			  			<li class="instrument sub-item" ng-click='toggleNewInstrument()'>
@@ -71,7 +71,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Connect</div>
 		  				</li>
-		  				<li class="sub-item" ng-repeat="collaborator in collaborators">
+		  				<li class="sub-item smaller" ng-repeat="collaborator in collaborators">
 		  					<div class="sub-item-name">{{collaborator.name}}</div>
 		  					<ul class="sub-sub-items">
 		  						<li class="sub-sub-item">
