@@ -274,6 +274,12 @@ var canvasModule = angular.module('app', []).
 			{name: "file two"}
 		];
 		
+		$scope.collaborators = [
+			{name: "Penguin", permission: "Read"},
+			{name: "Tiger", permission: "Write"},
+			{name: "Parrot", permission: "Read"}
+		];
+		
 	});
 	//.factory('Note', function( line ){	});
 	
