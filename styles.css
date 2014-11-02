@@ -73,17 +73,17 @@ a{
 	background: rgb(176, 176, 229);
 }
 
-.instruments-menu ul{
+ul.sub-items{
 	margin: 0;
 	display: none;
 	padding: 0;
 }
 
-.menu-item:hover ul, .menu-item.selected ul{
+.menu-item:hover ul.sub-items, .menu-item.selected ul.sub-items{
 	display: block;
 }
 
-.instrument{
+.sub-item{
 	padding: 10px;
 	list-style: none;
 	background: rgb(221, 222, 255);
