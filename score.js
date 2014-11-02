@@ -268,6 +268,11 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$timeout($scope.startup, 10);
+		
+		$scope.files = [
+		
+		];
+		
 	});
 	//.factory('Note', function( line ){	});
 	
