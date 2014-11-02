@@ -115,8 +115,16 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 	padding: 6px 10px;
 }
 
+.sub-item.no-pad, .sub-sub-item.no-pad{
+	padding: 0;
+}
+
 .sub-item.smaller:hover, .sub-sub-item.smaller:hover{
 	background: rgb(176, 176, 229);
+}
+
+.half{
+	width: 50%;
 }
 
 #new-instrument{
