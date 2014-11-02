@@ -110,6 +110,11 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 	
 }
 
+.sub-item.smaller, .sub-sub-item.smaller{
+	background: rgb(224, 224, 224);
+	padding: 6px 10px;
+}
+
 #new-instrument{
 	z-index: 50;
 	position: absolute;
