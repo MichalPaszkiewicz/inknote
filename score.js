@@ -280,18 +280,22 @@ var canvasModule = angular.module('app', []).
 			{name: "Parrot", permission: "Read"}
 		];
 		
-		$scope.allCollaboratorsAre = function(){
-			var tempPerm = null;
+		$scope.allCollaboratorsAre = function(type, process){
+			if(process == "set")
+			{
+				for(var i = 0; i < $scope.collaborators.length; i++)
+				{
+					$scope.collaborators[i].permission = type;
+				}
+				return;
+			}
 			for(var i = 0; i < $scope.collaborators.length; i++)
 			{
-				if(tempPerm == null){
-					tempPerm = $scope.collaborators[i].permission;
-				}
-				if(tempPerm != $scope.collaborators[i].permission){
+				if(type != $scope.collaborators[i].permission){
 					return false;
 				}
 			}
-			return tempPerm;
+			return true;
 		}
 	});
 	//.factory('Note', function( line ){	});
