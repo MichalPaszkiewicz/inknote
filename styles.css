@@ -125,7 +125,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 }
 
 .sub-item.no-pad:hover, .sub-sub-item.no-pad:hover{
-	background: none;
+	background: rgb(221, 222, 255);
 }
 
 .sub-item.smaller:hover, .sub-sub-item.smaller:hover{
@@ -133,7 +133,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 }
 
 .half{
-	width: 48%;
+	width: 50%;
 	display: inline-block;
 	padding: 10px;
 	box-sizing: border-box;
