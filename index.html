@@ -86,7 +86,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">All</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item no-pad"><div class="half" ng-class="{'green': allAre(collaborators, function(c){ return c.permission == 'Read' })}">Read</div><div class="half" ng-class="{'green': allAre(collaborators, function(c){ return c.permission == 'Write' })}">Write</div></li>
+		  						<li class="sub-sub-item no-pad"><div class="half" ng-class="{'green': allCollaboratorsAre() == 'Read'}">Read</div><div class="half" ng-class="{'green': allAre(collaborators, allCollaboratorsAre() == 'Write'}">Write</div></li>
 		  						<li class="sub-sub-item">
 		  							Assign
 		  						</li>
