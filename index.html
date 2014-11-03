@@ -37,7 +37,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Open</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item smaller" ng-repeat="file in files">{{file.name}}</li>
+		  						<li class="sub-sub-item smaller" ng-repeat="file in files track by id">{{file.name}}</li>
 		  					</ul>
 		  				</li>
 		  				<li class="sub-item">
