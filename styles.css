@@ -124,6 +124,10 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 	padding: 0;
 }
 
+.sub-item.no-pad:hover{
+	background: none;
+}
+
 .sub-item.smaller:hover, .sub-sub-item.smaller:hover{
 	background: rgb(176, 176, 229);
 }
@@ -135,8 +139,16 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 	box-sizing: border-box;
 }
 
+.half:hover{
+	background: rgb(176, 176, 229);
+}
+
 .half.green{
 	background: rgb(109, 200, 109);
+}
+
+.half.green:hover{
+	background: rgb(90, 180, 89);
 }
 
 #new-instrument{
