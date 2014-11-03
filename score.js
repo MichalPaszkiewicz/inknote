@@ -292,8 +292,8 @@ var canvasModule = angular.module('app', []).
 		
 		$timeout($scope.startup, 10);
 		
-		$scope.files.push({name: "file one"});
-		$scope.files.push({name: "file two"});
+		$scope.files.push({name: "file one", id: 0});
+		$scope.files.push({name: "file two", id: 1});
 		
 		$scope.collaborators = [
 			{name: "Penguin", permission: "Read"},
