@@ -124,7 +124,7 @@
 				<ul>
 					<li ng-repeat="bar in instrument.bars">				
 						<ul>
-							<li ng-repeat="note in bar.notes">[{{bar.id}}, {{note.id}}] <a ng-click="removeNote(bar, note)">[x]</a></li>
+							<li ng-repeat="item in bar.items">[{{bar.id}}, {{item.id}}] <a ng-click="removeItem(bar, item)">[x]</a></li>
 						<ul>
 					</li>
 				</ul>
