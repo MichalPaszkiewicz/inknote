@@ -116,8 +116,6 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.removeItem = function(bar, item){
-			console.log("[" + bar + "," + item + "]");
-			
 			var tempBar = {};
 			for(var i=0; i<$scope.instruments[0].bars.length; i++)
 			{
@@ -128,13 +126,11 @@ var canvasModule = angular.module('app', []).
 			
 			for(var i=0; i<tempBar.items.length; i++) {
 				if(tempBar.items[i].id === item.id) {
-					console.log("removing item at position: "+i);
 					tempBar.items.splice(i, 1);    
 				}
 			}
 			
 			$scope.draw();
-			console.log($scope.instruments[0].bars);
 		}
 		
 		$scope.draw = function(){
