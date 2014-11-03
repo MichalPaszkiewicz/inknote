@@ -280,6 +280,7 @@ var canvasModule = angular.module('app', []).
 			{name: "Parrot", permission: "Read"}
 		];
 		
+		$scope.allAre = function(items, xAndY){return allAre(items, xAndY);}
 	});
 	//.factory('Note', function( line ){	});
 	
