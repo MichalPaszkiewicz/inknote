@@ -73,7 +73,7 @@ a{
 	border-radius: 0 0 0 10px;
 }
 
-.menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover, .menu-item-name.first:hover{
+.menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover, .menu-item-name.first:hover, .menu-item:hover .menu-item-name{
 	background: rgb(176, 176, 229);
 	z-index: 1000;
 	border-radius: 0;
