@@ -40,8 +40,10 @@ var canvasModule = angular.module('app', []).
 			localStorage.setItem("inknote-files", JSON.stringify($scope.files));
 		}
 		
-		$scope.newFile = function(){
-			$scope.files.push({name: "unnamed", id: $scope.files.length});
+		$scope.newFile = function(name){
+			var newname = name;
+			if(newname == null || newname == undefined || newname == ""){newname = "unnamed"}
+			$scope.files.push({name: newname, id: $scope.files.length});
 		}
 		
 		//todo: migrate instruments to file object.
