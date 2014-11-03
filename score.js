@@ -27,6 +27,8 @@ var canvasModule = angular.module('app', []).
 		];
 		
 		//todo: migrate instruments to file object.
+		$scope.files = [];
+		
 		$scope.file = {
 			
 		};
