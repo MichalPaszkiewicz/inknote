@@ -26,6 +26,11 @@ var canvasModule = angular.module('app', []).
 		   
 		];
 		
+		//todo: migrate instruments to file object.
+		$scope.file = {
+			
+		};
+		
 		//eventually there will be a possibility of many instruments
 		$scope.instruments = [
 			
@@ -52,7 +57,7 @@ var canvasModule = angular.module('app', []).
 				if(instrument.bars.length > 0) {
 					id = instrument.bars[instrument.bars.length-1].id + 1;
 				}
-				var tempBar = {id: id, notes: [], x: null, y: null};
+				var tempBar = {id: id, items: [], x: null, y: null};
 				if(before == null || before == undefined){			
 					instrument.bars.push(tempBar)
 				}
@@ -85,33 +90,33 @@ var canvasModule = angular.module('app', []).
 				$scope.addBar(0);
 			}
 			
-			var noteY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
+			var itemY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
 			
-			$scope.addNote(noteY, $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1]);
+			$scope.addItem(itemY, $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1]);
 		}
 		
-		$scope.addNote = function(value, bar){
+		$scope.addItem = function(value, bar){
 			var thisBar = bar;
 			
-			if(bar.notes.length > 3){
+			if(bar.items.length > 3){
 				$scope.addBar(0);
 				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			
 			var id = 0;
-			var tempNotes = thisBar.notes;
+			var tempItems = thisBar.items;
 			
-			if(tempNotes.length > 0) {
-				id = tempNotes[tempNotes.length-1].id + 1;
+			if(tempItems.length > 0) {
+				id = tempItems[tempItems.length-1].id + 1;
 			}
-			var tempNote = {id: id, value: value, bar: bar, x: null, y: null};
-			thisBar.notes.push(tempNote);
+			var tempItem = {id: id, value: value, bar: bar, x: null, y: null};
+			thisBar.items.push(tempItem);
 			
 			$scope.draw();
 		}
 		
-		$scope.removeNote = function(bar, note){
-			console.log("[" + bar + "," + note + "]");
+		$scope.removeItem = function(bar, item){
+			console.log("[" + bar + "," + item + "]");
 			
 			var tempBar = {};
 			for(var i=0; i<$scope.instruments[0].bars.length; i++)
@@ -121,10 +126,10 @@ var canvasModule = angular.module('app', []).
 				}
 			}
 			
-			for(var i=0; i<tempBar.notes.length; i++) {
-				if(tempBar.notes[i].id === note.id) {
+			for(var i=0; i<tempBar.items.length; i++) {
+				if(tempBar.items[i].id === item.id) {
 					console.log("removing item at position: "+i);
-					tempBar.notes.splice(i, 1);    
+					tempBar.items.splice(i, 1);    
 				}
 			}
 			
@@ -153,12 +158,12 @@ var canvasModule = angular.module('app', []).
 					tempBar.y = tempLine.y;
 					tempBar.x = tempX + tempLine.x;
 					tempX = tempX + tempLine.xSplitting;
-					var tempNoteX = 0;
-					for(var k = 0; k < tempBar.notes.length; k++){
-						var tempNote = tempBar.notes[k];
-						tempNote.x = tempBar.x + tempNoteX + 50;
-						tempNote.y = tempBar.y;
-						tempNoteX += 50;
+					var tempItemX = 0;
+					for(var k = 0; k < tempBar.items.length; k++){
+						var tempItem = tempBar.items[k];
+						tempItem.x = tempBar.x + tempItemX + 50;
+						tempItem.y = tempBar.y;
+						tempItemX += 50;
 					}
 				}
 			}	
@@ -196,16 +201,16 @@ var canvasModule = angular.module('app', []).
 			context.moveTo(bar.x, bar.y);
 			context.lineTo(bar.x, bar.y + $scope.lineHeight);
 			context.stroke();
-			for(var i = 0; i < bar.notes.length; i++){
-				$scope.drawNote(bar, bar.notes[i]);
+			for(var i = 0; i < bar.items.length; i++){
+				$scope.drawItem(bar, bar.items[i]);
 			}
 		}
 		
-		$scope.drawNote = function(bar, note)
+		$scope.drawItem = function(bar, item)
 		{
 			context.beginPath();
 			context.fillStyle = "red";
-			context.arc(note.x, bar.y + note.value, 6, 0, 2 * Math.PI, false);
+			context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
 			context.fill();
 		}
 		
