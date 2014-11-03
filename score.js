@@ -37,7 +37,7 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.saveFiles = function(){
-			$scope.currentFile.instruments = $scope.instruments;
+			//$scope.currentFile.instruments = $scope.instruments;
 			localStorage.setItem("inknote-files", JSON.stringify($scope.files));
 		}
 		
