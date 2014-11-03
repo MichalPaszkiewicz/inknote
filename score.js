@@ -26,12 +26,32 @@ var canvasModule = angular.module('app', []).
 		   
 		];
 		
+		$scope.getFiles = function(){
+			var files = JSON.parse(localStorage.getItem("inknote-files"));
+			if(files == null || files == undefined){
+				return [];
+			}
+			else{
+				return files;
+			}
+		}
+		
+		$scope.saveFiles = function(){
+			localStorage.setItem("inknote-files", JSON.stringify($scope.files));
+		}
+		
+		$scope.newFile = function(){
+			$scope.files.push({name: "unnamed", id: $scope.files.length});
+		}
+		
 		//todo: migrate instruments to file object.
 		$scope.files = [];
 		
-		$scope.file = {
-			
+		var setFiles = function(){
+			$scope.files = $scope.getFiles();
 		};
+		
+		setFiles();
 		
 		//eventually there will be a possibility of many instruments
 		$scope.instruments = [
@@ -272,10 +292,8 @@ var canvasModule = angular.module('app', []).
 		
 		$timeout($scope.startup, 10);
 		
-		$scope.files = [
-			{name: "file one"},
-			{name: "file two"}
-		];
+		$scope.files.push({name: "file one"});
+		$scope.files.push({name: "file two"});
 		
 		$scope.collaborators = [
 			{name: "Penguin", permission: "Read"},
