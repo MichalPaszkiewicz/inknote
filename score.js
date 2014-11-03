@@ -46,11 +46,19 @@ var canvasModule = angular.module('app', []).
 			$scope.files.push({name: newname, id: $scope.files.length});
 		}
 		
+		$scope.openFile = function(file){
+			$scope.currentFile = file;
+			$scope.instruments = file.instruments;
+		}
+		
 		//todo: migrate instruments to file object.
 		$scope.files = [];
 		
+		$scope.currentFile = {name: "unnamed", instruments: []};
+		
 		var setFiles = function(){
 			$scope.files = $scope.getFiles();
+			$scope.files.push($scope.currentFile);
 		};
 		
 		setFiles();
@@ -293,9 +301,6 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$timeout($scope.startup, 10);
-		
-		$scope.files.push({name: "file one", id: 0});
-		$scope.files.push({name: "file two", id: 1});
 		
 		$scope.collaborators = [
 			{name: "Penguin", permission: "Read"},
