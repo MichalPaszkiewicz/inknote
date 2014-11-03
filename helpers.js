@@ -1,4 +1,4 @@
-function allAre(items, xAndY)
+function allItemsAre(items, xAndY)
 {
 	for(var i = 0; i < items.length; i++)
 	{
