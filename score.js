@@ -281,9 +281,9 @@ var canvasModule = angular.module('app', []).
 		];
 		
 		$scope.allAre = function(items, xAndY){
-			for(var i = 0; i < items.length; i++)
+			for(var i = 0; i < $scope[items].length; i++)
 			{
-				if(!xAndY(items[i])){
+				if(!xAndY($scope[items][i])){
 					return false;
 				}
 			}
