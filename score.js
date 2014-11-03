@@ -280,7 +280,7 @@ var canvasModule = angular.module('app', []).
 			{name: "Parrot", permission: "Read"}
 		];
 		
-		$scope.allCollaboratorsAre(){
+		$scope.allCollaboratorsAre = function(){
 			var tempPerm = null;
 			for(var i = 0; i < $scope.collaborators.length; i++)
 			{
