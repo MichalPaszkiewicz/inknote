@@ -124,7 +124,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
 	padding: 0;
 }
 
-.sub-item.no-pad:hover{
+.sub-item.no-pad:hover, .sub-sub-item.no-pad:hover{
 	background: none;
 }
 
