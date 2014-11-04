@@ -79,7 +79,7 @@ a{
 	border-radius: 0;
 }
 
-ul.sub-items, ul.sub-sub-items{
+ul.sub-items, ul.sub-sub-items, .sub-sub-sub-items{
 	margin: 0;
 	display: none;
 	padding: 0;
@@ -89,11 +89,11 @@ ul.sub-items, ul.sub-sub-items{
 	display: block;
 }
 
-li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items{
+li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items, .sub-sub-item:hover .sub-sub-sub-items{
 	display: block;
 }
 
-.sub-item, .sub-sub-item{
+.sub-item, .sub-sub-item, .sub-sub-sub-item{
 	padding: 10px;
 	list-style: none;
 	background: rgb(221, 222, 255);
