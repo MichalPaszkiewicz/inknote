@@ -37,7 +37,14 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Open</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item smaller" ng-click="openFile(file)" ng-repeat="file in files track by file.id">{{file.name}}</li>
+		  						<li class="sub-sub-item smaller" ng-click="openFile(file)" ng-repeat="file in files track by file.id">
+		  							<div class="sub-sub-item-name">{{file.name}}</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="file.name">
+		  								</li>
+		  							</ul>
+		  						</li>
 		  					</ul>
 		  				</li>
 		  				<li class="sub-item">
