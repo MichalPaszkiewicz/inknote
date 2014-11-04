@@ -194,6 +194,7 @@ var canvasModule = angular.module('app', []).
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
+				tempLine.instruments = $scope.instruments;
 				var tempX = 0;
 				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.instruments[0].bars.length;
 				for(var j = 0; j < tempLine.instruments[0].bars.length; j++){
