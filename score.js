@@ -42,8 +42,10 @@ var canvasModule = angular.module('app', []).
 			var tempFiles = [];
 			for(var i = 0; i < $scope.files.length; i++)
 			{
-				if($scope.files[i].instruments[0].bars.length > 0){
-					tempFiles.push($scope.files[i]);
+				if($scope.files[i].instruments.length > 0){
+					if($scope.files[i].instruments[0].bars.length > 0){
+						tempFiles.push($scope.files[i]);
+					}
 				}
 			}
 			$scope.files = tempFiles;
