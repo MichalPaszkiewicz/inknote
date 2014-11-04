@@ -60,6 +60,8 @@ var canvasModule = angular.module('app', []).
 			var tempID = newID();
 			$scope.files.push({name: newname, id: tempID, instruments: []});
 			$scope.currentFileID = tempID;
+			$scope.instruments = getFile(tempID).instruments;
+			$scope.draw();
 		}
 		
 		$scope.openFile = function(file){
