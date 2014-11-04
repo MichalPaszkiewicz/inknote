@@ -61,7 +61,10 @@ var canvasModule = angular.module('app', []).
 			$scope.files.push({name: newname, id: tempID, instruments: []});
 			$scope.currentFileID = tempID;
 			$scope.instruments = getFile(tempID).instruments;
-			$scope.draw();
+			if($scope.instruments.bars != null && $scope.instruments.bars != undefined && $scope.instruments.bars.length > 0)
+			{
+				$scope.draw();
+			}
 		}
 		
 		$scope.openFile = function(file){
@@ -79,6 +82,8 @@ var canvasModule = angular.module('app', []).
 			$scope.files = $scope.getFiles();
 			$scope.newFile();
 		};
+		
+		setFiles();
 		
 		//eventually there will be a possibility of many instruments
 		$scope.instruments = [
@@ -304,7 +309,6 @@ var canvasModule = angular.module('app', []).
 					$timeout($scope.startup, 10);
 				}
 				else if(time == 250){
-					setFiles();
 					$scope.addInstrument("piano");
 					$scope.addBar(0);
 					$scope.draw();
