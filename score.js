@@ -80,8 +80,6 @@ var canvasModule = angular.module('app', []).
 			$scope.newFile();
 		};
 		
-		setFiles();
-		
 		//eventually there will be a possibility of many instruments
 		$scope.instruments = [
 			
@@ -306,6 +304,7 @@ var canvasModule = angular.module('app', []).
 					$timeout($scope.startup, 10);
 				}
 				else if(time == 250){
+					setFiles();
 					$scope.addInstrument("piano");
 					$scope.addBar(0);
 					$scope.draw();
