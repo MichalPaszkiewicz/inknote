@@ -38,6 +38,7 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.saveFiles = function(){
 			//$scope.currentFile.instruments = $scope.instruments;
+			getFile($scope.currentFileID).instruments = $scope.instruments;
 			localStorage.setItem("inknote-files", JSON.stringify($scope.files));
 		}
 		
@@ -45,11 +46,19 @@ var canvasModule = angular.module('app', []).
 			return (new Date).getTime() + "" + Math.floor(100 * Math.random());
 		}
 		
+		function getFile(id){
+			for(var i = 0; i < $scope.files.length; i++){
+				if($scope.files[i].id == id){
+					return $scope.files[i];
+				}
+			}
+		}
+		
 		$scope.newFile = function(name){
 			var newname = name;
 			if(newname == null || newname == undefined || newname == ""){newname = "unnamed"}
 			var tempID = newID();
-			$scope.files.push({name: newname, id: tempID});
+			$scope.files.push({name: newname, id: tempID, instruments: []});
 			$scope.currentFileID = tempID;
 		}
 		
