@@ -188,6 +188,9 @@ var canvasModule = angular.module('app', []).
 			{
 				$scope.lines.push({x: $scope.margin, y: 200, instruments: $scope.instruments, xSplitting: null});
 			}
+			else{
+				$scope.lines.instruments = $scope.instruments;
+			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
