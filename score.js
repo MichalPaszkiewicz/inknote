@@ -40,7 +40,7 @@ var canvasModule = angular.module('app', []).
 			//$scope.currentFile.instruments = $scope.instruments;
 			if($scope.files != []){ getFile($scope.currentFileID).instruments = $scope.instruments; }
 			var tempFiles = [];
-			for(var i = 0; i < $scope.files.length)
+			for(var i = 0; i < $scope.files.length; i++)
 			{
 				if($scope.files[i].instruments[0].bars.length > 0){
 					tempFiles.push($scope.files[i]);
