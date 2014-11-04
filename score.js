@@ -41,25 +41,31 @@ var canvasModule = angular.module('app', []).
 			localStorage.setItem("inknote-files", JSON.stringify($scope.files));
 		}
 		
+		function newID(){
+			return (new Date).getTime() + "" + Math.floor(100 * Math.random());
+		}
+		
 		$scope.newFile = function(name){
 			var newname = name;
 			if(newname == null || newname == undefined || newname == ""){newname = "unnamed"}
-			$scope.files.push({name: newname, id: $scope.files.length});
+			var tempID = newID();
+			$scope.files.push({name: newname, id: tempID});
+			$scope.currentFileID = tempID;
 		}
 		
 		$scope.openFile = function(file){
-			$scope.currentFile = file;
+			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
 		}
 		
 		//todo: migrate instruments to file object.
 		$scope.files = [];
 		
-		$scope.currentFile = {name: "unnamed", instruments: []};
+		$scope.currentFileID = "";
 		
 		var setFiles = function(){
 			$scope.files = $scope.getFiles();
-			$scope.files.push($scope.currentFile);
+			$scope.newFile();
 		};
 		
 		setFiles();
