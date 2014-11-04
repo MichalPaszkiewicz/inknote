@@ -32,7 +32,11 @@
 		  			<div class="menu-item-name first">File</div>
 		  			<ul class="sub-items">
 		  				<li class="sub-item">
-		  					<div class="sub-item-name" ng-click="newFile()">New</div>
+		  					<div class="sub-item-name">New</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item"><input type="text" ng-mode="newFileName"></li>
+		  						<li class="sub-sub-item" ng-click="newFile(newFileName)">Create</li>
+		  					</ul>
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Open</div>
