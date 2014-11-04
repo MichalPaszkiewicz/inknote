@@ -157,7 +157,7 @@ var canvasModule = angular.module('app', []).
 			if(tempItems.length > 0) {
 				id = tempItems[tempItems.length-1].id + 1;
 			}
-			var tempItem = {id: id, value: value, bar: bar, x: null, y: null};
+			var tempItem = {id: id, value: value, barID: bar.id, x: null, y: null};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
