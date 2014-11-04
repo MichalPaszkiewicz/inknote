@@ -65,6 +65,7 @@ var canvasModule = angular.module('app', []).
 		$scope.openFile = function(file){
 			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
+			$scope.draw();
 		}
 		
 		//todo: migrate instruments to file object.
