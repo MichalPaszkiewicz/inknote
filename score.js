@@ -84,10 +84,6 @@ var canvasModule = angular.module('app', []).
 			
 		];
 		
-		$scope.bars = [
-			
-		];
-		
 		$scope.addInstrument = function(instrumentName){
 			var id = 0;
 			if($scope.instruments.length > 0){
