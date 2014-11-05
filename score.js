@@ -108,6 +108,10 @@ var canvasModule = angular.module('app', []).
 			}
 			
 			$scope.instruments.push({name: instrumentName, id: id, bars: []});
+			
+			if(drawOn){
+				$scope.draw();
+			}
 		}
 		
 		$scope.addBar = function(instrumentNo, before) {
