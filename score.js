@@ -265,6 +265,10 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.drawInstrument = function(instrument){
 			var tempY = parseInt(instrument.y);
+			
+			context.font = "bold 16px Arial";
+			context.fillText(instrument.name, instrument.x, tempY - 10);
+			
 			for(var j = 0; j < 5; j++)
 			{
 				context.beginPath();
