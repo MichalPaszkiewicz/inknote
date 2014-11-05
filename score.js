@@ -244,7 +244,7 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawLine = function(line){
-			for(var i = 0; i < line.instruments; i++){
+			for(var i = 0; i < line.instruments.length; i++){
 				$scope.drawInstrument(line.instruments[i]);
 			}
 		}
