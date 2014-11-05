@@ -80,7 +80,7 @@ var canvasModule = angular.module('app', []).
 		
 		$scope.openFile = function(file){
 			$scope.currentFileID = file.id;
-			$scope.lines[0].instruments = file.instruments;
+			$scope.instruments = file.instruments;
 			$scope.draw();
 		}
 		
@@ -204,7 +204,7 @@ var canvasModule = angular.module('app', []).
 				$scope.lines.push({x: $scope.margin, y: 200, instruments: $scope.instruments, xSplitting: null});
 			}
 			else{
-				//$scope.lines[0].instruments = $scope.instruments;
+				$scope.lines[0].instruments = $scope.instruments;
 			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
