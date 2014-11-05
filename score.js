@@ -20,6 +20,7 @@ var canvasModule = angular.module('app', []).
 			
 		$scope.margin = 50;
 		$scope.lineHeight = 48;
+		$scope.instrumentHeight = 100;
 		
 		//lines are for visual display only
 		$scope.lines = [
@@ -213,17 +214,22 @@ var canvasModule = angular.module('app', []).
 				tempLine.instruments = $scope.instruments;
 				var tempX = 0;
 				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.instruments[0].bars.length;
-				for(var j = 0; j < tempLine.instruments[0].bars.length; j++){
-					var tempBar = tempLine.instruments[0].bars[j];
-					tempBar.y = tempLine.y;
-					tempBar.x = tempX + tempLine.x;
-					tempX = tempX + tempLine.xSplitting;
-					var tempItemX = 0;
-					for(var k = 0; k < tempBar.items.length; k++){
-						var tempItem = tempBar.items[k];
-						tempItem.x = tempBar.x + tempItemX + 50;
-						tempItem.y = tempBar.y;
-						tempItemX += 50;
+				for(var j = 0; j < tempLine.instruments.length; j++){
+					var tempInstrument = tempLine.instruments[j];
+					tempInstrument.x = tempLine.x;
+					tempInstrument.y = tempLine.y + j * $scope.instrumentHeight;
+					for(var k = 0; k < tempLine.instruments[0].bars.length; k++){
+						var tempBar = tempInstrument.bars[j];
+						tempBar.y = tempInstrument.y;
+						tempBar.x = tempX + tempLine.x;
+						tempX = tempX + tempLine.xSplitting;
+						var tempItemX = 0;
+						for(var k = 0; k < tempBar.items.length; k++){
+							var tempItem = tempBar.items[k];
+							tempItem.x = tempBar.x + tempItemX + 50;
+							tempItem.y = tempBar.y;
+							tempItemX += 50;
+						}
 					}
 				}
 			}	
@@ -238,11 +244,17 @@ var canvasModule = angular.module('app', []).
 		}
 		
 		$scope.drawLine = function(line){
-			var tempY = parseInt(line.y);
+			for(var i = 0; i < line.instruments; i++){
+				$scope.drawInstrument(line.instruments[i]);
+			}
+		}
+		
+		$scope.drawInstrument = function(instrument){
+			var tempY = parseInt(instrument.y);
 			for(var j = 0; j < 5; j++)
 			{
 				context.beginPath();
-				context.moveTo(line.x, tempY);
+				context.moveTo(instrument.x, tempY);
 				context.lineTo(canvas.width - $scope.margin, tempY);
 				context.stroke();
 				tempY += $scope.lineHeight / 4;
