@@ -245,6 +245,18 @@ var canvasModule = angular.module('app', []).
 			for(var i = 0; i < line.instruments.length; i++){
 				$scope.drawInstrument(line.instruments[i]);
 			}
+			
+			context.beginPath();
+			var startX = $scope.margin;
+			var finalX = canvas.width - $scope.margin;
+			var startY = parseInt(instruments[0].y);
+			var bottomY = (instruments.length - 1) * (instrumentHeight * lineHeight) + lineHeight;
+			context.moveTo(startX, startY);
+			context.lineTo(startX, bottomY);
+			context.stroke();
+			context.moveTo(finalX, startY);
+			context.lineTo(finalX, bottomY);
+			context.stroke();
 		}
 		
 		$scope.drawInstrument = function(instrument){
