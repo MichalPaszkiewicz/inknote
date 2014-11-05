@@ -128,8 +128,6 @@ var canvasModule = angular.module('app', []).
 				else{
 					instrument.bars.splice(before, 0, tempBar);
 				}	
-				
-				$scope.draw();
 			}
 			else{return};
 		}
