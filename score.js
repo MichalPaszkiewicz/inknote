@@ -249,8 +249,8 @@ var canvasModule = angular.module('app', []).
 			context.beginPath();
 			var startX = $scope.margin;
 			var finalX = canvas.width - $scope.margin;
-			var startY = parseInt(instruments[0].y);
-			var bottomY = (instruments.length - 1) * (instrumentHeight * lineHeight) + lineHeight;
+			var startY = parseInt(line.instruments[0].y);
+			var bottomY = (line.instruments.length - 1) * ($scope.instrumentHeight * $scope.lineHeight) + $scope.lineHeight;
 			context.moveTo(startX, startY);
 			context.lineTo(startX, bottomY);
 			context.stroke();
