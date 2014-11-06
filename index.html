@@ -17,7 +17,7 @@
 <body>
 	<div id="main-container" ng-app="app">
 		 <img id="canvasImg">
-	  <div ng-controller="canvasCtrl">
+	  <div ng-controller="canvasCtrl" msd-wheel="console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY)">
 	  
 	  	<div id="new-instrument" ng-show="openInstrumentName()">
 			<input ng-model="instrumentName"></input>
