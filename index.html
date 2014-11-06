@@ -85,7 +85,7 @@
 			  					<li class="sub-sub-item">
 			  						<div class="sub-sub-item-name">Bars</div>
 			  						<ul class="sub-sub-sub-items">
-				  						<li ng-repeat="bar in instrument.bars">				
+				  						<li class="sub-sub-sub-item" ng-repeat="bar in instrument.bars">				
 											<ul class="sub-sub-sub-items">
 												<li class="sub-sub-sub-item">Instrument | Bar | Note</li>
 												<li class="sub-sub-sub-item" ng-repeat="item in bar.items">{{instrument.id}} | {{bar.id}} | {{item.id}}<a ng-click="removeItem(bar, item)">[x]</a></li>
