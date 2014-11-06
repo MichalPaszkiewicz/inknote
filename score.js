@@ -1,5 +1,3 @@
-// <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
-
 var canvasModule = angular.module('app', []).
 	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout){
 		var canvas = document.getElementById('canvas');
