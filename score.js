@@ -173,7 +173,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		$scope.action = function(e){
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
-			var y = e.clientY - tempCanvas.offsetTop;    
+			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
 			var amount = 10;
 			console.log("[" + x + "," + y + "]");
 			
