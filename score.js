@@ -6,10 +6,23 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		var context = canvas.getContext('2d');
 		var drawOn = false;
 		
+		$scope.windowScroll = 0;
+		
 		var isNewInstrument = false;
 		
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
-			console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY)	
+			console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
+			
+			if($deltaY == 1){
+				if($scope.windowScroll > 0){
+					$scope.windowScroll -= 20;
+					$scope.draw();
+				}
+			}
+			else if($deltaY == -1){
+				$scope.windowScroll += 20;
+				$scope.draw();
+			}
 		};
 		
 		$scope.toggleNewInstrument = function () {
@@ -68,6 +81,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		}
 		
 		$scope.newFile = function(name){
+			$scope.windowScroll = 0;
 			var newname = name;
 			if(newname == null || newname == undefined || newname == ""){newname = "unnamed"}
 			var tempID = newID();
@@ -83,6 +97,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		$scope.openFile = function(file){
 			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
+			$scope.windowScroll = 0;
 			$scope.draw();
 		}
 		
@@ -237,7 +252,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 					var tempX = 0;
 					var tempInstrument = tempLine.instruments[j];
 					tempInstrument.x = tempLine.x;
-					tempInstrument.y = tempLine.y + j * $scope.instrumentHeight;
+					tempInstrument.y = tempLine.y + j * $scope.instrumentHeight - $scope.windowScroll;
 					for(var k = 0; k < tempLine.instruments[j].bars.length; k++){
 						var tempBar = tempInstrument.bars[k];
 						tempBar.y = tempInstrument.y;
