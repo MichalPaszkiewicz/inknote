@@ -107,7 +107,15 @@ var canvasModule = angular.module('app', []).
 				id = $scope.instruments[$scope.instruments.length-1].id + 1;
 			}
 			
-			$scope.instruments.push({name: instrumentName, id: id, bars: []});
+			var newInstrument = {name: instrumentName, id: id, bars: []};
+			var barId = 0;
+			while(newInstrument.bars.length < $scope.instruments[0].bars.length){
+				var newBar = {id: id, items: [], x: null, y: null};
+				newInstrument.bars.push(newBar);
+				barId++;
+			}
+			
+			$scope.instruments.push(newInstrument);
 			
 			if(drawOn){
 				$scope.draw();
