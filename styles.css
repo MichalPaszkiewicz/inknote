@@ -168,7 +168,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	background: red;
 }
 
-.half-red:hover{
+.half.red:hover{
 	background: darkred;
 }
 
