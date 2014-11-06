@@ -99,6 +99,8 @@ var canvasModule = angular.module('app', []).
 			
 		];
 		
+		$scope.instruments.timeSignature = {top: 4, bottom: 4};
+		
 		$scope.addInstrument = function(instrumentName){
 			var id = 0;
 			if($scope.instruments.length > 0){
@@ -109,7 +111,8 @@ var canvasModule = angular.module('app', []).
 			var barId = 0;
 			if($scope.instruments.length > 0){
 				while(newInstrument.bars.length < $scope.instruments[0].bars.length){
-					var newBar = {id: id, items: [], x: null, y: null};
+					var timeSig = $scope.instruments[0].bars[barId].timeSignature;
+					var newBar = {id: id, items: [], x: null, y: null, timeSignature: timeSig};
 					newInstrument.bars.push(newBar);
 					barId++;
 				}
@@ -131,7 +134,8 @@ var canvasModule = angular.module('app', []).
 					if(instrument.bars.length > 0) {
 						id = instrument.bars[instrument.bars.length-1].id + 1;
 					}
-					var tempBar = {id: id, items: [], x: null, y: null};
+					var timeSig = $scope.instruments.timeSignature;
+					var tempBar = {id: id, items: [], x: null, y: null, timeSignature: timeSig};
 					if(before == null || before == undefined){			
 						instrument.bars.push(tempBar)
 					}
