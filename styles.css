@@ -164,6 +164,14 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	background: rgb(90, 180, 89);
 }
 
+.half.red{
+	background: red;
+}
+
+.half-red:hover{
+	background: darkred;
+}
+
 #new-instrument{
 	z-index: 50;
 	position: absolute;
