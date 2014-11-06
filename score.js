@@ -1,5 +1,5 @@
 var canvasModule = angular.module('app', ['monospaced.mousewheel']).
-	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout, $event, $delta, $deltaX, $deltaY){
+	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout){
 		var canvas = document.getElementById('canvas');
 		canvas.width = $window.innerWidth;
 		canvas.height = $window.innerHeight;
