@@ -1,5 +1,5 @@
 var canvasModule = angular.module('app', ['monospaced.mousewheel']).
-	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout){
+	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout, $event, $delta, $deltaX, $deltaY){
 		var canvas = document.getElementById('canvas');
 		canvas.width = $window.innerWidth;
 		canvas.height = $window.innerHeight;
@@ -7,6 +7,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		var drawOn = false;
 		
 		var isNewInstrument = false;
+		
+		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
+			console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY)	
+		};
 		
 		$scope.toggleNewInstrument = function () {
 		        isNewInstrument = !isNewInstrument;  
