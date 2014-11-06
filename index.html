@@ -137,20 +137,6 @@
 	  	</div>
 		
 		<canvas id="canvas" ng-click="action($event)"></canvas>
-		<div id="list">
-		<ul>
-			<li ng-repeat="instrument in instruments">
-				<ul>
-					<li ng-repeat="bar in instrument.bars">				
-						<ul>
-							<li>Instrument|Instrument.x|Bar|Bar.x|Note|Note.x</li>
-							<li ng-repeat="item in bar.items">{{instrument.id}} {{instrument.x}} {{bar.id}} {{bar.x}} {{item.id}} {{item.x}}<a ng-click="removeItem(bar, item)">[x]</a></li>
-						<ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		</div>
 		<div style="clear: both"/>
 	  </div>
 	</div>
