@@ -88,7 +88,7 @@
 				  						<li class="sub-sub-sub-item" ng-repeat="bar in instrument.bars">
 				  							<div class="sub-sub-sub-item-name smaller">Bar: <span>{{bar.id}}</span></div>
 											<ul class="sub-sub-sub-sub-items">
-												<li class="sub-sub-sub-sub-item smaller no-pad" ng-repeat="item in bar.items"><span class="half">{{item.id}}</span><a class="half red" ng-click="removeItem(bar, item)">[x]</a></li>
+												<li class="sub-sub-sub-sub-item smaller no-pad" ng-repeat="item in bar.items"><span class="half">{{item.id}}</span><a class="half red" ng-click="removeItem(bar, item)">x</a></li>
 											</ul>
 										</li>
 			  						</ul>
@@ -99,6 +99,9 @@
 			  				New instrument
 			  			</li>
 			  		</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Audio</div>
 		  		</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name">Collaborate</div>
