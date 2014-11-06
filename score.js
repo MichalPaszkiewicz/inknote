@@ -6,6 +6,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		var context = canvas.getContext('2d');
 		var drawOn = false;
 		
+		$scope.windowScrollAmount = 30;
 		$scope.windowScroll = 0;
 		
 		var isNewInstrument = false;
@@ -15,12 +16,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			
 			if($deltaY == 1){
 				if($scope.windowScroll > 0){
-					$scope.windowScroll -= 20;
+					$scope.windowScroll -= $scope.windowScrollAmount;
 					$scope.draw();
 				}
 			}
 			else if($deltaY == -1){
-				$scope.windowScroll += 20;
+				$scope.windowScroll += $scope.windowScrollAmount;
 				$scope.draw();
 			}
 		};
