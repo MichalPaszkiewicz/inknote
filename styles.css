@@ -116,6 +116,14 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	width: 140px;
 }
 
+.instrument .sub-sub-sub-items{
+	width: 80px;
+}
+
+.instrument .sub-sub-sub-sub-items{
+	width: 60px;
+}
+
 .sub-sub-item{
 	
 }
@@ -125,7 +133,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	padding: 6px 10px;
 }
 
-.sub-item.no-pad, .sub-sub-item.no-pad, .no-pad{
+.sub-item.no-pad, .sub-sub-item.no-pad, .no-pad, .sub-sub-sub-sub-item.no-pad{
 	padding: 0;
 }
 
