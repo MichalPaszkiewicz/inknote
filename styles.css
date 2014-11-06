@@ -169,7 +169,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 }
 
 .half.red:hover{
-	background: darkred;
+	background: rgb(207, 4, 4);;
 }
 
 #new-instrument{
