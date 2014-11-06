@@ -124,24 +124,26 @@ var canvasModule = angular.module('app', []).
 			}
 		}
 		
-		$scope.addBar = function(instrumentNo, before) {
+		$scope.addBar = function(before) {
 			if(drawOn){
-				var id = 0;
-				var instrument = $scope.instruments[instrumentNo];
-				
-				if(instrument.bars.length > 0) {
-					id = instrument.bars[instrument.bars.length-1].id + 1;
+				for(var i = 0; i < $scope.instruments.length; i++){
+					var id = 0;
+					var instrument = $scope.instruments[i];
+					
+					if(instrument.bars.length > 0) {
+						id = instrument.bars[instrument.bars.length-1].id + 1;
+					}
+					var tempBar = {id: id, items: [], x: null, y: null};
+					if(before == null || before == undefined){			
+						instrument.bars.push(tempBar)
+					}
+					else if( isNaN(before) ){
+						throw "addBar() only accepts numbers, or nothing!";
+					}
+					else{
+						instrument.bars.splice(before, 0, tempBar);
+					}
 				}
-				var tempBar = {id: id, items: [], x: null, y: null};
-				if(before == null || before == undefined){			
-					instrument.bars.push(tempBar)
-				}
-				else if( isNaN(before) ){
-					throw "addBar(0) also only accepts numbers, or nothing!";
-				}
-				else{
-					instrument.bars.splice(before, 0, tempBar);
-				}	
 			}
 			else{return};
 		}
@@ -160,7 +162,7 @@ var canvasModule = angular.module('app', []).
 			
 			if($scope.instruments[0].bars.length < 1)
 			{
-				$scope.addBar(0);
+				$scope.addBar();
 			}
 			
 			var itemY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
@@ -172,7 +174,7 @@ var canvasModule = angular.module('app', []).
 			var thisBar = bar;
 			
 			if(bar.items.length > 3){
-				$scope.addBar(0);
+				$scope.addBar();
 				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			
@@ -364,7 +366,7 @@ var canvasModule = angular.module('app', []).
 				}
 				else if(time == 250){
 					$scope.addInstrument("piano");
-					$scope.addBar(0);
+					$scope.addBar();
 					$scope.draw();
 					drawOn = true;
 				}
