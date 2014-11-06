@@ -77,7 +77,23 @@
 			  				All instruments
 			  			</li>
 			  			<li class="instrument sub-item smaller" ng-repeat="instrument in instruments">
-			  				[{{instrument.name}}, {{instrument.id}}]
+			  				<div class="sub-item-name">[{{instrument.name}}, {{instrument.id}}]</div>
+			  				<ul class="sub-sub-items">
+			  					<li class="sub-sub-item">
+			  						<input type="text" ng-model="instrument.name">
+			  					</li>
+			  					<li class="sub-sub-item">
+			  						<div class="sub-sub-item-name">Bars</div>
+			  						<ul class="sub-sub-sub-items">
+				  						<li ng-repeat="bar in instrument.bars">				
+											<ul>
+												<li>Instrument | Bar | Note</li>
+												<li ng-repeat="item in bar.items">{{instrument.id}} | {{bar.id}} | {{item.id}}<a ng-click="removeItem(bar, item)">[x]</a></li>
+											<ul>
+										</li>
+			  						</ul>
+			  					</li>
+			  				</ul>
 			  			</li>
 			  			<li class="instrument sub-item" ng-click='toggleNewInstrument()'>
 			  				New instrument
