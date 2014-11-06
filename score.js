@@ -251,7 +251,9 @@ var canvasModule = angular.module('app', []).
 			for(var i = 0; i < $scope.lines.length; i++){
 				$scope.drawLine($scope.lines[i]);
 				
-				$scope.drawBars($scope.lines[i].instruments[0].bars);
+				for(var j = 0; j < $scope.lines[i].instruments.length; j++){
+					$scope.drawBars($scope.lines[i].instruments[j].bars);
+				}
 			};
 		}
 		
