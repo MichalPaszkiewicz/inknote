@@ -429,6 +429,21 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			}
 			return true;
 		}
+		
+		$scope.allInstrumentsOn = function(){
+			for(var i = 0; i < $scope.instruments.length; i++){
+				$scope.instruments[i].visible = true;
+			}
+		}
+		
+		$scope.soloInstrument = function(instrumentID){
+			for(var i = 0; i < $scope.instruments.length; i++){
+				$scope.instruments[i].visible = false;
+				if($scope.instruments[i].id == instrumentID){
+					$scope.instrument[i].visible = true;
+				}
+			}
+		}
 	});
 	//.factory('Note', function( line ){	});
 	
