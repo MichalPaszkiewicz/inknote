@@ -248,7 +248,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			}
 			else{
 				$scope.lines[0].instruments = $scope.instruments;
-				if($scope.instruments[0].bars.length > 0){
+				/*if($scope.instruments[0].bars.length > 0){
 					var line = 0;
 					var bar = 0;
 					
@@ -266,7 +266,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 						lineSeperator += 200;
 						$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
 					}
-				}
+				}*/
 			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
