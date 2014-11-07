@@ -18,3 +18,9 @@ Array.prototype.countWhere = function(xAndY){
 	}
 	return count;
 }
+
+Array.prototype.getIndexFromID = function(id){
+	for(var i = 0; i < this.length; i++){
+		if(this[i].id == id){ return i; }
+	}
+}
