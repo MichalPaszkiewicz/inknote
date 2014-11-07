@@ -131,7 +131,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 				id = $scope.instruments[$scope.instruments.length-1].id + 1;
 			}
 			
-			var newInstrument = {name: instrumentName, id: id, bars: []};
+			var newInstrument = {name: instrumentName, id: id, bars: [], visible: true};
 			var barId = 0;
 			if($scope.instruments.length > 0){
 				while(newInstrument.bars.length < $scope.instruments[0].bars.length){
