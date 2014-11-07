@@ -486,6 +486,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			}
 			$scope.draw();
 		}
+		
+		$scope.isOnlyDisplayed = function(instrumentID){
+			var visibleItems = $scope.instruments.countWhere(function(item){
+				return item.visible;	
+			});
+			
+			return visibleItems == 1 && $scope.instruments[$scope.instruments.getIndexFromID(instrumentID)].visible;
+		}
 	});
 	//.factory('Note', function( line ){	});
 	
