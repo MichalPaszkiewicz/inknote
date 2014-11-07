@@ -241,12 +241,32 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		}
 		
 		$scope.drawInit = function(){
+			var lineSeperator = 200;
 			if($scope.lines.length < 1)
 			{
-				$scope.lines.push({x: $scope.margin, y: 200, instruments: $scope.instruments, xSplitting: null});
+				$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
 			}
 			else{
 				$scope.lines[0].instruments = $scope.instruments;
+				if($scope.instruments[0].bars.length > 0){
+					var line = 0;
+					var bar = 0;
+					
+					for(var i = 0; i < $scope.instruments[0].bars.length; i += 4){
+						var currentLine = $scope.lines[$scope.lines.length - 1];
+						currentLine.instruments = $scope.instruments;
+						for(var j = 0; j < currentLine.instruments.length; j++){
+							var currentInstrument = currentLine.instruments[j];
+							currentInstrument.bars = [];
+							for(var k = bar; k < bar + 4; k++){
+								currentInstrument.bars.push($scope.instruments[i].bars[k])
+							}
+						}
+						bar += 4;
+						lineSeperator += 200;
+						$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
+					}
+				}
 			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
