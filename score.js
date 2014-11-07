@@ -440,7 +440,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			for(var i = 0; i < $scope.instruments.length; i++){
 				$scope.instruments[i].visible = false;
 				if($scope.instruments[i].id == instrumentID){
-					$scope.instrument[i].visible = true;
+					$scope.instruments[i].visible = true;
 				}
 			}
 		}
