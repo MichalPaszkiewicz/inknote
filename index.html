@@ -81,7 +81,7 @@
 			  				<ul class="sub-sub-items">
 			  					<li class="sub-sub-item" ng-click="soloInstrument(instrument.id)">Solo</li>
 			  					<li class="sub-sub-item no-pad">
-			  						<span class="half" ng-class="{'red': !instrument.visible}" ng-click="instrument.visible = false">Off</span><span class="half" ng-class="{'green': instrument.visible}" ng-click="instrument.visible = true">On</span>
+			  						<span class="half" ng-class="{'red': !instrument.visible}" ng-click="instrument.visible = false;draw();">Off</span><span class="half" ng-class="{'green': instrument.visible}" ng-click="instrument.visible = true;draw();">On</span>
 			  					</li>
 			  					<li class="sub-sub-item">
 			  						<input type="text" ng-model="instrument.name">
