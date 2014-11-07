@@ -249,9 +249,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			else{
 				$scope.lines[0].instruments = $scope.instruments;
 				
-				$scope.lines.push({x: $scope.margin, y: 2 * lineSeperator, instruments: $scope.instruments, xSplitting: null});
-				$scope.lines[1].instruments = $scope.instruments;
-				
 				/*if($scope.instruments[0].bars.length > 0){
 					var line = 0;
 					var bar = 0;
