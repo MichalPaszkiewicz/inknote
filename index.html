@@ -80,7 +80,7 @@
 			  				<div class="sub-item-name">[{{instrument.name}}, {{instrument.id}}]</div>
 			  				<ul class="sub-sub-items">
 			  					<li class="sub-sub-item" ng-click="soloInstrument(instrument.id)">Solo</li>
-			  					<li class="sub-sub-item no-pad">
+			  					<li class="sub-sub-item no-pad" ng-show="!isOnlyDisplayed(instrument.id)">
 			  						<span class="half" ng-class="{'red': !instrument.visible}" ng-click="instrument.visible = false;draw();">Off</span><span class="half" ng-class="{'green': instrument.visible}" ng-click="instrument.visible = true;draw();">On</span>
 			  					</li>
 			  					<li class="sub-sub-item">
