@@ -14,15 +14,19 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
 			console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
 			
-			if($deltaY == 1){
-				if($scope.windowScroll > 0){
-					$scope.windowScroll -= $scope.windowScrollAmount;
-					$scope.draw();
+			if(drawOn){
+				if($deltaY == 1){
+					if($scope.windowScroll > 0){
+						$scope.windowScroll -= $scope.windowScrollAmount;
+						$scope.draw();
+					}
 				}
-			}
-			else if($deltaY == -1){
-				$scope.windowScroll += $scope.windowScrollAmount;
-				$scope.draw();
+				else if($deltaY == -1){
+					if($scope.windowScroll < $scope.lines[$scope.lines.length - 1].y){
+						$scope.windowScroll += $scope.windowScrollAmount;
+						$scope.draw();
+					}
+				}
 			}
 		};
 		
