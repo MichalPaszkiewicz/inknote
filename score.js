@@ -251,7 +251,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
-				tempLine.instruments = $scope.instruments;
+				
+				
+				tempLine.instruments = [];
+				for(var j = 0; j < $scope.instruments.length; j++){
+					if($scope.instruments[j].visible){
+						tempLine.instruments.push($scope.instruments[j]);
+					}
+				}
+				
 				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.instruments[0].bars.length;
 				for(var j = 0; j < tempLine.instruments.length; j++){
 					var tempX = 0;
@@ -434,6 +442,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			for(var i = 0; i < $scope.instruments.length; i++){
 				$scope.instruments[i].visible = true;
 			}
+			$scope.draw();
 		}
 		
 		$scope.soloInstrument = function(instrumentID){
@@ -443,6 +452,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 					$scope.instruments[i].visible = true;
 				}
 			}
+			$scope.draw();
 		}
 	});
 	//.factory('Note', function( line ){	});
