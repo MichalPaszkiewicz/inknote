@@ -19,7 +19,7 @@
 		 <img id="canvasImg">
 	  <div ng-controller="canvasCtrl" msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
 	  
-	  	<div id="new-instrument" ng-show="openInstrumentName()">
+	  	<div id="new-instrument" class="ng-hide" ng-show="openInstrumentName()">
 			<input ng-model="instrumentName" ng-enter="addInstrument(instrumentName); toggleNewInstrument();"></input>
 			<div class="button-container">
 				<div class="button" ng-click="addInstrument(instrumentName); toggleNewInstrument();" ng-enter="addInstrument(instrumentName); toggleNewInstrument();">Save</div>
