@@ -12,7 +12,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		var isNewInstrument = false;
 		
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
-			console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
+			//console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
 			
 			if(drawOn){
 				if($deltaY == 1){
