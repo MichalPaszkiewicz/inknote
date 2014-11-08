@@ -279,7 +279,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				for(var i = 0; i < $scope.lines.length; i++){
 					$scope.lines[i].y = tempLineYPos;
 					
-					var numVisibleInstruments = $scope.lines[0].instruments.countWhere(function(item){
+					var numVisibleInstruments = $scope.instruments.countWhere(function(item){
 						return item.visible;	
 					});
 					
