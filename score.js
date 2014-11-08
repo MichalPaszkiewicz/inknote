@@ -278,7 +278,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 				var tempLineYPos = 200;
 				for(var i = 0; i < $scope.lines.length; i++){
 					$scope.lines[i].y = tempLineYPos;
-					tempLineYPos += ($scope.lines[0].instruments.length - 1) * ($scope.instrumentHeight) + 2 * $scope.lineHeight + 50;
+					tempLineYPos += ($scope.lines[0].instruments.length - 1) * ($scope.instrumentHeight) + 2 * $scope.lineHeight;
 				}
 
 			}
