@@ -261,7 +261,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 				}
 				
 				for(var barIndex = 0; barIndex < numBars; barIndex++){
-					var lineIndex = Math.ceil(barIndex / 5);
+					var lineIndex = Math.floor(barIndex / 5);
 					for(var instrumentIndex = 0; instrumentIndex < $scope.instruments.length; instrumentIndex++){
 						if($scope.lines[lineIndex].instruments[instrumentIndex] == null || $scope.lines[lineIndex].instruments[instrumentIndex] == undefined){
 							var instrumentName = $scope.instruments[instrumentIndex].name;
