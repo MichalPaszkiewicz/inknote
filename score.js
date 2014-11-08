@@ -266,6 +266,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 						if($scope.lines[lineIndex].instruments[instrumentIndex] == null || $scope.lines[lineIndex].instruments[instrumentIndex] == undefined){
 							var instrumentName = $scope.instruments[instrumentIndex].name;
 							var newInstrument = {name: instrumentName, id: instrumentIndex, bars: [], visible: true};
+							$scope.lines[lineIndex].instruments.push(newInstrument);
 						}
 						$scope.lines[lineIndex].instruments[instrumentIndex].bars.push($scope.instruments[instrumentIndex].bars[barIndex]);
 					}
