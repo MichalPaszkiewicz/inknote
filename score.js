@@ -240,8 +240,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			$scope.drawLines();
 		}
 		
+		var lineSeperator = 200;
+		
 		$scope.drawInit = function(){
-			var lineSeperator = 200;
 			if($scope.lines.length < 1)
 			{
 				$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
