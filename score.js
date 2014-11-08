@@ -249,6 +249,27 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 			else{
 				$scope.lines[0].instruments = $scope.instruments;
 				
+				while($scope.lines.length < Math.ceil($scope.lines[0].instruments[0].bars.length / 5)){
+					lineSeperator += 200;
+					$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: tempInstruments, xSplitting: null});
+				}
+				
+				var numBars = $scope.instruments[0].bars.length;
+				
+				for(var i = 0; i < $scope.lines.length; i++){
+					$scope.lines[i].instruments = [];
+				}
+				
+				for(var barIndex = 0; barIndex < numBars; barIndex++){
+					var lineIndex = Math.ceil(barIndex / 5);
+					for(var instrumentIndex = 0; instrumentIndex < $scope.instruments.length; instrumentIndex++){
+						if($scope.lines[lineIndex].instruments[instrumentIndex] == null || $scope.lines[lineIndex].instruments[instrumentIndex] == undefined){
+							var newInstrument = {name: instrumentName, id: instrumentIndex, bars: [], visible: true};
+						}
+						$scope.lines[lineIndex].instruments[instrumentIndex].bars.push($scope.instruments[instrumentIndex].bars[barIndex]);
+					}
+				}
+				
 				/*if($scope.instruments[0].bars.length > 0){
 					var line = 0;
 					var bar = 0;
