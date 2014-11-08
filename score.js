@@ -271,49 +271,21 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 						$scope.lines[lineIndex].instruments[instrumentIndex].bars.push($scope.instruments[instrumentIndex].bars[barIndex]);
 					}
 				}
-				
-				/*if($scope.instruments[0].bars.length > 0){
-					var line = 0;
-					var bar = 0;
-					var totalLines = $scope.instruments[0].bars.length;
-					
-					for(var i = 0; i < $scope.instruments[0].bars.length; i += 4){
-						var currentLine = $scope.lines[$scope.lines.length - 1];
-						currentLine.instruments = $scope.instruments;
-						for(var j = 0; j < currentLine.instruments.length; j++){
-							var currentInstrument = currentLine.instruments[j];
-							currentInstrument.bars = [];
-							for(var k = bar; k < bar + 4; k++){
-								if($scope.instruments[i].bars.length > k){
-									currentInstrument.bars.push($scope.instruments[i].bars[k]);
-									bar++;
-								}
-								else{
-									break;
-								}
-							}
-						}
-						lineSeperator += 200;
-						if(bar <= totalLines){
-							$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
-						}
-						else{
-							break;
-						}
-					}
-				}*/
+
 			}
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				var tempLine = $scope.lines[i];
 				
+				var visibleInstruments = [];
 				
-				tempLine.instruments = [];
 				for(var j = 0; j < $scope.instruments.length; j++){
 					if($scope.instruments[j].visible){
-						tempLine.instruments.push($scope.instruments[j]);
+						visibleInstruments.push($scope.lines[i].instruments[j]);
 					}
 				}
+				
+				tempLine.instruments = visibleInstruments;
 				
 				tempLine.xSplitting = (canvas.width - (2 * $scope.margin)) / tempLine.instruments[0].bars.length;
 				for(var j = 0; j < tempLine.instruments.length; j++){
