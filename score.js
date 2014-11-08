@@ -251,7 +251,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 				
 				while($scope.lines.length < Math.ceil($scope.lines[0].instruments[0].bars.length / 5)){
 					lineSeperator += 200;
-					$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: tempInstruments, xSplitting: null});
+					$scope.lines.push({x: $scope.margin, y: lineSeperator, instruments: [], xSplitting: null});
 				}
 				
 				var numBars = $scope.instruments[0].bars.length;
