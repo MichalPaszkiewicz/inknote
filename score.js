@@ -242,6 +242,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 		
 		var lineSeperator = 200;
 		
+		
 		$scope.drawInit = function(){
 			if($scope.lines.length < 1)
 			{
@@ -257,8 +258,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel']).
 				
 				var numBars = $scope.instruments[0].bars.length;
 				
+				var tempLineYPos = 200;
 				for(var i = 0; i < $scope.lines.length; i++){
+					$scope.lines[i].y = tempLineYPos;
 					$scope.lines[i].instruments = [];
+					tempLineYPos += ($scope.lines[0].instruments.length - 1) * ($scope.instrumentHeight) + 2 * $scope.lineHeight;
 				}
 				
 				for(var barIndex = 0; barIndex < numBars; barIndex++){
