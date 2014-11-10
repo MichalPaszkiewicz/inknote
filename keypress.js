@@ -16,7 +16,7 @@ angular.module('keypress', []).
 			element.bind("keydown keypress", function (event) {
 				if(event.which === 9) {
 					scope.$apply(function (){
-						scope.$eval(attrs.ngEnter);
+						scope.$eval(attrs.ngTab);
 					});
 					event.preventDefault();
 				}
