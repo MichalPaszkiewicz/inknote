@@ -196,12 +196,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.addItem(itemY, $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1]);
 		}
 		
-		$scope.addItem = function(value, bar){
+		$scope.addItem = function(value, bar, type){
 			var thisBar = bar;
 			
 			if(bar.items.length > 3){
 				$scope.addBar();
 				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
+			}
+			
+			if(type == null || type == undefined){
+				type = "note";
 			}
 			
 			var id = 0;
@@ -210,7 +214,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(tempItems.length > 0) {
 				id = tempItems[tempItems.length-1].id + 1;
 			}
-			var tempItem = {id: id, value: value, barID: bar.id, x: null, y: null};
+			var tempItem = {id: id, value: value, barID: bar.id, x: null, y: null, type: type};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
@@ -315,9 +319,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						var tempItemX = 0;
 						for(var l = 0; l < tempBar.items.length; l++){
 							var tempItem = tempBar.items[l];
-							tempItem.x = tempBar.x + tempItemX + 50;
-							tempItem.y = tempBar.y;
-							tempItemX += 50;
+							if(tempItem.type != "clef"){
+								tempItem.x = tempBar.x + tempItemX + 50;
+								tempItem.y = tempBar.y;
+								tempItemX += 50;
+							}
 						}
 					}
 				}
@@ -389,10 +395,18 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.drawItem = function(bar, item)
 		{
-			context.beginPath();
-			context.fillStyle = "red";
-			context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
-			context.fill();
+			if(item.type == "note" || item.type == undefined || item.type == null){
+				context.beginPath();
+				context.fillStyle = "red";
+				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
+				context.fill();
+			}
+			else if(item.type == "rest"){
+				
+			}
+			else if(item.type == "clef"){
+				
+			}
 		}
 		
 		var time = 0;
@@ -442,6 +456,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				else if(time == 250){
 					$scope.addInstrument("piano");
 					$scope.addBar();
+					$scope.addItem("treble", 0, "clef");
 					$scope.draw();
 					drawOn = true;
 				}
