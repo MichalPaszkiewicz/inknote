@@ -456,10 +456,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				else if(time == 250){
 					$scope.addInstrument("piano");
 					$scope.addBar();
-					$scope.$apply();
 					$scope.addItem("treble", $scope.instruments[0].bars[0], "clef");
 					$scope.draw();
-					drawOn = true;
+
 				}
 				else{
 					animate(particles, delta, last);
