@@ -455,6 +455,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 				else if(time == 250){
 					$scope.addInstrument("piano");
+					drawOn = true;
 					$scope.addBar();
 					$scope.addItem("treble", $scope.instruments[0].bars[0], "clef");
 					$scope.draw();
