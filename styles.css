@@ -128,7 +128,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	
 }
 
-.sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller{
+.sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller, .sub-item-name.smaller, .sub-sub-item-name.smaller , .sub-sub-sub-item-name.smaller, .sub-sub-sub-sub-item-name.smaller{
 	background: rgb(224, 224, 224);
 	padding: 6px 10px;
 }
@@ -150,6 +150,10 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	display: inline-block;
 	padding: 10px;
 	box-sizing: border-box;
+}
+
+.smaller .half{
+	padding: 6px 10px;
 }
 
 .half:hover{
