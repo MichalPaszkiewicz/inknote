@@ -199,7 +199,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.addItem = function(value, bar, type){
 			var thisBar = bar;
 			
-			if(bar.items.length > 3){
+			var noteCount = bar.items.countWhere(function(item){item.type == 'note'});
+			
+			if(noteCount > 3){
 				$scope.addBar();
 				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
