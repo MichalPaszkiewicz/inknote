@@ -3,7 +3,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 40px;
+	width: 100px;
 	height: 100%;
 }
 
@@ -12,7 +12,7 @@
 	/* display: none; */
 	top: 0;
 	position: absolute;
-	left: -40px;
+	left: -100px;
 	transition: 0.1s left;
 }
 
@@ -23,5 +23,5 @@
 
 .menu-item{
 	float: left;
-	width: 40px;
+	width: 100px;
 }
