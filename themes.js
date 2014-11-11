@@ -19,9 +19,21 @@ canvasModule.
 			$scope.currentCss = theme.url;
 		}
 		
+		var getName = function(link){
+			if(link.indexOf("?") != -1){
+				return link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1);
+			}
+			else if(link.indexOf("/") != -1){
+				return link.substr(link.lastIndexOf("/"));
+			}
+			else{
+				return link;
+			}
+		}
+		
 		$scope.addTheme = function(link){
 			var newTheme = {
-				name: link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1),
+				name: getName(link),
 				url: link
 			};
 			
@@ -35,7 +47,7 @@ canvasModule.
 		
 		$scope.addLayout = function(link){
 			var newLayout = {
-				name: link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1),
+				name: getName(link),
 				url: link
 			};
 			
