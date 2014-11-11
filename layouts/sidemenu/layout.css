@@ -10,6 +10,7 @@
 .menu-container .menu{
 	float: right;
 	/* display: none; */
+	width: 100px;
 	top: 0;
 	position: absolute;
 	left: -100px;
