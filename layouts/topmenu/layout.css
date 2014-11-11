@@ -24,3 +24,7 @@
 .menu-item{
 	float: left;
 }
+
+.menu-item-name.first{
+	border-radius: 0 0 0 10px;
+}
