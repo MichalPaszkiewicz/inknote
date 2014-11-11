@@ -1,8 +1,10 @@
-<html>
+<html ng-app="app">
 <head>
 	<title>inknote</title>
 	<meta name="description" content="Write music score in your browser, free!">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+
+	<link ng-controller="themeControl" rel="stylesheet" type="text/css" ng-href="{{themes[currentThemeIndex].url}}">
 
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -15,11 +17,9 @@
 		</script>
 </head>
 <body>
-	<div id="main-container" ng-app="app">
+	<div id="main-container">
 		 <img id="canvasImg">
 	  <div ng-controller="canvasCtrl" msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
-	  
-	  	<link rel="stylesheet" type="text/css" ng-href="{{themes[currentThemeIndex].url}}">
 	  
 	  	<div id="new-instrument" class="ng-hide" ng-show="openInstrumentName()">
 			<input ng-model="instrumentName" ng-enter="addInstrument(instrumentName); toggleNewInstrument();"></input>
