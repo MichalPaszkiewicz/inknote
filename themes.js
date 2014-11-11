@@ -1,5 +1,5 @@
 canvasModule.
-	controller("themeControl", function canvasCtrl($scope){
+	controller("themeControl", function themeCtrl($scope){
 		$scope.themes = [
 			{name: "standard", url: "styles.css"},
 			{name: "dark", url: "themes/dark/styles.css"},
