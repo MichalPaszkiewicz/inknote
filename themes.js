@@ -19,7 +19,27 @@ canvasModule.
 			$scope.currentCss = theme.url;
 		}
 		
+		$scope.addTheme = function(link){
+			var newTheme = {
+				name: link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1),
+				url: link
+			};
+			
+			$scope.currentCss = newTheme.url;
+			$scope.themes.push(newTheme);
+		}
+		
 		$scope.setLayout = function(layout){
 			$scope.layoutCss = layout.url;
+		}
+		
+		$scope.addLayout = function(link){
+			var newLayout = {
+				name: link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1),
+				url: link
+			};
+			
+			$scope.layoutCss = newLayout.url;
+			$scope.themes.push(newLayout);
 		}
 	});
