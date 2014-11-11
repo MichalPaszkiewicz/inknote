@@ -13,7 +13,7 @@ canvasModule.
 		];
 		
 		$scope.currentCss = "styles.css";
-		$scope.layoutCss = "layouts/topmenu/layout.css"
+		$scope.layoutCss = "layouts/topmenu/layout.css";
 		
 		$scope.setTheme = function(theme){
 			$scope.currentCss = theme.url;
