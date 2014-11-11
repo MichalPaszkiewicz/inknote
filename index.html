@@ -86,7 +86,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Themes</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme)">
+		  						<li ng-controller="themeControl" class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme)">
 		  							{{theme.name}}
 		  						</li>
 		  						<li class="sub-sub-item">
