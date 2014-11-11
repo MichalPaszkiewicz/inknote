@@ -7,10 +7,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		var drawOn = false;
 		
 		$scope.themes = [
+			{name: "standard", url: "styles.css"},
 			{name: "dark", url: "themes/dark/styles.css"},
 			{name: "light", url: "themes/light/styles.css"},
 			{name: "sepia", url: "themes/sepia/styles.css"}
 		];
+		
+		$scope.currentThemeIndex = 0;
 		
 		$scope.windowScrollAmount = 30;
 		$scope.windowScroll = 0;
