@@ -1,4 +1,4 @@
-<html ng-app="app" ng-controller="themeControl">
+<html ng-app="app" ng-controller="canvasCtrl">
 <head>
 	<title>inknote</title>
 	<meta name="description" content="Write music score in your browser, free!">
@@ -19,7 +19,7 @@
 <body>
 	<div id="main-container">
 		 <img id="canvasImg">
-	  <div ng-controller="canvasCtrl" msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
+	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
 	  
 	  	<div id="new-instrument" class="ng-hide" ng-show="openInstrumentName()">
 			<input ng-model="instrumentName" ng-enter="addInstrument(instrumentName); toggleNewInstrument();"></input>
