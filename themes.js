@@ -9,6 +9,10 @@ angular.module('themes', []).
 		
 		$scope.currentThemeIndex = 0;
 		
+		$scope.getTheme = function(){
+			return $scope.themes[$scope.currentThemeIndex].url;
+		}
+		
 		$scope.setTheme = function(theme){
 			for(var i = 0; i < $scope.themes.length; i++){
 				if(theme == $scope.themes[i]){
