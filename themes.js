@@ -40,6 +40,6 @@ canvasModule.
 			};
 			
 			$scope.layoutCss = newLayout.url;
-			$scope.themes.push(newLayout);
+			$scope.layouts.push(newLayout);
 		}
 	});
