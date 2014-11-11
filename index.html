@@ -82,6 +82,17 @@
 		  						</li>
 		  					</ul>
 		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Themes</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item" ng-repeat="theme in themes" ng-click="setTheme(theme)">
+		  							{{theme.name}}
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Add theme
+		  						</li>
+		  					</ul>
+		  				</li>
 		  			</ul>
 		  		</div>
 		  		<div class="instruments-menu menu-item">
