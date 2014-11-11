@@ -1,14 +1,4 @@
-canvas{
-    cursor: crosshair;
-    position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 10;
-}
 
-a{
-    cursor: pointer;
-}
 
 #list{
 	position: fixed;
