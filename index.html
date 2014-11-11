@@ -17,6 +17,8 @@
 		</script>
 </head>
 <body>
+	<select class="form-control" ng-model="curentCss" ng-options="theme.url as theme.name for theme in themes"></select>
+	
 	<div ng-controller="canvasCtrl" id="main-container">
 		 <img id="canvasImg">
 	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
@@ -85,7 +87,7 @@
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Themes</div>
-		  					<ul ng-controller="themeControl" class="sub-sub-items">
+		  					<ul class="sub-sub-items">
 		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme)">
 		  							{{theme.name}}
 		  						</li>
