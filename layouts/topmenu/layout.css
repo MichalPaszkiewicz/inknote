@@ -28,3 +28,7 @@
 .menu-item-name.first{
 	border-radius: 0 0 0 10px;
 }
+
+.sub-item:last-child{
+	border-radius: 0 0 0 10px;
+}
