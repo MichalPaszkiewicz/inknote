@@ -1,4 +1,4 @@
-<html ng-app="app" ng-controller="canvasCtrl">
+<html ng-app="app" ng-controller="themeControl">
 <head>
 	<title>inknote</title>
 	<meta name="description" content="Write music score in your browser, free!">
@@ -17,7 +17,7 @@
 		</script>
 </head>
 <body>
-	<div id="main-container">
+	<div ng-controller="canvasCtrl" id="main-container">
 		 <img id="canvasImg">
 	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
 	  
