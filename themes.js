@@ -10,6 +10,6 @@ angular.module('themes', []).
 		$scope.currentCss = "styles.css";
 		
 		$scope.setTheme = function(theme){
-			$scope.currentTheme = theme.url;
+			$scope.currentCss = theme.url;
 		}
 	});
