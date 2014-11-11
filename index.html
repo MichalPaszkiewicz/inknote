@@ -17,27 +17,6 @@
 		</script>
 </head>
 <body>
-	<ul class="sub-items">
-		  				<li class="sub-item">
-		  					<div class="sub-item-name">Plugins</div>
-		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item">
-		  							Add plugin
-		  						</li>
-		  					</ul>
-		  				</li>
-		  				<li class="sub-item">
-		  					<div class="sub-item-name">Themes</div>
-		  					<ul ng-controller="themeControl" class="sub-sub-items">
-		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme)">
-		  							{{theme.name}}
-		  						</li>
-		  						<li class="sub-sub-item">
-		  							Add theme
-		  						</li>
-		  					</ul>
-		  				</li>
-		  			</ul>
 	<div ng-controller="canvasCtrl" id="main-container">
 		 <img id="canvasImg">
 	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
