@@ -14,21 +14,6 @@
 	border-radius: 0;
 }
 
-ul.sub-items, ul.sub-sub-items, .sub-sub-sub-items, .sub-sub-sub-sub-items{
-	margin: 0;
-	display: none;
-	padding: 0;
-}
-
-.menu-item:hover ul.sub-items, .menu-item.selected ul.sub-items{
-	display: block;
-}
-
-li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items, 
-.sub-sub-item:hover .sub-sub-sub-items, .sub-sub-sub-item:hover .sub-sub-sub-sub-items{
-	display: block;
-}
-
 .sub-item, .sub-sub-item, .sub-sub-sub-item, .sub-sub-sub-sub-item{
 	padding: 10px;
 	list-style: none;
