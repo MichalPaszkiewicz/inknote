@@ -1,4 +1,4 @@
-angular.module('themes', []).
+angular.module('app', []).
 	controller("themeControl", function canvasCtrl($scope){
 		$scope.themes = [
 			{name: "standard", url: "styles.css"},
