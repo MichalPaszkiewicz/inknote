@@ -1,0 +1,3 @@
+function instrument(){
+        this.bars = [];
+}
