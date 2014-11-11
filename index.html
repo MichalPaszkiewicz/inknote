@@ -92,7 +92,12 @@
 		  							{{theme.name}}
 		  						</li>
 		  						<li class="sub-sub-item">
-		  							Add theme
+		  							<div class="sub-sub-item-name">Add theme</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="themeLink" ng-enter="addTheme(themeLink)">
+		  								</li>
+		  							</ul>
 		  						</li>
 		  					</ul>
 		  				</li>
@@ -103,7 +108,12 @@
 		  							{{layout.name}}
 		  						</li>
 		  						<li class="sub-sub-item">
-		  							Add layout
+		  							<div class="sub-sub-item-name">Add layout</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="layoutLink" ng-enter="addLayout(layoutLink)">
+		  								</li>
+		  							</ul>
 		  						</li>
 		  					</ul>
 		  				</li>
