@@ -10,6 +10,8 @@ angular.module('themes', []).
 		$scope.currentTheme = $scope.themes[0];
 		
 		$scope.setTheme = function(theme){
-			$scope.currentTheme = theme;
+			$scope.$apply(function(){
+				$scope.currentTheme = theme;
+			});
 		}
 	});
