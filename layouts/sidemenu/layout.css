@@ -25,4 +25,11 @@
 .menu-item{
 	float: left;
 	width: 100px;
+	position: relative;
+}
+
+ul.sub-items{
+	left: 100%;
+	position: absolute;
+	top: 0;
 }
