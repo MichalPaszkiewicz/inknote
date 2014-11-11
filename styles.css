@@ -39,10 +39,6 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	position: relative;
 }
 
-.sub-item:last-child{
-	border-radius: 0 0 0 10px;
-}
-
 .sub-sub-items, .sub-sub-sub-items, .sub-sub-sub-sub-items{
 	position: absolute;
 	left: 100%;
