@@ -7,6 +7,21 @@
 	cursor: pointer;
 }
 
+ul.sub-items, ul.sub-sub-items, .sub-sub-sub-items, .sub-sub-sub-sub-items{
+	margin: 0;
+	display: none;
+	padding: 0;
+}
+
+.menu-item:hover ul.sub-items, .menu-item.selected ul.sub-items{
+	display: block;
+}
+
+li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items, 
+.sub-sub-item:hover .sub-sub-sub-items, .sub-sub-sub-item:hover .sub-sub-sub-sub-items{
+	display: block;
+}
+
 
 .menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover, .sub-sub-sub-item:hover, .sub-sub-sub-sub-item:hover, .menu-item-name.first:hover, .menu-item:hover .menu-item-name{
 	background: rgb(176, 176, 229);
