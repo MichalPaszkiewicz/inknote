@@ -24,7 +24,7 @@ canvasModule.
 				return link.substr(link.lastIndexOf("/") + 1, link.indexOf("?") - link.lastIndexOf("/") - 1);
 			}
 			else if(link.indexOf("/") != -1){
-				return link.substr(link.lastIndexOf("/"));
+				return link.substr(link.lastIndexOf("/") + 1);
 			}
 			else{
 				return link;
