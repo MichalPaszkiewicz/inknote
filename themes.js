@@ -7,10 +7,9 @@ angular.module('themes', []).
 			{name: "sepia", url: "themes/sepia/styles.css"}
 		];
 		
-		$scope.currentTheme = $scope.themes[0];
+		$scope.currentTheme = $scope.themes[1];
 		
 		$scope.setTheme = function(theme){
 			$scope.currentTheme = theme;
-			$scope.$apply();
 		}
 	});
