@@ -1,3 +1,26 @@
-div{
+.menu-container{
+	height: 40px;
+	z-index: 500;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
 
+.menu-container .menu{
+	float: right;
+	/* display: none; */
+	top: -40px;
+	position: absolute;
+	right: 0;
+	transition: 0.1s top;
+}
+
+.menu-container:hover .menu, .menu.selected{
+	//display: block;
+	top: 0px
+}
+
+.menu-item{
+	float: left;
 }
