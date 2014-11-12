@@ -373,6 +373,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.beginPath();
 				context.moveTo(instrument.x, tempY);
 				context.lineTo(canvas.width - $scope.margin, tempY);
+				context.strokeStyle = staveColour;
 				context.stroke();
 				tempY += $scope.lineHeight / 4;
 			}
