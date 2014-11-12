@@ -26,7 +26,7 @@ canvasModule.
 		
 		$scope.currentCss = "styles.css";
 		
-		var getLocalStyle() = function(){
+		var getLocalStyle = function(){
 			var storedStyleSheet = localStorage.getItem("inknote-theme");
 			
 			if(storedStyleSheet == null || storedStyleSheet == undefined){
