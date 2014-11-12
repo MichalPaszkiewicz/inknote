@@ -16,16 +16,16 @@
 	background: rgb(224, 224, 224);
 }
 
+.sub-item.smaller:hover, .sub-sub-item.smaller:hover, .sub-sub-sub-item.smaller:hover, .sub-sub-sub-sub-item.smaller:hover{
+	background: rgb(176, 176, 229);
+}
+
 .sub-item.no-pad, .sub-sub-item.no-pad, .no-pad, .sub-sub-sub-sub-item.no-pad{
 	padding: 0;
 }
 
 .sub-item.no-pad:hover, .sub-sub-item.no-pad:hover{
 	background: rgb(221, 222, 255);
-}
-
-.sub-item.smaller:hover, .sub-sub-item.smaller:hover, .sub-sub-sub-item.smaller:hover, .sub-sub-sub-sub-item.smaller:hover{
-	background: rgb(176, 176, 229);
 }
 
 .half{
