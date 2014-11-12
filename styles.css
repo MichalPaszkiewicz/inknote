@@ -12,14 +12,6 @@
 	box-shadow: 0 0 5px 1px black;
 }
 
-.sub-sub-items, .sub-sub-sub-items, .sub-sub-sub-sub-items{
-	position: absolute;
-	left: 100%;
-	top: 0;
-	padding: 0;
-	width: 140px;
-}
-
 .sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller{
 	background: rgb(224, 224, 224);
 	padding: 6px 10px;
