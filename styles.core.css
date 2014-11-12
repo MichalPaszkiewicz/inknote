@@ -100,7 +100,6 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	width: 300px;
 	height: 120px;
 	margin: auto;
-	background: black;
 	padding: 20px;
 	box-sizing: border-box;
 	border-radius: 20px;
