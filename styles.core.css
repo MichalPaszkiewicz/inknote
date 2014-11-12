@@ -86,6 +86,23 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	box-sizing: border-box;
 }
 
+.half.green, body .green, div.green, li.green{
+	background: rgb(109, 200, 109);
+}
+
+.half.green:hover, body .green:hover, div.green:hover, li.green:hover{
+	background: rgb(90, 180, 89);
+}
+
+.half.red{
+	background: red;
+}
+
+.half.red:hover{
+	background: rgb(207, 4, 4);;
+}
+
+
 .smaller .half{
 	padding: 6px 10px;
 }
