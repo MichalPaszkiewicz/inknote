@@ -37,7 +37,10 @@ canvasModule.
 		$scope.addTheme = function(link){
 			var newTheme = {
 				name: getName(link),
-				url: link
+				url: link,
+				staveColour: "black", 
+				noteColour: "red", 
+				textColour: "green"
 			};
 			
 			$scope.currentCss = newTheme.url;
