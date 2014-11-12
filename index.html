@@ -88,14 +88,14 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Themes</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme)">
+		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme); draw();">
 		  							{{theme.name}}
 		  						</li>
 		  						<li class="sub-sub-item">
 		  							<div class="sub-sub-item-name">Add theme</div>
 		  							<ul class="sub-sub-sub-items">
 		  								<li class="sub-sub-sub-item">
-		  									<input type="text" ng-model="themeLink" ng-enter="addTheme(themeLink)">
+		  									<input type="text" ng-model="themeLink" ng-enter="addTheme(themeLink); draw();">
 		  								</li>
 		  							</ul>
 		  						</li>
