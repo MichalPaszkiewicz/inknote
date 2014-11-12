@@ -1,10 +1,10 @@
 canvasModule.
 	controller("themeControl", function themeCtrl($scope){
 		$scope.themes = [
-			{name: "standard", url: "styles.css"},
-			{name: "dark", url: "themes/dark/styles.css"},
-			{name: "light", url: "themes/light/styles.css"},
-			{name: "sepia", url: "themes/sepia/styles.css"}
+			{name: "standard", url: "styles.css", staveColour: "black", noteColour: "red", textColour: "green"},
+			{name: "dark", url: "themes/dark/styles.css", staveColour: "white", noteColour: "red", textColour: "yellow"},
+			{name: "light", url: "themes/light/styles.css", staveColour: "black", noteColour: "red", textColour: "green"},
+			{name: "sepia", url: "themes/sepia/styles.css", staveColour: "black", noteColour: "red", textColour: "green"}
 		];
 		
 		$scope.layouts = [
@@ -17,6 +17,9 @@ canvasModule.
 		
 		$scope.setTheme = function(theme){
 			$scope.currentCss = theme.url;
+			staveColour = theme.staveColour;
+			noteColour = theme.noteColour;
+			textColour = theme.textColour;
 		}
 		
 		var getName = function(link){
