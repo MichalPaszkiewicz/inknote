@@ -4,6 +4,15 @@ body{
 }
 
 .menu-item-name{
-	background: rgb(221, 222, 255);
+	background: rgb(71, 71, 71);
+	box-shadow: 0 0 5px 1px black;
+}
+
+.menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover, .sub-sub-sub-item:hover, .sub-sub-sub-sub-item:hover, .menu-item-name.first:hover, .menu-item:hover .menu-item-name{
+	background: gray;
+}
+
+.sub-item, .sub-sub-item, .sub-sub-sub-item, .sub-sub-sub-sub-item{
+	background: rgb(71, 71, 71);
 	box-shadow: 0 0 5px 1px black;
 }
