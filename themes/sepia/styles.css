@@ -2,3 +2,8 @@ body{
 	background: rgb(242, 234, 225);
 	color: black;
 }
+
+.menu-item-name{
+	background: rgb(221, 222, 255);
+	box-shadow: 0 0 5px 1px black;
+}
