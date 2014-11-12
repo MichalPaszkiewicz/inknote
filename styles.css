@@ -20,23 +20,8 @@
 	background: rgb(176, 176, 229);
 }
 
-.sub-item.no-pad, .sub-sub-item.no-pad, .no-pad, .sub-sub-sub-sub-item.no-pad{
-	padding: 0;
-}
-
 .sub-item.no-pad:hover, .sub-sub-item.no-pad:hover{
 	background: rgb(221, 222, 255);
-}
-
-.half{
-	width: 50%;
-	display: inline-block;
-	padding: 10px;
-	box-sizing: border-box;
-}
-
-.smaller .half{
-	padding: 6px 10px;
 }
 
 .half:hover{
