@@ -363,10 +363,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.drawInstrument = function(instrument){
 			var tempY = parseInt(instrument.y);
 			
-			context.fillStyle = "green";
+			context.fillStyle = textColour;
 			context.font = "bold 16px Arial";
 			context.fillText(instrument.name, instrument.x + 5, tempY - 10);
-			context.fillStyle = "black";
+			context.fillStyle = staveColour;
 			
 			for(var j = 0; j < 5; j++)
 			{
@@ -399,7 +399,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		{
 			if(item.type == "note" || item.type == undefined || item.type == null){
 				context.beginPath();
-				context.fillStyle = "red";
+				context.fillStyle = noteColour;
 				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
 				context.fill();
 			}
