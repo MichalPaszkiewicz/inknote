@@ -1,10 +1,6 @@
 .menu-item-name{
-	padding: 10px;
-	list-style: none;
 	background: rgb(221, 222, 255);
-	box-sizing: border-box;
 	box-shadow: 0 0 5px 1px black;
-	cursor: pointer;
 }
 
 ul.sub-items, ul.sub-sub-items, .sub-sub-sub-items, .sub-sub-sub-sub-items{
