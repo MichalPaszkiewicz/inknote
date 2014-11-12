@@ -12,7 +12,7 @@ canvasModule.
 			{name: "side menu", url: "layouts/sidemenu/layout.css"}
 		];
 		
-		var setLocalStyle(value){
+		var setLocalStyle = function(value){
 			localStorage.setItem("inknote-theme", value);
 		}
 		
@@ -43,6 +43,8 @@ canvasModule.
 
 			$scope.currentCss = storedStyleSheet;
 		}
+		
+		getLocalStyle();
 		
 		$scope.layoutCss = "layouts/topmenu/layout.css";
 		
