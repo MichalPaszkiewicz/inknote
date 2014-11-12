@@ -49,3 +49,11 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 .sub-sub-item{
 	
 }
+
+.sub-item, .sub-sub-item, .sub-sub-sub-item, .sub-sub-sub-sub-item{
+	padding: 10px;
+	list-style: none;
+	box-sizing: border-box;
+	cursor: pointer;
+	position: relative;
+}
