@@ -7,3 +7,12 @@ body{
 	background: rgb(221, 222, 255);
 	box-shadow: 0 0 5px 1px black;
 }
+
+.menu-item-name:hover, .sub-item:hover, .sub-sub-item:hover, .sub-sub-sub-item:hover, .sub-sub-sub-sub-item:hover, .menu-item-name.first:hover, .menu-item:hover .menu-item-name{
+	background: rgb(176, 176, 229);
+}
+
+.sub-item, .sub-sub-item, .sub-sub-sub-item, .sub-sub-sub-sub-item{
+	background: rgb(221, 222, 255);
+	box-shadow: 0 0 5px 1px black;
+}
