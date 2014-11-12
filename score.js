@@ -435,7 +435,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.startup = function(){
 				if(time == 80){
-					context.fillStyle = "white";
+					context.fillStyle = noteColour;
 					context.font = "bold 16px Arial";
 					context.fillText("inknote", canvas.width / 2, canvas.height / 2);
 					var dataURL = canvas.toDataURL();
