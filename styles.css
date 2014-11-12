@@ -27,18 +27,6 @@
 	width: 140px;
 }
 
-.instrument .sub-sub-sub-items{
-	width: 80px;
-}
-
-.instrument .sub-sub-sub-sub-items{
-	width: 60px;
-}
-
-.sub-sub-item{
-	
-}
-
 .sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller{
 	background: rgb(224, 224, 224);
 	padding: 6px 10px;
