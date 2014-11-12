@@ -70,3 +70,8 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	padding: 0;
 	width: 140px;
 }
+
+.sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller{
+	padding: 6px 10px;
+}
+
