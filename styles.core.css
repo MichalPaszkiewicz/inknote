@@ -37,3 +37,15 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 .sub-sub-item:hover .sub-sub-sub-items, .sub-sub-sub-item:hover .sub-sub-sub-sub-items{
 	display: block;
 }
+
+.instrument .sub-sub-sub-items{
+	width: 80px;
+}
+
+.instrument .sub-sub-sub-sub-items{
+	width: 60px;
+}
+
+.sub-sub-item{
+	
+}
