@@ -25,13 +25,14 @@ function animate(particles, delta, last)
 
 function render(ctx, particles)
 {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = staveColour;
     for (var i = 0; i < particles.length; i++)
     {
         if (Math.random() < 0.6)
         {
             continue;
         }
+
         var p = particles[i];
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
