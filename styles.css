@@ -14,7 +14,6 @@
 
 .sub-item.smaller, .sub-sub-item.smaller, .sub-sub-sub-item.smaller, .sub-sub-sub-sub-item.smaller{
 	background: rgb(224, 224, 224);
-	padding: 6px 10px;
 }
 
 .sub-item.no-pad, .sub-sub-item.no-pad, .no-pad, .sub-sub-sub-sub-item.no-pad{
