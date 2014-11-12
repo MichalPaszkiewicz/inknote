@@ -15,3 +15,10 @@ canvas{
 a{
     cursor: pointer;
 }
+
+.menu-item-name{
+	padding: 10px;
+	list-style: none;
+	box-sizing: border-box;
+	cursor: pointer;
+}
