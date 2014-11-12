@@ -28,3 +28,7 @@ body{
 #new-instrument{
 	background: gray;
 }
+
+.button-container .button{
+	background: rgb(85, 85, 85);
+}
