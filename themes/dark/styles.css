@@ -21,4 +21,8 @@ body{
 	background: rgb(99, 118, 126);
 }
 
+.sub-item.smaller:hover, .sub-sub-item.smaller:hover, .sub-sub-sub-item.smaller:hover, .sub-sub-sub-sub-item.smaller:hover{
+	background: rgb(79, 98, 106);
+}
+
 
