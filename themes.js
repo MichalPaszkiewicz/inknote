@@ -12,15 +12,39 @@ canvasModule.
 			{name: "side menu", url: "layouts/sidemenu/layout.css"}
 		];
 		
-		$scope.currentCss = "styles.css";
-		$scope.layoutCss = "layouts/topmenu/layout.css";
+		var setLocalStyle(value){
+			localStorage.setItem("inknote-theme", value);
+		}
 		
 		$scope.setTheme = function(theme){
 			$scope.currentCss = theme.url;
 			staveColour = theme.staveColour;
 			noteColour = theme.noteColour;
 			textColour = theme.textColour;
+			setLocalStyle(theme.url);
 		}
+		
+		$scope.currentCss = "styles.css";
+		
+		var getLocalStyle() = function(){
+			var storedStyleSheet = localStorage.getItem("inknote-theme");
+			
+			if(storedStyleSheet == null || storedStyleSheet == undefined){
+				$scope.currentCss = "styles.css";
+				return;
+			}
+			
+			for(var i = 0; i < $scope.themes.length; i++){
+				if($scope.themes[i].url == storedStyleSheet){
+					$scope.setTheme($scope.themes[i]);
+					return;
+				}	
+			}
+
+			$scope.currentCss = storedStyleSheet;
+		}
+		
+		$scope.layoutCss = "layouts/topmenu/layout.css";
 		
 		var getName = function(link){
 			if(link.indexOf("?") != -1){
@@ -45,6 +69,7 @@ canvasModule.
 			
 			$scope.currentCss = newTheme.url;
 			$scope.themes.push(newTheme);
+			setLocalStyle(newTheme.url);
 		}
 		
 		$scope.setLayout = function(layout){
