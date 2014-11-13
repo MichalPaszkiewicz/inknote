@@ -202,6 +202,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			//relative y
 			var relY = y - $scope.windowScroll;
 			var itemInstrument = {};
+			var itemInstrumentIndex = null;
 			var itemBar = {};
 			
 			for(var i = 0; i < $scope.lines.length; i++){
@@ -212,6 +213,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
 							console.log("instrument id - " + $scope.lines[i].instruments[j].id);
 							itemInstrument = $scope.lines[i].instruments[j];
+							itemInstrumentIndex = j;
 						}
 					}
 					//console.log($scope.lines[i].id);
@@ -221,7 +223,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
-							itemBar = $scope.lines[i].instruments[0].bars[j];
+							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 						}
 					}
 				}
