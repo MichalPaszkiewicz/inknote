@@ -221,7 +221,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
-							itemBar = $scope.lines
+							itemBar = $scope.lines[i].instruments[0].bars[j];
 						}
 					}
 				}
