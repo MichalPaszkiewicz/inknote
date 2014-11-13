@@ -240,9 +240,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
 			
-			if(noteCount > 2){
+			if(noteCount > 3){
 				$scope.addBar();
-				//thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
+				thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			
 			if(type == null || type == undefined){
