@@ -196,7 +196,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				if($scope.lines[i].y < y && $scope.lines[i].y + $scope.lineHeight > y){
-					console.log($scope.lines.id);
+					console.log($scope.lines[i].id);
 				}
 			}
 			
