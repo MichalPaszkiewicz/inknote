@@ -39,7 +39,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		};
 			
 		$scope.margin = 50;
+		
+		//describes height of one stave (5 lines)
 		$scope.lineHeight = 48;
+		
 		$scope.instrumentHeight = 100;
 		
 		//lines are for visual display only
@@ -201,10 +204,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			for(var i = 0; i < $scope.lines.length; i++){
 				if($scope.lines[i].y - $scope.lineHeight/2 < y && $scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > y){
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
-						console.log($scope.lines[i].instruments[j].y);
+						if($scope.lines[i].instruments[j].y < y && y < $scope.lines[i].instruments[j].y + $scope.lineHeight){
+							console.log($scope.lines[i].instruments[j].y);	
+						}
 					}
-					console.log($scope.lines[i].id);
-					
+					//console.log($scope.lines[i].id);
 				}
 			}
 			
