@@ -200,11 +200,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			var itemY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
 			
+			//relative y
+			var relY = y - $scope.windowScroll;
 			
 			for(var i = 0; i < $scope.lines.length; i++){
-				if($scope.lines[i].y - $scope.lineHeight/2 < y + $scope.windowScroll && $scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > y + $scope.windowScroll){
+				if($scope.lines[i].y - $scope.lineHeight/2 < relY && $scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > relY){
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
-						if($scope.lines[i].instruments[j].y < y + $scope.windowScroll && y + $scope.windowScroll < $scope.lines[i].instruments[j].y + $scope.lineHeight){
+						if($scope.lines[i].instruments[j].y < relY && relY < $scope.lines[i].instruments[j].y + $scope.lineHeight){
 							console.log($scope.lines[i].instruments[j].id);	
 						}
 					}
