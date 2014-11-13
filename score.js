@@ -185,7 +185,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
-			var amount = 10;
 			//console.log("[" + x + "," + y + "]");
 			
 			if($scope.instruments.length < 1)
@@ -204,9 +203,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var relY = y; // - $scope.windowScroll;
 			
 			for(var i = 0; i < $scope.lines.length; i++){
-				if($scope.lines[i].y - $scope.lineHeight/2 < relY && $scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > relY){
+				if(   ($scope.lines[i].y - $scope.lineHeight/2)  < relY 
+				&&    ($scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2)    >  relY){
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
-						if($scope.lines[i].instruments[j].y < relY && relY < $scope.lines[i].instruments[j].y + $scope.lineHeight){
+						if(	($scope.lines[i].instruments[j].y)   <   relY 
+						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight)    > relY){
 							console.log($scope.lines[i].instruments[j].id);	
 						}
 					}
