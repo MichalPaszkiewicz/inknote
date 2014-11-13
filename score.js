@@ -199,7 +199,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			
 			for(var i = 0; i < $scope.lines.length; i++){
-				if($scope.lines[i].y - $scope.lineHeight/2 < y && $scope.lines[i].y + getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > y){
+				if($scope.lines[i].y - $scope.lineHeight/2 < y && $scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2 > y){
 					console.log($scope.lines[i].id);
 				}
 			}
@@ -362,7 +362,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var startX = $scope.margin;
 			var finalX = canvas.width - $scope.margin;
 			var startY = parseInt(line.instruments[0].y);
-			var bottomY = startY + (line.instruments.length - 1) * ($scope.instrumentHeight) + $scope.lineHeight;
+			var bottomY = startY + $scope.getFullLineHeight(line);
 			context.moveTo(startX, startY);
 			context.lineTo(startX, bottomY);
 			context.stroke();
