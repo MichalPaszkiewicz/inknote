@@ -197,8 +197,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				$scope.addBar();
 			}
 			
-			var itemY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
-			
 			//relative y
 			var relY = y - $scope.windowScroll;
 			var itemInstrument = {};
@@ -230,6 +228,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			
 			if(itemInstrumentIndex == null){ return; }
+			
+			var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8));
+			
 			$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 		}
 		
