@@ -174,7 +174,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else{return};
 		}
 		
-		$scope.getFullLineHeight(line){
+		$scope.getFullLineHeight = function(line){
 			return (line.instruments.length - 1) * ($scope.instrumentHeight) + $scope.lineHeight;
 		}
 		
