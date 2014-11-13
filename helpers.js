@@ -27,6 +27,6 @@ Array.prototype.getIndexFromID = function(id){
 
 Array.prototype.getItemFromID = function(id){
 	for(var i = 0; i < this.length; i++){
-		if(this[i].id == id){ return this; }
+		if(this[i].id == id){ return this[i]; }
 	}
 }
