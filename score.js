@@ -201,6 +201,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			//relative y
 			var relY = y - $scope.windowScroll;
+			var itemInstrument = {};
+			var itemBar = {};
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				if(   ($scope.lines[i].y - $scope.lineHeight/2)  < y 
@@ -208,7 +210,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
-							console.log("instrument id - " + $scope.lines[i].instruments[j].id);	
+							console.log("instrument id - " + $scope.lines[i].instruments[j].id);
+							itemInstrument = $scope.lines[i].instruments[j];
 						}
 					}
 					//console.log($scope.lines[i].id);
@@ -218,22 +221,24 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
+							itemBar = $scope.lines
 						}
 					}
 				}
 			}
 			
-			$scope.addItem(itemY, $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1]);
+			$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 		}
 		
-		$scope.addItem = function(value, bar, type){
-			var thisBar = bar;
+		$scope.addItem = function(value, instrumentID, barID, type){
+			var instrument = $scope.instruments.getItemFromID(instrumentID);
+			var thisBar = instrument.bars.getItemFromID(barID);
 			
-			var noteCount = bar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
+			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
 			
 			if(noteCount > 3){
 				$scope.addBar();
-				var thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
+				thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			
 			if(type == null || type == undefined){
@@ -246,7 +251,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(tempItems.length > 0) {
 				id = tempItems[tempItems.length-1].id + 1;
 			}
-			var tempItem = {id: id, value: value, barID: bar.id, x: null, y: null, type: type};
+			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
@@ -490,7 +495,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					$scope.addInstrument("piano");
 					drawOn = true;
 					$scope.addBar();
-					$scope.addItem("treble", $scope.instruments[0].bars[0], "clef");
+					$scope.addItem("treble", $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "clef");
 					$scope.draw();
 
 				}
