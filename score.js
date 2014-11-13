@@ -208,10 +208,17 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
-							console.log($scope.lines[i].instruments[j].id);	
+							console.log("instrument id - " + $scope.lines[i].instruments[j].id);	
 						}
 					}
 					//console.log($scope.lines[i].id);
+					
+					var tempBars = $scope.lines[i].instruments[0].bars;
+					
+					for(var j = 0; j < tempBars.length; j++){
+						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x ))
+							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
+					}
 				}
 			}
 			
