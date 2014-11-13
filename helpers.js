@@ -24,3 +24,9 @@ Array.prototype.getIndexFromID = function(id){
 		if(this[i].id == id){ return i; }
 	}
 }
+
+Array.prototype.getItemFromID = function(id){
+	for(var i = 0; i < this.length; i++){
+		if(this[i].id == id){ return this; }
+	}
+}
