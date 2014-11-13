@@ -229,6 +229,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			
+			if(itemInstrumentIndex == null){ return; }
 			$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 		}
 		
