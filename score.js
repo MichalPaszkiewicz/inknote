@@ -193,6 +193,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			var itemY = ($scope.lineHeight/8) * Math.round((y - 200) / ($scope.lineHeight/8));
 			
+			
+			for(var i = 0; i < $scope.lines.length; i++){
+				if($scope.lines[i].y < y && $scope.lines[i].y + $scope.lineHeight > y){
+					console.log($scope.lines.id);
+				}
+			}
+			
 			$scope.addItem(itemY, $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1]);
 		}
 		
