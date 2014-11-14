@@ -257,11 +257,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
 			
-			if(noteCount > 3){
+			if(noteCount > 2){
 				$scope.addBar();
-				$scope.draw();
-				return;
+				//$scope.draw();
+				//return;
 				//thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
+			}
+			else if(noteCount > 3){
+				throw new Error("This bar is full already!");
+				return;
 			}
 			
 			if(type == null || type == undefined){
