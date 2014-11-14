@@ -6,11 +6,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		var context = canvas.getContext('2d');
 		var drawOn = false;
 		
-		$scope.windowScrollAmount = 30;
-		$scope.windowScroll = 0;
-		
 		var isNewInstrument = false;
 		
+		// amount page is moved by on scroll
+		$scope.windowScrollAmount = 30;
+		// current scroll height value
+		$scope.windowScroll = 0;
+		
+		// function handling scroll event
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
 			//console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
 			
@@ -30,10 +33,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		};
 		
+		// open/close popup displaying instrument name
 		$scope.toggleNewInstrument = function () {
 		        isNewInstrument = !isNewInstrument;  
 		};
-
+		
+		// get private value isNewInstrument for displaying popup for inputting name
 		$scope.openInstrumentName = function () {
 			return isNewInstrument;
 		};
@@ -43,6 +48,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		//describes height of one stave (5 lines)
 		$scope.lineHeight = 48;
 		
+		// distance between 2 instruments in a line
 		$scope.instrumentHeight = 100;
 		
 		//lines are for visual display only
@@ -50,6 +56,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		   
 		];
 		
+		// get files from localstorage
 		$scope.getFiles = function(){
 			var files = JSON.parse(localStorage.getItem("inknote-files"));
 			if(files == null || files == undefined){
@@ -60,6 +67,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		// save files to localstorage
 		$scope.saveFiles = function(){
 			//$scope.currentFile.instruments = $scope.instruments;
 			if($scope.files != []){ getFile($scope.currentFileID).instruments = $scope.instruments; }
@@ -76,10 +84,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			localStorage.setItem("inknote-files", JSON.stringify(tempFiles));
 		}
 		
+		// get a new unique id
 		function newID(){
 			return (new Date).getTime() + "" + Math.floor(100 * Math.random());
 		}
 		
+		// get a file from id
 		function getFile(id){
 			for(var i = 0; i < $scope.files.length; i++){
 				if($scope.files[i].id == id){
@@ -88,6 +98,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		// create a new file
 		$scope.newFile = function(name){
 			$scope.windowScroll = 0;
 			var newname = name;
@@ -102,6 +113,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		// open existing file from localstorage
 		$scope.openFile = function(file){
 			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
@@ -121,11 +133,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		setFiles();
 		
-		//eventually there will be a possibility of many instruments
+		// instruments of current project. This is where values must be stored. They are changed to lines on drawinit
 		$scope.instruments = [
 			
 		];
 		
+		// default time signature of file
 		$scope.instruments.timeSignature = {top: 4, bottom: 4};
 		
 		$scope.addInstrument = function(instrumentName){
@@ -202,13 +215,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var itemInstrument = {};
 			var itemInstrumentIndex = null;
 			var itemBar = {};
+			var actionSelection = null
 			
 			for(var i = 0; i < $scope.lines.length; i++){
 				if(   ($scope.lines[i].y - $scope.lineHeight/2)  < y 
 				&&    ($scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2)    >  y){
+					actionSelection = "line";
 					for(var j = 0; j <  $scope.lines[i].instruments.length; j++){
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
+							actionSelection = "instrument";
 							console.log("instrument id - " + $scope.lines[i].instruments[j].id);
 							itemInstrument = $scope.lines[i].instruments[j];
 							itemInstrumentIndex = j;
@@ -220,6 +236,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
+							actionSelection = "bar";
 							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 						}
@@ -227,11 +244,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			
-			if(itemInstrumentIndex == null){ return; }
-			
-			var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8));
-			
-			$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
+			if(actionSelection == null){ return; }
+			else if(actionSelection == "bar"){
+				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8));
+				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
+			}
 		}
 		
 		$scope.addItem = function(value, instrumentID, barID, type){
