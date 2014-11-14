@@ -243,6 +243,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							actionSelection = "bar";
 							//console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
+							
+							for(var k = 0; k < itemBar.items; k++){
+								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
+									console.log(items[k].id);
+								}
+							}
 						}
 					}
 				}
