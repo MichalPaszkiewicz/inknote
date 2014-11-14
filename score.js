@@ -274,7 +274,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				//thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
 			else if(noteCount > 3){
-				throw new Error("This bar is full already!");
+				//throw new Error("This bar is full already!");
 				return;
 			}
 			
