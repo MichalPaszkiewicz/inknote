@@ -30,3 +30,7 @@ Array.prototype.getItemFromID = function(id){
 		if(this[i].id == id){ return this[i]; }
 	}
 }
+
+Array.prototype.getLastItem = function(){
+	return this[this.length - 1];
+}
