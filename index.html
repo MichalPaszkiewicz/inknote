@@ -19,7 +19,7 @@
 		</script>
 </head>
 <body>
-	<div ng-controller="canvasCtrl" id="main-container">
+	<div ng-controller="canvasCtrl" id="main-container" ng-updown="noteChange($event)">
 		 <img id="canvasImg">
 	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
 	  
@@ -208,7 +208,7 @@
 		  	</div>
 	  	</div>
 		
-		<canvas id="canvas" ng-click="action($event)" ng-upDown="noteChange($event)"></canvas>
+		<canvas id="canvas" ng-click="action($event)"></canvas>
 		<div style="clear: both"/>
 	  </div>
 	</div>
