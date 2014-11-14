@@ -315,7 +315,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.draw();
 		}
 		
-		$scope.notechange = function(e){
+		$scope.noteChange = function(e){
 			if($scope.selectedItemID != null){
 
 				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
