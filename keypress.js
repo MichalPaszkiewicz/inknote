@@ -23,12 +23,12 @@ angular.module('keypress', []).
 		        });
 		};
 	}).
-	directive('ngUpDown', function () {
+	directive('ngUpdown', function () {
 		return function (scope, element, attrs) {
 			element.bind("keydown keypress", function (event) {
 				if(event.which === 38 || event.which === 40) {
 					scope.$apply(function (){
-						scope.$eval(attrs.ngUpDown);
+						scope.$eval(attrs.ngUpdown);
 					});
 					event.preventDefault();
 				}
