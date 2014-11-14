@@ -165,6 +165,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		$scope.selectedItemID = null;
+		
 		$scope.addBar = function(before) {
 			if(drawOn){
 				for(var i = 0; i < $scope.instruments.length; i++){
@@ -247,6 +249,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
 									console.log(itemBar.items[k].id);
+									$scope.selectedItemID = itemBar.items[k].id;
 								}
 							}
 						}
@@ -288,6 +291,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(tempItems.length > 0) {
 				id = tempItems[tempItems.length-1].id + 1;
 			}
+			
+			//get uniquer id
+			id = newID();
+			
 			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type};
 			thisBar.items.push(tempItem);
 			
@@ -475,6 +482,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.fillStyle = noteColour;
 				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
 				context.fill();
+				
+				if($scope.selectedItemID == item.id){
+					context.beginPath();
+					context.arc(100,75,50,0,2*Math.PI);
+					context.strokeStyle = '#1DDD10';
+					context.stroke();
+				}
 			}
 			else if(item.type == "rest"){
 				
