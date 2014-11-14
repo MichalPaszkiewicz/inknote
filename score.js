@@ -198,6 +198,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			return (line.instruments.length - 1) * ($scope.instrumentHeight) + $scope.lineHeight;
 		}
 		
+		$scope.selectedInstrumentID = null;
+		$scope.selectedBarID = null;
 		$scope.selectedItemID = null;
 		
 		$scope.action = function(e){
@@ -207,6 +209,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			//console.log("[" + x + "," + y + "]");
 			
 			//clear selection
+			$scope.selectedInstrumentID = null;
+			$scope.selectedBarID = null;
 			$scope.selectedItemID = null;
 			
 			if($scope.instruments.length < 1)
@@ -252,6 +256,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
 									console.log(itemBar.items[k].id);
+									
+									$scope.selectedInstrumentID = itemInstrument.id;
+									$scope.selectedBarID = itemBar.id;
 									$scope.selectedItemID = itemBar.items[k].id;
 									actionSelection = "item";
 								}
@@ -306,6 +313,24 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
+		}
+		
+		$scope.notechange = function(e){
+			if($scope.selectedItemID != null){
+
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
+				var relevantItem = relevantBar.items.$scope.getItemFromID($scope.selectedItemID);
+				
+				if(e.which === 38){
+					relevantItem.x += 6;		
+				}
+				else if(e.which === 40){
+					relevantItem.x -= 6;
+				}
+				
+				$scope.draw();
+			}
 		}
 		
 		$scope.removeItem = function(bar, item){
