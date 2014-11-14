@@ -28,7 +28,7 @@ angular.module('keypress', []).
 			element.bind("keydown keypress", function (event) {
 				if(event.which === 38 || event.which === 40) {
 					scope.$apply(function (){
-						var expr = $parse(attr['ngUpdown']);
+						var expr = $parse(attrs['ngUpdown']);
 						expr(scope, {
 				                  $event: event
 				                });
