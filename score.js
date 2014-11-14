@@ -253,6 +253,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
 									console.log(itemBar.items[k].id);
 									$scope.selectedItemID = itemBar.items[k].id;
+									actionSelection = "item";
 								}
 							}
 						}
@@ -264,6 +265,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else if(actionSelection == "bar"){
 				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8));
 				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
+			}
+			else if(actionSelection == "item"){
+				$scope.draw();
 			}
 		}
 		
