@@ -320,7 +320,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 
 				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
-				var relevantItem = relevantBar.items.$scope.getItemFromID($scope.selectedItemID);
+				var relevantItem = relevantBar.items.getItemFromID($scope.selectedItemID);
 				
 				if(e.which === 38){
 					relevantItem.x += 6;		
