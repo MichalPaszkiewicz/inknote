@@ -246,7 +246,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.x + itemBar.items[k].x - 8 < x && x < itemBar.x + itemBar.items[k].x + 8){
-									console.log(items[k].id);
+									console.log(itemBar.items[k].id);
 								}
 							}
 						}
