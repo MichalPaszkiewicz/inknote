@@ -323,10 +323,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var relevantItem = relevantBar.items.getItemFromID($scope.selectedItemID);
 				
 				if(e.which === 38){
-					relevantItem.x += 6;		
+					relevantItem.y += 6;		
 				}
 				else if(e.which === 40){
-					relevantItem.x -= 6;
+					relevantItem.y -= 6;
 				}
 				
 				$scope.draw();
