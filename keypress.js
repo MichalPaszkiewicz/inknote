@@ -23,7 +23,7 @@ angular.module('keypress', []).
 		        });
 		};
 	}).
-	directive('ngUpdown', function () {
+	directive('ngUpdown', ['$parse', function ($parse) {
 		return function (scope, element, attrs) {
 			element.bind("keydown keypress", function (event) {
 				if(event.which === 38 || event.which === 40) {
@@ -39,4 +39,4 @@ angular.module('keypress', []).
 				}
 		        });
 		};
-	});
+	}]);
