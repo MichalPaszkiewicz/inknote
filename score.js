@@ -229,7 +229,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
 							actionSelection = "instrument";
-							console.log("instrument id - " + $scope.lines[i].instruments[j].id);
+							//console.log("instrument id - " + $scope.lines[i].instruments[j].id);
 							itemInstrument = $scope.lines[i].instruments[j];
 							itemInstrumentIndex = j;
 						}
@@ -241,7 +241,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							actionSelection = "bar";
-							console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
+							//console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 						}
 					}
@@ -261,7 +261,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
 			
-			if(noteCount > 2 && noteCount < 4){
+			if(noteCount > 2 && noteCount < 4 && instrument.bars.getLastItem().id == barID){
 				$scope.addBar();
 				//$scope.draw();
 				//return;
