@@ -152,7 +152,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if($scope.instruments.length > 0){
 				while(newInstrument.bars.length < $scope.instruments[0].bars.length){
 					var timeSig = $scope.instruments[0].bars[barId].timeSignature;
-					var newBar = {id: id, items: [], x: null, y: null, timeSignature: timeSig};
+					var newBar = {id: newID(), items: [], x: null, y: null, timeSignature: timeSig};
 					newInstrument.bars.push(newBar);
 					barId++;
 				}
@@ -171,9 +171,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					var id = 0;
 					var instrument = $scope.instruments[i];
 					
-					if(instrument.bars.length > 0) {
-						id = instrument.bars[instrument.bars.length-1].id + 1;
-					}
+					//if(instrument.bars.length > 0) {
+					//	id = instrument.bars[instrument.bars.length-1].id + 1;
+					//}
+					
+					// all IDs absolutely unique.
+					id = newID();
+					
 					var timeSig = $scope.instruments.timeSignature;
 					var tempBar = {id: id, items: [], x: null, y: null, timeSignature: timeSig};
 					if(before == null || before == undefined){			
