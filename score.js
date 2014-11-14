@@ -259,6 +259,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(noteCount > 3){
 				$scope.addBar();
+				$scope.draw();
 				return;
 				//thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
