@@ -165,8 +165,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
-		$scope.selectedItemID = null;
-		
 		$scope.addBar = function(before) {
 			if(drawOn){
 				for(var i = 0; i < $scope.instruments.length; i++){
@@ -200,11 +198,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			return (line.instruments.length - 1) * ($scope.instrumentHeight) + $scope.lineHeight;
 		}
 		
+		$scope.selectedItemID = null;
+		
 		$scope.action = function(e){
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
 			//console.log("[" + x + "," + y + "]");
+			
+			//clear selection
+			$scope.selectedItemID = null;
 			
 			if($scope.instruments.length < 1)
 			{
@@ -485,9 +488,11 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				
 				if($scope.selectedItemID == item.id){
 					context.beginPath();
-					context.arc(100,75,50,0,2*Math.PI);
+					context.arc(item.x,bar.y + item.value,12,0,2*Math.PI);
 					context.strokeStyle = '#1DDD10';
 					context.stroke();
+					
+					context.strokeStyle = staveColour;
 				}
 			}
 			else if(item.type == "rest"){
