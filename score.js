@@ -183,7 +183,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				$scope.draw();
 			}
 			
-			alertify.log("Instrument added", "", 2000);
+			log("Instrument named: " + instrumentName + " added", "", 2000);
 		}
 		
 		$scope.addBar = function(before) {
