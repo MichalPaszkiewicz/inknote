@@ -34,7 +34,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		// function handling scroll event
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
-			log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY); }
+			log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
 			
 			if(drawOn){
 				if($deltaY == 1){
