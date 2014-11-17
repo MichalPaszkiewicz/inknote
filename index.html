@@ -220,6 +220,21 @@
 		  				<li class="sub-item">
 		  					<a class="sub-item-name" target="_blank" href="developer/">Forum</a>
 		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Log</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item no-pad">
+		  							<div class="sub-sub-item-name">Logging on</div>
+		  							<div class="half" ng-class="{'green': logging}" ng-click="logging = true">On</div>
+		  							<div class="half" ng-class="{'green': !logging}" ng-click="logging = false">Off</div>
+		  						</li>
+		  						<li class="sub-sub-item no-pad">
+		  							<div class="sub-sub-item-name">Log type</div>
+		  							<div class="half" ng-class="{'green': logWithAlertify}" ng-click="logWithAlertify = true">UI</div>
+		  							<div class="half" ng-class="{'green': !logWithAlertify}" ng-click="logWithAlertify = false">Console</div>
+		  						</li>
+		  					</ul>
+		  				</li>
 		  			</ul>
 		  		</div>
 		  		<div class="menu-item">
@@ -232,7 +247,7 @@
 		  					<div class="sub-item-name">FAQ</div>
 		  				</li>
 		  				<li class="sub-item">
-		  					<div class="sub-item-name">Help</div>
+		  					<div class="sub-item-name">Help!</div>
 		  				</li>
 		  			</ul>
 		  		</div>
