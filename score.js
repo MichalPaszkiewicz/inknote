@@ -23,7 +23,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					alertify.error(e.toString(), "", 2000);
 				}
 			}
-		}
+		};
 		
 		var isNewInstrument = false;
 		
