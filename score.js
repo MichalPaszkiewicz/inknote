@@ -9,11 +9,19 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.logging = false;
 		$scope.logWithAlertify = false;
 		
-		var log = function(text){
+		var log = function(text, type){
 			if($scope.logging){ 
 				try{
 					if($scope.logWithAlertify){
-						alertify.log(text, "", 2000);
+						if(type == "success"){
+							alertify.success(text, "", 2000);
+						}
+						else if(type == "error"){
+							alertify.error(text, "", 2000);
+						}
+						else{
+							alertify.log(text, "", 2000);
+						}
 					}
 					else{
 						console.log(text);
@@ -183,7 +191,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				$scope.draw();
 			}
 			
-			log("Instrument named: " + instrumentName + " added", "", 2000);
+			log("Instrument named: " + instrumentName + " added", "success");
 		}
 		
 		$scope.addBar = function(before) {
