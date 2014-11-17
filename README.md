@@ -33,3 +33,4 @@ Update 17/11/2014
 - Change note values.
 - Save files in local storage.
 - Change themes/layout + add custom themes/layout.
+- Pretty logging using alertify
