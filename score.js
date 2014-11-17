@@ -227,7 +227,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
-			log("Mouse click coordinates: [" + x + "," + y + "]");
+			log("Mouse click coordinates - [" + x + "," + y + "]");
 			
 			//clear selection
 			$scope.selectedInstrumentID = null;
@@ -264,7 +264,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							itemInstrumentIndex = j;
 						}
 					}
-					log("Line id: " + $scope.lines[i].id);
+					log("Line id - " + $scope.lines[i].id);
 					
 					var tempBars = $scope.lines[i].instruments[0].bars;
 					
