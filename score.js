@@ -227,7 +227,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
-			log("[" + x + "," + y + "]");
+			log("Mouse click coordinates: [" + x + "," + y + "]");
 			
 			//clear selection
 			$scope.selectedInstrumentID = null;
@@ -259,24 +259,24 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
 							actionSelection = "instrument";
-							log("instrument id - " + $scope.lines[i].instruments[j].id);
+							log("Instrument id - " + $scope.lines[i].instruments[j].id);
 							itemInstrument = $scope.lines[i].instruments[j];
 							itemInstrumentIndex = j;
 						}
 					}
-					log($scope.lines[i].id);
+					log("Line id: " + $scope.lines[i].id);
 					
 					var tempBars = $scope.lines[i].instruments[0].bars;
 					
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							actionSelection = "bar";
-							log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
+							log("Bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 							
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
-									log(itemBar.items[k].id);
+									log("Item id - " + itemBar.items[k].id);
 									
 									$scope.selectedInstrumentID = itemInstrument.id;
 									$scope.selectedBarID = itemBar.id;
