@@ -2,5 +2,5 @@
 
 var userFunctions = {};
 
-userFunctions.onSave = [];
-userFunctions.onLoad = [];
+userFunctions.afterSave = [];
+userFunctions.afterLoad = [];
