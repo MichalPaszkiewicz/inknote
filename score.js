@@ -6,6 +6,25 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		var context = canvas.getContext('2d');
 		var drawOn = false;
 		
+		$scope.logging = false;
+		$scope.logWithAlertify = false;
+		
+		var log = function(text){
+			if($scope.logging){ 
+				try{
+					if($scope.logWithAlertify){
+						alertify.log(text, "", 2000);
+					}
+					else{
+						console.log(text);
+					}
+				}
+				catch(e){
+					alertify.error(e.toString(), "", 2000);
+				}
+			}
+		}
+		
 		var isNewInstrument = false;
 		
 		// amount page is moved by on scroll
@@ -15,7 +34,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		// function handling scroll event
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
-			//console.log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
+			log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY); }
 			
 			if(drawOn){
 				if($deltaY == 1){
@@ -163,6 +182,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(drawOn){
 				$scope.draw();
 			}
+			
+			alertify.log("Instrument added", "", 2000);
 		}
 		
 		$scope.addBar = function(before) {
@@ -206,7 +227,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var tempCanvas = document.getElementById('canvas');
 			var x = e.clientX - tempCanvas.offsetLeft;
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
-			//console.log("[" + x + "," + y + "]");
+			log("[" + x + "," + y + "]");
 			
 			//clear selection
 			$scope.selectedInstrumentID = null;
@@ -238,24 +259,24 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						if(	($scope.lines[i].instruments[j].y - $scope.lineHeight/2)   <   relY 
 						&&   	($scope.lines[i].instruments[j].y + $scope.lineHeight + $scope.lineHeight/2)    > relY){
 							actionSelection = "instrument";
-							//console.log("instrument id - " + $scope.lines[i].instruments[j].id);
+							log("instrument id - " + $scope.lines[i].instruments[j].id);
 							itemInstrument = $scope.lines[i].instruments[j];
 							itemInstrumentIndex = j;
 						}
 					}
-					//console.log($scope.lines[i].id);
+					log($scope.lines[i].id);
 					
 					var tempBars = $scope.lines[i].instruments[0].bars;
 					
 					for(var j = 0; j < tempBars.length; j++){
 						if(   (tempBars[j].x < x)   &&  ((tempBars[j + 1] == undefined || tempBars[i + 1] == null) || tempBars[j + 1].x > x )){
 							actionSelection = "bar";
-							//console.log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
+							log("bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 							
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
-									console.log(itemBar.items[k].id);
+									log(itemBar.items[k].id);
 									
 									$scope.selectedInstrumentID = itemInstrument.id;
 									$scope.selectedBarID = itemBar.id;
