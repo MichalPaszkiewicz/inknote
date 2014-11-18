@@ -58,9 +58,11 @@ html, body{
 	width: 50%;
 	min-width: 500px;
 	display:inline-block;
+	padding: 10px;
+	box-sizing: border-box;
 }
 
-.forum div{
+.forum div, .sessions div, .thread div, .session div{
 	border-bottom: 1px solid black;
 }
 
@@ -68,7 +70,7 @@ html, body{
 	background: lightgray;
 }
 
-.forum div span{
+.forum div span, .sessions div span, .thread div span, .session div span{
 	min-width: 250px;
 	display: inline-block;
 	box-sizing: border-box;
