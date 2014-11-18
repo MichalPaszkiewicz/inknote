@@ -59,4 +59,6 @@ html, body{
 .forum div span{
 	min-width: 150px;
 	border: 1px solid black;
+	display: inline-block;
+	box-sizing: border-box;
 }
