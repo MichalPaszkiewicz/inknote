@@ -8,7 +8,7 @@ html, body{
 }
 
 .header{
-	color: white;
+	margin-bottom: 20px;
 }
 
 .header, .footer, .push{
@@ -17,6 +17,7 @@ html, body{
 
 .header, .footer{
 	background: black;
+	color: white;
 }
 
 .push, .footer{
