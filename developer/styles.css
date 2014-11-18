@@ -84,7 +84,7 @@ html, body{
 	font-size: 16px;
 }
 
-.thread{
+.thread, .section{
 	position: absolute;
 	left: 0;
 	top: 0;
