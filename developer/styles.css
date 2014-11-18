@@ -54,6 +54,8 @@ html, body{
 
 .content-container{
 	position: relative;
+	width: 50%;
+	min-width: 500px;
 }
 
 .forum div span{
