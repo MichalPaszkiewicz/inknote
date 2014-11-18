@@ -93,13 +93,8 @@ html, body{
 }
 
 .thread, .section{
-	//position: absolute;
-	//left: 0;
-	//top: 0;
 	background: white;
-	height: 100%;
 	width: 100%;
-	padding: 10px;
 	box-sizing: border-box;
 }
 
