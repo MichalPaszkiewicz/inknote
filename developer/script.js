@@ -9,4 +9,6 @@ var forumModule = angular.module('app', []).
 				{subject: "how to add your own functions", posts: [{user: "user1", message: "hi how u doing"}, {user: "user2", message: "lol wassup"}]}]
 		};
 		
+		$scope.currentThread = {};
+		
 	});
