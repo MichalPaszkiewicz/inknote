@@ -22,9 +22,11 @@ var developerKingdomModule = angular.module('app', []).
 		}
 		
 		$scope.addPost = function(thread){
+			if($scope.currentUser == "" || $scope.currentUser == null){
+				$scope.currentUser = "Guest";
+			}
 			$scope.currentThread.posts.push({user: $scope.currentUser, message: $scope.newPost});
 			
-			$scope.currentUser = "";
 			$scope.newPost = "";
 		}
 		
