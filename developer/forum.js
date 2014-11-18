@@ -1,14 +1,7 @@
 //todo write angular scripts for developer page.
 
 
-var forumModule = angular.module('app', []).
-	controller("guideCtrl", function guideCtrl($scope, $window){
-		
-		$scope.sections = [{name: "Introduction"},{name: "Adding plugins"}];
-		
-		$scope.currentSection = {};
-		$scope.currentSectionOn = false;
-	}).
+var developerKingdomModule = angular.module('app', []).
 	controller("forumCtrl", function forumCtrl($scope, $window){
 		
 		$scope.forum = {
