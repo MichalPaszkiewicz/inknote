@@ -23,7 +23,10 @@
 			</div>
 			
 			<div class="content-container" ng-controller="guideCtrl">
-				<div class="sections"></div>
+				<div class="sections">
+					<h1>Guide</h1>	
+					<div ng-repeat="section in sections">{{section.name}}</div>
+				</div>
 				<div class="section"></div>
 			</div><div class="content-container" ng-controller="forumCtrl">
 				<div class="forum">
