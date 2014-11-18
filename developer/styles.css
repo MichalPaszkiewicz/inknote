@@ -53,6 +53,7 @@ html, body{
 }
 
 .content-container{
+	vertical-align: top;
 	position: relative;
 	width: 50%;
 	min-width: 500px;
