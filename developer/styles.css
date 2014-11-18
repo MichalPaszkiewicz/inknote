@@ -109,3 +109,13 @@ html, body{
 .button:hover{
 	background: darkgray;
 }
+
+.new-post{
+	padding: 10px;
+}
+
+.new-post textarea{
+	clear: both;
+	display: block;
+	width: 100%;
+}
