@@ -25,10 +25,12 @@
 			<div class="content-container" ng-controller="forumCtrl">
 				<div class="forum">
 					<h1>Todo: coming soon!</h1>	
-
-						<div ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
-							<div>{{thread.subject}}</div>
-						</div>
+					<div>
+						<span>Subject</span><span>Started by</span>
+					</div>
+					<div ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
+						<span>{{thread.subject}}<span><span>{{thread.posts[0].user}}</span>
+					</div>
 				</div>
 				<div class="thread">
 					<div ng-repeat="post in currentThread.posts">
