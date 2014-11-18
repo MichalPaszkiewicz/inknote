@@ -26,3 +26,14 @@ html, body{
 .footer{
 	margin-top: -70px;
 }
+
+.header h1{
+	text-transform: uppercase;
+	font-family: fantasy;
+	font-weight: 100;
+	font-size: 87px;
+	margin: 0;
+	line-height: 70px;
+	width: 100%;
+	text-align: center;
+}
