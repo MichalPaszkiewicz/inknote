@@ -26,7 +26,7 @@
 			<div class="content-container" ng-controller="guideCtrl">
 				<div class="sections">
 					<h1>Guide</h1>	
-					<div ng-repeat="section in sections" ng-click="setSection(section)">
+					<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
 						<span>{{section.name}}</span>
 					</div>
 				</div>
@@ -37,16 +37,16 @@
 			</div><div class="content-container" ng-controller="forumCtrl">
 				<div class="forum">
 					<h1>Discussions</h1>	
-					<div class="first-line">
+					<div class="first-line" class="table-div">
 						<span>Subject</span><span>Started by</span>
 					</div>
-					<div ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
+					<div class="table-div" ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
 						<span>{{thread.subject}}</span><span>{{thread.posts[0].user}}</span>
 					</div>
 				</div>
 				<div class="thread" ng-show="currentThreadOn">
 					<h1>{{currentThread.subject}}</h1>
-					<div ng-repeat="post in currentThread.posts">
+					<div class="table-div" ng-repeat="post in currentThread.posts">
 						<span>{{post.user}}</span><span>{{post.message}}</span>
 					</div>
 					
