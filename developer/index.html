@@ -30,8 +30,7 @@
 						<span>{{section.name}}</span>
 					</div>
 				</div>
-				<div class="section" ng-show="currentSectionOn">
-					{{currentSection.html}}
+				<div class="section" ng-show="currentSectionOn" ng-bind-html-unsafe="currentSection.html">
 					<div class="button" ng-click="backToSections()">Back</div>
 				</div>
 			</div><div class="content-container" ng-controller="forumCtrl">
