@@ -25,7 +25,9 @@
 			<div class="content-container" ng-controller="guideCtrl">
 				<div class="sections">
 					<h1>Guide</h1>	
-					<div ng-repeat="section in sections">{{section.name}}</div>
+					<div ng-repeat="section in sections">
+						<span>{{section.name}}</span>
+					</div>
 				</div>
 				<div class="section"></div>
 			</div><div class="content-container" ng-controller="forumCtrl">
@@ -41,7 +43,7 @@
 				<div class="thread" ng-show="currentThreadOn">
 					<h1>{{currentThread.subject}}</h1>
 					<div ng-repeat="post in currentThread.posts">
-							<span>{{post.user}}</span><span>{{post.message}}</span>
+						<span>{{post.user}}</span><span>{{post.message}}</span>
 					</div>
 					
 					<div class="button" ng-click="backToForum()">Back</div>
