@@ -23,18 +23,27 @@
 			</div>
 			
 			<div class="content-container" ng-controller="forumCtrl">
-				<h1>Todo: coming soon!</h1>	
-				
-				<ul>
-					<li ng-repeat="thread in forum.threads">
-						<div>{{thread.subject}}</div>
-						<ul>
-							<li ng-repeat="post in thread.posts">
-								<span>{{post.user}}</span><span>{{post.message}}</span>
-							</li>
-						</ul>
-					</li>
-				</ul>
+				<div class="forum">
+					<h1>Todo: coming soon!</h1>	
+					
+					<ul>
+						<li ng-repeat="thread in forum.threads">
+							<div>{{thread.subject}}</div>
+							<ul>
+								<li ng-repeat="post in thread.posts" ng-click="currentThread = thread">
+									<span>{{post.user}}</span><span>{{post.message}}</span>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="thread">
+					<ul>
+						<li ng-repeat="post in currentThread.posts">
+							<span>{{post.user}}</span><span>{{post.message}}</span>
+						</li>
+					</ul>
+				</div>
 			</div>
 			
 			<div class="push"></div>
