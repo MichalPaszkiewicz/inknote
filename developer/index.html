@@ -22,8 +22,18 @@
 				<h1>Developers' Kingdom</h1>
 			</div>
 			
-			<div class="content-container">
-				<h1>Todo: coming soon!</h1>				
+			<div class="content-container" ng-controller="forumCtrl">
+				<h1>Todo: coming soon!</h1>	
+				
+				<ul>
+					<li ng-repeat="thread in forum.threads">
+						<ul>
+							<li ng-repeat="post in thread.posts">
+								
+							</li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 			
 			<div class="push"></div>
