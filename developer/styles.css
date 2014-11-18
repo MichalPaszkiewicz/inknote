@@ -64,6 +64,10 @@ html, body{
 	border-bottom: 1px solid black;
 }
 
+.forum div:hover{
+	background: lightgray;
+}
+
 .forum div span{
 	min-width: 250px;
 	display: inline-block;
