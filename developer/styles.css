@@ -78,7 +78,7 @@ html, body{
 	width: 250px;
 	display: inline-block;
 	box-sizing: border-box;
-	height: 40px;
+	vertical-align: top;
 	line-height: 20px;
 	padding: 10px;
 	font-size: 16px;
