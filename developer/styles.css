@@ -2,3 +2,12 @@ html, body{
 	margin: 0;
 	padding: 0;
 }
+
+.main-container{
+	min-height: 100%;
+}
+
+.header, .footer, .push{
+	height: 150px;
+	background: black;
+}
