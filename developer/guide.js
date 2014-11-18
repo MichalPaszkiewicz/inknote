@@ -3,7 +3,7 @@ developerKingdomModule.
 		
 		$scope.sections = [{name: "Introduction", htmlText: "blah blah blah <h1>Lololol</h1>"},{name: "Adding plugins", html: "<h3>Na na na na na nana heeeeeey jude</h3><h3>Hey judey judey jude</h3>"}];
 		
-		$scope.currentSection = {};
+		$scope.currentSection = {name: "blah", htmlText: "nah";
 		$scope.currentSectionOn = false;
 		
 		$scope.setSection = function(section){
