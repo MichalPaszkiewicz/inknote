@@ -93,9 +93,9 @@ html, body{
 }
 
 .thread, .section{
-	position: absolute;
-	left: 0;
-	top: 0;
+	//position: absolute;
+	//left: 0;
+	//top: 0;
 	background: white;
 	height: 100%;
 	width: 100%;
