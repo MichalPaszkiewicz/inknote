@@ -51,3 +51,7 @@ html, body{
 	vertical-align: baseline;
 	letter-spacing: 30px;
 }
+
+.content-container{
+	position: relative;
+}
