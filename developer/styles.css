@@ -62,19 +62,19 @@ html, body{
 	box-sizing: border-box;
 }
 
-.forum div, .sections div, .thread div, .section div{
+.forum div.table-div, .sections div.table-div, .thread div.table-div, .section div.table-div{
 	border-bottom: 1px solid black;
 }
 
-.forum div:not(.first-line), .sections div:not(.first-line){
+.forum div.table-div:not(.first-line), .sections div.table-div:not(.first-line){
 	cursor: pointer;
 }
 
-.forum div:hover:not(.first-line), .sections div:hover:not(.first-line){
+.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line){
 	background: lightgray;
 }
 
-.forum div span, .sections div span, .thread div span, .section div span{
+.forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
 	min-width: 250px;
 	display: inline-block;
 	box-sizing: border-box;
