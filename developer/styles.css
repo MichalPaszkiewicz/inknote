@@ -37,3 +37,16 @@ html, body{
 	width: 100%;
 	text-align: center;
 }
+
+.header h1 span{
+	left: 36px;
+	right: 0;
+	margin: auto;
+	line-height: 18px;
+	position: absolute;
+	top: 70px;
+	color: red;
+	font-size: 20px;
+	vertical-align: baseline;
+	letter-spacing: 30px;
+}
