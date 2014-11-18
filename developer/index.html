@@ -26,11 +26,13 @@
 			<div class="content-container" ng-controller="guideCtrl">
 				<div class="sections">
 					<h1>Guide</h1>	
-					<div ng-repeat="section in sections">
+					<div ng-repeat="section in sections" ng-click="setSection(section)">
 						<span>{{section.name}}</span>
 					</div>
 				</div>
-				<div class="section"></div>
+				<div class="section" ng-show="currentSectionOn">
+					{{currentSection.html}}
+				</div>
 			</div><div class="content-container" ng-controller="forumCtrl">
 				<div class="forum">
 					<h1>Discussions</h1>	
