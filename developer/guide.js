@@ -1,9 +1,9 @@
 developerKingdomModule.
 	controller("guideCtrl", function guideCtrl($scope, $window, $sce){
 		
-		$scope.sections = [{name: "Introduction", htmlText: "blah blah blah <h1>Lololol</h1>"},{name: "Adding plugins", html: "<h3>Na na na na na nana heeeeeey jude</h3><h3>Hey judey judey jude</h3>"}];
+		$scope.sections = [{name: "Introduction", htmlText: "blah blah blah <h1>Lololol</h1>"},{name: "Adding plugins", htmlText: "<h3>Na na na na na nana heeeeeey jude</h3><h3>Hey judey judey jude</h3>"}];
 		
-		$scope.currentSection = {name: "blah", htmlText: "nah"};
+		$scope.currentSection = {};
 		$scope.currentSectionOn = false;
 		
 		$scope.setSection = function(section){
