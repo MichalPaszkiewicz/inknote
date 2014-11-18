@@ -50,8 +50,11 @@
 					<div class="table-div" ng-repeat="post in currentThread.posts">
 						<span>{{post.user}}</span><span>{{post.message}}</span>
 					</div>
-					<input type="text" ng-model="currentUser">
-					<input type="text" ng-model="newPost">
+					
+					<div class="new-post">
+						<input type="text" ng-model="currentUser">
+						<textarea rows=4 type="text" ng-model="newPost">
+					</div>
 					
 					<div class="button" ng-click="backToForum()">Back</div>
 					<div class="button" ng-click="addPost(currentThread)">Send</div>
