@@ -10,8 +10,14 @@ var forumModule = angular.module('app', []).
 		};
 		
 		$scope.currentThread = {};
+		$scope.currentThreadOn = false;
 		
 		$scope.setThread = function(thread){
 			$scope.currentThread = thread;
+			$scope.currentThreadOn = true;
+		}
+		
+		$scope.backToForum(){
+			$scope.currentThreadOn = false;
 		}
 	});
