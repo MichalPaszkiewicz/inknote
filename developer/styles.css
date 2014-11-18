@@ -60,9 +60,12 @@ html, body{
 	display:inline-block;
 }
 
+.forum div{
+	border-bottom: 1px solid black;
+}
+
 .forum div span{
 	min-width: 250px;
-	border-bottom: 1px solid black;
 	display: inline-block;
 	box-sizing: border-box;
 	height: 40px;
