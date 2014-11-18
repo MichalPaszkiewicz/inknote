@@ -23,6 +23,9 @@ var developerKingdomModule = angular.module('app', []).
 		
 		$scope.addPost(thread){
 			$scope.currentThread.push({user: $scope.currentUser, message: $scope.newPost});
+			
+			$scope.currentUser = "";
+			$scope.newPost = "";
 		}
 		
 		$scope.currentUser = "";
