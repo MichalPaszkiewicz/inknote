@@ -27,7 +27,7 @@
 					<h1>Todo: coming soon!</h1>	
 					
 					<ul>
-						<li ng-repeat="thread in forum.threads" ng-click="currentThread = thread">
+						<li ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
 							<div>{{thread.subject}}</div>
 							<ul>
 								<li ng-repeat="post in thread.posts">
