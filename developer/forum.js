@@ -20,4 +20,11 @@ var developerKingdomModule = angular.module('app', []).
 		$scope.backToForum = function(){
 			$scope.currentThreadOn = false;
 		}
+		
+		$scope.addPost(thread){
+			$scope.currentThread.push({user: $scope.currentUser, message: $scope.newPost});
+		}
+		
+		$scope.currentUser = "";
+		$scope.newPost = "";
 	});
