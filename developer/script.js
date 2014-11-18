@@ -17,7 +17,7 @@ var forumModule = angular.module('app', []).
 			$scope.currentThreadOn = true;
 		}
 		
-		$scope.backToForum(){
+		$scope.backToForum = function(){
 			$scope.currentThreadOn = false;
 		}
 	});
