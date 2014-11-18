@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				<div class="section" ng-show="currentSectionOn">
-					<h1>Guide -> {{currentSection.name}}</h1>
+					<h1>Guide => {{currentSection.name}}</h1>
 					<div ng-bind-html="to_trusted(currentSection.htmlText)"></div>
 					<div class="button" ng-click="backToSections()">Back</div>
 				</div>
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 				<div class="thread" ng-show="currentThreadOn">
-					<h1>Forum -> {{currentThread.subject}}</h1>
+					<h1>Discussions => {{currentThread.subject}}</h1>
 					<div class="table-div" ng-repeat="post in currentThread.posts">
 						<span>{{post.user}}</span><span>{{post.message}}</span>
 					</div>
