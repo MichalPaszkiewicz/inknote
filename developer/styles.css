@@ -9,5 +9,16 @@ html, body{
 
 .header, .footer, .push{
 	height: 150px;
+}
+
+.header, .footer{
 	background: black;
+}
+
+.push, .footer{
+	clear: both;
+}
+
+.footer{
+	margin-top: -150px;
 }
