@@ -27,10 +27,10 @@
 					<h1>Todo: coming soon!</h1>	
 					
 					<ul>
-						<li ng-repeat="thread in forum.threads">
+						<li ng-repeat="thread in forum.threads" ng-click="currentThread = thread">
 							<div>{{thread.subject}}</div>
 							<ul>
-								<li ng-repeat="post in thread.posts" ng-click="currentThread = thread">
+								<li ng-repeat="post in thread.posts">
 									<span>{{post.user}}</span><span>{{post.message}}</span>
 								</li>
 							</ul>
