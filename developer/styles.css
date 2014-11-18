@@ -75,7 +75,7 @@ html, body{
 }
 
 .forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
-	min-width: 250px;
+	width: 250px;
 	display: inline-block;
 	box-sizing: border-box;
 	height: 40px;
