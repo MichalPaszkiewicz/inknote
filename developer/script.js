@@ -2,6 +2,9 @@
 
 
 var forumModule = angular.module('app', []).
+	controller("guideCtrl", function guideCtrl($scope, $window){
+		
+	}).
 	controller("forumCtrl", function forumCtrl($scope, $window){
 		
 		$scope.forum = {
