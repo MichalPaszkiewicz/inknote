@@ -7,6 +7,10 @@ html, body{
 	min-height: 100%;
 }
 
+.header{
+	color: white;
+}
+
 .header, .footer, .push{
 	height: 70px;
 }
