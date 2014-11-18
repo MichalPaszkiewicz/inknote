@@ -28,6 +28,13 @@ html, body{
 	margin-top: -70px;
 }
 
+.footer a{
+	color: white;
+	font-size: 25px;
+	margin: 20px;
+	display: inline-block;
+}
+
 .header h1{
 	text-transform: uppercase;
 	font-family: fantasy;
