@@ -62,7 +62,7 @@ html, body{
 	box-sizing: border-box;
 }
 
-.forum div, .sessions div, .thread div, .session div{
+.forum div, .sections div, .thread div, .section div{
 	border-bottom: 1px solid black;
 }
 
@@ -70,7 +70,7 @@ html, body{
 	background: lightgray;
 }
 
-.forum div span, .sessions div span, .thread div span, .session div span{
+.forum div span, .sections div span, .thread div span, .section div span{
 	min-width: 250px;
 	display: inline-block;
 	box-sizing: border-box;
