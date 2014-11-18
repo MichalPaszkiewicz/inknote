@@ -11,4 +11,7 @@ var forumModule = angular.module('app', []).
 		
 		$scope.currentThread = {};
 		
+		$scope.setThread = function(thread){
+			$scope.currentThread = thread;
+		}
 	});
