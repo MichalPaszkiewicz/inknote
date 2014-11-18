@@ -24,7 +24,7 @@
 			</div>
 			
 			<div class="content-container" ng-controller="guideCtrl">
-				<div class="sections">
+				<div class="sections" ng-show="!currentSectionOn">
 					<h1>Guide</h1>	
 					<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
 						<span>{{section.name}}</span>
@@ -36,7 +36,7 @@
 					<div class="button" ng-click="backToSections()">Back</div>
 				</div>
 			</div><div class="content-container" ng-controller="forumCtrl">
-				<div class="forum">
+				<div class="forum" ng-show="!currentThreadOn">
 					<h1>Discussions</h1>	
 					<div class="first-line table-div">
 						<span>Subject</span><span>Started by</span>
