@@ -87,3 +87,7 @@ html, body{
 	cursor: pointer;
 	box-shadow: 0 0 5px 1px rgb(90, 35, 90);
 }
+
+.button:hover{
+	background: black;
+}
