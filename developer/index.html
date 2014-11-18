@@ -32,11 +32,13 @@
 						<span>{{thread.subject}}</span><span>{{thread.posts[0].user}}</span>
 					</div>
 				</div>
-				<div class="thread">
+				<div class="thread" ng-show="currentThreadOn">
 					<h1>{{currentThread.subject}}</h1>
 					<div ng-repeat="post in currentThread.posts">
 							<span>{{post.user}}</span><span>{{post.message}}</span>
 					</div>
+					
+					<div ng-click="backToForum()">Back</div>
 				</div>
 			</div>
 			
