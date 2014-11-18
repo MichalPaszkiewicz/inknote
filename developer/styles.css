@@ -78,16 +78,16 @@ html, body{
 }
 
 .button{
-	background: rgb(73, 34, 112);
+	background: gray;
 	display: inline-block;
 	padding: 15px;
 	margin: 10px;
 	border-radius: 10px;
 	color: white;
 	cursor: pointer;
-	box-shadow: 0 0 5px 1px rgb(90, 35, 90);
+	box-shadow: 0 0 5px 1px black;
 }
 
 .button:hover{
-	background: black;
+	background: darkgray;
 }
