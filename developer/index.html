@@ -27,9 +27,10 @@
 				
 				<ul>
 					<li ng-repeat="thread in forum.threads">
+						<div>{{thread.subject}}</div>
 						<ul>
 							<li ng-repeat="post in thread.posts">
-								
+								<span>{{post.user}}</span><span>{{post.message}}</span>
 							</li>
 						</ul>
 					</li>
