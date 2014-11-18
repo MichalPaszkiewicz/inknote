@@ -114,6 +114,11 @@ html, body{
 	padding: 10px;
 }
 
+.new-post input{
+	margin: 10px;
+	padding: 5px;
+}
+
 .new-post textarea{
 	clear: both;
 	display: block;
