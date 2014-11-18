@@ -8,7 +8,7 @@ html, body{
 }
 
 .header, .footer, .push{
-	height: 150px;
+	height: 70px;
 }
 
 .header, .footer{
@@ -20,5 +20,5 @@ html, body{
 }
 
 .footer{
-	margin-top: -150px;
+	margin-top: -70px;
 }
