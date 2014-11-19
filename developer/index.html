@@ -19,12 +19,12 @@
 		</script>
 	</head>
 	<body>
-		<div class="main-container" ng-controller="layoutCtrl">
+		<div class="main-container" ng-controller="layoutCtrl" ng-class="{'full-width': fullWidth}">
 			<div class="header">
 				<h1>Developer<span>Kingdom</span></h1>
 			</div>
 			
-			<div class="content-container" ng-controller="guideCtrl" ng-style="{width: fullWidth}">
+			<div class="content-container" ng-controller="guideCtrl">
 				<div class="sections" ng-show="!currentSectionOn">
 					<h1>Guide</h1>	
 					<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
