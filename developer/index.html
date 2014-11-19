@@ -5,6 +5,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
 		<script src="forum.js"></script>
 		<script src="guide.js"></script>
+		<script src="layout.js"></script>
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		
 		<script>
@@ -18,12 +19,12 @@
 		</script>
 	</head>
 	<body>
-		<div class="main-container">
+		<div class="main-container" ng-controller="layoutCtrl">
 			<div class="header">
 				<h1>Developer<span>Kingdom</span></h1>
 			</div>
 			
-			<div class="content-container" ng-controller="guideCtrl">
+			<div class="content-container" ng-controller="guideCtrl" ng-style="getSize()">
 				<div class="sections" ng-show="!currentSectionOn">
 					<h1>Guide</h1>	
 					<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
@@ -35,7 +36,7 @@
 					<div ng-bind-html="to_trusted(currentSection.htmlText)"></div>
 					<div class="button" ng-click="backToSections()">Back</div>
 				</div>
-			</div><div class="content-container" ng-controller="forumCtrl">
+			</div><div class="content-container" ng-controller="forumCtrl" ng-style="getSize()">
 				<div class="forum" ng-show="!currentThreadOn">
 					<h1>Discussions</h1>	
 					<div class="first-line table-div">
