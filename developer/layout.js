@@ -11,4 +11,10 @@ developerKingdomModule.
 				$scope.fullWidth = '50%';
 			}
 		}
+		
+		var w = angular.element($window);
+  
+		w.bind('resize', function () {
+			$scope.setSize();
+		});
 	});
