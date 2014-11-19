@@ -5,10 +5,10 @@ developerKingdomModule.
 
 		$scope.setSize = function(){
 			if($window.innerWidth <= 1410){
-				$scope.fullWidth = true;
+				$scope.fullWidth = '100%';
 			}
 			else{
-				$scope.fullWidth = false;
+				$scope.fullWidth = '50%';
 			}
 		}
 	});
