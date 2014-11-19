@@ -102,7 +102,7 @@ html, body{
 	cursor: pointer;
 }
 
-.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line), .forum div.table-div span:hover{
+.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line), .forum div.table-div span:not(.span-box):hover{
 	background: lightgray;
 }
 
