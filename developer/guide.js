@@ -51,6 +51,6 @@ developerKingdomModule.
 		}
 		
 		$scope.nextSection = function(){
-			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex() - 1];
+			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex() + 1];
 		}
 	})
