@@ -42,11 +42,11 @@
 				<div class="forum" ng-show="!currentThreadOn">
 					<h1>Discussions</h1>	
 					<div class="first-line table-div">
-						<span>Subject</span><span>Started by</span><span>@</span><span>Last post</span><span>@</span>
+						<span>Subject</span><span class="short">Started by</span><span>@</span><span class="short">Last post</span><span>@</span>
 					</div>
 					<div class="table-container">
 						<div class="table-div" ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
-							<span>{{thread.subject}}</span><span>{{thread.posts[0].user}}</span><span>{{thread.posts[0].time}}</span><span>{{thread.posts[thread.posts.length - 1].user}}</span><span>{{thread.posts[thread.posts.length - 1].time}}</span>
+							<span>{{thread.subject}}</span><span class="short">{{thread.posts[0].user}}</span><span>{{thread.posts[0].time}}</span><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span>{{thread.posts[thread.posts.length - 1].time}}</span>
 						</div>
 					</div>
 				</div>
