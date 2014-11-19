@@ -49,7 +49,7 @@
 						<span  ng-click="predicate ='subject';reverse=!reverse">Subject</span><span class="short" ng-click="predicate ='posts[0].user';reverse=!reverse">Started by</span><span ng-click="predicate ='posts[0].time';reverse=!reverse">@</span><span class="short">Last post</span><span>@</span>
 					</div>
 					<div class="table-container">
-						<div class="table-div" ng-repeat="thread in forum.threads | filter:searchText" ng-click="setThread(thread)">
+						<div class="table-div" ng-repeat="thread in forum.threads | filter:searchText | orderBy:predicate:reverse" ng-click="setThread(thread)">
 							<span>{{thread.subject}}</span><span class="short">{{thread.posts[0].user}}</span><span>{{thread.posts[0].time}}</span><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span>{{thread.posts[thread.posts.length - 1].time}}</span>
 						</div>
 					</div>
