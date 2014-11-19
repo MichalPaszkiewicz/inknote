@@ -42,6 +42,8 @@
 					<h1>Guide → {{currentSection.name}}</h1>
 					<div ng-bind-html="to_trusted(currentSection.htmlText)"></div>
 					<div class="button" ng-click="backToSections()">Back</div>
+					<div class="button" ng-click="previousSection()" ng-hide="currentSectionIsFirst()">Previous</div>
+					<div class="button" ng-click="nextSection()" ng-hide="currentSectionIsLast()">Next</div>
 				</div>
 			</div><div class="content-container" ng-controller="forumCtrl">
 				<div class="forum" ng-show="!currentThreadOn">
