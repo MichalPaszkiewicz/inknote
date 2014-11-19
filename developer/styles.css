@@ -4,6 +4,10 @@ html, body{
 	font-family: arial;
 }
 
+.bold{
+	font-weight: bold;
+}
+
 .main-container{
 	min-height: 100%;
 }
