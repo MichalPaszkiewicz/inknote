@@ -5,7 +5,7 @@ developerKingdomModule.
 			$scope.fullWidth = ($window.innerWidth <= 1410);
 		}
 		
-		$scope.getSize = function(){
+		$scope.getSize = function($window){
 			return ($window.innerWidth <= 1410)
 		}
 		
