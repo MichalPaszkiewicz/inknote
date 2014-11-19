@@ -24,7 +24,7 @@
 				<h1>Developer<span>Kingdom</span></h1>
 			</div>
 			
-			<div class="content-container" ng-controller="guideCtrl" ng-style="getSize()">
+			<div class="content-container" ng-controller="guideCtrl" ng-style="{width: fullWidth}">
 				<div class="sections" ng-show="!currentSectionOn">
 					<h1>Guide</h1>	
 					<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
@@ -36,7 +36,7 @@
 					<div ng-bind-html="to_trusted(currentSection.htmlText)"></div>
 					<div class="button" ng-click="backToSections()">Back</div>
 				</div>
-			</div><div class="content-container" ng-controller="forumCtrl" ng-style="getSize()">
+			</div><div class="content-container" ng-controller="forumCtrl" ng-style="{width: fullWidth}">
 				<div class="forum" ng-show="!currentThreadOn">
 					<h1>Discussions</h1>	
 					<div class="first-line table-div">
