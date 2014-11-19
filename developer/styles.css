@@ -112,11 +112,6 @@ html, body{
 .first-line{
 	font-weight: bold;
 	letter-spacing: 1.5px;
-	min-height: 40px;
-}
-
-.forum div.table-div.first-line span{
-	line-height: 16px;
 }
 
 .forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
