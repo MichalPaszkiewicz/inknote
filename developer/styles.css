@@ -8,6 +8,11 @@ html, body{
 	font-weight: bold;
 }
 
+.centalic{
+	text-align: center;
+	font-style: italic;
+}
+
 .main-container{
 	min-height: 100%;
 }
