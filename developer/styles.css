@@ -97,7 +97,7 @@ html, body{
 }
 
 div.table-container{
-	max-height: 70%;
+	max-height: 50%;
 	overflow-y: auto;
 }
 
