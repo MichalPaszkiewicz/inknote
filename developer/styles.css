@@ -98,11 +98,11 @@ html, body{
 	border-bottom: 1px solid black;
 }
 
-.forum div.table-div:not(.first-line), .sections div.table-div:not(.first-line){
+.forum div.table-div, .sections div.table-div{
 	cursor: pointer;
 }
 
-.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line){
+.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line), .forum div.table-div span:hover{
 	background: lightgray;
 }
 
