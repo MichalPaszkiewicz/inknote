@@ -1,12 +1,14 @@
 developerKingdomModule.
 	controller("layoutCtrl", function layoutCtrl($scope, $window){
 
-		$scope.getSize = function(){
+		$scope.fullWidth = false;
+
+		$scope.setSize = function(){
 			if($window.innerWidth <= 1410){
-				return "width: 100%";
+				$scope.fullWidth = true;
 			}
 			else{
-				return "width: 50%";
+				$scope.fullWidth = false;
 			}
 		}
 	});
