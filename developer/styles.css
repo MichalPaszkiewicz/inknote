@@ -70,6 +70,10 @@ html, body{
 	box-sizing: border-box;
 }
 
+.full-width .content-container{
+	width: 100%;
+}
+
 .forum div.table-div, .sections div.table-div, .thread div.table-div, .section div.table-div{
 	border-bottom: 1px solid black;
 }
