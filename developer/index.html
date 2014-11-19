@@ -46,7 +46,7 @@
 				<div class="forum" ng-show="!currentThreadOn">
 					<h1>Discussions</h1>	
 					<div class="first-line table-div">
-						<span  ng-click="predicate ='subject';reverse=!reverse">Subject</span><span class="short" ng-click="predicate ='posts[0].user';reverse=!reverse">Started by</span><span ng-click="predicate ='posts[0].time';reverse=!reverse">@</span><span class="short" ng-click="predicate ='posts[thread.posts.length - 1].user';reverse=!reverse">Last post</span><span ng-click="predicate ='posts[thread.posts.length - 1].time';reverse=!reverse">@</span>
+						<span  ng-click="predicate ='subject';reverse=!reverse">Subject</span><span class="short" ng-click="predicate ='posts[0].user';reverse=!reverse">Started by</span><span ng-click="predicate ='posts[0].time';reverse=!reverse">@</span><span class="short" ng-click="predicate ='posts[posts.length - 1].user';reverse=!reverse">Last post</span><span ng-click="predicate ='posts[posts.length - 1].time';reverse=!reverse">@</span>
 					</div>
 					<div class="table-container">
 						<div class="table-div" ng-repeat="thread in forum.threads | filter:searchText | orderBy:predicate:reverse" ng-click="setThread(thread)">
