@@ -46,4 +46,5 @@ var developerKingdomModule = angular.module('app', []).
 		$scope.currentUser = "";
 		$scope.newPost = "";
 		$scope.newSubject = "";
+		$scope.predicate = '';
 	});
