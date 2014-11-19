@@ -25,7 +25,7 @@ var developerKingdomModule = angular.module('app', []).
 			if($scope.currentUser == "" || $scope.currentUser == null){
 				$scope.currentUser = "Guest";
 			}
-			$scope.currentThread.posts.push({user: $scope.currentUser, message: $scope.newPost});
+			$scope.currentThread.posts.push({user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()});
 			
 			$scope.newPost = "";
 		}
