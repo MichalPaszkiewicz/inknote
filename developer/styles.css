@@ -86,6 +86,11 @@ html, body{
 	background: lightgray;
 }
 
+.first-line{
+	font-weight: bold;
+	letter-spacing: 1.5px;
+}
+
 .forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
 	width: 200px;
 	display: inline-block;
