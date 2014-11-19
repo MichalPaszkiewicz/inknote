@@ -1,16 +1,16 @@
 developerKingdomModule.
 	controller("layoutCtrl", function layoutCtrl($scope, $window){
 
-		$scope.fullWidth = false;
+		$scope.fullWidth = false || getSize();
 
 		$scope.setSize = function(){
-			if($window.innerWidth <= 1410){
-				$scope.fullWidth = true;
-			}
-			else{
-				$scope.fullWidth = false;
-			}
+			return ($window.innerWidth <= 1410);
 		}
+		
+		$scope.getSize = function(){
+			return ($window.innerWidth <= 1410)
+		}
+		
 		
 		var w = angular.element($window);
   
