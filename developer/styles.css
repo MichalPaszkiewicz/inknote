@@ -112,13 +112,20 @@ html, body{
 }
 
 .forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
-	width: 200px;
 	display: inline-block;
 	box-sizing: border-box;
 	vertical-align: middle;
 	line-height: 20px;
 	padding: 10px;
 	font-size: 14px;
+}
+
+span.span-box{
+	display: inline-block;
+}
+
+div.table-div span.normal{
+	width: 200px;
 }
 
 div.table-div span.short{
