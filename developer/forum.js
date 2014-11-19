@@ -30,6 +30,17 @@ var developerKingdomModule = angular.module('app', []).
 			$scope.newPost = "";
 		}
 		
+		$scope.addThread = function(){
+			if($scope.currentUser == "" || $scope.currentUser == null){
+				$scope.currentUser = "Guest";
+			}
+			$scope.forum.threads.push({
+				subject: $scope.newSubject,
+				posts: [{user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()}]
+			});
+		}
+		
 		$scope.currentUser = "";
 		$scope.newPost = "";
+		$scope.newSubject = "";
 	});
