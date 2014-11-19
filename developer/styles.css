@@ -95,7 +95,7 @@ html, body{
 	width: 200px;
 	display: inline-block;
 	box-sizing: border-box;
-	vertical-align: top;
+	vertical-align: middle;
 	line-height: 20px;
 	padding: 10px;
 	font-size: 14px;
