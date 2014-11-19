@@ -96,6 +96,10 @@ html, body{
 	font-size: 16px;
 }
 
+span.short{
+	width: 110px;
+}
+
 div.table-container{
 	max-height: 50%;
 	overflow-y: auto;
