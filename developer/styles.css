@@ -122,6 +122,7 @@ html, body{
 
 span.span-box{
 	display: inline-block;
+	padding: 0;
 }
 
 div.table-div span.normal{
