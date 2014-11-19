@@ -44,6 +44,7 @@ developerKingdomModule.
 		
 		$scope.previousSection = function(){
 			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex - 1];
+			$scope.$apply($scope.currentSection);
 		}
 		
 		$scope.currentSectionIsLast = function(){
@@ -52,5 +53,6 @@ developerKingdomModule.
 		
 		$scope.nextSection = function(){
 			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex - 1];
+			$scope.$apply($scope.currentSection);
 		}
 	})
