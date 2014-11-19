@@ -25,14 +25,14 @@
 			</div>
 			
 			<div>
-				<input ng-model="blah">
+				<input ng-model="searchText">
 			</div>
 			
 			<div class="content-container" ng-controller="guideCtrl">
 				<div class="sections" ng-show="!currentSectionOn">
 					<h1>Guide</h1>	
 					<div class="table-container">
-						<div class="table-div" ng-repeat="section in sections" ng-click="setSection(section)">
+						<div class="table-div" ng-repeat="section in sections | filter:searchText" ng-click="setSection(section)">
 							<span>{{section.name}}</span>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 						<span>Subject</span><span class="short">Started by</span><span>@</span><span class="short">Last post</span><span>@</span>
 					</div>
 					<div class="table-container">
-						<div class="table-div" ng-repeat="thread in forum.threads" ng-click="setThread(thread)">
+						<div class="table-div" ng-repeat="thread in forum.threads | filter:searchText" ng-click="setThread(thread)">
 							<span>{{thread.subject}}</span><span class="short">{{thread.posts[0].user}}</span><span>{{thread.posts[0].time}}</span><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span>{{thread.posts[thread.posts.length - 1].time}}</span>
 						</div>
 					</div>
