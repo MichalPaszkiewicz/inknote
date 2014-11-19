@@ -53,6 +53,15 @@
 							<span>{{thread.subject}}</span><span class="short">{{thread.posts[0].user}}</span><span>{{thread.posts[0].time}}</span><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span>{{thread.posts[thread.posts.length - 1].time}}</span>
 						</div>
 					</div>
+					
+					<div class="new-post">
+						<span>Username: </span>
+						<input type="text" ng-model="currentUser"></input>
+						<input type="text" ng-model="newSubject"></input>
+						<textarea rows=4 type="text" ng-model="newPost"></textarea>
+					</div>
+					
+					<div class="button" ng-click="addThread()">Send</div>
 				</div>
 				<div class="thread" ng-show="currentThreadOn">
 					<h1>Discussions → {{currentThread.subject}}</h1>
