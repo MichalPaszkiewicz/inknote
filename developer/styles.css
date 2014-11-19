@@ -60,6 +60,26 @@ html, body{
 	letter-spacing: 30px;
 }
 
+.search-box{
+	margin-right: 25px;
+	position: absolute;
+	top: 90px;
+	right: 0;
+	color: white;
+	background: black;
+	padding: 5px 20px;
+	border-radius: 8px;
+	font-family: monospace;
+	text-transform: uppercase;
+	z-index: 1000;
+}
+
+.search-box input{
+	border-radius: 0 5px 5px 0;
+	border: 0;
+	padding: 3px;
+}
+
 .content-container{
 	vertical-align: top;
 	position: relative;
