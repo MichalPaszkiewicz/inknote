@@ -9,13 +9,13 @@ developerKingdomModule.
 			return ($window.innerWidth <= 1410)
 		}
 		
-		$scope.fullWidth = false || $scope.getSize();
+		$scope.fullWidth = $scope.getSize();
 
 		
 		var w = angular.element($window);
   
 		w.bind('resize', function () {
 			$scope.setSize();
-			$scope.$apply();
+			$scope.$apply( $scope.fullWidth );
 		});
 	});
