@@ -39,7 +39,7 @@ var developerKingdomModule = angular.module('app', []).
 				posts: [{user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()}]
 			});
 			
-			$scope.newPost = "";
+			$scope.newSubject = "";
 			$scope.newPost = "";
 		}
 		
