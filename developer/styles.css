@@ -87,17 +87,21 @@ html, body{
 }
 
 .forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
-	width: 250px;
+	width: 200px;
 	display: inline-block;
 	box-sizing: border-box;
 	vertical-align: top;
 	line-height: 20px;
 	padding: 10px;
-	font-size: 16px;
+	font-size: 14px;
 }
 
-span.short{
+div.table-div span.short{
 	width: 110px;
+}
+
+div.table-div span.long{
+	width: 250px;
 }
 
 div.table-container{
