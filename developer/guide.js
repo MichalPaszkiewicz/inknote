@@ -29,4 +29,28 @@ developerKingdomModule.
 		$scope.to_trusted = function(html_code) {
 		    return $sce.trustAsHtml(html_code);
 		}
+		
+		$scope.getCurrentSectionIndex = function(){
+			for(var i = 0; i < $scope.sections.length; i++){
+				if($scope.sections[i] == $scope.currentSection){
+					return i;
+				}
+			}
+		}
+		
+		$scope.currentSectionIsFirst = function(){
+			return $scope.getCurrentSectionIndex() == 0;
+		}
+		
+		$scope.previousSection = function(){
+			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex - 1];
+		}
+		
+		$scope.currentSectionIsLast = function(){
+			return $scope.getCurrentSectionIndex() == $scope.sections.length - 1;
+		}
+		
+		$scope.nextSection = function(){
+			$scope.currentSection = $scope.sections[$scope.getCurrentSectionIndex - 1];
+		}
 	})
