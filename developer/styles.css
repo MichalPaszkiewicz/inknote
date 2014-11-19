@@ -99,6 +99,7 @@ html, body{
 div.table-container{
 	max-height: 50%;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .thread, .section{
