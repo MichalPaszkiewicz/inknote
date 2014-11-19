@@ -84,7 +84,6 @@ html, body{
 	vertical-align: top;
 	position: relative;
 	width: 50%;
-	min-width: 700px;
 	display:inline-block;
 	padding: 10px;
 	box-sizing: border-box;
