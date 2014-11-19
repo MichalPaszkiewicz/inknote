@@ -16,5 +16,6 @@ developerKingdomModule.
   
 		w.bind('resize', function () {
 			$scope.setSize();
+			$scope.$apply();
 		});
 	});
