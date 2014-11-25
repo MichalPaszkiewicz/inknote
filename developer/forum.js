@@ -19,11 +19,22 @@ var developerKingdomModule = angular.module('app', []).
 		}
 		
 		$scope.fetch = function(){
-			var additionalPosts = [];	
-			$http({method: "GET", url: "http://localhost:3000/posts"})
-				.success(function(data, status){
-					additionalPosts = data;
-					console.log(additionalPosts);
+			var additionalThreads = [];
+			
+			$http({method: "GET", url: "http://localhost:3000/threads"}).success(function(data, status){
+				
+				additionalThreads = data;
+				for(var i = 0; i < additionalThreads; i++){
+					$scope.forum.threads.push(additionalThreads[i]);
+				}
+				
+				$scope.$apply();
+				
+				var additionalPosts = [];
+				$http({method: "GET", url: "http://localhost:3000/posts"})
+					.success(function(data, status){
+						additionalPosts = data;
+						console.log(additionalPosts);
 					
 					for(var i = 0; i < additionalPosts.length; i++){
 						var relevantThreadIndex = getThreadIndexFromID(additionalPosts[i].threadID);
@@ -34,6 +45,9 @@ var developerKingdomModule = angular.module('app', []).
 					additionalPosts = data || "Request failed";
 					console.log(additionalPosts);
 				});
+			});
+			
+
 		};
 		
 		$scope.fetch();
