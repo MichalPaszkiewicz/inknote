@@ -15,6 +15,10 @@ var developerKingdomModule = angular.module('app', []).
 				.success(function(data, status){
 					additionalPosts = data;
 					console.log(additionalPosts);
+					
+					for(var i = 0; i < additionalPosts.length; i++){
+						$scope.forum.threads[0].posts.push(additionalPosts[i]);
+					}
 				})
 				.error(function(data, status){
 					additionalPosts = data || "Request failed";
