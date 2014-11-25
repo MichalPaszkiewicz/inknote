@@ -43,7 +43,7 @@ var developerKingdomModule = angular.module('app', []).
 			.success(function(data, status){
 				additionalThreads = data;
 				console.log("Additional threads: " + additionalThreads)
-				for(var i = 0; i < additionalThreads; i++){
+				for(var i = 0; i < additionalThreads.length; i++){
 					$scope.forum.threads.push(additionalThreads[i]);
 				}
 			}).error(function(data, status){
