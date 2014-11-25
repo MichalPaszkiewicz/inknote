@@ -46,16 +46,13 @@ var developerKingdomModule = angular.module('app', []).
 				for(var i = 0; i < additionalThreads; i++){
 					$scope.forum.threads.push(additionalThreads[i]);
 				}
-								
-				$scope.$apply($scope.forum);
-				
-				$scope.getPosts();
 			}).error(function(data, status){
 				console.log("Threads Fail");	
 			});
 		};
 		
 		$scope.fetch();
+		$scope.getPosts();
 		
 		$scope.currentThread = {};
 		$scope.currentThreadOn = false;
