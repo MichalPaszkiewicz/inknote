@@ -2,12 +2,27 @@
 
 
 var developerKingdomModule = angular.module('app', []).
-	controller("forumCtrl", function forumCtrl($scope, $window){
+	controller("forumCtrl", function forumCtrl($scope, $window, $http){
 		
 		$scope.forum = {
 			threads: [{subject: "blah blah blah", posts: [{user: "user1", time:  (new Date()).toLocaleString(), message: "hi how u doing"}, {user: "user2", time:  (new Date()).toLocaleString(), message: "lol wassup"}]},
 				{subject: "how to add your own functions", posts: [{user: "user1", time: (new Date()).toLocaleString(), message: "asdfasdf"}, {user: "user2", time:  (new Date()).toLocaleString(), message: "j jajajajajajh"}]}]
 		};
+		
+		$scope.fetch = function(){
+			var additionalPosts = [];	
+			$http({method: "GET", url: "http://localhost:3000/posts"})
+				.success(function(data, status){
+					additionalPosts = data;
+					console.log(additionalPosts);
+				})
+				.error(function(data, status){
+					additionalPosts = data || "Request failed";
+					console.log(additionalPosts);
+				});
+		};
+		
+		$scope.fetch();
 		
 		$scope.currentThread = {};
 		$scope.currentThreadOn = false;
