@@ -5,8 +5,9 @@ var developerKingdomModule = angular.module('app', []).
 	controller("forumCtrl", function forumCtrl($scope, $window, $http){
 		
 		$scope.forum = {
-			threads: [{subject: "blah blah blah", posts: [{user: "user1", time:  (new Date()).toLocaleString(), message: "hi how u doing"}, {user: "user2", time:  (new Date()).toLocaleString(), message: "lol wassup"}]},
-				{subject: "how to add your own functions", posts: [{user: "user1", time: (new Date()).toLocaleString(), message: "asdfasdf"}, {user: "user2", time:  (new Date()).toLocaleString(), message: "j jajajajajajh"}]}]
+			threads: [{subject: "blah blah blah", posts: []},
+				{subject: "how to add your own functions", posts: []}
+			]
 		};
 		
 		$scope.fetch = function(){
