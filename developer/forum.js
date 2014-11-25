@@ -5,10 +5,18 @@ var developerKingdomModule = angular.module('app', []).
 	controller("forumCtrl", function forumCtrl($scope, $window, $http){
 		
 		$scope.forum = {
-			threads: [{subject: "blah blah blah", posts: []},
+			threads: [{subject: "blah blah blah", id: "1",  posts: []},
 				{subject: "how to add your own functions", posts: []}
 			]
 		};
+		
+		var getThreadIndexFromID = function(id){
+			for(var i = 0; i < $scope.forum.threads.length; i++){
+				if($scope.forum.threads[i].id == id){
+					return i;
+				}	
+			}
+		}
 		
 		$scope.fetch = function(){
 			var additionalPosts = [];	
@@ -18,7 +26,8 @@ var developerKingdomModule = angular.module('app', []).
 					console.log(additionalPosts);
 					
 					for(var i = 0; i < additionalPosts.length; i++){
-						$scope.forum.threads[0].posts.push(additionalPosts[i]);
+						var relevantThreadIndex = getThreadIndexFromID(additionalPosts[i].threadID);
+						$scope.forum.threads[relevantThreadIndex].posts.push(additionalPosts[i]);
 					}
 				})
 				.error(function(data, status){
