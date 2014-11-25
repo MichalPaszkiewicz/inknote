@@ -5,9 +5,7 @@ var developerKingdomModule = angular.module('app', []).
 	controller("forumCtrl", function forumCtrl($scope, $window, $http){
 		
 		$scope.forum = {
-			threads: [{subject: "blah blah blah", id: "1",  posts: []},
-				{subject: "how to add your own functions", posts: []}
-			]
+			threads: []
 		};
 		
 		var getThreadIndexFromID = function(id){
