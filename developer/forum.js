@@ -46,7 +46,7 @@ var developerKingdomModule = angular.module('app', []).
 				$scope.currentUser = "Guest";
 			}
 			
-			var postObject = {user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()};
+			var postObject = {user: $scope.currentUser, message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')};
 			
 			$scope.currentThread.posts.push(postObject);
 			
@@ -62,7 +62,7 @@ var developerKingdomModule = angular.module('app', []).
 			}
 			$scope.forum.threads.push({
 				subject: $scope.newSubject,
-				posts: [{user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()}]
+				posts: [{user: $scope.currentUser, message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}]
 			});
 			
 			$scope.newSubject = "";
