@@ -34,8 +34,6 @@ var developerKingdomModule = angular.module('app', []).
 				additionalPosts = data || "Request failed";
 				console.log(additionalPosts);
 			});
-			
-			$scope.$apply($scope.forum);
 		};
 		
 		$scope.fetch = function(){
@@ -48,8 +46,10 @@ var developerKingdomModule = angular.module('app', []).
 				for(var i = 0; i < additionalThreads; i++){
 					$scope.forum.threads.push(additionalThreads[i]);
 				}
-				$scope.getPosts();
+								
+				$scope.$apply($scope.forum);
 				
+				$scope.getPosts();
 			}).error(function(data, status){
 				console.log("Threads Fail");	
 			});
