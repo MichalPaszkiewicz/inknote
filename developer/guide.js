@@ -22,6 +22,25 @@ developerKingdomModule.
 		},
 		{name: "Adding plugins", htmlText: "<h3>Na na na na na nana heeeeeey jude</h3><h3>Hey judey judey jude</h3>"}];
 		
+		$scope.getForumSections = function(){
+			var additionalPosts = [];	
+			$http({method: "GET", url: "http://localhost:3000/threads"})
+				.success(function(data, status){
+					additionalThreads = data;
+					console.log(additionalThreads);
+					
+					for(var i = 0; i < additionalThreads.length; i++){
+						$scope.sections.push(additionalThreads[i]);
+					}
+				})
+				.error(function(data, status){
+					additionalPosts = data || "Request failed";
+					console.log(additionalPosts);
+				});
+		};
+		
+		$scope.getForumSections();
+		
 		$scope.currentSection = {};
 		$scope.currentSectionOn = false;
 		
