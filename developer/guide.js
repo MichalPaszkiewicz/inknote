@@ -27,7 +27,6 @@ developerKingdomModule.
 			$http({method: "GET", url: "http://localhost:3000/guide"})
 				.success(function(data, status){
 					additionalGuides = data;
-					console.log(additionalGuides);
 					
 					for(var i = 0; i < additionalGuides.length; i++){
 						$scope.sections.push(additionalGuides[i]);
