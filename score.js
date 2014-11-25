@@ -111,11 +111,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			localStorage.setItem("inknote-files", JSON.stringify(tempFiles));
 		}
 		
-		// get a new unique id
-		function newID(){
-			return (new Date).getTime() + "" + Math.floor(100 * Math.random());
-		}
-		
 		// get a file from id
 		function getFile(id){
 			for(var i = 0; i < $scope.files.length; i++){
