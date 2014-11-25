@@ -44,8 +44,14 @@ var developerKingdomModule = angular.module('app', []).
 			if($scope.currentUser == "" || $scope.currentUser == null){
 				$scope.currentUser = "Guest";
 			}
-			$scope.currentThread.posts.push({user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()});
 			
+			var postObject = {user: $scope.currentUser, message: $scope.newPost, time: (new Date()).toLocaleString()};
+			
+			$scope.currentThread.posts.push(postObject);
+			
+			var stringifiedPost = JSON.stringify(postObject);
+			$http({method: "POST", url: "http://localhost:3000/posts", data: stringifiedPost})
+
 			$scope.newPost = "";
 		}
 		
