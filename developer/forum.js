@@ -24,6 +24,7 @@ var developerKingdomModule = angular.module('app', []).
 			$http({method: "GET", url: "http://localhost:3000/threads"}).success(function(data, status){
 				
 				additionalThreads = data;
+				console.log("Additional threads: " + additionalThreads)
 				for(var i = 0; i < additionalThreads; i++){
 					$scope.forum.threads.push(additionalThreads[i]);
 				}
@@ -33,7 +34,7 @@ var developerKingdomModule = angular.module('app', []).
 				$http({method: "GET", url: "http://localhost:3000/posts"})
 					.success(function(data, status){
 						additionalPosts = data;
-						console.log(additionalPosts);
+						console.log("Additional posts: " + additionalPosts);
 					
 					for(var i = 0; i < additionalPosts.length; i++){
 						var relevantThreadIndex = getThreadIndexFromID(additionalPosts[i].threadID);
@@ -44,9 +45,9 @@ var developerKingdomModule = angular.module('app', []).
 					additionalPosts = data || "Request failed";
 					console.log(additionalPosts);
 				});
+			}).error(function(data, status){
+				console.log("Threads Fail");	
 			});
-			
-
 		};
 		
 		$scope.fetch();
