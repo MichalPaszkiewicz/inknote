@@ -34,6 +34,8 @@ var developerKingdomModule = angular.module('app', []).
 				additionalPosts = data || "Request failed";
 				console.log(additionalPosts);
 			});
+			
+			$scope.$apply($scope.forum);
 		};
 		
 		$scope.fetch = function(){
