@@ -4,6 +4,10 @@
 var developerKingdomModule = angular.module('app', []).
 	controller("forumCtrl", function forumCtrl($scope, $window, $http){
 		
+		function newID(){
+			return (new Date).getTime() + "" + Math.floor(100 * Math.random());
+		}
+		
 		$scope.forum = {
 			threads: []
 		};
@@ -69,7 +73,7 @@ var developerKingdomModule = angular.module('app', []).
 				$scope.currentUser = "Guest";
 			}
 			
-			var postObject = {user: $scope.currentUser, message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')};
+			var postObject = {user: $scope.currentUser, threadID: thread.id, message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')};
 			
 			$scope.currentThread.posts.push(postObject);
 			
@@ -83,10 +87,20 @@ var developerKingdomModule = angular.module('app', []).
 			if($scope.currentUser == "" || $scope.currentUser == null){
 				$scope.currentUser = "Guest";
 			}
-			$scope.forum.threads.push({
-				subject: $scope.newSubject,
-				posts: [{user: $scope.currentUser, message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}]
-			});
+			
+			var relevantThreadID = newID();
+			
+			var postObject = {user: $scope.currentUser, threadID: relevantThreadID,  message: $scope.newPost, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')};
+			var threadObject = {id: relevantThreadID, subject: $scope.newSubject,	posts: []}
+			
+			var stringifiedThread = JSON.stringify(threadObject);
+			$http({method: "POST", url: "http://localhost:3000/threads", data: stringifiedThread});
+			
+			var stringifiedPost = JSON.stringify(postObject);
+			$http({method: "POST", url: "http://localhost:3000/posts", data: stringifiedPost});
+			
+			threadObject.posts.push(postObject);
+			$scope.forum.threads.push(threadObject);
 			
 			$scope.newSubject = "";
 			$scope.newPost = "";
