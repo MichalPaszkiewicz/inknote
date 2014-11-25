@@ -23,14 +23,11 @@ var developerKingdomModule = angular.module('app', []).
 			
 			$http({method: "GET", url: "http://localhost:3000/threads"}).success(function(data, status){
 				
-				$scope.$apply(function()
-					{
-						additionalThreads = data;
-						for(var i = 0; i < additionalThreads; i++){
-							$scope.forum.threads.push(additionalThreads[i]);
-						}
-					}
-				);
+				additionalThreads = data;
+				for(var i = 0; i < additionalThreads; i++){
+					$scope.forum.threads.push(additionalThreads[i]);
+				}
+	
 				
 				var additionalPosts = [];
 				$http({method: "GET", url: "http://localhost:3000/posts"})
