@@ -1,5 +1,5 @@
 developerKingdomModule.
-	controller("guideCtrl", function guideCtrl($scope, $window, $sce){
+	controller("guideCtrl", function guideCtrl($scope, $window, $sce, $http){
 		
 		$scope.sections = [{name: "Introduction", htmlText: "<p>This site is a guide to all developers wishing to contribute to or integrate with the inknote project.</p>"
 								+ "<p>The aim of this project is to create a free, open source, browser based scoring program that will be both user and developer friendly.</p>"
