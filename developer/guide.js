@@ -23,19 +23,19 @@ developerKingdomModule.
 		{name: "Adding plugins", htmlText: "<h3>Na na na na na nana heeeeeey jude</h3><h3>Hey judey judey jude</h3>"}];
 		
 		$scope.getForumSections = function(){
-			var additionalPosts = [];	
-			$http({method: "GET", url: "http://localhost:3000/threads"})
+			var additionalGuides = [];	
+			$http({method: "GET", url: "http://localhost:3000/guide"})
 				.success(function(data, status){
-					additionalThreads = data;
-					console.log(additionalThreads);
+					additionalGuides = data;
+					console.log(additionalGuides);
 					
-					for(var i = 0; i < additionalThreads.length; i++){
-						$scope.sections.push(additionalThreads[i]);
+					for(var i = 0; i < additionalGuides.length; i++){
+						$scope.sections.push(additionalGuides[i]);
 					}
 				})
 				.error(function(data, status){
-					additionalPosts = data || "Request failed";
-					console.log(additionalPosts);
+					additionalGuides = data || "Request failed";
+					console.log(additionalGuides);
 				});
 		};
 		
