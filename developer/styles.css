@@ -4,6 +4,10 @@ html, body{
 	font-family: arial;
 }
 
+.admin{
+	background: rgb(251, 242, 196);
+}
+
 .bold{
 	font-weight: bold;
 }
