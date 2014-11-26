@@ -22,7 +22,7 @@ var developerKingdomModule = angular.module('app', []).
 		
 		$scope.getPosts = function(){
 			var additionalPosts = [];
-			$http({method: "GET", url: "http://localhost:3000/posts"})
+			$http({method: "GET", url: serverURL + "/posts"})
 				.success(function(data, status){
 					additionalPosts = data;
 					console.log("Additional posts: " + additionalPosts);
@@ -41,7 +41,7 @@ var developerKingdomModule = angular.module('app', []).
 		$scope.fetch = function(){
 			var additionalThreads = [];
 			
-			$http({method: "GET", url: "http://localhost:3000/threads"})
+			$http({method: "GET", url: serverURL + "/threads"})
 			.success(function(data, status){
 				additionalThreads = data;
 				console.log("Additional threads: " + additionalThreads)
@@ -78,7 +78,7 @@ var developerKingdomModule = angular.module('app', []).
 			$scope.currentThread.posts.push(postObject);
 			
 			var stringifiedPost = JSON.stringify(postObject);
-			$http({method: "POST", url: "http://localhost:3000/posts", data: stringifiedPost})
+			$http({method: "POST", url: serverURL + "/posts", data: stringifiedPost})
 
 			$scope.newPost = "";
 		}
@@ -94,10 +94,10 @@ var developerKingdomModule = angular.module('app', []).
 			var threadObject = {id: relevantThreadID, subject: $scope.newSubject,	posts: []}
 			
 			var stringifiedThread = JSON.stringify(threadObject);
-			$http({method: "POST", url: "http://localhost:3000/threads", data: stringifiedThread});
+			$http({method: "POST", url: serverURL + "/threads", data: stringifiedThread});
 			
 			var stringifiedPost = JSON.stringify(postObject);
-			$http({method: "POST", url: "http://localhost:3000/posts", data: stringifiedPost});
+			$http({method: "POST", url: serverURL + "/posts", data: stringifiedPost});
 			
 			threadObject.posts.push(postObject);
 			$scope.forum.threads.push(threadObject);
