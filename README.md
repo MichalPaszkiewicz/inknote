@@ -28,7 +28,11 @@ Upcoming updates
 - Alternative display modes - e.g. keyboard blocks, phrase blocks.
 - Donate button.
 - About/faq information.
-- Forums.
+- Composer forums.
+
+Update 26/11/2014
+------------------
+- Developer guide and forum set up
 
 Update 17/11/2014
 ------------------
