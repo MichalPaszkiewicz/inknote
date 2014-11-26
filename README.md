@@ -7,6 +7,12 @@ http://www.michalpaszkiewicz.co.uk/inknote/
 
 Uses AngularJS, Html5 Canvas, PeerJS
 
+If you would like to contribute, please go ahead and fork, push, pull, etc!
+
+Please also visit the developer's forum:
+
+http://www.michalpaszkiewicz.co.uk/inknote/developer/
+
 Upcoming updates
 ------------------
 - Change note duration.
