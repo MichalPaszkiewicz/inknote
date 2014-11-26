@@ -5,7 +5,7 @@ developerKingdomModule.
 		
 		$scope.getForumSections = function(){
 			var additionalGuides = [];	
-			$http({method: "GET", url: "http://localhost:3000/guide"})
+			$http({method: "GET", url: serverURL + "/guide"})
 				.success(function(data, status){
 					additionalGuides = data;
 					
