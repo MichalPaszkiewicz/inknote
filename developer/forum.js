@@ -108,6 +108,15 @@ var developerKingdomModule = angular.module('app', []).
 			$scope.newThreadOn = false;
 		}
 		
+		$scope.isFixed = function(posts){
+			for(var i = 0; i < posts.length; i++){
+				if(posts[i].message.toLowerCase().indexOf('fixed') != -1 && posts[i].user == "Admin"){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		$scope.currentUser = "";
 		$scope.newPost = "";
 		$scope.newSubject = "";
