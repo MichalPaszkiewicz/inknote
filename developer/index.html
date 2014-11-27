@@ -78,14 +78,21 @@
 						</div>
 					</div>
 					
-					<div class="new-post">
-						<span>Username: </span>
-						<input type="text" ng-model="currentUser"></input>
-						<textarea rows=4 type="text" ng-model="newPost"></textarea>
+					<div class="fixed-screen" ng-show="isFixed(thread.posts)">
+						<div class="fixed-message">Fixed<span class="fixed"></span></div>
+						<div class="button" ng-click="backToForum()">Back</div>	
 					</div>
 					
-					<div class="button" ng-click="backToForum()">Back</div>
-					<div class="button" ng-click="addPost(currentThread)">Send</div>
+					<div class="new-post-wrapper" ng-hide="isFixed(thread.posts)">
+						<div class="new-post">
+							<span>Username: </span>
+							<input type="text" ng-model="currentUser"></input>
+							<textarea rows=4 type="text" ng-model="newPost"></textarea>
+						</div>
+						
+						<div class="button" ng-click="backToForum()">Back</div>
+						<div class="button" ng-click="addPost(currentThread)">Send</div>
+					</div>
 				</div>
 			</div>
 			
