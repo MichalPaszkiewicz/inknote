@@ -13,7 +13,9 @@ html, body{
 }
 
 .fixed{
-	color: green;
+	background: url(http://www.mooreadamsoncraig.co.uk/wp/wp-content/uploads/2012/03/tick-mark.jpg);
+	background-size: 20px;
+	background-repeat: no-repeat;
 }
 
 .bold{
