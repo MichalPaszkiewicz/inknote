@@ -162,7 +162,7 @@ input{
 	box-shadow: 0 0 6px 1px black;
 }
 
-.bug-reporter .button, .bug-reporter textarea{
+#bug-reporter .button, .bug-reporter textarea{
 	color: black;
 }
 
