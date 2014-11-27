@@ -19,6 +19,9 @@ html, body{
 .centalic{
 	text-align: center;
 	font-style: italic;
+	background: rgb(237, 237, 252);
+	padding: 12px 0;
+	border-radius: 8px;
 }
 
 .main-container{
