@@ -8,6 +8,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.logging = false;
 		$scope.logWithAlertify = false;
+		$scope.bugReport = false;
 		
 		var log = function(text, type){
 			if($scope.logging){ 
