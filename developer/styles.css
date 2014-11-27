@@ -215,3 +215,16 @@ div.table-container{
 	width: 100%;
 	max-width: 100%;
 }
+
+.fixed-message{
+	text-align: center;
+	padding: 30px 0;
+	background: rgb(101, 200, 101);
+	border-radius: 0 0 15px 15px;
+	font-family: fantasy;
+	text-transform: uppercase;
+	font-size: 40px;
+	letter-spacing: 15px;
+	color: white;
+	text-shadow: 3px 3px 5px black;
+}
