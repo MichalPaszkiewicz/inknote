@@ -78,12 +78,12 @@
 						</div>
 					</div>
 					
-					<div class="fixed-screen" ng-show="isFixed(thread.posts)">
+					<div class="fixed-screen" ng-show="isFixed(currentThread.posts)">
 						<div class="fixed-message">Fixed<span class="fixed"></span></div>
 						<div class="button" ng-click="backToForum()">Back</div>	
 					</div>
 					
-					<div class="new-post-wrapper" ng-show="!isFixed(thread.posts)">
+					<div class="new-post-wrapper" ng-show="!isFixed(currentThread.posts)">
 						<div class="new-post">
 							<span>Username: </span>
 							<input type="text" ng-model="currentUser"></input>
