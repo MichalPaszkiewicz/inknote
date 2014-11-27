@@ -16,6 +16,7 @@ html, body{
 	background: url(./images/mytick.png);
 	background-size: 20px;
 	background-repeat: no-repeat;
+	height: 40px;
 }
 
 .bold{
@@ -156,6 +157,14 @@ div.table-div span.normal{
 
 div.table-div span.short{
 	width: 110px;
+}
+
+div.table-div span.tick{
+	width: 63px;
+}
+
+div.table-div span.date{
+	width: 155px;
 }
 
 div.table-div span.long{
