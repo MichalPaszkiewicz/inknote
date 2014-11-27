@@ -296,7 +296,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(actionSelection == null){ return; }
 			else if(actionSelection == "bar"){
-				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8));
+				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8)) - $scope.windowScroll;
 				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 			}
 			else if(actionSelection == "item"){
