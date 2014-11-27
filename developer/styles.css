@@ -12,6 +12,10 @@ html, body{
 	color: red;
 }
 
+.fixed{
+	color: green;
+}
+
 .bold{
 	font-weight: bold;
 }
