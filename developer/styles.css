@@ -12,7 +12,7 @@ html, body{
 	color: red;
 }
 
-.fixed, .fixed:hover, span.fixed, span.fixed:hover, .forum span.short.fixed:hover{
+.fixed, .fixed:hover, span.fixed, span.fixed:hover, .forum div.table-div span.short.fixed:hover{
 	background: url(http://www.mooreadamsoncraig.co.uk/wp/wp-content/uploads/2012/03/tick-mark.jpg);
 	background-size: 20px;
 	background-repeat: no-repeat;
