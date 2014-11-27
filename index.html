@@ -34,6 +34,14 @@
 				<div class="button" ng-click="toggleNewInstrument();" ng-enter="toggleNewInstrument();">Cancel</div>
 			</div>
 		</div>
+		<div id="bug-reporter" ng-show="bugReport = false">
+			<div>Please provide some information on your problem</div>
+			<textarea ng-model="bugMessage" ng-enter="submitBugReport();"></textarea>
+			<div class="button-container">
+				<div class="button" ng-click="bugReport = false;">Close</div>
+				<div class="button" ng-click="submitBugReport();">Send bug report</div>
+			</div>
+		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
 		  		<div class="menu-item">
@@ -252,6 +260,9 @@
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Help!</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name" ng-click="bugReport = true">Submit bug report</div>
 		  				</li>
 		  			</ul>
 		  		</div>
