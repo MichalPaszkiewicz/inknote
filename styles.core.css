@@ -144,3 +144,28 @@ input{
 	border: none;
 	box-shadow: 0 0 5px 2px rgb(130, 127, 176);
 }
+
+.bug-reporter{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	width: 340px;
+	height: 200px;
+	background: black;
+	color: white;
+	z-index: 100;
+	padding: 20px;
+	border-radius: 30px;
+	box-shadow: 0 0 6px 1px black;
+}
+
+.bug-reporter .button, .bug-reporter textarea{
+	color: black;
+}
+
+.bug-reporter textarea{
+	min-width: 100%;
+}
