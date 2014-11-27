@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					
-					<div class="button" ng-click="newThreadOn = true">Create new thread</div>
+					<div class="button" ng-click="newThreadOn = true" ng-show="!newThreadOn">Create new thread</div>
 					
 					<div class="create-thread" ng-show="newThreadOn">
 						<div class="new-post">
@@ -67,7 +67,7 @@
 							<span class="span-box"><span>Subject: </span><input type="text" ng-model="newSubject"></input></span>
 							<textarea rows=4 type="text" ng-model="newPost"></textarea>
 						</div>
-						<div class="button" ng-click="addThread()">New thread</div>
+						<div class="button" ng-click="newThreadOn = false">Cancel</div><div class="button" ng-click="addThread()">New thread</div>
 					</div>
 				</div>
 				<div class="thread" ng-show="currentThreadOn">
