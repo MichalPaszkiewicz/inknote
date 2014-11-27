@@ -13,7 +13,7 @@ html, body{
 }
 
 .fixed, .fixed:hover, span.fixed, span.fixed:hover, .forum div.table-div span.tick.fixed:hover{
-	background: url(./images/mytick.png);
+	background: url(./images/mytick.png) center;
 	background-size: 20px;
 	background-repeat: no-repeat;
 	height: 40px;
