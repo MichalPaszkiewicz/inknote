@@ -34,7 +34,7 @@
 				<div class="button" ng-click="toggleNewInstrument();" ng-enter="toggleNewInstrument();">Cancel</div>
 			</div>
 		</div>
-		<div id="bug-reporter" ng-show="bugReport">
+		<div id="bug-reporter" class="ng-hide" ng-show="bugReport">
 			<div>Please provide some information on your problem</div>
 			<textarea ng-model="bugMessage" ng-enter="submitBugReport();"></textarea>
 			<div class="button-container">
