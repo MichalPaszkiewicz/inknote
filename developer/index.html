@@ -54,7 +54,7 @@
 					</div>
 					<div class="table-container">
 						<div class="table-div" ng-class="{'bug':thread.subject.indexOf('bug') != -1}" ng-repeat="thread in forum.threads | filter:searchText | orderBy:predicate:reverse" ng-click="setThread(thread)">
-							<span class="normal bold">{{thread.subject}}</span><span class="span-box"><span class="span-box"><span class="short">{{thread.posts[0].user}}</span><span class="normal">{{thread.posts[0].time}}</span></span><span class="span-box"><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span class="normal">{{thread.posts[thread.posts.length - 1].time}}</span></span></span>
+							<span class="normal bold">{{thread.subject}}</span><span class="span-box"><span class="span-box"><span class="short">{{thread.posts[0].user}}</span><span class="normal">{{thread.posts[0].time}}</span></span><span class="span-box"><span class="short">{{thread.posts[thread.posts.length - 1].user}}</span><span class="normal">{{thread.posts[thread.posts.length - 1].time}}</span></span></span><span class="short fixed">{{isFixed(thread.posts) ? "V" : ""}}</span>
 						</div>
 					</div>
 					
