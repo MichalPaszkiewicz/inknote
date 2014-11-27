@@ -1,5 +1,5 @@
 var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
-	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout){
+	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout, $http){
 		var canvas = document.getElementById('canvas');
 		canvas.width = $window.innerWidth;
 		canvas.height = $window.innerHeight;
@@ -9,6 +9,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.logging = false;
 		$scope.logWithAlertify = false;
 		$scope.bugReport = false;
+		$scope.bugMessage = "";
 		
 		var log = function(text, type){
 			if($scope.logging){ 
@@ -666,6 +667,26 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			});
 			
 			return visibleItems == 1 && $scope.instruments[$scope.instruments.getIndexFromID(instrumentID)].visible;
+		}
+		
+		$scope.submitBugReport = function(){
+			if($scope.bugMessage == "" || $scope.bugMessage == null){
+				alert("Please write some information on the bug before submitting.");
+				return;
+			}
+			var currentUser = "Anonymous";
+			var relevantThreadID = newID();
+			
+			var postObject = {user: currentUser, threadID: relevantThreadID,  message: $scope.bugMessage, time: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')};
+			var threadObject = {id: relevantThreadID, subject: "Bug: #" + relevantThreadID,	posts: []}
+			
+			var stringifiedThread = JSON.stringify(threadObject);
+			$http({method: "POST", url: serverURL + "/threads", data: stringifiedThread});
+			
+			var stringifiedPost = JSON.stringify(postObject);
+			$http({method: "POST", url: serverURL + "/posts", data: stringifiedPost});
+			
+			$scope.bugMessage = "";
 		}
 	});
 	//.factory('Note', function( line ){	});
