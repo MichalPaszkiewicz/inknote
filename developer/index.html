@@ -58,14 +58,17 @@
 						</div>
 					</div>
 					
-					<div class="new-post">
-						<span class="span-box"><span>Username: </span>
-						<input type="text" ng-model="currentUser"></input></span>
-						<span class="span-box"><span>Subject: </span><input type="text" ng-model="newSubject"></input></span>
-						<textarea rows=4 type="text" ng-model="newPost"></textarea>
-					</div>
+					<div class="button" ng-click="newThreadOn = true">Create new thread</div>
 					
-					<div class="button" ng-click="addThread()">New thread</div>
+					<div class="create-thread" ng-show="newThreadOn">
+						<div class="new-post">
+							<span class="span-box"><span>Username: </span>
+							<input type="text" ng-model="currentUser"></input></span>
+							<span class="span-box"><span>Subject: </span><input type="text" ng-model="newSubject"></input></span>
+							<textarea rows=4 type="text" ng-model="newPost"></textarea>
+						</div>
+						<div class="button" ng-click="addThread()">New thread</div>
+					</div>
 				</div>
 				<div class="thread" ng-show="currentThreadOn">
 					<h1>Discussions → {{currentThread.subject}}</h1>
