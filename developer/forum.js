@@ -58,6 +58,7 @@ var developerKingdomModule = angular.module('app', []).
 		
 		$scope.currentThread = {};
 		$scope.currentThreadOn = false;
+		$scope.newThreadOn = false;
 		
 		$scope.setThread = function(thread){
 			$scope.currentThread = thread;
@@ -104,6 +105,7 @@ var developerKingdomModule = angular.module('app', []).
 			
 			$scope.newSubject = "";
 			$scope.newPost = "";
+			$scope.newThreadOn = false;
 		}
 		
 		$scope.currentUser = "";
