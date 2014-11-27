@@ -8,6 +8,10 @@ html, body{
 	background: rgb(251, 242, 196);
 }
 
+.bug{
+	color: red;
+}
+
 .bold{
 	font-weight: bold;
 }
