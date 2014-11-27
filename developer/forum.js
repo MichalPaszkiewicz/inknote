@@ -109,6 +109,7 @@ var developerKingdomModule = angular.module('app', []).
 		}
 		
 		$scope.isFixed = function(posts){
+			if(posts == undefined){return false;}
 			for(var i = 0; i < posts.length; i++){
 				if(posts[i].message.toLowerCase().indexOf('fixed') != -1 && posts[i].user == "Admin"){
 					return true;
