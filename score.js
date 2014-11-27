@@ -687,6 +687,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$http({method: "POST", url: serverURL + "/posts", data: stringifiedPost});
 			
 			$scope.bugMessage = "";
+			$scope.bugReport = false;
 		}
 	});
 	//.factory('Note', function( line ){	});
