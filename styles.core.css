@@ -166,6 +166,6 @@ input{
 	color: black;
 }
 
-.bug-reporter textarea{
-	min-width: 100%;
+#bug-reporter textarea{
+	min-width: 100% !important;
 }
