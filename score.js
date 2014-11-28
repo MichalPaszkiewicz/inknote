@@ -144,6 +144,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.instruments = file.instruments;
 			$scope.windowScroll = 0;
 			$scope.draw();
+			$scope.draw();
 		}
 		
 		//todo: migrate instruments to file object.
