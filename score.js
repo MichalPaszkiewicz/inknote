@@ -377,6 +377,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						else{
 							if(currentSelection.barIndex != 0){
 								currentSelection.barIndex--;
+								while(relevantInstrument.bars[currentSelection.barIndex].items.length = 0){
+									if(currentSelection.barIndex == 0){
+										itemFound = false;
+										return;
+									}
+									currentSelection.barIndex--;
+								}
 								currentSelection.itemIndex = relevantInstrument.bars[currentSelection.barIndex].items.length - 1;
 							}
 							else{
