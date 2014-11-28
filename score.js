@@ -536,11 +536,26 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.drawItem = function(bar, item)
 		{
 			if(item.type == "note" || item.type == undefined || item.type == null){
+				//draw the note
 				context.beginPath();
 				context.fillStyle = noteColour;
 				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
 				context.fill();
 				
+				//draw the stem
+				context.beginPath();
+				context.strokeStyle = noteColour;
+				if(item.var >= $scope.lineHeight/2){
+					context.moveTo(item.x + 3, bar.y + item.value);
+					context.lineTo(item.x + 3, bar.y + item.value - 20);
+					context.stroke();
+				}else{
+					context.moveTo(item.x - 3, bar.y + item.value);
+					context.lineTo(item.x - 3, bar.y + item.value + 20);
+					context.stroke();
+				}
+				
+				// draw mark showing which item is selected.
 				if($scope.selectedItemID == item.id){
 					context.beginPath();
 					context.arc(item.x,bar.y + item.value,12,0,2*Math.PI);
