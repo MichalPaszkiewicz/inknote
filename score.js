@@ -370,7 +370,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var itemFound = null;
 				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
-					while(itemFound = null){
+					while(itemFound == null){
 						if(currentSelection.itemIndex != 0){
 							currentSelection.itemIndex--;
 						}
