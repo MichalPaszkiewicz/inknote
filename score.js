@@ -359,6 +359,34 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		$scope.noteIndexChange = function(e){
+			if($scope.selectedItemID != null){
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
+				var relevantBar = relevantInstrument.bars[relevantBarIndex];
+				var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
+				//left keypress - move selected note one left
+				//todo find previous NOTE. currently could be any item.
+				if(e.which === 37){
+					if(relevantItemIndex != 0 && relevant){
+						$scope.selectedItemID = relevantBar.items[relevantItemIndex - 1].id;
+					}
+					else{
+						if(relevantBarIndex != 0){
+							$scope.selectedBarIndexID = relevantInstrument.bars[relevantBarIndex - 1].id;
+						}
+					}
+				}
+				//right keypress - move selected note one right
+				//todo find next NOTE. currently could be any item.
+				else if(e.which === 39){
+					
+				}
+				
+				$scope.draw();
+			}
+		}
+		
 		$scope.removeItem = function(bar, item){
 			var tempBar = {};
 			for(var i=0; i<$scope.instruments[0].bars.length; i++)
