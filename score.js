@@ -383,7 +383,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				//todo: add item if no item after this.
 				else if(e.which === 39){
 					if(relevantItemIndex != relevantBar.items.length - 1){
-						
+						$scope.selectedItemID = relevantBar.items[relevantItemIndex + 1].id;
 					}else{
 						$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
 						$scope.selectedItemID = relevantInstrument.bars[relevantBarIndex + 1].items[0].id;
