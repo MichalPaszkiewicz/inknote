@@ -545,13 +545,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				//draw the stem
 				context.beginPath();
 				context.strokeStyle = noteColour;
-				if(item.var >= $scope.lineHeight/2){
+				if(item.value >= $scope.lineHeight/2){
 					context.moveTo(item.x + 3, bar.y + item.value);
-					context.lineTo(item.x + 3, bar.y + item.value - 20);
+					context.lineTo(item.x + 3, bar.y + item.value - 36);
 					context.stroke();
 				}else{
 					context.moveTo(item.x - 3, bar.y + item.value);
-					context.lineTo(item.x - 3, bar.y + item.value + 20);
+					context.lineTo(item.x - 3, bar.y + item.value + 36);
 					context.stroke();
 				}
 				
