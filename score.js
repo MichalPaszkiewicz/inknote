@@ -367,14 +367,29 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
 				//left keypress - move selected note one left
 				//todo find previous NOTE. currently could be any item.
+				var itemFound = null;
+				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
-					if(relevantItemIndex != 0){
-						$scope.selectedItemID = relevantBar.items[relevantItemIndex - 1].id;
-					}
-					else{
-						if(relevantBarIndex != 0){
-							$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex - 1].id;
-							$scope.selectedItemID =  relevantInstrument.bars[relevantBarIndex - 1].items[relevantInstrument.bars[relevantBarIndex - 1].items.length - 1].id;
+					while(itemFound = null){
+						if(currentSelection.itemIndex != 0){
+							currentSelection.itemIndex--;
+						}
+						else{
+							if(currentSelection.barIndex != 0){
+								currentSelection.barIndex--;
+								currentSelection.itemIndex = relevantInstrument.bars[currentSelection.barIndex].length - 1;
+							}
+							else{
+								itemFound = false;
+								return;
+							}
+						}
+						
+						var currentItemType = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].type;
+						if(currentItemType == "note" || currentItemType == "rest"){
+							itemFound = true;
+							$scope.selectedBarID = relevantInstrument.bars[currentSelection.barIndex].id;
+							$scope.selectedItemID = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].id;
 						}
 					}
 				}
