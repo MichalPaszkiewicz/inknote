@@ -29,6 +29,7 @@ Upcoming updates
 - Donate button.
 - About/faq information.
 - Composer forums.
+- Enable push notifications in forums.
 
 Update 26/11/2014
 ------------------
