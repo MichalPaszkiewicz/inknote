@@ -32,8 +32,21 @@ angular.module('keypress', []).
 						expr(scope, {
 				                  $event: event
 				                });
-						
-						//scope.$eval(attrs.ngUpdown);
+					});
+					event.preventDefault();
+				}
+		        });
+		};
+	}]).
+	directive('ngLeftright', ['$parse', function ($parse) {
+		return function (scope, element, attrs) {
+			element.bind("keydown keypress", function (event) {
+				if(event.which === 37 || event.which === 39) {
+					scope.$apply(function (){
+						var expr = $parse(attrs['ngLeftright']);
+						expr(scope, {
+				                  $event: event
+				                });
 					});
 					event.preventDefault();
 				}
