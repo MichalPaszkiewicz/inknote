@@ -546,12 +546,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.beginPath();
 				context.strokeStyle = noteColour;
 				if(item.value >= $scope.lineHeight/2){
-					context.moveTo(item.x + 3, bar.y + item.value);
-					context.lineTo(item.x + 3, bar.y + item.value - 36);
+					context.moveTo(item.x + 5.5, bar.y + item.value);
+					context.lineTo(item.x + 5.5, bar.y + item.value - 36);
 					context.stroke();
 				}else{
-					context.moveTo(item.x - 3, bar.y + item.value);
-					context.lineTo(item.x - 3, bar.y + item.value + 36);
+					context.moveTo(item.x - 5.5, bar.y + item.value);
+					context.lineTo(item.x - 5.5, bar.y + item.value + 36);
 					context.stroke();
 				}
 				
