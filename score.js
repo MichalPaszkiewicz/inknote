@@ -404,11 +404,34 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				//todo: find next NOTE. currently could be any item.
 				//todo: add item if no item after this.
 				else if(e.which === 39){
-					if(relevantItemIndex != relevantBar.items.length - 1){
-						$scope.selectedItemID = relevantBar.items[relevantItemIndex + 1].id;
-					}else{
-						$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
-						$scope.selectedItemID = relevantInstrument.bars[relevantBarIndex + 1].items[0].id;
+					while(itemFound == null){
+						if(currentSelection.itemIndex != relevantInstrument.bars[currentSelection.barIndex].items.length - 1){
+							currentSelection.itemIndex++;
+						}else{
+							if(currentSelection.barIndex != relevantInstrument.bars.length - 1){
+								currentSelection.barIndex++;
+								while(relevantInstrument.bars[currentSelection.barIndex].items.length == 0){
+									if(currentSelection.barIndex == relevantInstrument.bars.length - 1){
+										//todo: in future might considering adding a note in this case
+										itemFound = false;
+										return;
+									}
+									currentSelection.barIndex++;
+								}
+								currentSelection.itemIndex = 0;
+							}
+							else{
+								itemFound = false;
+								return;
+							}
+						}
+					
+						var currentItemType = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].type;
+						if(currentItemType == "note" || currentItemType == "rest"){
+							itemFound = true;
+							$scope.selectedBarID = relevantInstrument.bars[currentSelection.barIndex].id;
+							$scope.selectedItemID = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].id;
+						}
 					}
 				}
 				
