@@ -139,6 +139,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		// open existing file from localstorage
 		$scope.openFile = function(file){
+			$scope.lines = [];
 			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
 			$scope.windowScroll = 0;
@@ -467,8 +468,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		
 		$scope.drawInit = function(){
-			$scope.lines = [];
-			
 			if($scope.lines.length < 1)
 			{
 				$scope.lines.push({id: newID(), x: $scope.margin, y: lineSeperator, instruments: $scope.instruments, xSplitting: null});
