@@ -143,6 +143,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.currentFileID = file.id;
 			$scope.instruments = file.instruments;
 			$scope.windowScroll = 0;
+			// draws twice to first recreate the lines, then actually draw.
 			$scope.draw();
 			$scope.draw();
 		}
