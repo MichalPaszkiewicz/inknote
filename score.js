@@ -373,14 +373,21 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}
 					else{
 						if(relevantBarIndex != 0){
-							$scope.selectedBarIndexID = relevantInstrument.bars[relevantBarIndex - 1].id;
+							$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex - 1].id;
+							$scope.selectedItemID =  relevantInstrument.bars[relevantBarIndex - 1].items[relevantInstrument.bars[relevantBarIndex - 1].items.length - 1].id;
 						}
 					}
 				}
 				//right keypress - move selected note one right
-				//todo find next NOTE. currently could be any item.
+				//todo: find next NOTE. currently could be any item.
+				//todo: add item if no item after this.
 				else if(e.which === 39){
-					
+					if(relevantItemIndex != relevantBar.items.length - 1){
+						
+					}else{
+						$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
+						$scope.selectedItemID = relevantInstrument.bars[relevantBarIndex + 1].items[0].id;
+					}
 				}
 				
 				$scope.draw();
