@@ -368,7 +368,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				//left keypress - move selected note one left
 				//todo find previous NOTE. currently could be any item.
 				if(e.which === 37){
-					if(relevantItemIndex != 0 && relevant){
+					if(relevantItemIndex != 0){
 						$scope.selectedItemID = relevantBar.items[relevantItemIndex - 1].id;
 					}
 					else{
