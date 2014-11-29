@@ -338,7 +338,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			//get uniquer id
 			id = newID();
 			
-			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type};
+			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type, duration: {num: 1, denom: 1}};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
@@ -439,6 +439,42 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 				
 				$scope.draw();
+			}
+		}
+		
+		$scope.keyboardFunctions = function(e){
+			if(e.which === 107 || e.which === 109){
+				$scope.noteDurationChange(e);
+			}
+		}
+		
+		$scope.noteDurationChange = function(e){
+			var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+			var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
+			var relevantBar = relevantInstrument.bars[relevantBarIndex];
+			var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
+			// plus sign
+			if(e.which === 107){
+				//if more than semibreve, do nothing
+				if(relevantBar.items[relevantItemIndex].duration.num < 4){
+					if(relevantBar.items[relevantItemIndex].duration.denom == 1){
+						relevantBar.items[relevantItemIndex].duration.num *= 2; 
+					}else{
+						relevantBar.items[relevantItemIndex].duration.denom = Math.floor(relevantBar.items[relevantItemIndex].duration.denom / 2);
+					}
+				}
+			}
+			//subtract
+			else if(e.which === 109){
+				//if more than demi-semiquaver, do nothing. 
+				//todo: extend further?
+				if(relevantBar.items[relevantItemIndex].duration.denom < 8){
+					if(relevantBar.items[relevantItemIndex].duration.num == 1){
+						relevantBar.items[relevantItemIndex].duration.denom *= 2; 
+					}else{
+						relevantBar.items[relevantItemIndex].duration.num = Math.floor(relevantBar.items[relevantItemIndex].duration.num / 2);
+					}
+				}
 			}
 		}
 		
@@ -634,32 +670,40 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					context.lineTo(item.x + 5.5, bar.y + item.value - 36);
 					context.stroke();
 					
-					if(true){
+					if(duration && duration.num == 1 && duration.denom > 1){
 						var tailX = item.x + 5.5;
 						var tailY = bar.y + item.value - 36;
-						context.beginPath();
-						context.moveTo(tailX, tailY);
-						context.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
-						context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
-						context.lineTo(tailX, tailY);
-						context.fill();
-						context.stroke();
+						var tailController = duration.denom;
+						while(tailController > 1){
+							context.beginPath();
+							context.moveTo(tailX, tailY);
+							context.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
+							context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
+							context.lineTo(tailX, tailY);
+							context.fill();
+							context.stroke();
+							tailController = Math.floor(tailController / 2);
+						}
 					}
 				}else{
 					context.moveTo(item.x - 5.5, bar.y + item.value);
 					context.lineTo(item.x - 5.5, bar.y + item.value + 36);
 					context.stroke();
 					
-					if(true){
+					if(duration && duration.num == 1 && duration.denom > 1){
 						var tailX = item.x - 5.5;
 						var tailY = bar.y + item.value + 36;
-						context.beginPath();
-						context.moveTo(tailX, tailY);
-						context.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
-						context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
-						context.lineTo(tailX, tailY);
-						context.fill();
-						context.stroke();
+						var tailController = duration.denom;
+						while(tailController > 1){
+							context.beginPath();
+							context.moveTo(tailX, tailY);
+							context.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
+							context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
+							context.lineTo(tailX, tailY);
+							context.fill();
+							context.stroke();
+							tailController = Math.floor(tailController / 2);
+						}
 					}
 				}
 				
