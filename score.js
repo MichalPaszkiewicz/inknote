@@ -670,10 +670,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					context.lineTo(item.x + 5.5, bar.y + item.value - 36);
 					context.stroke();
 					
-					if(duration && duration.num == 1 && duration.denom > 1){
+					if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
 						var tailX = item.x + 5.5;
 						var tailY = bar.y + item.value - 36;
-						var tailController = duration.denom;
+						var tailController = item.duration.denom;
 						while(tailController > 1){
 							context.beginPath();
 							context.moveTo(tailX, tailY);
@@ -690,10 +690,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					context.lineTo(item.x - 5.5, bar.y + item.value + 36);
 					context.stroke();
 					
-					if(duration && duration.num == 1 && duration.denom > 1){
+					if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
 						var tailX = item.x - 5.5;
 						var tailY = bar.y + item.value + 36;
-						var tailController = duration.denom;
+						var tailController = item.duration.denom;
 						while(tailController > 1){
 							context.beginPath();
 							context.moveTo(tailX, tailY);
