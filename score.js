@@ -476,6 +476,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}
 				}
 			}
+			
+			$scope.draw();
 		}
 		
 		$scope.removeItem = function(bar, item){
