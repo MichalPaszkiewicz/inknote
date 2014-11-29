@@ -662,59 +662,70 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.beginPath();
 				context.fillStyle = noteColour;
 				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
-				context.fill();
 				
-				//draw the stem
-				context.beginPath();
-				context.strokeStyle = noteColour;
-				if(item.value >= $scope.lineHeight/2){
-					context.moveTo(item.x + 5.5, bar.y + item.value);
-					context.lineTo(item.x + 5.5, bar.y + item.value - 36);
+				if(item.duration && item.duration.denom == 1 && item.duration.num > 2){
 					context.stroke();
-					
-					if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
-						var tailX = item.x + 5.5;
-						var tailY = bar.y + item.value - 36;
-						var tailController = item.duration.denom;
-						var tailNum = 0;
-						while(tailController > 1){
-							context.beginPath();
-							context.moveTo(tailX, tailY);
-							context.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
-							context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
-							context.lineTo(tailX, tailY);
-							context.fill();
-							context.stroke();
-							tailController = Math.floor(tailController / 2);
-							if(tailNum == 0){tailY += 10;}
-							else if(tailNum == 1){tailY -= 20;}
-							else{tailY -= 10;}
-							tailNum++;
-						}
+				}
+				else{
+					if(item.duration && item.duration.denom == 1 && item.duration.num == 2){
+						context.stroke();
 					}
-				}else{
-					context.moveTo(item.x - 5.5, bar.y + item.value);
-					context.lineTo(item.x - 5.5, bar.y + item.value + 36);
-					context.stroke();
+					else{
+						context.fill();
+					}
 					
-					if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
-						var tailX = item.x - 5.5;
-						var tailY = bar.y + item.value + 36;
-						var tailController = item.duration.denom;
-						var tailNum = 0;
-						while(tailController > 1){
-							context.beginPath();
-							context.moveTo(tailX, tailY);
-							context.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
-							context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
-							context.lineTo(tailX, tailY);
-							context.fill();
-							context.stroke();
-							tailController = Math.floor(tailController / 2);
-							if(tailNum == 0){tailY -= 10;}
-							else if(tailNum == 1){tailY += 20;}
-							else{tailY += 10;}
-							tailNum++;
+					//draw the stem
+					context.beginPath();
+					context.strokeStyle = noteColour;
+					if(item.value >= $scope.lineHeight/2){
+						context.moveTo(item.x + 5.5, bar.y + item.value);
+						context.lineTo(item.x + 5.5, bar.y + item.value - 36);
+						context.stroke();
+						
+						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
+							var tailX = item.x + 5.5;
+							var tailY = bar.y + item.value - 36;
+							var tailController = item.duration.denom;
+							var tailNum = 0;
+							while(tailController > 1){
+								context.beginPath();
+								context.moveTo(tailX, tailY);
+								context.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
+								context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
+								context.lineTo(tailX, tailY);
+								context.fill();
+								context.stroke();
+								tailController = Math.floor(tailController / 2);
+								if(tailNum == 0){tailY += 10;}
+								else if(tailNum == 1){tailY -= 20;}
+								else{tailY -= 10;}
+								tailNum++;
+							}
+						}
+					}else{
+						context.moveTo(item.x - 5.5, bar.y + item.value);
+						context.lineTo(item.x - 5.5, bar.y + item.value + 36);
+						context.stroke();
+						
+						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
+							var tailX = item.x - 5.5;
+							var tailY = bar.y + item.value + 36;
+							var tailController = item.duration.denom;
+							var tailNum = 0;
+							while(tailController > 1){
+								context.beginPath();
+								context.moveTo(tailX, tailY);
+								context.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
+								context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
+								context.lineTo(tailX, tailY);
+								context.fill();
+								context.stroke();
+								tailController = Math.floor(tailController / 2);
+								if(tailNum == 0){tailY -= 10;}
+								else if(tailNum == 1){tailY += 20;}
+								else{tailY += 10;}
+								tailNum++;
+							}
 						}
 					}
 				}
