@@ -651,7 +651,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					context.stroke();
 					
 					if(true){
-						var tailX = item.x + 5.5;
+						var tailX = item.x - 5.5;
 						var tailY = bar.y + item.value + 36;
 						context.beginPath();
 						context.moveTo(tailX, tailY);
