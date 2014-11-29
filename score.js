@@ -688,7 +688,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							tailController = Math.floor(tailController / 2);
 							if(tailNum == 0){tailY += 10;}
 							else if(tailNum == 1){tailY -= 20;}
-							else{tailNum -= 10;}
+							else{tailY -= 10;}
+							tailNum++;
 						}
 					}
 				}else{
@@ -712,7 +713,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							tailController = Math.floor(tailController / 2);
 							if(tailNum == 0){tailY -= 10;}
 							else if(tailNum == 1){tailY += 20;}
-							else{tailNum += 10;}
+							else{tailY += 10;}
+							tailNum++;
 						}
 					}
 				}
