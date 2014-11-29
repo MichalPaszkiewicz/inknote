@@ -62,7 +62,6 @@ angular.module('keypress', []).
 						$event: event
 					});
 				});
-				event.preventDefault();
 		        });
 		};
 	}]);
