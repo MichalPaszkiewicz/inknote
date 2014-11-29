@@ -22,7 +22,7 @@
 		  ga('send', 'pageview');	
 		</script>
 </head>
-<body ng-controller="canvasCtrl" ng-updown="noteChange($event)" ng-leftright="noteIndexChange($event)">
+<body ng-controller="canvasCtrl" ng-updown="noteChange($event)" ng-leftright="noteIndexChange($event)" ng-keyboard="keyboardFunctions($event)">
 	<div  id="main-container" >
 		 <img id="canvasImg">
 	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
