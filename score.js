@@ -665,12 +665,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				
 				if(item.duration && item.duration.denom == 1 && item.duration.num > 2){
 					context.lineWidth = 2;
+					context.strokeStyle = noteColour;
 					context.stroke();
 					context.lineWidth = 1;
 				}
 				else{
 					if(item.duration && item.duration.denom == 1 && item.duration.num == 2){
 						context.lineWidth = 2;
+						context.strokeStyle = noteColour;
 						context.stroke();
 						context.lineWidth = 1;
 					}
