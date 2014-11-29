@@ -466,9 +466,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			//subtract
 			else if(e.which === 109){
-				//if more than demi-semiquaver, do nothing. 
+				//if more than hemi-demi-semiquaver, do nothing. 
 				//todo: extend further?
-				if(relevantBar.items[relevantItemIndex].duration.denom < 8){
+				if(relevantBar.items[relevantItemIndex].duration.denom < 16){
 					if(relevantBar.items[relevantItemIndex].duration.num == 1){
 						relevantBar.items[relevantItemIndex].duration.denom *= 2; 
 					}else{
@@ -676,6 +676,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						var tailX = item.x + 5.5;
 						var tailY = bar.y + item.value - 36;
 						var tailController = item.duration.denom;
+						var tailNum = 0;
 						while(tailController > 1){
 							context.beginPath();
 							context.moveTo(tailX, tailY);
@@ -685,7 +686,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							context.fill();
 							context.stroke();
 							tailController = Math.floor(tailController / 2);
-							tailY += 7;
+							if(tailNum == 0){tailY += 10;}
+							else if(tailNum == 1){tailY -= 20;}
+							else{tailNum -= 10;}
 						}
 					}
 				}else{
@@ -697,6 +700,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						var tailX = item.x - 5.5;
 						var tailY = bar.y + item.value + 36;
 						var tailController = item.duration.denom;
+						var tailNum = 0;
 						while(tailController > 1){
 							context.beginPath();
 							context.moveTo(tailX, tailY);
@@ -706,7 +710,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							context.fill();
 							context.stroke();
 							tailController = Math.floor(tailController / 2);
-							tailY -= 7;
+							if(tailNum == 0){tailY -= 10;}
+							else if(tailNum == 1){tailY += 20;}
+							else{tailNum += 10;}
 						}
 					}
 				}
