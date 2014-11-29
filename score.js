@@ -685,6 +685,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							context.fill();
 							context.stroke();
 							tailController = Math.floor(tailController / 2);
+							tailY += 10;
 						}
 					}
 				}else{
@@ -705,6 +706,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							context.fill();
 							context.stroke();
 							tailController = Math.floor(tailController / 2);
+							tailY -= 10;
 						}
 					}
 				}
