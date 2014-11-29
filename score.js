@@ -676,16 +676,20 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						var tailX = item.x + 5.5;
 						var tailY = bar.y + item.value - 36;
 						var tailController = item.duration.denom;
+						var first = true;
 						while(tailController > 1){
 							context.beginPath();
 							context.moveTo(tailX, tailY);
 							context.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
-							context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
-							context.lineTo(tailX, tailY);
-							context.fill();
+							if(first){
+								context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
+								context.lineTo(tailX, tailY);
+								context.fill();
+							}
 							context.stroke();
 							tailController = Math.floor(tailController / 2);
 							tailY += 6;
+							var first = false;
 						}
 					}
 				}else{
