@@ -52,4 +52,17 @@ angular.module('keypress', []).
 				}
 		        });
 		};
+	}]).
+	directive('ngKeyboard', ['$parse', function ($parse) {
+		return function (scope, element, attrs) {
+			element.bind("keydown keypress", function (event) {
+				scope.$apply(function (){
+					var expr = $parse(attrs['ngKeyboard']);
+					expr(scope, {
+						$event: event
+					});
+				});
+				event.preventDefault();
+		        });
+		};
 	}]);
