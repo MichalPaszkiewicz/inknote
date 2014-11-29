@@ -664,11 +664,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.arc(item.x, bar.y + item.value, 6, 0, 2 * Math.PI, false);
 				
 				if(item.duration && item.duration.denom == 1 && item.duration.num > 2){
+					context.lineWidth = 2;
 					context.stroke();
+					context.lineWidth = 1;
 				}
 				else{
 					if(item.duration && item.duration.denom == 1 && item.duration.num == 2){
+						context.lineWidth = 2;
 						context.stroke();
+						context.lineWidth = 1;
 					}
 					else{
 						context.fill();
