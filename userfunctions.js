@@ -4,7 +4,6 @@ var userFunctions = {};
 
 userFunctions.wakeUpCalls = [];
 userFunctions.afterSave = [];
-userFunctions.afterLoad = [];
 
 for(var i = 0; i < userFunctions.wakeUpCalls.length; i++){
 	userFunctions.wakeUpCalls[i]();
