@@ -170,6 +170,18 @@ input{
 	height: 300px;
 }
 
+.user-functions-details ul{
+	padding: 0;
+}
+
+.user-functions-details ul li{
+	list-style: none;
+}
+
+.user-functions-details ul li textarea{
+	width: 100%;
+}
+
 #bug-reporter .button, .bug-reporter textarea{
 	color: black;
 }
