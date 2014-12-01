@@ -171,6 +171,15 @@ input{
 	height:80%;
 }
 
+#user-functions div.save-button{
+	background: red;
+	position: absolute;
+	right: -43px;
+	top: -9px;
+	box-shadow: 0 0 6px 1px black;
+}
+
+
 #user-functions div.close-button{
 	background: red;
 	position: absolute;
