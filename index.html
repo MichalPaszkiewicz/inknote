@@ -60,7 +60,7 @@
 							<textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
-					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push('function newFunction(){}');">Add new</div>
+					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({code: 'function newFunction(){}' });">Add new</div>
 				</div>
 				
 				<div class="user-functions-details" ng-show="userFunctionDisplay == 'afterSave'">
