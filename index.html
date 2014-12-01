@@ -48,7 +48,7 @@
 					<h3>On load functions</h3>
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
-							<textarea ng-model="wakeUpCall"></textarea><div class="delete-function"></div>
+							<textarea ng-model="wakeUpCall"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
 					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push('function newFunction(){}');">Add new</div>
@@ -58,7 +58,7 @@
 					<h3>After save functions</h3>
 					<ul>
 						<li ng-repeat="function in currentUserFunctions.afterSave track by $index">
-							<textarea ng-model="function"></textarea><div class="delete-function"></div>
+							<textarea ng-model="function"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.afterSave, $index)">x</div>
 						</li>
 					</ul>
 					<div class="button" ng-click="currentUserFunctions.afterSave.push('function newFunction(){}');">Add new</div>
