@@ -170,6 +170,14 @@ input{
 	height: 300px;
 }
 
+#user-functions div.button{
+	background: red;
+	position: absolute;
+	right: -13px;
+	top: -9px;
+	box-shadow: 0 0 6px 1px black;
+}
+
 .user-functions-details ul{
 	padding: 0;
 }
@@ -181,6 +189,7 @@ input{
 .user-functions-details ul li textarea{
 	display:inline-block;
 	width: 90%;
+	max-width: 90%;
 }
 
 .user-functions-details .delete-function{
@@ -188,6 +197,8 @@ input{
 	width: 10%;
 	background: red;
 	border-radius: 0 5px 5px 0;
+	vertical-align: top;
+	text-align: center;
 }
 
 #bug-reporter .button, .bug-reporter textarea{
