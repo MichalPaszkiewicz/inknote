@@ -44,7 +44,13 @@
 		</div>
 		<div id="user-functions" class="ng-hide" ng-show="currentUserFunctionsOpen">
 			<div class="scroller">
-				<div class="user-functions-details">
+				<ul>
+					<li ng-click="userFunctionDisplay = 'wakeUpCall'">On load</li>
+					<li ng-click="userFunctionDisplay = 'afterSave'">After save</li>
+				</ul>
+			</div>
+			<div class="scroller">
+				<div class="user-functions-details" ng-show="userFunctionDisplay == 'wakeUpCall'">
 					<h3>On load functions</h3>
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
@@ -54,7 +60,7 @@
 					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push('function newFunction(){}');">Add new</div>
 				</div>
 				
-				<div class="user-functions-details">
+				<div class="user-functions-details" ng-show="userFunctionDisplay = 'afterSave'">
 					<h3>After save functions</h3>
 					<ul>
 						<li ng-repeat="function in currentUserFunctions.afterSave track by $index">
