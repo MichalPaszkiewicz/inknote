@@ -170,7 +170,7 @@ input{
 	height: 300px;
 }
 
-#user-functions div.button{
+#user-functions div.close-button{
 	background: red;
 	position: absolute;
 	right: -13px;
