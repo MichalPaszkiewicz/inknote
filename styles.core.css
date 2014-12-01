@@ -129,7 +129,7 @@ li.sub-item:hover .sub-sub-items, li.sub-item.selected .sub-sub-items,
 	float: right;
 }
 
-.button-container .button{
+.button-container .button, .button{
 	display: inline-block;
 	padding: 10px;
 	cursor: pointer;
@@ -145,21 +145,29 @@ input{
 	box-shadow: 0 0 5px 2px rgb(130, 127, 176);
 }
 
-#bug-reporter{
+#bug-reporter, #user-functions{
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	width: 340px;
-	height: 200px;
 	background: black;
 	color: white;
 	z-index: 100;
 	padding: 20px;
 	border-radius: 30px;
 	box-shadow: 0 0 6px 1px black;
+}
+
+#bug-reporter{
+	width: 340px;
+	height: 200px;
+}
+
+#user-functions{
+	width: 300px;
+	height: 300px;
 }
 
 #bug-reporter .button, .bug-reporter textarea{
