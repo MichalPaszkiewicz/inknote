@@ -42,6 +42,29 @@
 				<div class="button" ng-click="submitBugReport();">Send bug report</div>
 			</div>
 		</div>
+		<div id="user-functions" class="ng-hide" ng-show="currentUserFunctionsOpen">
+			<div class="user-functions-details">
+				<h3>On load functions</h3>
+				<ul>
+					<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls">
+						<textarea ng-model="wakeUpCall"></textarea>
+					</li>
+				</ul>
+				<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push(function newFunction(){});">Add new</div>
+			</div>
+			
+			<div class="user-functions-details">
+				<h3>After save functions</h3>
+				<ul>
+					<li ng-repeat="function in currentUserFunctions.afterSave">
+						<textarea ng-model="function"></textarea>
+					</li>
+				</ul>
+				<div class="button" ng-click="currentUserFunctions.afterSave.push(function newFunction(){});">Add new</div>
+			</div>
+			
+			<div class="button" ng-click="currentUserFunctionsOpen = false;">Close</div>
+		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
 		  		<div class="menu-item">
@@ -92,7 +115,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Plugins</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item">
+		  						<li class="sub-sub-item" ng-click="currentUserFunctionsOpen = true">
 		  							Add plugin
 		  						</li>
 		  					</ul>
