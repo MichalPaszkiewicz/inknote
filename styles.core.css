@@ -178,11 +178,11 @@ input{
 	box-shadow: 0 0 6px 1px black;
 }
 
-.user-functions-details ul{
+.user-functions-details ul, .scroller ul{
 	padding: 0;
 }
 
-.user-functions-details ul li{
+.user-functions-details ul li, .scroller ul li{
 	list-style: none;
 }
 
