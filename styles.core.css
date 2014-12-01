@@ -215,6 +215,10 @@ div.scroller{
 	overflow-y: auto;
 }
 
+div.scroller h2{
+	margin: 0;
+}
+
 .user-functions-menu{
 	width: 90px;
 	height: 100%;
