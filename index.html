@@ -46,7 +46,7 @@
 			<div class="user-functions-details">
 				<h3>On load functions</h3>
 				<ul>
-					<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls">
+					<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
 						<textarea ng-model="wakeUpCall"></textarea>
 					</li>
 				</ul>
@@ -56,7 +56,7 @@
 			<div class="user-functions-details">
 				<h3>After save functions</h3>
 				<ul>
-					<li ng-repeat="function in currentUserFunctions.afterSave">
+					<li ng-repeat="function in currentUserFunctions.afterSave track by $index">
 						<textarea ng-model="function"></textarea>
 					</li>
 				</ul>
