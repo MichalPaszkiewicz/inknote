@@ -227,3 +227,12 @@ div.scroller{
 	box-shadow: 0 0 5px 1px black;
 	border-radius: 30px;
 }
+
+.user-functions-menu ul{
+	padding-top: 10px;
+}
+
+.user-functions-menu li{
+	border-top: 1px solid gray;
+	padding: 5px 0;
+}
