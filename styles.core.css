@@ -238,7 +238,7 @@ div.scroller{
 	cursor: pointer;
 }
 
-.user-functions-menu li.open{
+.user-functions-menu li.open, .user-functions-menu li:hover{
 	background: rgba(0,0,0,1);
 	background: -moz-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(76,76,76,1) 100%);
 	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,1)), color-stop(100%, rgba(76,76,76,1)));
