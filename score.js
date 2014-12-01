@@ -111,6 +111,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			$scope.files = tempFiles;
 			localStorage.setItem("inknote-files", JSON.stringify(tempFiles));
+			
+			for(var i = 0; i < userFunctions.afterSave.length; i++){
+				userFunctions.afterSave[i]();
+			}
 		}
 		
 		// get a file from id
