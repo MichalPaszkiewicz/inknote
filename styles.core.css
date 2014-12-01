@@ -172,13 +172,16 @@ input{
 }
 
 #user-functions div.save-button{
-	background: red;
+	background: rgb(68, 182, 68);
 	position: absolute;
-	right: -43px;
+	right: 49px;
 	top: -9px;
 	box-shadow: 0 0 6px 1px black;
 }
 
+#user-functions div.save-button:hover{
+	background: rgb(54, 121, 54);
+}
 
 #user-functions div.close-button{
 	background: red;
@@ -186,6 +189,10 @@ input{
 	right: -13px;
 	top: -9px;
 	box-shadow: 0 0 6px 1px black;
+}
+
+#user-functions div.close-button:hover{
+	background: rgb(198, 0, 0);
 }
 
 .user-functions-details ul, .scroller ul{
