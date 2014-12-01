@@ -133,7 +133,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			localStorage.setItem("inknote-files", JSON.stringify(tempFiles));
 			
 			for(var i = 0; i < userFunctions.afterSave.length; i++){
-				eval(userFunctions.afterSave[i]);
+				eval(userFunctions.afterSave[i].code);
 			}
 		}
 		
