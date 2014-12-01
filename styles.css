@@ -35,3 +35,13 @@
 .button-container .button{
 	background: rgb(221, 222, 255);
 }
+
+.user-functions-details .button{
+	background: gray;
+}
+
+.user-functions-details .button:hover{
+	background: gb(104, 103, 103);
+}
+
+
