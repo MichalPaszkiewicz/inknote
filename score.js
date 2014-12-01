@@ -11,6 +11,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.bugReport = false;
 		$scope.bugMessage = "";
 		
+		$scope.currentUserFunctions = userFunctions;
+		
 		var log = function(text, type){
 			if($scope.logging){ 
 				try{
