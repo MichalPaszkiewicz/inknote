@@ -15,16 +15,16 @@ angular.module('keypress', []).
 	}).
 	directive('ngTab', function () {
 		return function (scope, element, attrs) {
-
-				element.bind("keydown keypress", function (event) {
+			element.bind("keydown keypress", function (event) {
+				if(keypressFuncsOn){
 					if(event.which === 9) {
 						scope.$apply(function (){
 							scope.$eval(attrs.ngTab);
 						});
 						event.preventDefault();
 					}
-			        });
-			}       
+				}   
+			});
 		};
 	}).
 	directive('ngUpdown', ['$parse', function ($parse) {
