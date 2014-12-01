@@ -14,6 +14,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.currentUserFunctionsOpen = false;
 		$scope.currentUserFunctions = userFunctions;
 		
+		$scope.canScrollCanvas = function(){
+			return 
+				!$scope.bugReport
+				&& !$scope.currentUserFunctionsOpen;
+		};
+		
 		var log = function(text, type){
 			if($scope.logging){ 
 				try{
@@ -51,6 +57,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		// function handling scroll event
 		$scope.handleScroll = function($event, $delta, $deltaX, $deltaY){
+			if(!$scope.canScrollCanvas()){
+				return;
+			}
+			
 			log($event + ' ' + $delta + ' ' + $deltaX + ' ' + $deltaY);
 			
 			if(drawOn){
