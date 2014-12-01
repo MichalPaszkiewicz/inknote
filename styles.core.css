@@ -214,3 +214,16 @@ div.scroller{
 	height: 100%;
 	overflow-y: auto;
 }
+
+.user-functions-menu{
+	width: 90px;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: -115px;
+	padding: 0 10px;
+	background: black;
+	box-shadow: 0 0 5px 1px black;
+	border-radius: 30px;
+}
