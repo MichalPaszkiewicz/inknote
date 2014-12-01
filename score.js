@@ -15,8 +15,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.currentUserFunctions = userFunctions;
 		
 		$scope.canScrollCanvas = function(){
-			return 
-				!$scope.bugReport
+			return 	!$scope.bugReport
 				&& !$scope.currentUserFunctionsOpen;
 		};
 		
