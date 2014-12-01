@@ -166,7 +166,7 @@ input{
 }
 
 #user-functions{
-	width: 300px;
+	width: 400px;
 	height: 300px;
 }
 
@@ -179,7 +179,15 @@ input{
 }
 
 .user-functions-details ul li textarea{
-	width: 100%;
+	display:inline-block;
+	width: 90%;
+}
+
+.user-functions-details .delete-function{
+	display:inline-block;
+	width: 10%;
+	background: red;
+	border-radius: 0 5px 5px 0;
 }
 
 #bug-reporter .button, .bug-reporter textarea{
@@ -188,4 +196,9 @@ input{
 
 #bug-reporter textarea{
 	min-width: 100% !important;
+}
+
+div.scroller{
+	height: 100%;
+	overflow-y: auto;
 }
