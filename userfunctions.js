@@ -11,10 +11,10 @@ function getLocalUserFunctions(){
 
 function addUserFunctionsFromJSON(JSONitem){
 	if(JSONitem && JSONitem.wakeUpCalls){
-		for(var i = 0; i < JSONitem.wakeUpCalls.length){
+		for(var i = 0; i < JSONitem.wakeUpCalls.length; i++){
 			userFunctions.wakeUpCalls.push(JSONitem.wakeUpCalls[i]);
 		}
-		for(var i = 0; i < JSONitem.afterSave.length){
+		for(var i = 0; i < JSONitem.afterSave.length; i++){
 			userFunctions.afterSave.push(JSONitem.afterSave[i]);
 		}	
 	}
