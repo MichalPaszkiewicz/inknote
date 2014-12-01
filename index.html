@@ -46,8 +46,8 @@
 			<div class="user-functions-menu">
 				<div class="scroller">
 					<ul>
-						<li ng-click="userFunctionDisplay = 'wakeUpCall'">On load</li>
-						<li ng-click="userFunctionDisplay = 'afterSave'">After save</li>
+						<li ng-class="{'open': userFunctionDisplay == 'wakeUpCall'}" ng-click="userFunctionDisplay = 'wakeUpCall'">On load</li>
+						<li ng-class="{'open': userFunctionDisplay == 'afterSave'}" ng-click="userFunctionDisplay = 'afterSave'">After save</li>
 					</ul>
 				</div>
 			</div>
