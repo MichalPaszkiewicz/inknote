@@ -38,6 +38,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		};
 		
+		$scope.remove = function(array, index){
+		    array.splice(index, 1);
+		}
+		
 		var isNewInstrument = false;
 		
 		// amount page is moved by on scroll
