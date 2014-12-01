@@ -14,6 +14,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.currentUserFunctionsOpen = false;
 		$scope.currentUserFunctions = userFunctions;
 		
+		$scope.saveUserFunctions = function(){
+			localStorage.setItem("inknote-userfunctions", JSON.stringify($scope.currentUserFunctions));
+		}
+		
 		$scope.canScrollCanvas = function(){
 			return 	!$scope.bugReport
 				&& !$scope.currentUserFunctionsOpen;
@@ -129,7 +133,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			localStorage.setItem("inknote-files", JSON.stringify(tempFiles));
 			
 			for(var i = 0; i < userFunctions.afterSave.length; i++){
-				userFunctions.afterSave[i]();
+				eval(userFunctions.afterSave[i]);
 			}
 		}
 		
