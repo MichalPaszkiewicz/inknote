@@ -75,7 +75,7 @@
 			</div>
 			
 			<div class="save-button button" ng-click="saveUserFunctions()">Save</div>
-			<div class="close-button button" ng-click="currentUserFunctionsOpen = false;">Close</div>
+			<div class="close-button button" ng-click="currentUserFunctionsOpen = false; togglePluginManager();">Close</div>
 		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":menu}'>
@@ -127,7 +127,7 @@
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Plugins</div>
 		  					<ul class="sub-sub-items">
-		  						<li class="sub-sub-item" ng-click="currentUserFunctionsOpen = true">
+		  						<li class="sub-sub-item" ng-click="currentUserFunctionsOpen = true;togglePluginManager();">
 		  							Manage plugins
 		  						</li>
 		  					</ul>
