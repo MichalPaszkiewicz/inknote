@@ -18,6 +18,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			localStorage.setItem("inknote-userfunctions", JSON.stringify($scope.currentUserFunctions));
 		}
 		
+		$scope.togglePluginManager = function(){
+			keypressFuncsOn = !keypressFuncsOn;
+		};
+		
 		$scope.canScrollCanvas = function(){
 			return 	!$scope.bugReport
 				&& !$scope.currentUserFunctionsOpen;
