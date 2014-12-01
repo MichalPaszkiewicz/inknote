@@ -167,7 +167,8 @@ input{
 
 #user-functions{
 	width: 400px;
-	height: 300px;
+	min-height: 300px;
+	height:80%;
 }
 
 #user-functions div.close-button{
