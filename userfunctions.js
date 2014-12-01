@@ -34,5 +34,5 @@ addUserFunctionsFromJSON(getLocalUserFunctions());
 
 //go through all on load user functions
 for(var i = 0; i < userFunctions.wakeUpCalls.length; i++){
-	userFunctions.wakeUpCalls[i]();
+	eval( userFunctions.wakeUpCalls[i]);
 }
