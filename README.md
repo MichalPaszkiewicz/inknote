@@ -31,9 +31,14 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 
+Update 2/12/2014
+------------------
+- Note duration change possible.
+- Can add developer plugins to onload and after save functions.
+
 Update 26/11/2014
 ------------------
-- Developer guide and forum set up
+- Developer guide and forum set up.
 
 Update 17/11/2014
 ------------------
@@ -44,4 +49,4 @@ Update 17/11/2014
 - Change note values.
 - Save files in local storage.
 - Change themes/layout + add custom themes/layout.
-- Pretty logging using alertify
+- Pretty logging using alertify.
