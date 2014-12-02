@@ -46,8 +46,10 @@
 			<div class="user-functions-menu">
 				<div class="scroller">
 					<ul>
-						<li ng-class="{'open': userFunctionDisplay == 'wakeUpCall'}" ng-click="userFunctionDisplay = 'wakeUpCall'">On load</li>
+						<li ng-class="{'open': userFunctionDisplay == 'wakeUpCall'}" ng-click="userFunctionDisplay = 'wakeUpCall'">Before load</li>
+						<li ng-class="{'open': userFunctionDisplay == 'lockTheDoor'}" ng-click="userFunctionDisplay = 'lockTheDoor'">On load</li>
 						<li ng-class="{'open': userFunctionDisplay == 'afterSave'}" ng-click="userFunctionDisplay = 'afterSave'">After save</li>
+
 					</ul>
 				</div>
 			</div>
@@ -58,13 +60,22 @@
 					<p>Please only add code here from trusted sources.</p>
 				</div>
 				<div class="user-functions-details" ng-show="userFunctionDisplay == 'wakeUpCall'">
-					<h3>On load functions</h3>
+					<h3>Before load functions</h3>
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
 							<select ng-model="wakeUpCall.type" ng-options="functionType.name for functionType in userFunctionTypes track by functionType.name"></select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
 					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({type: {name: 'code'}, code: 'function newFunction(){}' });">Add new</div>
+				</div>
+				<div class="user-functions-details" ng-show="userFunctionDisplay == 'lockTheDoor'">
+					<h3>On load functions</h3>
+					<ul>
+						<li ng-repeat="function in currentUserFunctions.lockTheDoor track by $index">
+							<textarea ng-model="function.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.lockTheDoor, $index)">x</div>
+						</li>
+					</ul>
+					<div class="button" ng-click="currentUserFunctions.lockTheDoor.push({type: {name: 'code'}, code: 'function newFunction(){}' });">Add new</div>
 				</div>
 				
 				<div class="user-functions-details" ng-show="userFunctionDisplay == 'afterSave'">
