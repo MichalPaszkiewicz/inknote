@@ -34,7 +34,7 @@ addUserFunctionsFromJSON(getLocalUserFunctions());
 
 //go through all on load user functions
 for(var i = 0; i < userFunctions.wakeUpCalls.length; i++){
-	if(userFunctions.wakeUpCalls[i].type == "code"){
+	if(userFunctions.wakeUpCalls[i].type.name == "code"){
 		eval( userFunctions.wakeUpCalls[i].code);
 	}
 	else if(userFunctions.wakeUpCalls[i].type == "file"){
