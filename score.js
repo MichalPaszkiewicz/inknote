@@ -808,6 +808,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		canvaspic.style.top = 0;
 		
 		$scope.startup = function(){
+				//go through all on load user functions
+				for(var i = 0; i < userFunctions.lockTheDoor.length; i++){
+					if(userFunctions.lockTheDoor[i].type.name == "code"){
+						eval( userFunctions.lockTheDoor[i].code);
+					}
+				}
+			
 				if(time == 80){
 					context.fillStyle = noteColour;
 					context.font = "bold 16px Arial";
