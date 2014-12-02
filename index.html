@@ -57,10 +57,10 @@
 					<h3>On load functions</h3>
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
-							<textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
+							<select ng-model="wakeUpCall.type" ng-options="functionType.name for functionType in userFunctionTypes"></select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
-					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({code: 'function newFunction(){}' });">Add new</div>
+					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({type: 'code', code: 'function newFunction(){}' });">Add new</div>
 				</div>
 				
 				<div class="user-functions-details" ng-show="userFunctionDisplay == 'afterSave'">
@@ -70,7 +70,7 @@
 							<textarea ng-model="function.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.afterSave, $index)">x</div>
 						</li>
 					</ul>
-					<div class="button" ng-click="currentUserFunctions.afterSave.push({code: 'function newFunction(){}'});">Add new</div>
+					<div class="button" ng-click="currentUserFunctions.afterSave.push({type: 'code', code: 'function newFunction(){}'});">Add new</div>
 				</div>
 			</div>
 			
