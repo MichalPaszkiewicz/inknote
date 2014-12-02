@@ -34,5 +34,12 @@ addUserFunctionsFromJSON(getLocalUserFunctions());
 
 //go through all on load user functions
 for(var i = 0; i < userFunctions.wakeUpCalls.length; i++){
-	eval( userFunctions.wakeUpCalls[i].code);
+	if(userFunctions.wakeUpCalls[i].type == "code"){
+		eval( userFunctions.wakeUpCalls[i].code);
+	}
+	else if(userFunctions.wakeUpCalls[i].type == "file"){
+		var scrpt = document.createElement('script');
+		scrpt.src='http://www.example.com/data.js';
+		document.head.appendChild(scrpt);
+	}
 }
