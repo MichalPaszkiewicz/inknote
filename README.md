@@ -21,7 +21,6 @@ Upcoming updates
 - Draw clefs and key signatures.
 - Display bar numbers.
 - Other musical symbols - ties, dynamics, staccato, etc.
-- Add user defined functions/developer options.
 - Keyboard setup options.
 - Add collaboration option.
 - Tab/chord name display modes.
@@ -34,7 +33,7 @@ Upcoming updates
 Update 2/12/2014
 ------------------
 - Note duration change possible.
-- Can add developer plugins to onload and after save functions.
+- Added user defined functions/script load options in plugin manager.
 
 Update 26/11/2014
 ------------------
