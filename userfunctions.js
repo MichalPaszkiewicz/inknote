@@ -37,7 +37,7 @@ for(var i = 0; i < userFunctions.wakeUpCalls.length; i++){
 	if(userFunctions.wakeUpCalls[i].type.name == "code"){
 		eval( userFunctions.wakeUpCalls[i].code);
 	}
-	else if(userFunctions.wakeUpCalls[i].type == "file"){
+	else if(userFunctions.wakeUpCalls[i].type.name == "file"){
 		var scrpt = document.createElement('script');
 		scrpt.src=userFunctions.wakeUpCalls[i].code;
 		document.head.appendChild(scrpt);
