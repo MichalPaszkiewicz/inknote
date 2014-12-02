@@ -58,7 +58,7 @@
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
 							<select>
-								<option ng-repeat="functionType in userFunctionTypes" value="{{functionType}}" ng-click="wakeUpCall.type = functionType" ng-selected="functionType.name == wakeUpCall.type.name">{{functionType.name}}</option>
+								<option ng-repeat="functionType in userFunctionTypes" ng-click="wakeUpCall.type = functionType" ng-selected="functionType.name == wakeUpCall.type.name">{{functionType.name}}</option>
 							</select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
