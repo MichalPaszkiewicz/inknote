@@ -2,8 +2,8 @@
 
 var userFunctions = {};
 
-userFunctions.wakeUpCalls = [];
-userFunctions.lockTheDoor = [];
+userFunctions.wakeUpCalls = []; //before load
+userFunctions.lockTheDoor = []; //on load
 userFunctions.afterSave = [];
 
 function getLocalUserFunctions(){
