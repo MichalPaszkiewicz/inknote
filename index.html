@@ -57,9 +57,7 @@
 					<h3>On load functions</h3>
 					<ul>
 						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
-							<select>
-								<option ng-repeat="functionType in userFunctionTypes" ng-click="wakeUpCall.type = {name: functionType.name}" ng-selected="functionType.name == wakeUpCall.type.name">{{functionType.name}}</option>
-							</select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
+							<select ng-model="wakeUpCall.type" ng-options="functionType.name for functionType in userFunctionTypes track by functionType.name"></select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
 						</li>
 					</ul>
 					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({type: {name: 'code'}, code: 'function newFunction(){}' });">Add new</div>
