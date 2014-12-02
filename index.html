@@ -53,6 +53,10 @@
 			</div>
 			<div class="scroller">
 				<h2>Plugin manager</h2>
+				<div class="user-functions-details" ng-show="!userFunctionDisplay">
+					<p>Please be aware that code added through the plugin manager can potentially harm the functioning of this program.</p>
+					<p>Please only add code here from trusted sources.</p>
+				</div>
 				<div class="user-functions-details" ng-show="userFunctionDisplay == 'wakeUpCall'">
 					<h3>On load functions</h3>
 					<ul>
