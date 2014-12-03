@@ -6,6 +6,11 @@ userFunctions.wakeUpCalls = []; //before load
 userFunctions.lockTheDoor = []; //on load
 userFunctions.afterSave = [];
 
+/*todo: add other functions
+	userFunctions.afterDraw = [];
+	userFunctions.afterOpen = [];
+*/
+
 function getLocalUserFunctions(){
 	return tempUserFunctions = JSON.parse(localStorage.getItem("inknote-userfunctions"));
 }
