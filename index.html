@@ -135,6 +135,22 @@
 		  		</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name">Edit</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Time signature</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item">
+		  							<input ng-model="newTop"></input>
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<input ng-model="newBottom"></input>
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<div class="sub-sub-item-name" ng-click="changeDefaultTimeSignature(newTop, newBottom)">Change</div>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
 		  		</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name">Tools</div>
