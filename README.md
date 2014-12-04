@@ -1,7 +1,7 @@
 inknote
 =======
 
-[Build status](https://circleci.com/gh/MichalPaszkiewicz/inknote.png?circle-token=:circle-token)
+![Build status](https://circleci.com/gh/MichalPaszkiewicz/inknote.png?circle-token=:circle-token)
 
 Compose music easily in your browser!
 
