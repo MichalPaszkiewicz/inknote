@@ -483,7 +483,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			for(var i = 0; i < $scope.instruments[0].bars.length; i++){
 				for(var j = 0; j < $scope.instruments.length; j++){
 					//when reaches point where time signature changes manually, stops, as all future bars will be in new time signature.
-					if($scope.instruments[0].bars[i].timeSignature.top != previousTimeSig.top || $scope.instruments[0].bars[i].timeSignature.bottom != previousTimeSig.bottom){
+					if($scope.instruments[j].bars[i].timeSignature.top != previousTimeSig.top || $scope.instruments[j].bars[i].timeSignature.bottom != previousTimeSig.bottom){
 						break;
 					}
 					$scope.instruments[j].bars[i].timeSignature = $scope.instruments.timeSignature;
@@ -705,7 +705,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			log("Time signature font: " + "bold " + (2 * $scope.lineHeight/3) + "px Arial");
 			context.font = "bold " + (2 * $scope.lineHeight/3) + "px Arial";
 			context.fillText(bar.timeSignature.top, bar.x, bar.y + $scope.lineHeight/2);
-			context.fillText(bar.timeSignature.bottom, bar.x, bar.y + $scope.lineHeight);
 		}
 		
 		$scope.drawBar = function(bar){
