@@ -19,6 +19,7 @@ Upcoming updates
 - Score chords.
 - Display rests.
 - Draw clefs and key signatures.
+- Change instance time/key signatures.
 - Display bar numbers.
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
@@ -33,6 +34,7 @@ Upcoming updates
 Update 4/12/2014
 ------------------
 - Displays time signature correctly.
+- Change default time signature.
 
 Update 2/12/2014
 ------------------
