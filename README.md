@@ -30,6 +30,10 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 
+Update 4/12/2014
+------------------
+- Displays time signature correctly.
+
 Update 2/12/2014
 ------------------
 - Note duration change possible.
