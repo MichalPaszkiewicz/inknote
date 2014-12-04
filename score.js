@@ -787,8 +787,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else if(item.type == "timeSignature"){
 				context.fillStyle = noteColour;
 				context.font = "bold " + $scope.lineHeight/2 + "px Arial";
-				context.fillText(item.value.top, bar.x, bar.y);
-				context.fillText(item.value.bottom, bar.x + $scope.lineHeight/2, bar.y);
+				context.fillText(item.value.top, bar.x, bar.y + $scope.lineHeight/2);
+				context.fillText(item.value.bottom, bar.x, bar.y + $scope.lineHeight);
 			}
 		}
 		
