@@ -477,7 +477,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
-		$scope.changeDefaultTimeSignature(top, bottom){
+		$scope.changeDefaultTimeSignature = function(top, bottom){
 			var previousTimeSig = {top: $scope.instruments.timeSignature.top, bottom: $scope.instruments.timeSignature.bottom};
 			$scope.instruments.timeSignature = {top: top, bottom: bottom};
 			for(var i = 0; i < $scope.instruments.bars.length; i++){
