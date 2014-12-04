@@ -705,6 +705,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			log("Time signature font: " + "bold " + (2 * $scope.lineHeight/3) + "px Arial");
 			context.font = "bold " + (2 * $scope.lineHeight/3) + "px Arial";
 			context.fillText(bar.timeSignature.top, bar.x, bar.y + $scope.lineHeight/2);
+			context.fillText(bar.timeSignature.bottom, bar.x, bar.y + $scope.lineHeight);
 		}
 		
 		$scope.drawBar = function(bar){
