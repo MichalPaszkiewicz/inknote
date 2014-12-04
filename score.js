@@ -240,6 +240,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					id = newID();
 					
 					var timeSig = $scope.instruments.timeSignature;
+					if($scope.instruments[i].bars.length > 0){
+						timeSig = $scope.instruments[i].bars[$scope.instruments[i].bars.length - 1].timeSignature;
+					}
 					var tempBar = {id: id, items: [], x: null, y: null, timeSignature: timeSig};
 					if(before == null || before == undefined){			
 						instrument.bars.push(tempBar)
@@ -472,6 +475,19 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				
 				$scope.draw();
 			}
+		}
+		
+		$scope.changeDefaultTimeSignature(top, bottom){
+			var previousTimeSig = {top: $scope.instruments.timeSignature.top, bottom: $scope.instruments.timeSignature.bottom};
+			$scope.instruments.timeSignature = {top: top, bottom: bottom};
+			for(var i = 0; i < $scope.instruments.bars.length; i++){
+				//when reaches point where time signature changes manually, stops, as all future bars will be in new time signature.
+				if($scope.instruments.bars[i].timeSignature.top != previousTimeSig.top || $scope.instruments.bars[i].timeSignature.bottom != previousTimeSig.bottom){
+					break;
+				}
+				$scope.instruments.bars[i].timeSignature = $scope.instruments.timeSignature;
+			}
+			$scope.draw();
 		}
 		
 		$scope.keyboardFunctions = function(e){
