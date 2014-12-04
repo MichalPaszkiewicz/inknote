@@ -37,6 +37,7 @@ Update 4/12/2014
 ------------------
 - Displays time signature correctly.
 - Change default time signature.
+- Implemented CI (circleci).
 
 Update 2/12/2014
 ------------------
