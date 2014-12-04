@@ -1,12 +1,6 @@
 general:
   build_dir: tests
 
-dependencies:
-  pre:
-  - npm install --save-dev
-  - npm install -g grunt-cli
-  - grunt
-
 test:
   override:
-    - grunt
+    - npm test
