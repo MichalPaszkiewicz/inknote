@@ -784,6 +784,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else if(item.type == "clef"){
 				
 			}
+			else if(item.type == "timeSignature"){
+				context.fillStyle = noteColour;
+				context.font = "bold " + $scope.lineHeight/2 + "px Arial";
+				context.fillText(item.value.top, bar.x, bar.y);
+				context.fillText(item.value.bottom, bar.x + $scope.lineHeight/2, bar.y);
+			}
 		}
 		
 		var time = 0;
@@ -842,6 +848,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					drawOn = true;
 					$scope.addBar();
 					$scope.addItem("treble", $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "clef");
+					$scope.addItem($scope.instruments.timeSignature, $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "timeSignature");
 					$scope.draw();
 
 				}
