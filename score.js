@@ -670,10 +670,24 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.drawBars = function(bars){
+			var currentTimeSignature = {top: null, bottom: null};
 			for(var i = 0; i < bars.length; i++)
 			{
+				if(currentTimeSignature.top != bars[i].timeSignature.top || currentTimeSignature.bottom != bars[i].timeSignature.bottom){
+					$scope.drawTimeSignature(bars[i]);
+					currentTimeSignature.top = bars[i].timeSignature.top;
+					currentTimeSignature.bottom = bars[i].timeSignature.bottom;
+				}
 				$scope.drawBar(bars[i]);
 			}
+		}
+		
+		$scope.drawTimeSignature = function(bar){
+			context.fillStyle = noteColour;
+			log("Time signature font: " + "bold " + (2 * $scope.lineHeight/3) + "px Arial");
+			context.font = "bold " + (2 * $scope.lineHeight/3) + "px Arial";
+			context.fillText(bar.timeSignature.top, bar.x, bar.y + $scope.lineHeight/2);
+			context.fillText(bar.timeSignature.bottom, bar.x, bar.y + $scope.lineHeight);
 		}
 		
 		$scope.drawBar = function(bar){
@@ -784,6 +798,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else if(item.type == "clef"){
 				
 			}
+			
+			/* **********Deprecated method of drawing time signature**********
 			else if(item.type == "timeSignature"){
 				context.fillStyle = noteColour;
 				log("Time signature font: " + "bold " + (2 * $scope.lineHeight/3) + "px Arial");
@@ -791,6 +807,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.fillText(item.value.top, bar.x, bar.y + $scope.lineHeight/2);
 				context.fillText(item.value.bottom, bar.x, bar.y + $scope.lineHeight);
 			}
+			*/
 		}
 		
 		var time = 0;
@@ -849,7 +866,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					drawOn = true;
 					$scope.addBar();
 					$scope.addItem("treble", $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "clef");
-					$scope.addItem($scope.instruments.timeSignature, $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "timeSignature");
+					//Deprecated method of adding time signature:
+					//$scope.addItem($scope.instruments.timeSignature, $scope.instruments[0].id, $scope.instruments[0].bars[0].id, "timeSignature");
 					$scope.draw();
 
 				}
