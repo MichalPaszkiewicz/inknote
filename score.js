@@ -466,7 +466,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}
 				}
 				//right keypress - move selected note one right
-				//todo: find next NOTE. currently could be any item.
 				//todo: add item if no item after this.
 				else if(e.which === 39){
 					while(itemFound == null){
@@ -528,6 +527,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		//needs refactoring? there is also a remove function.
+		//needs to select another note, once this one deleted.
 		$scope.deleteSelectedNote = function(){
 			var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 			if(relevantInstrument){
