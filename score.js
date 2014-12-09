@@ -524,17 +524,19 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				$scope.noteDurationChange(e);
 			}
 			else if(e.which === 46){
-				$scope.deleteNote();
+				$scope.deleteSelectedNote();
 			}
 		}
 		
-		$scope.deleteNote = function(){
+		$scope.deleteSelectedNote = function(){
 			var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 			var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
 			var relevantBar = relevantInstrument.bars[relevantBarIndex];
 			var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
 			
 			relevantBar.items.splice(relevantItemIndex, 1);
+			
+			$scope.draw();
 		}
 		
 		$scope.noteDurationChange = function(e){
