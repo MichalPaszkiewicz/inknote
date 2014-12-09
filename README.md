@@ -33,6 +33,11 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 
+Update 9/12/2014
+------------------
+- Change note duration of notes to be added.
+- Delete notes
+
 Update 4/12/2014
 ------------------
 - Displays time signature correctly.
