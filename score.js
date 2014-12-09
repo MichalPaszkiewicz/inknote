@@ -425,6 +425,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.moveLeft = function(relevantInstrument, currentSelection){
+			var itemFound = null;
 			while(itemFound == null){
 				if(currentSelection.itemIndex != 0){
 					currentSelection.itemIndex--;
@@ -435,7 +436,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 						while(relevantInstrument.bars[currentSelection.barIndex].items.length == 0){
 							if(currentSelection.barIndex == 0){
 								itemFound = false;
-								return;
+								return itemFound;
 							}
 							currentSelection.barIndex--;
 						}
@@ -443,7 +444,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}
 					else{
 						itemFound = false;
-						return;
+						return itemFound;
 					}
 				}
 						
@@ -454,6 +455,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					$scope.selectedItemID = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].id;
 				}
 			}
+			return itemFound;
 		}
 		
 		$scope.noteIndexChange = function(e){
@@ -467,7 +469,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var itemFound = null;
 				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
-					$scope.moveLeft(relevantInstrument, currentSelection);
+					itemFound = $scope.moveLeft(relevantInstrument, currentSelection);
 				}
 				//right keypress - move selected note one right
 				//todo: add item if no item after this.
