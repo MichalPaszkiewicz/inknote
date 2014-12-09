@@ -270,3 +270,24 @@ div.scroller h2{
 	background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(76,76,76,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#4c4c4c', GradientType=1 );
 }
+
+.note-duration-changer{
+	background: rgb(255, 249, 242);
+	width: 200px;
+	z-index: 5000;
+	position: fixed;
+	left: 250px;
+	border-radius: 15px;
+	box-shadow: 0 0 5px 1px;
+	text-align:center;
+	overflow: none;
+}
+
+.note-duration-changer div{
+	padding: 5px;
+	cursor: pointer;
+}
+
+.note-duration-changer div:hover{
+	background: rgb(231, 214, 197);
+}
