@@ -294,7 +294,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var itemBar = {};
 			var actionSelection = null
 			
-			for(vfar i = 0; i < $scope.lines.length; i++){
+			for(var i = 0; i < $scope.lines.length; i++){
 				if(   ($scope.lines[i].y - $scope.lineHeight/2)  < y 
 				&&    ($scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2)    >  y){
 					actionSelection = "line";
