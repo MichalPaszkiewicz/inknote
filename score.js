@@ -552,7 +552,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					var itemFound = $scope.moveRight(relevantInstrument, currentSelection);
 					if(!itemFound){
 						currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
-						$scope.moveLeft(relevantInstrument, currentSelection);	
+						itemFound = $scope.moveLeft(relevantInstrument, currentSelection);	
+						if(!itemFound){
+							$scope.selectedInstrumentID = null;
+							$scope.selectedBarID = null;
+							$scope.selectedItemID = null;
+						}
 					}
 					relevantBar.items.splice(relevantItemIndex, 1);
 					$scope.draw();
