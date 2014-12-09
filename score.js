@@ -540,7 +540,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		//needs refactoring? there is also a remove function.
-		//needs to select another note, once this one deleted.
 		$scope.deleteSelectedNote = function(){
 			var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 			if(relevantInstrument){
