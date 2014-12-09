@@ -294,7 +294,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var itemBar = {};
 			var actionSelection = null
 			
-			for(var i = 0; i < $scope.lines.length; i++){
+			for(vfar i = 0; i < $scope.lines.length; i++){
 				if(   ($scope.lines[i].y - $scope.lineHeight/2)  < y 
 				&&    ($scope.lines[i].y + $scope.getFullLineHeight($scope.lines[i]) + $scope.lineHeight/2)    >  y){
 					actionSelection = "line";
@@ -424,6 +424,38 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		$scope.moveLeft = function(relevantInstrument, currentSelection){
+			while(itemFound == null){
+				if(currentSelection.itemIndex != 0){
+					currentSelection.itemIndex--;
+				}
+				else{
+					if(currentSelection.barIndex != 0){
+						currentSelection.barIndex--;
+						while(relevantInstrument.bars[currentSelection.barIndex].items.length == 0){
+							if(currentSelection.barIndex == 0){
+								itemFound = false;
+								return;
+							}
+							currentSelection.barIndex--;
+						}
+						currentSelection.itemIndex = relevantInstrument.bars[currentSelection.barIndex].items.length - 1;
+					}
+					else{
+						itemFound = false;
+						return;
+					}
+				}
+						
+				var currentItemType = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].type;
+				if(currentItemType == "note" || currentItemType == "rest"){
+					itemFound = true;
+					$scope.selectedBarID = relevantInstrument.bars[currentSelection.barIndex].id;
+					$scope.selectedItemID = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].id;
+				}
+			}
+		}
+		
 		$scope.noteIndexChange = function(e){
 			if($scope.selectedItemID != null){
 				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
@@ -435,35 +467,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var itemFound = null;
 				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
-					while(itemFound == null){
-						if(currentSelection.itemIndex != 0){
-							currentSelection.itemIndex--;
-						}
-						else{
-							if(currentSelection.barIndex != 0){
-								currentSelection.barIndex--;
-								while(relevantInstrument.bars[currentSelection.barIndex].items.length == 0){
-									if(currentSelection.barIndex == 0){
-										itemFound = false;
-										return;
-									}
-									currentSelection.barIndex--;
-								}
-								currentSelection.itemIndex = relevantInstrument.bars[currentSelection.barIndex].items.length - 1;
-							}
-							else{
-								itemFound = false;
-								return;
-							}
-						}
-						
-						var currentItemType = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].type;
-						if(currentItemType == "note" || currentItemType == "rest"){
-							itemFound = true;
-							$scope.selectedBarID = relevantInstrument.bars[currentSelection.barIndex].id;
-							$scope.selectedItemID = relevantInstrument.bars[currentSelection.barIndex].items[currentSelection.itemIndex].id;
-						}
-					}
+					$scope.moveLeft(relevantInstrument, currentSelection);
 				}
 				//right keypress - move selected note one right
 				//todo: add item if no item after this.
