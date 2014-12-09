@@ -273,7 +273,7 @@ div.scroller h2{
 
 .note-duration-changer{
 	background: rgb(255, 249, 242);
-	width: 200px;
+	width: 250px;
 	z-index: 5000;
 	position: fixed;
 	left: 250px;
