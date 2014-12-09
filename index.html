@@ -92,10 +92,13 @@
 			<div class="save-button button" ng-click="saveUserFunctions()">Save</div>
 			<div class="close-button button" ng-click="currentUserFunctionsOpen = false; togglePluginManager();">Close</div>
 		</div>
+		<div class="note-duration-changer">
+			<div class="" ng-click="changeItemDuration(false)">Decrease</div>
+			<div class="img">Img</div>
+		  	<div class="" ng-click="changeItemDuration(true)">Increase</div>
+		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":!menu}'>
-		  		<div class="sub-item" ng-click="changeItemDuration(false)">Decrease</div>
-		  		<div class="sub-item" ng-click="changeItemDuration(true)">Increase</div>
 		  		<div class="menu-item">
 		  			<div class="menu-item-name first">File</div>
 		  			<ul class="sub-items">
