@@ -342,6 +342,33 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		$scope.newItemDuration = {num: 1, denom: 1};
+		
+		$scope.changeItemDuration = function(isLonger){
+			if(isLonger){
+				//if more than semibreve, do nothing
+				if($scope.newItemDuration.num < 4){
+					if($scope.newItemDuration.denom == 1){
+						$scope.newItemDuration.num *= 2; 
+					}else{
+						$scope.newItemDuration.denom = Math.floor($scope.newItemDuration.denom / 2);
+					}
+				}
+				
+			}
+			else{
+				//if more than hemi-demi-semiquaver, do nothing. 
+				//todo: extend further?
+				if($scope.newItemDuration.denom < 16){
+					if($scope.newItemDuration.num == 1){
+						$scope.newItemDuration.denom *= 2; 
+					}else{
+						$scope.newItemDuration.num = Math.floor($scope.newItemDuration.num / 2);
+					}
+				}
+			}
+		}
+		
 		$scope.addItem = function(value, instrumentID, barID, type){
 			var instrument = $scope.instruments.getItemFromID(instrumentID);
 			var thisBar = instrument.bars.getItemFromID(barID);
@@ -373,7 +400,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			//get uniquer id
 			id = newID();
 			
-			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type, duration: {num: 1, denom: 1}};
+			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type, duration: {num: $scope.newItemDuration.num, denom: $scope.newItemDuration.denom}};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
