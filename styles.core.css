@@ -277,10 +277,11 @@ div.scroller h2{
 	z-index: 5000;
 	position: fixed;
 	left: 250px;
+	top: 10;
 	border-radius: 15px;
 	box-shadow: 0 0 5px 1px;
-	text-align:center;
-	overflow: none;
+	text-align: center;
+	overflow: hidden;
 }
 
 .note-duration-changer div{
