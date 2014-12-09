@@ -93,9 +93,9 @@
 			<div class="close-button button" ng-click="currentUserFunctionsOpen = false; togglePluginManager();">Close</div>
 		</div>
 		<div class="note-duration-changer">
-			<div class="" ng-click="changeItemDuration(false)">Decrease</div>
-			<div class="img">Img</div>
-		  	<div class="" ng-click="changeItemDuration(true)">Increase</div>
+			<div class="note-duration-button" ng-click="changeItemDuration(false)">Decrease</div>
+			<div class="note-duration-image">{{newItemDuration.num}} : {{newItemDuration.denom}}</div>
+		  	<div class="note-duration-button" ng-click="changeItemDuration(true)">Increase</div>
 		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":!menu}'>
