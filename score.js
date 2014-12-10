@@ -374,6 +374,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var thisBar = instrument.bars.getItemFromID(barID);
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
+			var totalNoteValues = thisBar.items.sum(function(item){return 4 * item.duration.num / item.duration.denom})
 			
 			if(noteCount > 2 && noteCount < 4 && instrument.bars.getLastItem().id == barID){
 				$scope.addBar();
