@@ -19,6 +19,15 @@ Array.prototype.countWhere = function(xAndY){
 	return count;
 }
 
+Array.prototype.sum = function(xAndY){
+	var count = 0;
+	for(var i = 0; i < this.length; i++)
+	{
+		count += xAndY(this[i])
+	}
+	return count;
+}
+
 Array.prototype.getIndexFromID = function(id){
 	for(var i = 0; i < this.length; i++){
 		if(this[i].id == id){ return i; }
