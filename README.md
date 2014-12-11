@@ -17,7 +17,6 @@ http://www.michalpaszkiewicz.co.uk/inknote/developer/
 
 Upcoming updates
 ------------------
-- Change note duration.
 - Score chords.
 - Display rests.
 - Draw clefs and key signatures.
@@ -32,6 +31,7 @@ Upcoming updates
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
+- Guitar tab.
 
 Update 11/12/2014
 ------------------
