@@ -33,10 +33,11 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 
-Update 9/12/2014
+Update 11/12/2014
 ------------------
 - Change note duration of notes to be added.
 - Delete notes
+- Corrected calculation of allowed bar length
 
 Update 4/12/2014
 ------------------
