@@ -385,7 +385,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				return;
 			}
 			// if this note will fill bar and this is last, add bar.
-			else if( totalAllowedValue >= totalNoteValuesWithNewNote - 0.005 && /*noteCount > 2 && noteCount < 4 &&*/ instrument.bars.getLastItem().id == barID){
+			else if( totalAllowedValue <= totalNoteValuesWithNewNote + 0.005 && /*noteCount > 2 && noteCount < 4 &&*/ instrument.bars.getLastItem().id == barID){
 				$scope.addBar();
 				//$scope.draw();
 				//return;
