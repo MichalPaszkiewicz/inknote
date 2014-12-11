@@ -374,18 +374,27 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var thisBar = instrument.bars.getItemFromID(barID);
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
-			var totalNoteValues = thisBar.items.sum(function(item){return 4 * item.duration.num / item.duration.denom})
+
+			var totalNoteValues = thisBar.items.sum(function(item){return item.duration.num / item.duration.denom});
+			var totalNoteValuesWithNewNote = totalNoteValues + ($scope.newItemDuration.num / $scope.newItemDuration.denom);
+			var totalAllowedValue = thisBar.timeSignature.top * 4 / thisBar.timeSignature.bottom;
 			
-			if(noteCount > 2 && noteCount < 4 && instrument.bars.getLastItem().id == barID){
+			
+			if(totalNoteValues >= totalAllowedValue - 0.005){
+				//enough or too many notes here!
+				return;
+			}
+			// if this note will fill bar and this is last, add bar.
+			else if( totalAllowedValue >= totalNoteValuesWithNewNote - 0.005 && /*noteCount > 2 && noteCount < 4 &&*/ instrument.bars.getLastItem().id == barID){
 				$scope.addBar();
 				//$scope.draw();
 				//return;
 				//thisBar = $scope.instruments[0].bars[$scope.instruments[0].bars.length - 1];
 			}
-			else if(noteCount > 3){
+			/*else if( noteCount > 3){
 				//throw new Error("This bar is full already!");
 				return;
-			}
+			}*/
 			
 			if(type == null || type == undefined){
 				type = "note";
