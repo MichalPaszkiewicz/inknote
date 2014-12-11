@@ -24,8 +24,18 @@ angular.module('peerJS', []).
 		
 		var connectedPeers = {};
 	
-		
+		// Show this peer's ID.
+		peer.on('open', function(id){
+		    $(".me").val(id);
+		    
+		    	$(".friend-link").val(location.href + "?id=" + id);
+			
+			$(".friend-link").click(function(){ $(this).select() });
+			
+		});
 	
+		// Await connections from others
+		peer.on('connection', connect);
 	
 	
 	
