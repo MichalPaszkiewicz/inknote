@@ -369,16 +369,38 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 		}
 		
+		var getBarTotalNoteValues = function(thisBar){
+			return thisBar.items.sum(function(item){return item.duration.num / item.duration.denom});
+		}
+		
+		var getBarTotalNoteValuesWithNewNote = function(thisBar){
+			var totalNoteValues = getBarTotalNoteValues(thisBar);
+			return  totalNoteValues + ($scope.newItemDuration.num / $scope.newItemDuration.denom);
+		}
+		
+		var getBarTotalAllowedValue = function(thisBar){
+			return thisBar.timeSignature.top * 4 / thisBar.timeSignature.bottom;
+		}
+		
+		var hasRightAmountOfNotes = function(thisBar){
+			return getBarTotalNoteValues(thisBar) + 0.005 > getBarTotalAllowedValue(thisBar)
+				&& getBarTotalNoteValues(thisBar) - 0.005 < getBarTotalAllowedValue(thisBar);
+		}
+		
+		var hasTooManyNotes = function(thisBar){
+			return getBarTotalNoteValues(thisBar) - 0.005 > getBarTotalAllowedValue(thisBar)
+		}
+		
+		//todo: replace the if statements with above functions.
 		$scope.addItem = function(value, instrumentID, barID, type){
 			var instrument = $scope.instruments.getItemFromID(instrumentID);
 			var thisBar = instrument.bars.getItemFromID(barID);
 			
 			var noteCount = thisBar.items.countWhere(function(item){return (item.type == 'note' || item.type == undefined || item.type == null)});
 
-			var totalNoteValues = thisBar.items.sum(function(item){return item.duration.num / item.duration.denom});
-			var totalNoteValuesWithNewNote = totalNoteValues + ($scope.newItemDuration.num / $scope.newItemDuration.denom);
-			var totalAllowedValue = thisBar.timeSignature.top * 4 / thisBar.timeSignature.bottom;
-			
+			var totalNoteValues = getBarTotalNoteValues(thisBar);
+			var totalNoteValuesWithNewNote = getBarTotalNoteValuesWithNewNote(thisBar);
+			var totalAllowedValue = getBarTotalAllowedValue(thisBar);
 			
 			if(totalNoteValues >= totalAllowedValue - 0.005){
 				//enough or too many notes here!
@@ -792,6 +814,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.stroke();
 			for(var i = 0; i < bar.items.length; i++){
 				$scope.drawItem(bar, bar.items[i]);
+			}
+			
+			//signify bar is bad
+			if(hasTooManyNotes(bar)){
+				context.beginPathPath();
+				context.strokeStyle = "red";
+				context.moveTo(bar.x, bar.y);
+				context.lineTo(bar.x, bar.y + $scope.lineHeight);
+				context.stroke(0);
 			}
 		}
 		
