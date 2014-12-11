@@ -410,7 +410,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			//get uniquer id
 			id = newID();
 			
-			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type, duration: {num: $scope.newItemDuration.num, denom: $scope.newItemDuration.denom}};
+			var tempItem = {id: id, value: value, barID: thisBar.id, x: null, y: null, type: type, duration: {num: type == 'clef' ? 0 : $scope.newItemDuration.num, denom: $scope.newItemDuration.denom}};
 			thisBar.items.push(tempItem);
 			
 			$scope.draw();
