@@ -809,6 +809,20 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.drawBar = function(bar){
+			//signify bar is bad
+			// this goes first so items go on top of error bars.
+			if($scope.warningCorners && !hasRightAmountOfNotes(bar)){
+				context.beginPath();
+				context.strokeStyle = "red";
+				context.lineWidth = 5;
+				context.moveTo(bar.x - 5, bar.y + 5);
+				context.lineTo(bar.x - 5, bar.y + $scope.lineHeight + 5);
+				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
+				context.stroke();
+				context.lineWidth = 1;
+			}
+			
+			
 			context.beginPath();
 			context.strokeStyle = staveColour;
 			context.moveTo(bar.x, bar.y);
@@ -816,18 +830,6 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.stroke();
 			for(var i = 0; i < bar.items.length; i++){
 				$scope.drawItem(bar, bar.items[i]);
-			}
-			
-			//signify bar is bad
-			if($scope.warningCorners && !hasRightAmountOfNotes(bar)){
-				context.beginPath();
-				context.strokeStyle = "rgba(255,100,100,0.7)";
-				context.lineWidth = 5;
-				context.moveTo(bar.x - 5, bar.y + 5);
-				context.lineTo(bar.x - 5, bar.y + $scope.lineHeight + 5);
-				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
-				context.stroke();
-				context.lineWidth = 1;
 			}
 		}
 		
