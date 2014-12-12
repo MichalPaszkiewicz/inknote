@@ -20,7 +20,7 @@ angular.module('peerJS', []).
 		$scope.myID = null;
 		
 		//object holding all client ids.
-		var connectedPeers = {};
+		$scope.connectedPeers = {};
 		
 		$scope.collaboratorMessages = [];
 	
@@ -38,6 +38,7 @@ angular.module('peerJS', []).
 		    // Handle a chat connection.
 			if (c.label === 'chat') {
 				$scope.collaboratorMessages.push({peer: c.peer, message: c.peer + " has connected."});
+				$scope.connectedPeers.push(c.peer)
 
 				c.on('data', function(data) {
 					$scope.collaboratorMessages.push({peer: c.peer, message: data});
@@ -59,6 +60,32 @@ angular.module('peerJS', []).
 				});
 			}
 		}
+		
+		//todo: fix this:
+		
+		// Goes through each active peer and calls FN on its connections.
+		function eachActiveConnection(fn) {
+		    var actives = $('.active');
+		    var checkedIds = {};
+		    actives.each(function () {
+		        var peerId = $(this).attr('id');
+		
+		        if (!checkedIds[peerId]) {
+		            var conns = peer.connections[peerId];
+		            for (var i = 0, ii = conns.length; i < ii; i += 1) {
+		                var conn = conns[i];
+		                fn(conn, $(this));
+		            }
+		        }
+		        checkedIds[peerId] = 1;
+		    });
+		}
 	
 	
+		// Make sure things clean up properly.
+		window.onunload = window.onbeforeunload = function(e) {
+		    if (!!peer && !peer.destroyed) {
+		        peer.destroy();
+		    }
+		};
 	});
