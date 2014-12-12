@@ -334,15 +334,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			
-			if(actionSelection == null){ return; }
-			else if(actionSelection == "bar"){
+			if(actionSelection == "bar"){
 				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8)) - $scope.windowScroll;
 				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 			}
-			//commented out, so when you click somewhere randomly, still draws you are no longer on an item.
-			else/* if(actionSelection == "item")*/{
-				$scope.draw();
-			}
+
+			$scope.draw();
+
 		}
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
