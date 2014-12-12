@@ -11,6 +11,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.bugReport = false;
 		$scope.bugMessage = "";
 		
+		$scope.warningCorners = true;
+		
 		$scope.userFunctionTypes = [{name: "code"},{name: "file"}];
 		
 		$scope.currentUserFunctionsOpen = false;
@@ -817,7 +819,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			
 			//signify bar is bad
-			if(hasTooManyNotes(bar)){
+			if($scope.warningCorners && hasTooManyNotes(bar)){
 				context.beginPath();
 				context.strokeStyle = "red";
 				context.lineWidth = 5;
