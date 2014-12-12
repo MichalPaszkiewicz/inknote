@@ -339,7 +339,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8)) - $scope.windowScroll;
 				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
 			}
-			else if(actionSelection == "item"){
+			//commented out, so when you click somewhere randomly, still draws you are no longer on an item.
+			else/* if(actionSelection == "item")*/{
 				$scope.draw();
 			}
 		}
