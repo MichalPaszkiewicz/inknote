@@ -821,9 +821,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.beginPath();
 				context.strokeStyle = "red";
 				context.lineWidth = 5;
-				context.moveTo(bar.x, bar.y);
-				context.lineTo(bar.x - 3, bar.y + $scope.lineHeight + 3);
-				context.lineTo(bar.x + 2 * $scope.lineHeight - 3, bar.y + $scope.lineHeight + 3);
+				context.moveTo(bar.x - 5, bar.y + 5);
+				context.lineTo(bar.x - 5, bar.y + $scope.lineHeight + 3);
+				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
 				context.stroke();
 				context.lineWidth = 1;
 			}
