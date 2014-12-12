@@ -38,7 +38,7 @@ Update 11/12/2014
 - Change note duration of notes to be added.
 - Delete notes
 - Corrected calculation of allowed bar length
-- Displays red warning corner on bars that have too many notes.
+- Displays red warning corner on bars that have wrong amount of notes.
 
 Update 4/12/2014
 ------------------
