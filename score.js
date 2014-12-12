@@ -819,7 +819,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			
 			//signify bar is bad
-			if($scope.warningCorners && hasTooManyNotes(bar)){
+			if($scope.warningCorners && !hasRightAmountOfNotes(bar)){
 				context.beginPath();
 				context.strokeStyle = "red";
 				context.lineWidth = 5;
