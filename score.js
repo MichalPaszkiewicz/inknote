@@ -820,9 +820,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(hasTooManyNotes(bar)){
 				context.beginPath();
 				context.strokeStyle = "red";
+				context.lineWidth = 5;
 				context.moveTo(bar.x, bar.y);
 				context.lineTo(bar.x, bar.y + $scope.lineHeight);
+				context.lineTo(bar.x + $scope.lineHeight, bar.y + $scope.lineHeight);
 				context.stroke();
+				context.lineWidth = 1;
 			}
 		}
 		
