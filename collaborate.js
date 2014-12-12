@@ -58,11 +58,6 @@ angular.module('peerJS', []).
 					}
 				});
 			}
-		    
-			if(location.search.length == 0)
-			{
-				setTimeout(function(){sendSettings()},500);
-			}
 		}
 	
 	
