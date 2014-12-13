@@ -345,6 +345,20 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
 		
+		var noteMapping = {
+			"116" : 0,
+			"18" : -22,
+			"14" : -46,
+			"12" : -72,
+			"11" : -97,
+			"21" : -122,
+			"41" : -148
+		};
+		
+		$scope.getItemDurationImgX = function(){
+			return noteMapping[$scope.newItemDuration.num + "" + $scope.newItemDuration.denom];
+		}
+		
 		$scope.changeItemDuration = function(isLonger){
 			if(isLonger){
 				//if more than semibreve, do nothing

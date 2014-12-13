@@ -94,7 +94,7 @@
 		</div>
 		<div class="note-duration-changer">
 			<div class="note-duration-button" ng-click="changeItemDuration(false)">Decrease</div>
-			<div class="note-duration-image">{{newItemDuration.num}} : {{newItemDuration.denom}}</div>
+			<div class="note-duration-image" style="background-position-x: {{getItemDurationImgX()}}px;"></div>
 		  	<div class="note-duration-button" ng-click="changeItemDuration(true)">Increase</div>
 		</div>
 	  	<div class="menu-container">

@@ -288,8 +288,16 @@ div.scroller h2{
 	padding: 5px;
 	cursor: pointer;
 	display: inline-block;
+	vertical-align: middle;
 }
 
-.note-duration-changer div:hover{
+.note-duration-changer div:hover:note(.note-duration-image){
 	background: rgb(231, 214, 197);
+}
+
+.note-duration-image{
+	background: url(./images/Notes2.PNG);
+	width: 15px;
+	height: 30px;
+	background-size: cover;
 }
