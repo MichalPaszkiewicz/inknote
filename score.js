@@ -277,7 +277,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			//if clicks in scrollbar, moves to that position.
 			if(isInScrollBar(canvas, context, x, e.clientY - tempCanvas.offsetTop)){
-				$scope.windowScroll = getScrollPositionFromScrollBar(canvas, context, y, $scope.lines[$scope.lines.length - 1].y);
+				$scope.windowScroll = getScrollPositionFromScrollBar(canvas, context, e.clientY - tempCanvas.offsetTop, $scope.lines[$scope.lines.length - 1].y);
 				$scope.draw();
 				return;
 			}
