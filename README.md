@@ -25,13 +25,12 @@ Upcoming updates
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
 - Add collaboration option.
-- Tab/chord name display modes.
+- Guitar Tab/chord name display modes.
 - Alternative display modes - e.g. keyboard blocks, phrase blocks.
 - Donate button.
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
-- Guitar tab.
 
 Update 11/12/2014
 ------------------
