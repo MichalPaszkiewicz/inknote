@@ -77,13 +77,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			if(drawOn){
 				if($deltaY == 1){
 					if($scope.windowScroll > 0){
-						$scope.windowScroll -= $scope.windowScrollAmount;
+						$scope.windowScroll -= parseInt($scope.windowScrollAmount);
 						$scope.draw();
 					}
 				}
 				else if($deltaY == -1){
 					if($scope.windowScroll < $scope.lines[$scope.lines.length - 1].y){
-						$scope.windowScroll += $scope.windowScrollAmount;
+						$scope.windowScroll += parseInt($scope.windowScrollAmount);
 						$scope.draw();
 					}
 				}
