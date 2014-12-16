@@ -29,6 +29,7 @@ Upcoming updates
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
+- AUDIO.
 
 Update 16/12/2014
 ------------------
