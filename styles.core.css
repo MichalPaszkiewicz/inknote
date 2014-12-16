@@ -184,7 +184,7 @@ input{
 	background: rgb(54, 121, 54);
 }
 
-#user-functions div.close-button, div.close-button{
+#user-functions div.close-button, div.close-button, #about div.close-button{
 	background: red;
 	position: absolute;
 	right: -13px;
@@ -192,7 +192,7 @@ input{
 	box-shadow: 0 0 6px 1px black;
 }
 
-#user-functions div.close-button:hover, div.close-button:hover{
+#user-functions div.close-button:hover, div.close-button:hover, #about div.close-button:hover{
 	background: rgb(198, 0, 0);
 }
 
