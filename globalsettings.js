@@ -1,6 +1,3 @@
-//set up canvas
-var globalCanvas = null;
-
 //set up drawing colours
 var staveColour = "black";
 var noteColour = "red";
