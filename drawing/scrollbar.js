@@ -1,4 +1,4 @@
-var drawScrollBar = function(scrollPosition){
+var drawScrollBar = function(canvas, context, scrollPosition){
 	var height = 400;
 	var width = 20;
 	scrollPosition = 50;
