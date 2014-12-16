@@ -1,0 +1,6 @@
+general:
+  build_dir: tests
+
+test:
+  override:
+    - npm test

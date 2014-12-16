@@ -1,0 +1,230 @@
+html, body{
+	margin: 0;
+	padding: 0;
+	font-family: arial;
+}
+
+.admin{
+	background: rgb(251, 242, 196);
+}
+
+.bug{
+	color: red;
+}
+
+.fixed, .fixed:hover, span.fixed, span.fixed:hover, .forum div.table-div span.tick.fixed:hover{
+	background: url(./images/mytick.png) center;
+	background-size: 20px;
+	background-repeat: no-repeat;
+	height: 40px;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.centalic{
+	text-align: center;
+	font-style: italic;
+	background: rgb(237, 237, 252);
+	padding: 12px 0;
+	border-radius: 8px;
+}
+
+.main-container{
+	min-height: 100%;
+}
+
+.header{
+	margin-bottom: 20px;
+}
+
+.header, .footer, .push{
+	height: 70px;
+}
+
+.header, .footer{
+	background: black;
+	color: white;
+}
+
+.push, .footer{
+	clear: both;
+}
+
+.footer{
+	margin-top: -70px;
+}
+
+.footer a{
+	color: white;
+	font-size: 25px;
+	margin: 20px;
+	display: inline-block;
+}
+
+.header h1{
+	text-transform: uppercase;
+	font-family: fantasy;
+	font-weight: 100;
+	font-size: 87px;
+	margin: 0;
+	line-height: 70px;
+	width: 100%;
+	text-align: center;
+}
+
+.header h1 span{
+	left: 36px;
+	right: 0;
+	margin: auto;
+	line-height: 18px;
+	position: absolute;
+	top: 70px;
+	color: red;
+	font-size: 20px;
+	vertical-align: baseline;
+	letter-spacing: 30px;
+}
+
+.search-box{
+	margin-right: 25px;
+	position: absolute;
+	top: 90px;
+	right: 0;
+	color: white;
+	background: black;
+	padding: 5px 20px;
+	border-radius: 8px;
+	font-family: monospace;
+	text-transform: uppercase;
+	z-index: 1000;
+}
+
+.search-box input{
+	border-radius: 0 5px 5px 0;
+	border: 0;
+	padding: 3px;
+}
+
+.content-container{
+	vertical-align: top;
+	position: relative;
+	width: 50%;
+	display:inline-block;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.full-width .content-container{
+	width: 100%;
+}
+
+.forum div.table-div, .sections div.table-div, .thread div.table-div, .section div.table-div{
+	border-bottom: 1px solid black;
+}
+
+.forum div.table-div, .sections div.table-div{
+	cursor: pointer;
+}
+
+.forum div.table-div:hover:not(.first-line), .sections div.table-div:hover:not(.first-line), .forum div.table-div span:not(.span-box):hover{
+	background: lightgray;
+}
+
+.first-line{
+	font-weight: bold;
+	letter-spacing: 1.5px;
+}
+
+.forum div.table-div span, .sections div.table-div span, .thread div.table-div span, .section div.table-div span{
+	display: inline-block;
+	box-sizing: border-box;
+	vertical-align: middle;
+	line-height: 20px;
+	padding: 10px;
+	font-size: 14px;
+}
+
+div.table-div span.span-box, span.span-box{
+	display: inline-block;
+	padding: 0;
+}
+
+div.table-div span.normal{
+	width: 250px;
+}
+
+div.table-div span.short{
+	width: 110px;
+}
+
+div.table-div span.tick{
+	width: 63px;
+}
+
+div.table-div span.date{
+	width: 155px;
+}
+
+div.table-div span.long{
+	width: 250px;
+}
+
+div.table-container{
+	max-height: 50%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.thread, .section{
+	background: white;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.button{
+	background: gray;
+	display: inline-block;
+	padding: 15px;
+	margin: 10px;
+	border-radius: 10px;
+	color: white;
+	cursor: pointer;
+	box-shadow: 0 0 5px 1px black;
+}
+
+.button:hover{
+	background: darkgray;
+}
+
+.new-post{
+	background: rgb(229, 229, 229);
+	border-radius: 0 0 20px 20px;
+	padding: 0 20px 25px 20px;
+}
+
+.new-post input{
+	margin: 10px;
+	padding: 5px;
+}
+
+.new-post textarea{
+	clear: both;
+	display: block;
+	width: 100%;
+	max-width: 100%;
+}
+
+.fixed-message{
+	text-align: center;
+	padding: 30px 0;
+	background: rgb(101, 200, 101);
+	border-radius: 0 0 15px 15px;
+	font-family: fantasy;
+	text-transform: uppercase;
+	font-size: 40px;
+	letter-spacing: 15px;
+	color: white;
+	text-shadow: 3px 3px 5px black;
+}

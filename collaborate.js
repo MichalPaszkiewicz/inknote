@@ -1,0 +1,91 @@
+angular.module('peerJS', []).
+	controller("peerJS", function peerJS($scope){
+		// Connect to PeerJS, have server assign an ID instead of providing one
+		// Showing off some of the configs available with PeerJS :).
+		var peer = new Peer({
+			// Set API key for cloud server 
+		    	key: '9t3v4nsdk6ueg66r',
+		
+			// Set highest debug level (log everything!).
+			debug: 3,
+		
+			// Set a logging function:
+			logFunction: function() {
+				var copy = Array.prototype.slice.call(arguments).join(' ');
+				console.log(copy);
+			}
+		});
+		
+		//current client connection id.
+		$scope.myID = null;
+		
+		//object holding all client ids.
+		$scope.connectedPeers = {};
+		
+		$scope.collaboratorMessages = [];
+	
+		// Show this peer's ID.
+		peer.on('open', function(id){
+			$scope.myID = id;
+		});
+	
+		// Await connections from others
+		peer.on('connection', connect);
+	
+		// Handle a connection object.
+		function connect(c) {
+			
+		    // Handle a chat connection.
+			if (c.label === 'chat') {
+				$scope.collaboratorMessages.push({peer: c.peer, message: c.peer + " has connected."});
+				$scope.connectedPeers.push(c.peer)
+
+				c.on('data', function(data) {
+					$scope.collaboratorMessages.push({peer: c.peer, message: data});
+			        });
+				
+				c.on('close', function() {
+					alert(c.peer + ' has left the chat.');
+					delete connectedPeers[c.peer];
+			        });
+			} else if (c.label === 'file') {
+				c.on('data', function(data) {
+					// If we're getting a file, create a URL for it.
+					if (data.constructor === ArrayBuffer) {
+						var dataView = new Uint8Array(data);
+						var dataBlob = new Blob([dataView]);
+						var url = window.URL.createObjectURL(dataBlob);
+						$scope.collaboratorMessages.push({peer: c.peer, message: c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.'});
+					}
+				});
+			}
+		}
+		
+		//todo: fix this:
+		
+		// Goes through each active peer and calls FN on its connections.
+		function eachActiveConnection(fn) {
+		    var actives = $('.active');
+		    var checkedIds = {};
+		    actives.each(function () {
+		        var peerId = $(this).attr('id');
+		
+		        if (!checkedIds[peerId]) {
+		            var conns = peer.connections[peerId];
+		            for (var i = 0, ii = conns.length; i < ii; i += 1) {
+		                var conn = conns[i];
+		                fn(conn, $(this));
+		            }
+		        }
+		        checkedIds[peerId] = 1;
+		    });
+		}
+	
+	
+		// Make sure things clean up properly.
+		window.onunload = window.onbeforeunload = function(e) {
+		    if (!!peer && !peer.destroyed) {
+		        peer.destroy();
+		    }
+		};
+	});

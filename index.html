@@ -1,9 +1,17 @@
-<html>
+<html ng-app="app" ng-controller="themeControl">
 <head>
+	<title>inknote</title>
+	<meta name="description" content="Free, open source, browser based music scoring software for musicians and developers.">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
-	<script src="score.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	
+
+	<script src="alertify/alertify.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="alertify/themes/alertify.core.css">
+	<link rel="stylesheet" type="text/css" href="alertify/themes/alertify.default.css">
+
+	<link rel="stylesheet" type="text/css" href="styles.core.css">
+	<link rel="stylesheet" type="text/css" ng-href="{{currentCss}}" href="styles.css">
+	<link rel="stylesheet" type="text/css" ng-href="{{layoutCss}}" href="layouts/topmenu/layout.css">
+
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -14,24 +22,348 @@
 		  ga('send', 'pageview');	
 		</script>
 </head>
-<body>
-	<div id="main-container" style="margin: 10px" ng-app="app">
-
-	  <div ng-controller="canvasCtrl">
-		<h1>InkNote</h1>     
-		
-		<canvas id="canvas" style="border: 1px gray solid; float: left" ng-click="action($event)"></canvas>
-		<div id="list">
-			<ul>
-				<li ng-repeat="line in lines">				
-					<ul>
-						<li ng-repeat="note in line.notes">[{{line.id}}, {{note.id}}] <a ng-click="removeNote(line, note)">[x]</a></li>
-					<ul>
-				</li>
-			</ul>
+<body ng-controller="canvasCtrl" ng-updown="noteChange($event)" ng-leftright="noteIndexChange($event)" ng-keyboard="keyboardFunctions($event)">
+	<div  id="main-container" >
+		 <img id="canvasImg">
+	  <div  msd-wheel="handleScroll($event, $delta, $deltaX, $deltaY)">
+	  
+	  	<div id="new-instrument" class="ng-hide" ng-show="openInstrumentName()">
+			<input ng-model="instrumentName" ng-enter="addInstrument(instrumentName); toggleNewInstrument();"></input>
+			<div class="button-container">
+				<div class="button" ng-click="addInstrument(instrumentName); toggleNewInstrument();" ng-enter="addInstrument(instrumentName); toggleNewInstrument();">Save</div>
+				<div class="button" ng-click="toggleNewInstrument();" ng-enter="toggleNewInstrument();">Cancel</div>
+			</div>
 		</div>
+		<div id="bug-reporter" class="ng-hide" ng-show="bugReport">
+			<div>Please provide some information on your problem</div>
+			<textarea ng-model="bugMessage" ng-enter="submitBugReport();"></textarea>
+			<div class="button-container">
+				<div class="button" ng-click="bugReport = false;">Close</div>
+				<div class="button" ng-click="submitBugReport();">Send bug report</div>
+			</div>
+		</div>
+		<div id="user-functions" class="ng-hide" ng-show="currentUserFunctionsOpen">
+			<div class="user-functions-menu">
+				<div class="scroller">
+					<ul>
+						<li ng-class="{'open': userFunctionDisplay == 'wakeUpCall'}" ng-click="userFunctionDisplay = 'wakeUpCall'">Before load</li>
+						<li ng-class="{'open': userFunctionDisplay == 'lockTheDoor'}" ng-click="userFunctionDisplay = 'lockTheDoor'">On load</li>
+						<li ng-class="{'open': userFunctionDisplay == 'afterSave'}" ng-click="userFunctionDisplay = 'afterSave'">After save</li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="scroller">
+				<h2>Plugin manager</h2>
+				<div class="user-functions-details" ng-show="!userFunctionDisplay">
+					<p>Please be aware that code added through the plugin manager can potentially harm the functioning of this program.</p>
+					<p>Please only add code here from trusted sources.</p>
+				</div>
+				<div class="user-functions-details" ng-show="userFunctionDisplay == 'wakeUpCall'">
+					<h3>Before load functions</h3>
+					<ul>
+						<li ng-repeat="wakeUpCall in currentUserFunctions.wakeUpCalls track by $index">
+							<select ng-model="wakeUpCall.type" ng-options="functionType.name for functionType in userFunctionTypes track by functionType.name"></select><textarea ng-model="wakeUpCall.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.wakeUpCalls, $index)">x</div>
+						</li>
+					</ul>
+					<div class="button" ng-click="currentUserFunctions.wakeUpCalls.push({type: {name: 'code'}, code: 'function newFunction(){}' });">Add new</div>
+				</div>
+				<div class="user-functions-details" ng-show="userFunctionDisplay == 'lockTheDoor'">
+					<h3>On load functions</h3>
+					<ul>
+						<li ng-repeat="function in currentUserFunctions.lockTheDoor track by $index">
+							<textarea ng-model="function.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.lockTheDoor, $index)">x</div>
+						</li>
+					</ul>
+					<div class="button" ng-click="currentUserFunctions.lockTheDoor.push({type: {name: 'code'}, code: 'function newFunction(){}' });">Add new</div>
+				</div>
+				
+				<div class="user-functions-details" ng-show="userFunctionDisplay == 'afterSave'">
+					<h3>After save functions</h3>
+					<ul>
+						<li ng-repeat="function in currentUserFunctions.afterSave track by $index">
+							<textarea ng-model="function.code"></textarea><div class="delete-function" ng-click="remove(currentUserFunctions.afterSave, $index)">x</div>
+						</li>
+					</ul>
+					<div class="button" ng-click="currentUserFunctions.afterSave.push({type: {name: 'code'}, code: 'function newFunction(){}'});">Add new</div>
+				</div>
+			</div>
+			
+			<div class="save-button button" ng-click="saveUserFunctions()">Save</div>
+			<div class="close-button button" ng-click="currentUserFunctionsOpen = false; togglePluginManager();">Close</div>
+		</div>
+		<div class="note-duration-changer">
+			<div class="note-duration-button" ng-click="changeItemDuration(false)">Decrease</div>
+			<div class="note-duration-image" style="background-position-x: {{getItemDurationImgX()}}px;"></div>
+		  	<div class="note-duration-button" ng-click="changeItemDuration(true)">Increase</div>
+		</div>
+	  	<div class="menu-container">
+		  	<div class="menu" ng-class='{"selected":!menu}'>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name first">File</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">New</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item"><input type="text" ng-model="newFileName"></li>
+		  						<li class="sub-sub-item" ng-click="newFile(newFileName)">Create</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Open</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item smaller" ng-repeat="file in files track by file.id">
+		  							<div class="sub-sub-item-name" ng-click="openFile(file)">{{file.name}}</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="file.name">
+		  								</li>
+		  							</ul>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name" ng-click="saveFiles()">Save</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Page setup</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Advanced</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item" onclick="localStorage.setItem('inknote-files','[]')">
+		  							Clear all
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Edit</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Time signature</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item">
+		  							<input ng-model="newTop"></input>
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<input ng-model="newBottom"></input>
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<div class="sub-sub-item-name" ng-click="changeDefaultTimeSignature(newTop, newBottom)">Change</div>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Warnings</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item" ng-click="warningCorners = !warningCorners; draw();">
+		  							<div class="sub-sub-item-name">Toggle {{warningCorners ? "off" : "on"}}</div>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Tools</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Plugins</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item" ng-click="currentUserFunctionsOpen = true;togglePluginManager();">
+		  							Manage plugins
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Themes</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item smaller" ng-repeat="theme in themes" ng-click="setTheme(theme); draw();">
+		  							{{theme.name}}
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<div class="sub-sub-item-name">Add theme</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="themeLink" ng-enter="addTheme(themeLink); draw();">
+		  								</li>
+		  							</ul>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Layouts</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item smaller" ng-repeat="layout in layouts" ng-click="setLayout(layout)">
+		  							{{layout.name}}
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							<div class="sub-sub-item-name">Add layout</div>
+		  							<ul class="sub-sub-sub-items">
+		  								<li class="sub-sub-sub-item">
+		  									<input type="text" ng-model="layoutLink" ng-enter="addLayout(layoutLink)">
+		  								</li>
+		  							</ul>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="instruments-menu menu-item">
+		  			<div class="menu-item-name">Instruments</div>
+			  		<ul class="sub-items">
+			  			<li class="instrument sub-item" ng-click="allInstrumentsOn()">
+			  				All instruments
+			  			</li>
+			  			<li class="instrument sub-item smaller" ng-repeat="instrument in instruments">
+			  				<div class="sub-item-name">[{{instrument.name}}, {{instrument.id}}]</div>
+			  				<ul class="sub-sub-items">
+			  					<li class="sub-sub-item" ng-click="soloInstrument(instrument.id)">Solo</li>
+			  					<li class="sub-sub-item no-pad" ng-show="!isOnlyDisplayed(instrument.id)">
+			  						<span class="half" ng-class="{'red': !instrument.visible}" ng-click="instrument.visible = false;draw();">Off</span><span class="half" ng-class="{'green': instrument.visible}" ng-click="instrument.visible = true;draw();">On</span>
+			  					</li>
+			  					<li class="sub-sub-item">
+			  						<input type="text" ng-model="instrument.name">
+			  					</li>
+			  					<li class="sub-sub-item">
+			  						<div class="sub-sub-item-name">Bars</div>
+			  						<ul class="sub-sub-sub-items">
+				  						<li class="sub-sub-sub-item smaller" ng-repeat="bar in instrument.bars">
+				  							<div class="sub-sub-sub-item-name">Bar: <span>{{bar.id}}</span></div>
+											<ul class="sub-sub-sub-sub-items">
+												<li class="sub-sub-sub-sub-item smaller no-pad" ng-repeat="item in bar.items"><span class="half">{{item.id}}</span><a class="half red" ng-click="removeItem(bar, item)">x</a></li>
+											</ul>
+										</li>
+			  						</ul>
+			  					</li>
+			  				</ul>
+			  			</li>
+			  			<li class="instrument sub-item" ng-click='toggleNewInstrument()'>
+			  				New instrument
+			  			</li>
+			  		</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Input</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Keyboard setup</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item green">
+		  							Standard
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Customise
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Audio</div>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Collaborate</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Connect</div>
+		  				</li>
+		  				<li class="sub-item smaller" ng-repeat="collaborator in collaborators">
+		  					<div class="sub-item-name">{{collaborator.name}}</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item no-pad"><div class="half" ng-click="collaborator.permission='Read'" ng-class="{'green': collaborator.permission == 'Read'}">Read</div><div class="half" ng-click="collaborator.permission='Write'" ng-class="{'green': collaborator.permission == 'Write'}">Write</div></li>
+		  						<li class="sub-sub-item">
+		  							Assign
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Kick
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">All</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item no-pad"><div class="half" ng-click="allCollaboratorsAre('Read', 'set')" ng-class="{'green': allCollaboratorsAre('Read')}">Read</div><div class="half" ng-click="allCollaboratorsAre('Write', 'set')" ng-class="{'green': allCollaboratorsAre('Write')}">Write</div></li>
+		  						<li class="sub-sub-item">
+		  							Assign
+		  						</li>
+		  						<li class="sub-sub-item">
+		  							Kick
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Developers</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<a class="sub-item-name" target="_blank" href="https://github.com/MichalPaszkiewicz/inknote">Source code</a>
+		  				</li>
+		  				<li class="sub-item">
+		  					<a class="sub-item-name" target="_blank" href="developer/">Documentation</a>
+		  				</li>
+		  				<li class="sub-item">
+		  					<a class="sub-item-name" target="_blank" href="developer/">Forum</a>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Log</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item no-pad">
+		  							<div class="half" ng-class="{'green': logging}" ng-click="logging = true">On</div><div class="half" ng-class="{'green': !logging}" ng-click="logging = false">Off</div>
+		  						</li>
+		  						<li class="sub-sub-item no-pad">
+		  							<div class="half" ng-class="{'green': logWithAlertify}" ng-click="logWithAlertify = true">UI</div><div class="half" ng-class="{'green': !logWithAlertify}" ng-click="logWithAlertify = false">Console</div>
+		  						</li>
+		  					</ul>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Unit tests</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item">
+		  							Jasmine
+		  						</li>
+		  					</ul>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name">Help</div>
+		  			<ul class="sub-items">
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">About</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">FAQ</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Help!</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name" ng-click="bugReport = true">Submit bug report</div>
+		  				</li>
+		  			</ul>
+		  		</div>
+		  		<div class="menu-item">
+		  			<div class="menu-item-name" ng-click="menu= (menu == null) ? true : !menu;">Toggle menu</div>
+		  		</div>
+		  	</div>
+	  	</div>
+		
+		<canvas id="canvas" ng-click="action($event)"></canvas>
 		<div style="clear: both"/>
 	  </div>
 	</div>
+
+	<script src="globalsettings.js"></script>
+	<script src="userfunctions.js"></script>
+	<script src="hamster.js"></script>
+	<script src="mousewheel.js"></script>
+	<script src="keypress.js"></script>
+	<script src="helpers.js"></script>
+	<script src="splashscreen.js"></script>	
+	<script src="score.js"></script>
+	<script src="themes.js"></script>
 </body>
 
