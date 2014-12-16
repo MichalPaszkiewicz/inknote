@@ -4,7 +4,7 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 	var distanceFromTop = 100;
 	
 	context.strokeStyle=staveColour;
-	context.rect(canvas.width - width, distanceFromTop, canvas.width, distanceFromTop + height);
+	context.rect(canvas.width - width, distanceFromTop, width, height);
 	context.stroke();
 	context.beginPath();
 	context.moveTo(canvas.width - width, scrollPosition * height / maxScroll + distanceFromTop);
