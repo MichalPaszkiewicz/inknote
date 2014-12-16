@@ -786,7 +786,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.stroke();
 			context.font="bold 12px Arial";
 			context.fillStyle = textColour;
-			context.fillText(barNumber, startX - 10, startY)
+			context.fillText(barNumber, startX - 60, startY)
 			context.fillStyle = staveColour;
 		}
 		
