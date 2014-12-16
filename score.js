@@ -666,7 +666,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.clearRect(0,0,canvas.width,canvas.height);
 			$scope.drawInit();
 			$scope.drawLines();
-			drawScrollBar(context, $scope.windowScroll);
+			drawScrollBar(canvas, context, $scope.windowScroll);
 		}
 		
 		var lineSeperator = 200;
