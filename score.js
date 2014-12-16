@@ -76,14 +76,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(drawOn){
 				if($deltaY == 1){
+					//Math.min and Math.max used to ensure that no matter what the scroll amount is, the score will always be visible.
 					if($scope.windowScroll > 0){
-						$scope.windowScroll -= parseInt($scope.windowScrollAmount);
+						$scope.windowScroll = Math.min($scope.windowScroll - parseInt($scope.windowScrollAmount), 0);
 						$scope.draw();
 					}
 				}
 				else if($deltaY == -1){
 					if($scope.windowScroll < $scope.lines[$scope.lines.length - 1].y){
-						$scope.windowScroll += parseInt($scope.windowScrollAmount);
+						$scope.windowScroll = Math.max(parseInt($scope.windowScrollAmount), $scope.windowScroll + $scope.lines[$scope.lines.length - 1].y);
 						$scope.draw();
 					}
 				}
