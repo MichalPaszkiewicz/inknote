@@ -7,7 +7,7 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 	context.rect(canvas.width - width, distanceFromTop, canvas.width, distanceFromTop + height);
 	context.stroke();
 	context.beginPath();
-	context.moveTo(canvas.width - width, scrollPosition + distanceFromTop);
-	context.lineTo(canvas.width, scrollPosition / maxScroll + distanceFromTop); 
+	context.moveTo(canvas.width - width, scrollPosition * height / maxScroll + distanceFromTop);
+	context.lineTo(canvas.width, scrollPosition * height / maxScroll + distanceFromTop); 
 	context.stroke();
 }
