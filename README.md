@@ -30,12 +30,12 @@ Upcoming updates
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
-- Needs custom scroll bar.
 
 Update 16/12/2014
 ------------------
 - Displays bar numbers.
 - Can change mouse scroll sensitivity.
+- Added custom drawn scroll bar.
 
 Update 11/12/2014
 ------------------
