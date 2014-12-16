@@ -26,7 +26,6 @@ Upcoming updates
 - Add collaboration option.
 - Guitar Tab/chord name display modes.
 - Alternative display modes - e.g. keyboard blocks, phrase blocks.
-- Donate button.
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
@@ -36,6 +35,7 @@ Update 16/12/2014
 - Displays bar numbers.
 - Can change mouse scroll sensitivity.
 - Added custom drawn scroll bar.
+- Donate button added.
 
 Update 11/12/2014
 ------------------
