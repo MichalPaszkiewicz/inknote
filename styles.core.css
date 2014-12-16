@@ -301,3 +301,19 @@ div.scroller h2{
 	height: 30px;
 	background-size: cover;
 }
+
+#about{
+	position: absolute;
+	z-index: 100;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 200px;
+	height: 200px;
+	margin: auto;
+	background: white;
+	padding: 30px;
+	box-shadow: 0 0 5px 2px;
+	border-radius: 15px;
+}
