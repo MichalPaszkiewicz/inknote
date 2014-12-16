@@ -1,4 +1,4 @@
-var isInScrollBar(canvas, context, x, y){
+var isInScrollBar = function(canvas, context, x, y){
 	var height = 400;
 	var width = 20;
 	var distanceFromTop = 100;
@@ -6,7 +6,7 @@ var isInScrollBar(canvas, context, x, y){
 	return x > canvas.width - width && y > distanceFromTop && y < distanceFromTop + height;
 }
 
-var getScrollPositionFromScrollBar(canvas, context, y, maxScroll){
+var getScrollPositionFromScrollBar = function(canvas, context, y, maxScroll){
 	var height = 400;
 	var width = 20;
 	var distanceFromTop = 100;
