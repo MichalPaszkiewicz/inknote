@@ -35,6 +35,7 @@ Upcoming updates
 Update 16/12/2014
 ------------------
 - Displays bar numbers.
+- Can change mouse scroll sensitivity.
 
 Update 11/12/2014
 ------------------
