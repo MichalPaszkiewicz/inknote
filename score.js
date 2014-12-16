@@ -1,9 +1,5 @@
 var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 	controller("canvasCtrl", function canvasCtrl($scope, $window, $timeout, $http){
-		var canvas = document.getElementById('canvas');
-		canvas.width = $window.innerWidth;
-		canvas.height = $window.innerHeight;
-		var context = canvas.getContext('2d');
 		var drawOn = false;
 		
 		$scope.logging = false;
