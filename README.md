@@ -21,7 +21,6 @@ Upcoming updates
 - Display rests.
 - Draw clefs and key signatures.
 - Change instance time/key signatures.
-- Display bar numbers.
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
 - Add collaboration option.
@@ -31,6 +30,11 @@ Upcoming updates
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
+- Needs custom scroll bar.
+
+Update 16/12/2014
+------------------
+- Displays bar numbers.
 
 Update 11/12/2014
 ------------------
