@@ -754,16 +754,21 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.drawLines = function(){
+			var barNumber = 1;
 			for(var i = 0; i < $scope.lines.length; i++){
-				$scope.drawLine($scope.lines[i]);
+				$scope.drawLine($scope.lines[i], barNumber);
+				
+				var barsToAdd = 0;
 				
 				for(var j = 0; j < $scope.lines[i].instruments.length; j++){
-					$scope.drawBars($scope.lines[i].instruments[j].bars);
+					barsToAdd = $scope.drawBars($scope.lines[i].instruments[j].bars);
 				}
+				
+				barNumber += barsToAdd;
 			};
 		}
 		
-		$scope.drawLine = function(line){
+		$scope.drawLine = function(line, barNumber){
 			for(var i = 0; i < line.instruments.length; i++){
 				$scope.drawInstrument(line.instruments[i]);
 			}
@@ -779,6 +784,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.moveTo(finalX, startY);
 			context.lineTo(finalX, bottomY);
 			context.stroke();
+			context.font="bold 12px Arial";
+			context.fillStyle = textColour;
+			context.fillText(barNumber, starX - 5, startY)
+			context.fillStyle = staveColour;
 		}
 		
 		$scope.drawInstrument = function(instrument){
@@ -811,6 +820,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 				$scope.drawBar(bars[i]);
 			}
+			
+			return bars.length;
 		}
 		
 		$scope.drawTimeSignature = function(bar){
