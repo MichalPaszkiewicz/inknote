@@ -703,7 +703,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.drawLines();
 			drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
 			if($scope.showScrollPreview === true){
-				drawScrollPreview(canvas, context, $scope.scrollMousePosition, $scope.lines);
+				drawScrollPreview(canvas, context, $scope.scrollMousePosition, $scope.lines, $scope.lines[$scope.lines.length - 1].y);
 			}
 		}
 		
