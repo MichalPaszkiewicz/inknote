@@ -1,6 +1,6 @@
 var isInScrollBar = function(canvas, context, x, y){
 	var height = 400;
-	var width = 20;
+	var width = 30;
 	var distanceFromTop = 100;
 	
 	return x > canvas.width - width && y > distanceFromTop && y < distanceFromTop + height;
