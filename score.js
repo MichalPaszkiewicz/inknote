@@ -352,6 +352,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.showScrollPreview = false;
+		$scope.scrollMousePosition = 0;
 		
 		$scope.canvasMove = function(e){
 			var tempCanvas = document.getElementById('canvas');
@@ -361,6 +362,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			//if clicks in scrollbar, moves to that position.
 			if(isInScrollBar(canvas, context, x, e.clientY - tempCanvas.offsetTop)){
+				$scope.scrollMousePosition = e.clientY - tempCanvas.offsetTop;
 				$scope.showScrollPreview = true;
 				$scope.draw();
 				return;
@@ -695,7 +697,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.drawLines();
 			drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
 			if($scope.showScrollPreview === true){
-				drawScrollPreview(canvas, context, e.clientY - tempCanvas.offsetTop);
+				drawScrollPreview(canvas, context, $scope.scrollMousePosition);
 			}
 		}
 		
