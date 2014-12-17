@@ -34,15 +34,16 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 
 var drawScrollPreview = function(canvas, context, y){
 	var rightMargin = 20;
-	var width = 50;
+	var width = 100;
+	var height = 100;
 	var farLeft = canvas.width - (rightMargin + width) - 12;
 	
 	context.beginPath();
 	context.moveTo(farLeft, y);
 	context.lineTo(farLeft + width + 10, y);
 	context.lineTo(farLeft + width, y + 5)
-	context.lineTo(farLeft + width, y + 50);
-	context.lineTo(farLeft, y + 50);
+	context.lineTo(farLeft + width, y + height);
+	context.lineTo(farLeft, y + height);
 	context.lineTo(farLeft, y);
 	context.stroke();
 	context.fillStyle="white";
