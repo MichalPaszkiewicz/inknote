@@ -71,5 +71,5 @@ var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 		context.fillText(tempCurrentLine.barNumber + "", farLeft + 5, y + 15 );
 	}
 	
-	 drawSingleBar(canvas, context, farLeft + 10, 30, tempCurrentLine.instruments[0].bars[0], width - 20, height - 60);
+	 drawSingleBar(canvas, context, farLeft + 10, y + 30, tempCurrentLine.instruments[0].bars[0], width - 20, height - 60);
 }
