@@ -32,7 +32,15 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 	context.lineWidth = 1;
 }
 
-var drawScrollPreview = function(canvas, context, y){
+function getCurrentLine(y, lines){
+	for(var i = 0; i < lines.length; i++){
+		if(lines[i].y > y)
+		return lines[i].barNumber;
+	}
+	return false;
+}
+
+var drawScrollPreview = function(canvas, context, y, lines){
 	var rightMargin = 30;
 	var width = 100;
 	var height = 100;
@@ -51,4 +59,10 @@ var drawScrollPreview = function(canvas, context, y){
 	context.fillStyle="white";
 	context.fill();
 	context.lineWidth = 1;
+	
+	var tempCurrentLine = getCurrentLine(y, lines);
+	if(tempCurrentLine != false){
+		context.font = "bold 16px Arial";
+		context.fillText(tempCurrentLine, farLeft + width / 2, y + height / 2);
+	}
 }
