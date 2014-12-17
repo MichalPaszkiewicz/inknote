@@ -353,6 +353,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.showScrollPreview = false;
 		$scope.scrollMousePosition = 0;
+		var onScroll = false;
 		
 		$scope.canvasMove = function(e){
 			var tempCanvas = document.getElementById('canvas');
@@ -365,10 +366,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				$scope.scrollMousePosition = e.clientY - tempCanvas.offsetTop;
 				$scope.showScrollPreview = true;
 				$scope.draw();
+				onScroll = true;
 				return;
 			}
 			else{
 				$scope.showScrollPreview = false;
+				if(onScroll == true){
+					onScroll = false;
+					$scope.draw();
+				}
 			}
 			
 		}
