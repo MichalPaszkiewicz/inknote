@@ -17,7 +17,6 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	}
 	
 	context.fillStyle = noteColour;
-	log("Time signature font: " + "bold " + (2 * $scope.lineHeight/3) + "px Arial");
 	context.font = "bold " + (2 * height/3) + "px Arial";
 	context.fillText(bar.timeSignature.top, x, y + height/2);
 	context.fillText(bar.timeSignature.bottom, x, y + height);
