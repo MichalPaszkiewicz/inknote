@@ -39,7 +39,7 @@ function getCurrentLine(y, lines, maxScroll){
 	
 	for(var i = 0; i < lines.length; i++){
 		if(lines[i].y > (y - distanceFromTop) * maxScroll / height )
-		return lines[i].barNumber;
+		return lines[i];
 	}
 	return false;
 }
@@ -68,8 +68,8 @@ var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 	if(tempCurrentLine != false){
 		context.font = "bold 12px Arial";
 		context.fillStyle="black";
-		context.fillText(tempCurrentLine + "", farLeft + 5, y + 15 );
+		context.fillText(tempCurrentLine.barNumber + "", farLeft + 5, y + 15 );
 	}
 	
-	 drawSingleBar(canvas, context, farLeft + 10, 30, lines[tempCurrentLine].instruments[0].bars[0], width - 20, height - 60);
+	 drawSingleBar(canvas, context, farLeft + 10, 30, tempCurrentLine.instruments[0].bars[0], width - 20, height - 60);
 }
