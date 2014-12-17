@@ -930,6 +930,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					if(item.value >= $scope.lineHeight/2){
 						context.moveTo(item.x + 5.5, bar.y + item.value);
 						context.lineTo(item.x + 5.5, bar.y + item.value - 36);
+						context.strokeStyle = noteColour;
 						context.stroke();
 						
 						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
@@ -944,6 +945,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 								context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
 								context.lineTo(tailX, tailY);
 								context.fill();
+								context.strokeStyle = noteColour;
 								context.stroke();
 								tailController = Math.floor(tailController / 2);
 								if(tailNum == 0){tailY += 10;}
@@ -955,6 +957,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}else{
 						context.moveTo(item.x - 5.5, bar.y + item.value);
 						context.lineTo(item.x - 5.5, bar.y + item.value + 36);
+						context.strokeStyle = noteColour;
 						context.stroke();
 						
 						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
@@ -969,6 +972,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 								context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
 								context.lineTo(tailX, tailY);
 								context.fill();
+								context.strokeStyle = noteColour;
 								context.stroke();
 								tailController = Math.floor(tailController / 2);
 								if(tailNum == 0){tailY -= 10;}
