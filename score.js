@@ -351,6 +351,26 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 
 		}
 		
+		$scope.showScrollPreview = false;
+		
+		$scope.canvasMove(e){
+			var tempCanvas = document.getElementById('canvas');
+			var x = e.clientX - tempCanvas.offsetLeft;
+			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
+			log("Mouse click coordinates - [" + x + "," + y + "]");
+			
+			//if clicks in scrollbar, moves to that position.
+			if(isInScrollBar(canvas, context, x, e.clientY - tempCanvas.offsetTop)){
+				$scope.showScrollPreview = true;
+				$scope.draw();
+				return;
+			}
+			else{
+				$scope.showScrollPreview = false;
+			}
+			
+		}
+		
 		$scope.newItemDuration = {num: 1, denom: 1};
 		
 		var noteMapping = {
@@ -674,6 +694,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.drawInit();
 			$scope.drawLines();
 			drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
+			if($scope.showScrollPreview === true){
+				drawScrollPreview(e.clientY - tempCanvas.offsetTop);
+			}
 		}
 		
 		var lineSeperator = 200;
