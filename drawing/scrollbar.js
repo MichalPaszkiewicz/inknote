@@ -39,9 +39,9 @@ var drawScrollPreview = function(canvas, context, y){
 	
 	context.beginPath();
 	context.moveTo(farLeft, y);
-	context.lineTo(farLeft + width, y);
-	context.lineTo(farLeft + width - 10, y + 5)
-	context.lineTo(farLeft + width - 10, y + 50);
+	context.lineTo(farLeft + width + 10, y);
+	context.lineTo(farLeft + width, y + 5)
+	context.lineTo(farLeft + width, y + 50);
 	context.lineTo(farLeft, y + 50);
 	context.lineTo(farLeft, y);
 	context.stroke();
