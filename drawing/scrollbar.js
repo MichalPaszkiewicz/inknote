@@ -46,7 +46,7 @@ var drawScrollPreview = function(canvas, context, y){
 	context.lineTo(farLeft, y + height);
 	context.lineTo(farLeft, y);
 	context.strokeStyle = "black";
-	context.lineWidth = 2;
+	context.lineWidth = 4;
 	context.stroke();
 	context.fillStyle="white";
 	context.fill();
