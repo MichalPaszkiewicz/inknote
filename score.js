@@ -798,6 +798,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			for(var i = 0; i < $scope.lines.length; i++){
 				$scope.drawLine($scope.lines[i], barNumber);
 				
+				$scope.lines[i].barNumber = barNumber;
+				
 				var barsToAdd = 0;
 				
 				for(var j = 0; j < $scope.lines[i].instruments.length; j++){
