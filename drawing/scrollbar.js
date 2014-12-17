@@ -32,15 +32,18 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 	context.lineWidth = 1;
 }
 
-function getCurrentLine(y, lines){
+function getCurrentLine(y, lines, maxScroll){
+	var height = 400;
+	var distanceFromTop = 100;
+	
 	for(var i = 0; i < lines.length; i++){
-		if(lines[i].y > y)
+		if(lines[i].y > (y - distanceFromTop) * maxScroll / height )
 		return lines[i].barNumber;
 	}
 	return false;
 }
 
-var drawScrollPreview = function(canvas, context, y, lines){
+var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 	var rightMargin = 30;
 	var width = 100;
 	var height = 100;
