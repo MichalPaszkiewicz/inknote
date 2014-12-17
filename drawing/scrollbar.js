@@ -66,8 +66,8 @@ var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 	
 	var tempCurrentLine = getCurrentLine(y, lines, maxScroll);
 	if(tempCurrentLine != false){
-		context.font = "bold 16px Arial";
+		context.font = "bold 8px Arial";
 		context.fillStyle="black";
-		context.fillText(tempCurrentLine + "", farLeft + width / 2 - 5, y + height / 2 + 6);
+		context.fillText(tempCurrentLine + "", farLeft + 5, y + 10 );
 	}
 }
