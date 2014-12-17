@@ -36,7 +36,7 @@ var drawScrollPreview = function(canvas, context, y){
 	var rightMargin = 30;
 	var width = 100;
 	var height = 100;
-	var farLeft = canvas.width - (rightMargin + width) - 12;
+	var farLeft = canvas.width - (rightMargin + width) - 15;
 	
 	context.beginPath();
 	context.moveTo(farLeft, y);
@@ -46,7 +46,9 @@ var drawScrollPreview = function(canvas, context, y){
 	context.lineTo(farLeft, y + height);
 	context.lineTo(farLeft, y);
 	context.strokeStyle = "black";
+	context.lineWidth = 2;
 	context.stroke();
 	context.fillStyle="white";
 	context.fill();
+	context.lineWidth = 1;
 }
