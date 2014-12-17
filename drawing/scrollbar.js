@@ -16,7 +16,7 @@ var getScrollPositionFromScrollBar = function(canvas, context, y, maxScroll){
 
 var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 	var height = 400;
-	var width = 20;
+	var width = 30;
 	var distanceFromTop = 100;
 	
 	context.strokeStyle=staveColour;
@@ -33,7 +33,7 @@ var drawScrollBar = function(canvas, context, scrollPosition, maxScroll){
 }
 
 var drawScrollPreview = function(canvas, context, y){
-	var rightMargin = 20;
+	var rightMargin = 30;
 	var width = 100;
 	var height = 100;
 	var farLeft = canvas.width - (rightMargin + width) - 12;
