@@ -1,3 +1,1 @@
-var drawSingleItem = function(canvas, context, x, y, item){
-
-}
+/*to be filled later*/
