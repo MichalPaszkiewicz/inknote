@@ -623,6 +623,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				else if(e.which === 39 && relevantBarIndex != relevantInstrument.bars[relevantInstrument.bars.length - 1]){
 					$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
 				}
+				
+				$scope.draw();
 			}
 		}
 		
