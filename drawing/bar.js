@@ -123,7 +123,7 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height, standard
 		if(bar.items[i].type == "note" || bar.items[i].type == undefined || bar.items[i].type == null){
 			drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height, standardLineHeight);
 			itemX += 20;
-			if(itemX >= width - 10){
+			if(itemX >= x + width - 10){
 				break;
 			}
 		}
