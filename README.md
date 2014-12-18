@@ -38,7 +38,7 @@ Update 18/12/2014
 - Added custom drawn scroll bar.
 - Scroll bar preview shows bar number you are going to.
 - Donate button added.
-- Allows bar selection.
+- Allows bar selection and navigation left/right.
 - Allows change of value of all notes in bar on up/down key.
 
 Update 11/12/2014
