@@ -116,7 +116,7 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	var itemX = x + 40;
 	
 	for(var i = 0; i < bar.items.length; i++){
-		if(item.type == "note" || item.type == undefined || item.type == null){
+		if(bar.items[i].type == "note" || bar.items[i].type == undefined || bar.items[i].type == null){
 			drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height);
 			itemX += 20;
 		}
