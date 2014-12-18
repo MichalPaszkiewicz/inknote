@@ -493,7 +493,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.draw();
 		}
 		
-		$scope.noteChangeItem = function(e){
+		$scope.noteChangeItem = function(e, relevantItem){
 			if(e.which === 38){
 				relevantItem.value -= 6;		
 			}
