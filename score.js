@@ -888,6 +888,17 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.lineWidth = 1;
 			}
 			
+			//show selected bar
+			if($scope.selectedItemID == null && $scope.selectedBarID == bar.id){
+				context.beginPath();
+				context.strokeStyle = "#1DDD10";
+				context.lineWidth = 5;
+				context.moveTo(bar.x - 5, bar.y + $scope.lineHeight + 5);
+				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
+				context.stroke();
+				context.lineWidth = 1;
+			}
+			
 			
 			context.beginPath();
 			context.strokeStyle = staveColour;
