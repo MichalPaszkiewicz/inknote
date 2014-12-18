@@ -113,10 +113,12 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	context.fillText(bar.timeSignature.top, x, y + height/2);
 	context.fillText(bar.timeSignature.bottom, x, y + height);
 	
-	var itemX = x + 20;
+	var itemX = x + 40;
 	
 	for(var i = 0; i < bar.items.length; i++){
-		drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height);
-		itemX += 20;
+		if(item.type == "note" || item.type == undefined || item.type == null){
+			drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height);
+			itemX += 20;
+		}
 	}
 }
