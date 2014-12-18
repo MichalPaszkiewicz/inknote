@@ -44,7 +44,7 @@ function getCurrentLine(y, lines, maxScroll){
 	return false;
 }
 
-var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
+var drawScrollPreview = function(canvas, context, y, lines, maxScroll, standardLineHeight){
 	var rightMargin = 30;
 	var width = 200;
 	var height = 100;
@@ -71,5 +71,5 @@ var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 		context.fillText(tempCurrentLine.barNumber + "", farLeft + 5, y + 15 );
 	}
 	
-	 drawSingleBar(canvas, context, farLeft + 10, y + 30, tempCurrentLine.instruments[0].bars[0], width - 20, height - 60);
+	 drawSingleBar(canvas, context, farLeft + 10, y + 30, tempCurrentLine.instruments[0].bars[0], width - 20, height - 60, standardLineHeight);
 }
