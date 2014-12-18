@@ -493,20 +493,31 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.draw();
 		}
 		
+		$scope.noteChangeItem = function(e){
+			if(e.which === 38){
+				relevantItem.value -= 6;		
+			}
+			else if(e.which === 40){
+				relevantItem.value += 6;
+			}
+		}
+		
 		$scope.noteChange = function(e){
 			if($scope.selectedItemID != null){
-
 				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
 				var relevantItem = relevantBar.items.getItemFromID($scope.selectedItemID);
-				
-				if(e.which === 38){
-					relevantItem.value -= 6;		
+				$scope.noteChangeItem(e, item);
+				$scope.draw();
+			}
+			else if($scope.selectedItemID == null && $scope.selectedBarID != null){
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
+				for(var i = 0; i < relevantBar.items.length; i++){
+					if(relevantBar.items[i].type == "note" || relevantBar.items[i].type == null || relevantBar.items[i].type == undefined){
+						$scope.noteChangeItem(e, relevantBar.items[i]);							
+					}
 				}
-				else if(e.which === 40){
-					relevantItem.value += 6;
-				}
-				
 				$scope.draw();
 			}
 		}
