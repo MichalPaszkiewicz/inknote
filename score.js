@@ -471,6 +471,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				return;
 			}*/
 			
+			$scope.selectedItemID = "New item";
+			
 			if(type == null || type == undefined){
 				type = "note";
 			}
