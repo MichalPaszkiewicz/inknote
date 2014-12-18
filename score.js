@@ -327,14 +327,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							log("Bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 							
+							$scope.selectedInstrumentID = itemInstrument.id;
+							$scope.selectedBarID = itemBar.id;
+							
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
 									log("Item id - " + itemBar.items[k].id);
 									
-									$scope.selectedInstrumentID = itemInstrument.id;
-									$scope.selectedBarID = itemBar.id;
 									$scope.selectedItemID = itemBar.items[k].id;
 									actionSelection = "item";
+									break;
 								}
 							}
 						}
