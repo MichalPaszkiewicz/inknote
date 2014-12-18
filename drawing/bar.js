@@ -1,10 +1,14 @@
-//copied from score. Does not display if item selected.
-var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight){
+//copied from score. Does not display if item selected. Also gets a relative value, due to bar height change.
+var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight, standardLineHeight){
 	if(item.type == "note" || item.type == undefined || item.type == null){
+		
+		//get relative value
+		var relativeValue = item.value * lineHeight / standardLineHeight;
+		
 		//draw the note
 		context.beginPath();
 		context.fillStyle = noteColour;
-		context.arc(x, y + item.value, lineHeight / 8, 0, 2 * Math.PI, false);
+		context.arc(x, y + relativeValue, lineHeight / 8, 0, 2 * Math.PI, false);
 		
 		if(item.duration && item.duration.denom == 1 && item.duration.num > 2){
 			context.lineWidth = 2;
@@ -26,15 +30,15 @@ var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight){
 			//draw the stem
 			context.beginPath();
 			context.strokeStyle = noteColour;
-			if(item.value >= lineHeight/2){
-				context.moveTo(x + 5.5, y + item.value);
-				context.lineTo(x + 5.5, y + item.value - 36);
+			if(relativeValue >= lineHeight/2){
+				context.moveTo(x + 5.5, y + relativeValue);
+				context.lineTo(x + 5.5, y + relativeValue - 36);
 				context.strokeStyle = noteColour;
 				context.stroke();
 				
 				if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
 					var tailX = x + 5.5;
-					var tailY = y + item.value - 36;
+					var tailY = y + relativeValue - 36;
 					var tailController = item.duration.denom;
 					var tailNum = 0;
 					while(tailController > 1){
@@ -54,14 +58,14 @@ var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight){
 					}
 				}
 			}else{
-				context.moveTo(x - 5.5, y + item.value);
-				context.lineTo(x - 5.5, y + item.value + 36);
+				context.moveTo(x - 5.5, y + relativeValue);
+				context.lineTo(x - 5.5, y + relativeValue + 36);
 				context.strokeStyle = noteColour;
 				context.stroke();
 				
 				if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
 					var tailX = x - 5.5;
-					var tailY = y + item.value + 36;
+					var tailY = y + relativeValue + 36;
 					var tailController = item.duration.denom;
 					var tailNum = 0;
 					while(tailController > 1){
@@ -91,7 +95,7 @@ var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight){
 	}
 }
 
-var drawSingleBar = function(canvas, context, x, y, bar, width, height){
+var drawSingleBar = function(canvas, context, x, y, bar, width, height, standardLineHeight){
 	context.beginPath();
 	var startX = x;
 	var finalX = x + width;
@@ -117,7 +121,7 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	
 	for(var i = 0; i < bar.items.length; i++){
 		if(bar.items[i].type == "note" || bar.items[i].type == undefined || bar.items[i].type == null){
-			drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height);
+			drawThumbnailItem(canvas, context, itemX, y, bar.items[i], height, standardLineHeight);
 			itemX += 20;
 		}
 	}
