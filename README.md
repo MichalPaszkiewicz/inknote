@@ -31,13 +31,15 @@ Upcoming updates
 - Enable push notifications in forums.
 - AUDIO.
 
-Update 17/12/2014
+Update 18/12/2014
 ------------------
 - Displays bar numbers.
 - Can change mouse scroll sensitivity.
 - Added custom drawn scroll bar.
 - Scroll bar preview shows bar number you are going to.
 - Donate button added.
+- Allows bar selection.
+- Allows change of value of all notes in bar on up/down key.
 
 Update 11/12/2014
 ------------------
