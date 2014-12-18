@@ -596,13 +596,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
 				var relevantBar = relevantInstrument.bars[relevantBarIndex];
 				var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
+				
 				//left keypress - move selected note one left
-				//todo find previous NOTE. currently could be any item.
 				var itemFound = null;
 				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
 					itemFound = $scope.moveLeft(relevantInstrument, currentSelection);
 				}
+				
 				//right keypress - move selected note one right
 				//todo: add item if no item after this.
 				else if(e.which === 39){
@@ -610,6 +611,18 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 				
 				$scope.draw();
+			}
+			else if($scope.selectedItemID == null && $scope.selectedBarID != null){
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
+				
+				//left keypress move bar one left
+				if(e.which === 37 && relevantBarIndex != 0){
+					$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex - 1].id;
+				}
+				else if(e.which === 39 && relevantBarIndex != relevantInstrument.bars[relevantInstrument.bars.length - 1]){
+					$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
+				}
 			}
 		}
 		
