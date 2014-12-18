@@ -4,7 +4,7 @@ var drawThumbnailItem = function(canvas, context, x, y, item, lineHeight){
 		//draw the note
 		context.beginPath();
 		context.fillStyle = noteColour;
-		context.arc(x, y + item.value, 6, 0, 2 * Math.PI, false);
+		context.arc(x, y + item.value, lineHeight / 8, 0, 2 * Math.PI, false);
 		
 		if(item.duration && item.duration.denom == 1 && item.duration.num > 2){
 			context.lineWidth = 2;
