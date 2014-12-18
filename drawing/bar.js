@@ -116,7 +116,7 @@ var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	var itemX = x + 20;
 	
 	for(var i = 0; i < bar.items.length; i++){
-		drawThumbnailItem = function(canvas, context, itemX, y, item, height);
+		drawThumbnailItem(canvas, context, itemX, y, item, height);
 		itemX += 20;
 	}
 }
