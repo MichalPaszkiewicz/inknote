@@ -46,7 +46,7 @@ function getCurrentLine(y, lines, maxScroll){
 
 var drawScrollPreview = function(canvas, context, y, lines, maxScroll){
 	var rightMargin = 30;
-	var width = 100;
+	var width = 200;
 	var height = 100;
 	var farLeft = canvas.width - (rightMargin + width) - 15;
 	
