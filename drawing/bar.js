@@ -1,4 +1,7 @@
-//dependencies: item.js
+var drawThumbnailItem = function(canvas, context, x, y, item){
+
+}
+
 var drawSingleBar = function(canvas, context, x, y, bar, width, height){
 	context.beginPath();
 	var startX = x;
