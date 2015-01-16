@@ -390,11 +390,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.warningCorners = false;
 			$scope.windowScroll = 0;
 			
+			var d = canvas.toDataURL("image/png");
+			var w = window.open('Inknote - printer friendly','image from canvas');
+			
 			while($scope.windowScroll - canvas.height < $scope.lines[$scope.lines.length - 1].y){
 				$scope.draw();
-				
-				var d = canvas.toDataURL("image/png");
-				var w = window.open('Inknote - printer friendly','image from canvas');
+		
 				w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
 				$scope.windowScroll += canvas.height;
 			}
