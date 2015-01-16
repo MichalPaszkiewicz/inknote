@@ -31,6 +31,10 @@ Upcoming updates
 - Enable push notifications in forums.
 - AUDIO.
 
+Update 16/01/2015
+------------------
+- Started on printing mode.
+
 Update 18/12/2014
 ------------------
 - Displays bar numbers.
