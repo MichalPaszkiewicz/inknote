@@ -385,7 +385,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.print = function(){
 			var d = canvas.toDataURL("image/png");
 			var w = window.open('about:blank','image from canvas');
-			w.document.write("<img src='"+d+"' alt='from canvas'/>");
+			w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
 		};
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
