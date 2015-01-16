@@ -383,19 +383,26 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.print = function(){
+			var startHeight = $scope.windowScroll;
+			
 			//Turn unnecessary displays off
 			$scope.showScrollBar = false;
 			$scope.warningCorners = false;
+			$scope.windowScroll = 0;
 			
-			$scope.draw();
-			
-			var d = canvas.toDataURL("image/png");
-			var w = window.open('about:blank','image from canvas');
-			w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
+			while($scope.windowScroll - canvas.height < $scope.lines[$scope.lines.length - 1].y){
+				$scope.draw();
+				
+				var d = canvas.toDataURL("image/png");
+				var w = window.open('about:blank','image from canvas');
+				w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
+				$scope.windowScroll += canvas.height;
+			}
 			
 			//Turn unnecessary displays back on
 			$scope.showScrollBar = true;
 			$scope.warningCorners = true;
+			$scope.windowScroll = startHeight;
 			
 			$scope.draw();
 		};
