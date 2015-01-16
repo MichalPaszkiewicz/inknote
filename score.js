@@ -353,6 +353,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 
 		}
 		
+		$scope.showScrollBar = true;
 		$scope.showScrollPreview = false;
 		$scope.scrollMousePosition = 0;
 		var onScroll = false;
@@ -380,6 +381,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			
 		}
+		
+		$scope.print = function(){
+			var c=document.getElementById("alpha");
+			var d=c.toDataURL("image/png");
+			var w=window.open('about:blank','image from canvas');
+			w.document.write("<img src='"+d+"' alt='from canvas'/>");
+		};
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
 		
@@ -731,9 +739,12 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.clearRect(0,0,canvas.width,canvas.height);
 			$scope.drawInit();
 			$scope.drawLines();
-			drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
-			if($scope.showScrollPreview === true){
-				drawScrollPreview(canvas, context, $scope.scrollMousePosition, $scope.lines, $scope.lines[$scope.lines.length - 1].y, $scope.lineHeight);
+			
+			if($scope.showScrollBar === true){
+				drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
+				if($scope.showScrollPreview === true){
+					drawScrollPreview(canvas, context, $scope.scrollMousePosition, $scope.lines, $scope.lines[$scope.lines.length - 1].y, $scope.lineHeight);
+				}
 			}
 		}
 		
