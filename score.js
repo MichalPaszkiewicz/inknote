@@ -383,9 +383,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.print = function(){
-			var c=document.getElementById("alpha");
-			var d=c.toDataURL("image/png");
-			var w=window.open('about:blank','image from canvas');
+			var d = canvas.toDataURL("image/png");
+			var w = window.open('about:blank','image from canvas');
 			w.document.write("<img src='"+d+"' alt='from canvas'/>");
 		};
 		
