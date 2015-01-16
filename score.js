@@ -383,9 +383,21 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.print = function(){
+			//Turn unnecessary displays off
+			$scope.showScrollBar = false;
+			$scope.warningCorners = false;
+			
+			$scope.draw();
+			
 			var d = canvas.toDataURL("image/png");
 			var w = window.open('about:blank','image from canvas');
 			w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
+			
+			//Turn unnecessary displays back on
+			$scope.showScrollBar = true;
+			$scope.warningCorners = true;
+			
+			$scope.draw();
 		};
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
