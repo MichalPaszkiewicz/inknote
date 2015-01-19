@@ -869,7 +869,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.drawLines = function(){
 			
-			$scope.writeFileName();
+			$scope.writeProjectText();
 			
 			var barNumber = 1;
 			for(var i = 0; i < $scope.lines.length; i++){
@@ -890,9 +890,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		$scope.writeFileName = function(){
 			context.textAlign = 'center';
 			context.fillStyle = textColour;
-			context.fillText($scope.currentFileName(), canvas.width/2, 70 - $scope.windowScroll);
+			context.fillText($scope.currentFileName(), canvas.width/2, 100 - $scope.windowScroll);
 			context.fillStyle = staveColour;
 			context.textAlign = 'left';
+		}
+		
+		$scope.writeProjectText = function(){
+			$scope.writeFileName();
 		}
 		
 		$scope.drawLine = function(line, barNumber){
