@@ -390,7 +390,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 		}
 		
-		var d, w;
+		var d;
+		var w = [];
 		
 		$scope.print = function(){
 			var startHeight = $scope.windowScroll;
@@ -400,9 +401,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.warningCorners = false;
 			$scope.windowScroll = 0;
 			
-			if(w === undefined){
-				w = window.open('Inknote - printer friendly','image from canvas');
-			}
+			w.push(window.open('Inknote - printer friendly','image from canvas'));
 			
 			while($scope.windowScroll - canvas.height < $scope.lines[$scope.lines.length - 1].y){
 				$scope.$apply($scope.windowScroll);
@@ -410,7 +409,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				
 				d = canvas.toDataURL("image/png");
 		
-				w.document.write("<img src='"+d+"' style='width: 1000px;' alt='from canvas'/>");
+				w[w.length - 1].document.write("<img src='"+d+"' style='width: 1000px;' alt='from canvas'/>");
 				$scope.windowScroll += canvas.height;
 			}
 			
