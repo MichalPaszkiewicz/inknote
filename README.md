@@ -33,7 +33,7 @@ Upcoming updates
 
 Update 16/01/2015
 ------------------
-- Started on printing mode.
+- Print view complete.
 
 Update 18/12/2014
 ------------------
