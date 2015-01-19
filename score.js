@@ -402,7 +402,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				
 				d = canvas.toDataURL("image/png");
 		
-				w.document.write("<img src='"+d+"' style='width: 1200px;' alt='from canvas'/>");
+				w.document.write("<img src='"+d+"' style='width: 1000px;' alt='from canvas'/>");
 				$scope.windowScroll += canvas.height;
 			}
 			
