@@ -390,9 +390,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 		}
 		
-		var d, w;
-		
 		$scope.print = function(){
+			var d, w;
+			
 			var startHeight = $scope.windowScroll;
 			
 			//Turn unnecessary displays off
