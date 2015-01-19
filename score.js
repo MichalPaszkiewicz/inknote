@@ -188,6 +188,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.currentFileID = "";
 		
+		$scope.currentFileName = function(){
+			if($scope.currentFileID == ""){
+				return "Untitled";
+			}
+			
+			return $scope.files.getItemFromID($scope.currentFileID).name;
+		}
+		
 		var setFiles = function(){
 			$scope.files = $scope.getFiles();
 			$scope.newFile();
