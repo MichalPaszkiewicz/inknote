@@ -31,7 +31,7 @@ Upcoming updates
 - Enable push notifications in forums.
 - AUDIO.
 
-Update 16/01/2015
+Update 19/01/2015
 ------------------
 - Print view complete.
 
