@@ -34,6 +34,7 @@ Upcoming updates
 Update 19/01/2015
 ------------------
 - Print view complete.
+- Displays project title.
 
 Update 18/12/2014
 ------------------
