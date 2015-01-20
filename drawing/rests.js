@@ -58,5 +58,26 @@ function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
 
 /* y should be middle of second top line, ideally. */
 function drawRest(ctx, x, y, duration, height){
-
+	if(duration.denom == 1){
+		switch(duration.num){
+			case 1:
+				drawCrotchetRest(ctx, x, y, height);
+			case 2:
+				drawMinimRest(ctx, x, y, height);
+			case 4:
+				drawSemiBreveRest(ctx, x, y, height);
+		}
+	}
+	else{
+		switch(duration.denom){
+			case 2:
+				drawQuaverRest(ctx, x, y, height);
+			case 4:
+				drawSemiQuaverRest(ctx, x, y, height);
+			case 8:
+				drawDemiSemiQuaverRest(ctx, x, y, height);
+			case 16:
+				drawHemiDemiSemiQuaverRest(ctx, x, y, height);
+		}
+	}
 }
