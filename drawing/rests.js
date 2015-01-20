@@ -69,7 +69,8 @@ function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
 }
 
 /* y should be middle of second top line, ideally. */
-function drawRest(ctx, x, y, duration, height){
+function drawRest(ctx, x, y, duration, lineHeight){
+	var height = lineHeight/2;
 	if(duration.denom == 1){
 		switch(duration.num){
 			case 1:
