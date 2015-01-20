@@ -1,27 +1,27 @@
-function drawSemiBreveRest(cvs, ctx){
+function drawSemiBreveRest(cvs, ctx, x, y){
 
 }
 
-function drawCrotchetRest(cvs, ctx){
+function drawCrotchetRest(cvs, ctx, x, y){
 
 }
 
-function drawQuaverRest(cvs, ctx){
+function drawQuaverRest(cvs, ctx, x, y){
 
 }
 
-function drawSemiQuaverRest(cvs, ctx){
+function drawSemiQuaverRest(cvs, ctx, x, y){
 
 }
 
-function drawDemiSemiQuaverRest(cvs, ctx){
+function drawDemiSemiQuaverRest(cvs, ctx, x, y){
 
 }
 
-function drawHemiDemiSemiQuaverRest(cvs, ctx){
+function drawHemiDemiSemiQuaverRest(cvs, ctx, x, y){
 
 }
 
-function drawRest(cvs, ctx, duration){
+function drawRest(cvs, ctx, x, y, duration){
 
 }
