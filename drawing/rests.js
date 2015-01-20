@@ -1,12 +1,12 @@
-function drawSemiBreveRest(cvs, ctx, x, y, height){
+function drawSemiBreveRest(ctx, x, y, height){
 
 }
 
-function drawCrotchetRest(cvs, ctx, x, y, height){
+function drawCrotchetRest(ctx, x, y, height){
 
 }
 
-function drawQuaverRest(cvs, ctx, x, y, height){
+function drawQuaverRest(ctx, x, y, height){
 	ctx.beginPath();
 	ctx.arc(x, y, height / 4, 0, 2 * Math.PI);
 	ctx.fill();
@@ -22,18 +22,18 @@ function drawQuaverRest(cvs, ctx, x, y, height){
 	ctx.stroke();
 }
 
-function drawSemiQuaverRest(cvs, ctx, x, y, height){
+function drawSemiQuaverRest(ctx, x, y, height){
 
 }
 
-function drawDemiSemiQuaverRest(cvs, ctx, x, y, height){
+function drawDemiSemiQuaverRest(ctx, x, y, height){
 
 }
 
-function drawHemiDemiSemiQuaverRest(cvs, ctx, x, y, height){
+function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
 
 }
 
-function drawRest(cvs, ctx, x, y, duration, height){
+function drawRest(ctx, x, y, duration, height){
 
 }
