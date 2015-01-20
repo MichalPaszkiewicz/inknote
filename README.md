@@ -18,7 +18,6 @@ http://www.michalpaszkiewicz.co.uk/inknote/developer/
 Upcoming updates
 ------------------
 - Score chords.
-- Display rests.
 - Draw clefs and key signatures.
 - Change instance time/key signatures.
 - Other musical symbols - ties, dynamics, staccato, etc.
@@ -30,6 +29,10 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 - AUDIO.
+
+Update 20/01/2015
+------------------
+- Draw rests (click r before adding note)
 
 Update 19/01/2015
 ------------------
