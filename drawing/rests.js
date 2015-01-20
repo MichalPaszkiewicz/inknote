@@ -2,6 +2,10 @@ function drawSemiBreveRest(ctx, x, y, height){
 
 }
 
+function drawMinimRest(ctx, x, y, height){
+	
+}
+
 function drawCrotchetRest(ctx, x, y, height){
 
 }
@@ -23,15 +27,21 @@ function drawQuaverRest(ctx, x, y, height){
 }
 
 function drawSemiQuaverRest(ctx, x, y, height){
-
+	drawQuaverRest(c, ctx, x, y, lineHeight);
+	drawQuaverRest(c, ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
 }
 
 function drawDemiSemiQuaverRest(ctx, x, y, height){
-
+	drawQuaverRest(c, ctx, x, y, lineHeight);
+	drawQuaverRest(c, ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
+	drawQuaverRest(c, ctx, x + lineHeight, y - 2 * lineHeight, lineHeight);	
 }
 
 function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
-
+	drawQuaverRest(c, ctx, x, y, lineHeight);
+	drawQuaverRest(c, ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
+	drawQuaverRest(c, ctx, x + lineHeight, y - 2 * lineHeight, lineHeight);	
+	drawQuaverRest(c, ctx, x - lineHeight * 2, y + 4 * lineHeight, lineHeight);
 }
 
 function drawRest(ctx, x, y, duration, height){
