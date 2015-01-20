@@ -19,7 +19,19 @@ function drawMinimRest(ctx, x, y, height){
 }
 
 function drawCrotchetRest(ctx, x, y, height){
-
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.quadraticCurveTo(x + height, y - height/2, x, y - height);
+	ctx.quadraticCurveTo(x + 2 * height, y, x + height / 2, y + height / 2);
+	ctx.quadraticCurveTo(x - height, y + height, x +  height / 2, y + 3 * height / 2);
+	
+	ctx.quadraticCurveTo(x - height/ 2, y + 7 * height/ 4, x, y + 5 * height / 2);
+	ctx.quadraticCurveTo(x - 3 * height / 2, y + 6 * height/ 4, x +  height / 2, y + 3 * height / 2);
+	
+	ctx.quadraticCurveTo(x - 2 * height, y + height / 2, x, y);
+	
+	ctx.fill();
+	ctx.stroke();
 }
 
 function drawQuaverRest(ctx, x, y, height){
