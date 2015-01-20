@@ -699,6 +699,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			else if(e.which === 46){
 				$scope.deleteSelectedNote();
 			}
+			else if(e.which === 82){
+				$scope.switchItemType();
+			}
 		}
 		
 		//needs refactoring? there is also a remove function.
