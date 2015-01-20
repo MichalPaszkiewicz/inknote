@@ -75,22 +75,29 @@ function drawRest(ctx, x, y, duration, lineHeight){
 		switch(duration.num){
 			case 1:
 				drawCrotchetRest(ctx, x, y, height);
+				break;
 			case 2:
 				drawMinimRest(ctx, x, y, height);
+				break;
 			case 4:
 				drawSemiBreveRest(ctx, x, y, height);
+				break;
 		}
 	}
 	else{
 		switch(duration.denom){
 			case 2:
 				drawQuaverRest(ctx, x, y, height);
+				break;
 			case 4:
 				drawSemiQuaverRest(ctx, x, y, height);
+				break;
 			case 8:
 				drawDemiSemiQuaverRest(ctx, x, y, height);
+				break;
 			case 16:
 				drawHemiDemiSemiQuaverRest(ctx, x, y, height);
+				break;
 		}
 	}
 }
