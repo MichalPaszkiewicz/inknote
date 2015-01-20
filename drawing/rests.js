@@ -1,9 +1,21 @@
 function drawSemiBreveRest(ctx, x, y, height){
-
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.lineTo(x + 2 * height, y);
+	ctx.lineTo(x + 2 * height, y + height / 2);
+	ctx.lineTo(x, y + height / 2);
+	ctx.lineTo(x, y);
+	ctx.fill();
 }
 
 function drawMinimRest(ctx, x, y, height){
-	
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.lineTo(x + 2 * height, y);
+	ctx.lineTo(x + 2 * height, y - height / 2);
+	ctx.lineTo(x, y - height / 2);
+	ctx.lineTo(x, y);
+	ctx.fill();
 }
 
 function drawCrotchetRest(ctx, x, y, height){
