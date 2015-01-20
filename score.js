@@ -420,6 +420,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		};
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
+		$scope.newItemType = "note";
 		
 		var noteMapping = {
 			"116" : 0,
