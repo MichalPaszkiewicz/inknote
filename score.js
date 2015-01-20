@@ -354,7 +354,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(actionSelection == "bar"){
 				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8)) - $scope.windowScroll;
-				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
+				
+				$scope.addItem(itemY, itemInstrument.id, itemBar.id, $scope.newItemType);
 			}
 
 			$scope.draw();
@@ -421,6 +422,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.newItemDuration = {num: 1, denom: 1};
 		$scope.newItemType = "note";
+		
+		$scope.switchItemType = function(){
+			if($scope.newItemType == "note"){
+				$scope.newItemType = "rest";
+			}
+			else{
+				$scope.newItemType = "note";
+			}
+		}
 		
 		var noteMapping = {
 			"116" : 0,
@@ -1093,7 +1103,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			else if(item.type == "rest"){
-				drawRest(context, $scope.lineHeight/2, item.y, item.duration, $scope.lineHeight/4);
+				drawRest(context, bar.y + $scope.lineHeight/2, item.y, item.duration, $scope.lineHeight/4);
 			}
 			else if(item.type == "clef"){
 				
