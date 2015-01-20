@@ -51,21 +51,21 @@ function drawQuaverRest(ctx, x, y, height){
 }
 
 function drawSemiQuaverRest(ctx, x, y, height){
-	drawQuaverRest(ctx, x, y, lineHeight);
-	drawQuaverRest(ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
+	drawQuaverRest(ctx, x, y, height);
+	drawQuaverRest(ctx, x - height, y + 2 * height, height);
 }
 
 function drawDemiSemiQuaverRest(ctx, x, y, height){
-	drawQuaverRest(ctx, x, y, lineHeight);
-	drawQuaverRest(ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
-	drawQuaverRest(ctx, x + lineHeight, y - 2 * lineHeight, lineHeight);	
+	drawQuaverRest(ctx, x, y, height);
+	drawQuaverRest(ctx, x - height, y + 2 * height, height);
+	drawQuaverRest(ctx, x + height, y - 2 * height, height);	
 }
 
 function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
-	drawQuaverRest(ctx, x, y, lineHeight);
-	drawQuaverRest(ctx, x - lineHeight, y + 2 * lineHeight, lineHeight);
-	drawQuaverRest(ctx, x + lineHeight, y - 2 * lineHeight, lineHeight);	
-	drawQuaverRest(ctx, x - lineHeight * 2, y + 4 * lineHeight, lineHeight);
+	drawQuaverRest(ctx, x, y, height);
+	drawQuaverRest(ctx, x - height, y + 2 * height, height);
+	drawQuaverRest(ctx, x + height, y - 2 * height, height);	
+	drawQuaverRest(ctx, x - height * 2, y + 4 * height, height);
 }
 
 /* y should be middle of second top line, ideally. */
