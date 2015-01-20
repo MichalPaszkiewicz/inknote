@@ -44,6 +44,7 @@ function drawHemiDemiSemiQuaverRest(ctx, x, y, height){
 	drawQuaverRest(ctx, x - lineHeight * 2, y + 4 * lineHeight, lineHeight);
 }
 
+/* y should be middle of second top line, ideally. */
 function drawRest(ctx, x, y, duration, height){
 
 }
