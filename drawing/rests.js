@@ -82,7 +82,7 @@ function drawRest(ctx, x, y, duration, lineHeight){
 		}
 	}
 	else{
-		switch(duration.denom){
+		switch(duration.num){
 			case 2:
 				drawQuaverRest(ctx, x, y, height);
 			case 4:
