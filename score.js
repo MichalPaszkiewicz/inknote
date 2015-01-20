@@ -1106,7 +1106,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			else if(item.type == "rest"){
-				drawRest(context, item.x, bar.y + $scope.lineHeight/2, item.duration, $scope.lineHeight/4);
+				drawRest(context, item.x, bar.y + $scope.lineHeight/3, item.duration, $scope.lineHeight/4);
 			}
 			else if(item.type == "clef"){
 				
