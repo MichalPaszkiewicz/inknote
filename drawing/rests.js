@@ -74,13 +74,13 @@ function drawRest(ctx, x, y, duration, lineHeight){
 	if(duration.denom == 1){
 		switch(duration.num){
 			case 1:
-				drawCrotchetRest(ctx, x, y, height);
+				drawCrotchetRest(ctx, x, y, height * 3/2);
 				break;
 			case 2:
-				drawMinimRest(ctx, x, y, height);
+				drawMinimRest(ctx, x, y, height * 2);
 				break;
 			case 4:
-				drawSemiBreveRest(ctx, x, y, height);
+				drawSemiBreveRest(ctx, x, y, height * 2);
 				break;
 		}
 	}
