@@ -306,10 +306,15 @@ div.scroller h2{
 	z-index: 5000;
 	position: fixed;
 	left: 500;
+	border-radius: 0 15px 15px 0;
+	box-shadow: 0 0 5px 1px;
+	background: rgb(255, 249, 242);
+	top: 10;
 }
 
 .item-type .item-type-items{
-	
+	cursor: pointer;
+	margin: 11px;
 }
 
 #about{
