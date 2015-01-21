@@ -315,6 +315,7 @@ div.scroller h2{
 .item-type .item-type-items{
 	cursor: pointer;
 	margin: 11px;
+	display: inline-block;
 }
 
 #about{
