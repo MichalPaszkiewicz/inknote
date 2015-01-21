@@ -1107,6 +1107,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			else if(item.type == "rest"){
 				drawRest(context, item.x, bar.y + $scope.lineHeight/3, item.duration, $scope.lineHeight/4);
+				
+				// draw mark showing if rest is selected.
+				if($scope.selectedItemID == item.id){
+					context.beginPath();
+					context.arc(item.x, bar.y + $scope.lineHeight/2, 20, 0, 2*Math.PI);
+					context.strokeStyle = "#1DDD10";
+					context.stroke();
+					context.strokeStyle = staveColour;
+				}
 			}
 			else if(item.type == "clef"){
 				
