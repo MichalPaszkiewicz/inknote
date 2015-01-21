@@ -278,7 +278,7 @@ div.scroller h2{
 	position: fixed;
 	left: 250px;
 	top: 10;
-	border-radius: 15px 15px 0 0;
+	border-radius: 15px 0 0 15px;
 	box-shadow: 0 0 5px 1px;
 	text-align: center;
 	overflow: hidden;
