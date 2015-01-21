@@ -30,9 +30,9 @@ Upcoming updates
 - Enable push notifications in forums.
 - AUDIO.
 
-Update 20/01/2015
+Update 21/01/2015
 ------------------
-- Draw rests (click r before adding note)
+- Draw rests
 
 Update 19/01/2015
 ------------------
