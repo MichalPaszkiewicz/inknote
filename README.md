@@ -33,6 +33,7 @@ Upcoming updates
 Update 21/01/2015
 ------------------
 - Draw rests
+- Selecting / deleting rests.
 
 Update 19/01/2015
 ------------------
