@@ -302,6 +302,16 @@ div.scroller h2{
 	background-size: cover;
 }
 
+.item-type{
+	z-index: 5000;
+	position: fixed;
+	left: 500;
+}
+
+.item-type .item-type-items{
+	
+}
+
 #about{
 	position: absolute;
 	z-index: 100;
