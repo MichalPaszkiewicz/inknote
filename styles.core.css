@@ -310,6 +310,7 @@ div.scroller h2{
 	box-shadow: 0 0 5px 1px;
 	background: rgb(255, 249, 242);
 	top: 10;
+	overflow: hidden;
 }
 
 .item-type .item-type-item{
