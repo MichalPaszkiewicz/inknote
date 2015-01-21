@@ -79,10 +79,10 @@ function drawRest(ctx, x, y, duration, lineHeight){
 				drawCrotchetRest(ctx, x, y, height * 3/2);
 				break;
 			case 2:
-				drawMinimRest(ctx, x, y, height * 2);
+				drawMinimRest(ctx, x, y + 2, height * 2);
 				break;
 			case 4:
-				drawSemiBreveRest(ctx, x, y, height * 2);
+				drawSemiBreveRest(ctx, x, y + 2, height * 2);
 				break;
 		}
 	}
