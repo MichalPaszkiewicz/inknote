@@ -29,7 +29,8 @@ Upcoming updates
 - Composer forums.
 - Enable push notifications in forums.
 - AUDIO.
-- Copy, cut and paste
+- Copy, cut and paste.
+- Undo & Redo.
 
 Update 21/01/2015
 ------------------
