@@ -31,6 +31,7 @@ Upcoming updates
 - AUDIO.
 - Copy, cut and paste.
 - Undo & Redo.
+- Sharps and flats.
 
 Update 21/01/2015
 ------------------
