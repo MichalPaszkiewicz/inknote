@@ -42,6 +42,27 @@
 				<div class="button" ng-click="submitBugReport();">Send bug report</div>
 			</div>
 		</div>
+		<div id="about" class="ng-hide" ng-show="aboutShow">
+			<h3>About</h3>
+			A completely free and open source project initiated by <a href="www.michalpaszkiewicz.co.uk">Michal Paszkiewicz</a>.
+			<p>It has only been possible to run this project thanks to kind donations. Any amount will help us provide a better service for you.</p>
+			<div style="background: white;width: 150px;padding: 10px 20px;display: inline-block;">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_donations">
+				<input type="hidden" name="business" value="spacemanmeow@gmail.com">
+				<input type="hidden" name="lc" value="US">
+				<input type="hidden" name="item_name" value="inknote">
+				<input type="hidden" name="no_note" value="0">
+				<input type="hidden" name="currency_code" value="GBP">
+				<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</div>
+			<div class="button-container" style="display: inline-block;clear: none;">
+				<div class="close-button button" ng-click="aboutShow = false;">Close</div>
+			</div>
+		</div>
 		<div id="user-functions" class="ng-hide" ng-show="currentUserFunctionsOpen">
 			<div class="user-functions-menu">
 				<div class="scroller">
@@ -97,6 +118,10 @@
 			<div class="note-duration-image" style="background-position-x: {{getItemDurationImgX()}}px;"></div>
 		  	<div class="note-duration-button" ng-click="changeItemDuration(true)">Increase</div>
 		</div>
+		<div class="item-type">
+			<div class="item-type-item" ng-class="{green: newItemType == 'note'}" ng-click="newItemType = 'note'">Note</div>
+			<div class="item-type-item" ng-class="{green: newItemType == 'rest'}" ng-click="newItemType = 'rest'">Rest</div>
+		</div>
 	  	<div class="menu-container">
 		  	<div class="menu" ng-class='{"selected":!menu}'>
 		  		<div class="menu-item">
@@ -124,6 +149,9 @@
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name" ng-click="saveFiles()">Save</div>
+		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name" ng-click="print()">Print view</div>
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">Page setup</div>
@@ -258,6 +286,14 @@
 		  						</li>
 		  					</ul>
 		  				</li>
+		  				<li class="sub-item">
+		  					<div class="sub-item-name">Scroll sensitivity</div>
+		  					<ul class="sub-sub-items">
+		  						<li class="sub-sub-item no-pad">
+		  							<input type="range" ng-model="windowScrollAmount" step="5" min="5" max="300" value="{{windowScrollAmount}}">
+		  						</li>
+		  					</ul>
+		  				</li>
 		  			</ul>
 		  		</div>
 		  		<div class="menu-item">
@@ -332,7 +368,7 @@
 		  			<div class="menu-item-name">Help</div>
 		  			<ul class="sub-items">
 		  				<li class="sub-item">
-		  					<div class="sub-item-name">About</div>
+		  					<div class="sub-item-name" ng-click="aboutShow = true;">About</div>
 		  				</li>
 		  				<li class="sub-item">
 		  					<div class="sub-item-name">FAQ</div>
@@ -351,19 +387,23 @@
 		  	</div>
 	  	</div>
 		
-		<canvas id="canvas" ng-click="action($event)"></canvas>
+		<canvas id="canvas" ng-click="action($event)" ng-mousemove="canvasMove($event)"></canvas>
 		<div style="clear: both"/>
 	  </div>
 	</div>
 
 	<script src="globalsettings.js"></script>
+	<script src="drawing/item.js"></script>
+	<script src="drawing/previewbar.js"></script>
+	<script src="drawing/scrollbar.js"></script>
+	<script src="drawing/rests.js"></script>
 	<script src="userfunctions.js"></script>
-	<script src="hamster.js"></script>
-	<script src="mousewheel.js"></script>
-	<script src="keypress.js"></script>
+	<script src="modules/hamster.js"></script>
+	<script src="modules/mousewheel.js"></script>
+	<script src="modules/keypress.js"></script>
 	<script src="helpers.js"></script>
-	<script src="splashscreen.js"></script>	
+	<script src="drawing/splashscreen.js"></script>	
 	<script src="score.js"></script>
-	<script src="themes.js"></script>
+	<script src="controllers/themes.js"></script>
 </body>
 

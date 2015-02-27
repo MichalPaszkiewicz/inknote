@@ -76,14 +76,15 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(drawOn){
 				if($deltaY == 1){
+					//Math.min and Math.max used to ensure that no matter what the scroll amount is, the score will always be visible.
 					if($scope.windowScroll > 0){
-						$scope.windowScroll -= $scope.windowScrollAmount;
+						$scope.windowScroll = Math.max($scope.windowScroll - parseInt($scope.windowScrollAmount), 0);
 						$scope.draw();
 					}
 				}
 				else if($deltaY == -1){
 					if($scope.windowScroll < $scope.lines[$scope.lines.length - 1].y){
-						$scope.windowScroll += $scope.windowScrollAmount;
+						$scope.windowScroll = Math.min($scope.windowScroll + parseInt($scope.windowScrollAmount), $scope.lines[$scope.lines.length - 1].y);
 						$scope.draw();
 					}
 				}
@@ -187,6 +188,14 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		
 		$scope.currentFileID = "";
 		
+		$scope.currentFileName = function(){
+			if($scope.currentFileID == ""){
+				return "Untitled";
+			}
+			
+			return $scope.files.getItemFromID($scope.currentFileID).name;
+		}
+		
 		var setFiles = function(){
 			$scope.files = $scope.getFiles();
 			$scope.newFile();
@@ -274,6 +283,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
 			log("Mouse click coordinates - [" + x + "," + y + "]");
 			
+			//if clicks in scrollbar, moves to that position.
+			if(isInScrollBar(canvas, context, x, e.clientY - tempCanvas.offsetTop)){
+				$scope.windowScroll = getScrollPositionFromScrollBar(canvas, context, e.clientY - tempCanvas.offsetTop, $scope.lines[$scope.lines.length - 1].y);
+				$scope.draw();
+				return;
+			}
+			
 			//clear selection
 			$scope.selectedInstrumentID = null;
 			$scope.selectedBarID = null;
@@ -319,14 +335,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 							log("Bar id - " + $scope.lines[i].instruments[0].bars[j].id);
 							itemBar = $scope.lines[i].instruments[itemInstrumentIndex].bars[j];
 							
+							$scope.selectedInstrumentID = itemInstrument.id;
+							$scope.selectedBarID = itemBar.id;
+							
 							for(var k = 0; k < itemBar.items.length; k++){
 								if(itemBar.items[k].x - 8 < x && x < itemBar.items[k].x + 8){
 									log("Item id - " + itemBar.items[k].id);
 									
-									$scope.selectedInstrumentID = itemInstrument.id;
-									$scope.selectedBarID = itemBar.id;
 									$scope.selectedItemID = itemBar.items[k].id;
 									actionSelection = "item";
+									break;
 								}
 							}
 						}
@@ -336,14 +354,83 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			
 			if(actionSelection == "bar"){
 				var itemY = ($scope.lineHeight/8) * Math.round((y - itemInstrument.y) / ($scope.lineHeight/8)) - $scope.windowScroll;
-				$scope.addItem(itemY, itemInstrument.id, itemBar.id, "note");
+				
+				$scope.addItem(itemY, itemInstrument.id, itemBar.id, $scope.newItemType);
 			}
 
 			$scope.draw();
 
 		}
 		
+		$scope.showScrollBar = true;
+		$scope.showScrollPreview = false;
+		$scope.scrollMousePosition = 0;
+		var onScroll = false;
+		
+		$scope.canvasMove = function(e){
+			var tempCanvas = document.getElementById('canvas');
+			var x = e.clientX - tempCanvas.offsetLeft;
+			var y = e.clientY - tempCanvas.offsetTop + $scope.windowScroll;
+			log("Mouse click coordinates - [" + x + "," + y + "]");
+			
+			//if clicks in scrollbar, moves to that position.
+			if(isInScrollBar(canvas, context, x, e.clientY - tempCanvas.offsetTop)){
+				$scope.scrollMousePosition = e.clientY - tempCanvas.offsetTop;
+				$scope.showScrollPreview = true;
+				$scope.draw();
+				onScroll = true;
+				return;
+			}
+			else{
+				$scope.showScrollPreview = false;
+				if(onScroll == true){
+					onScroll = false;
+					$scope.draw();
+				}
+			}
+			
+		}
+		
+		$scope.print = function(){
+			var d, w;
+			
+			var startHeight = $scope.windowScroll;
+			
+			//Turn unnecessary displays off
+			$scope.showScrollBar = false;
+			$scope.warningCorners = false;
+			$scope.windowScroll = 0;
+			
+			w = window.open('Inknote - printer friendly','image from canvas');
+			
+			while($scope.windowScroll - canvas.height < $scope.lines[$scope.lines.length - 1].y){
+				$scope.draw();
+				
+				d = canvas.toDataURL("image/png");
+		
+				w.document.write("<img src='"+d+"' style='width: 1000px;' alt='from canvas'/>");
+				$scope.windowScroll += canvas.height;
+			}
+			
+			//Turn unnecessary displays back on
+			$scope.showScrollBar = true;
+			$scope.warningCorners = true;
+			$scope.windowScroll = startHeight;
+			
+			$scope.draw();
+		};
+		
 		$scope.newItemDuration = {num: 1, denom: 1};
+		$scope.newItemType = "note";
+		
+		$scope.switchItemType = function(){
+			if($scope.newItemType == "note"){
+				$scope.newItemType = "rest";
+			}
+			else{
+				$scope.newItemType = "note";
+			}
+		}
 		
 		var noteMapping = {
 			"116" : 0,
@@ -433,6 +520,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				return;
 			}*/
 			
+			$scope.selectedItemID = "New item";
+			
 			if(type == null || type == undefined){
 				type = "note";
 			}
@@ -453,20 +542,31 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			$scope.draw();
 		}
 		
+		$scope.noteChangeItem = function(e, relevantItem){
+			if(e.which === 38){
+				relevantItem.value -= 6;		
+			}
+			else if(e.which === 40){
+				relevantItem.value += 6;
+			}
+		}
+		
 		$scope.noteChange = function(e){
 			if($scope.selectedItemID != null){
-
 				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
 				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
 				var relevantItem = relevantBar.items.getItemFromID($scope.selectedItemID);
-				
-				if(e.which === 38){
-					relevantItem.value -= 6;		
+				$scope.noteChangeItem(e, relevantItem);
+				$scope.draw();
+			}
+			else if($scope.selectedItemID == null && $scope.selectedBarID != null){
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBar = relevantInstrument.bars.getItemFromID($scope.selectedBarID);
+				for(var i = 0; i < relevantBar.items.length; i++){
+					if(relevantBar.items[i].type == "note" || relevantBar.items[i].type == null || relevantBar.items[i].type == undefined){
+						$scope.noteChangeItem(e, relevantBar.items[i]);							
+					}
 				}
-				else if(e.which === 40){
-					relevantItem.value += 6;
-				}
-				
 				$scope.draw();
 			}
 		}
@@ -545,17 +645,32 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
 				var relevantBar = relevantInstrument.bars[relevantBarIndex];
 				var relevantItemIndex = relevantBar.items.getIndexFromID($scope.selectedItemID);
+				
 				//left keypress - move selected note one left
-				//todo find previous NOTE. currently could be any item.
 				var itemFound = null;
 				var currentSelection = {barIndex: relevantBarIndex, itemIndex: relevantItemIndex};
 				if(e.which === 37){
 					itemFound = $scope.moveLeft(relevantInstrument, currentSelection);
 				}
+				
 				//right keypress - move selected note one right
 				//todo: add item if no item after this.
 				else if(e.which === 39){
 					itemFound = $scope.moveRight(relevantInstrument, currentSelection);
+				}
+				
+				$scope.draw();
+			}
+			else if($scope.selectedItemID == null && $scope.selectedBarID != null){
+				var relevantInstrument = $scope.instruments.getItemFromID($scope.selectedInstrumentID);
+				var relevantBarIndex = relevantInstrument.bars.getIndexFromID($scope.selectedBarID);
+				
+				//left keypress move bar one left
+				if(e.which === 37 && relevantBarIndex != 0){
+					$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex - 1].id;
+				}
+				else if(e.which === 39 && relevantBarIndex != relevantInstrument.bars[relevantInstrument.bars.length - 1]){
+					$scope.selectedBarID = relevantInstrument.bars[relevantBarIndex + 1].id;
 				}
 				
 				$scope.draw();
@@ -583,6 +698,9 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			}
 			else if(e.which === 46){
 				$scope.deleteSelectedNote();
+			}
+			else if(e.which === 82){
+				$scope.switchItemType();
 			}
 		}
 		
@@ -665,6 +783,13 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.clearRect(0,0,canvas.width,canvas.height);
 			$scope.drawInit();
 			$scope.drawLines();
+			
+			if($scope.showScrollBar === true){
+				drawScrollBar(canvas, context, $scope.windowScroll, $scope.lines[$scope.lines.length - 1].y);
+				if($scope.showScrollPreview === true){
+					drawScrollPreview(canvas, context, $scope.scrollMousePosition, $scope.lines, $scope.lines[$scope.lines.length - 1].y, $scope.lineHeight);
+				}
+			}
 		}
 		
 		var lineSeperator = 200;
@@ -754,16 +879,38 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 		}
 		
 		$scope.drawLines = function(){
+			
+			$scope.writeProjectText();
+			
+			var barNumber = 1;
 			for(var i = 0; i < $scope.lines.length; i++){
-				$scope.drawLine($scope.lines[i]);
+				$scope.drawLine($scope.lines[i], barNumber);
+				
+				$scope.lines[i].barNumber = barNumber;
+				
+				var barsToAdd = 0;
 				
 				for(var j = 0; j < $scope.lines[i].instruments.length; j++){
-					$scope.drawBars($scope.lines[i].instruments[j].bars);
+					barsToAdd = $scope.drawBars($scope.lines[i].instruments[j].bars);
 				}
+				
+				barNumber += barsToAdd;
 			};
 		}
 		
-		$scope.drawLine = function(line){
+		$scope.writeFileName = function(){
+			context.textAlign = 'center';
+			context.fillStyle = textColour;
+			context.fillText($scope.currentFileName(), canvas.width/2, 100 - $scope.windowScroll);
+			context.fillStyle = staveColour;
+			context.textAlign = 'left';
+		}
+		
+		$scope.writeProjectText = function(){
+			$scope.writeFileName();
+		}
+		
+		$scope.drawLine = function(line, barNumber){
 			for(var i = 0; i < line.instruments.length; i++){
 				$scope.drawInstrument(line.instruments[i]);
 			}
@@ -779,6 +926,10 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 			context.moveTo(finalX, startY);
 			context.lineTo(finalX, bottomY);
 			context.stroke();
+			context.font="bold 12px Arial";
+			context.fillStyle = textColour;
+			context.fillText(barNumber, startX - 30, startY)
+			context.fillStyle = staveColour;
 		}
 		
 		$scope.drawInstrument = function(instrument){
@@ -811,6 +962,8 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 				$scope.drawBar(bars[i]);
 			}
+			
+			return bars.length;
 		}
 		
 		$scope.drawTimeSignature = function(bar){
@@ -830,6 +983,17 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				context.lineWidth = 5;
 				context.moveTo(bar.x - 5, bar.y + 5);
 				context.lineTo(bar.x - 5, bar.y + $scope.lineHeight + 5);
+				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
+				context.stroke();
+				context.lineWidth = 1;
+			}
+			
+			//show selected bar
+			if($scope.selectedItemID == null && $scope.selectedBarID == bar.id){
+				context.beginPath();
+				context.strokeStyle = "#1DDD10";
+				context.lineWidth = 5;
+				context.moveTo(bar.x - 5, bar.y + $scope.lineHeight + 5);
 				context.lineTo(bar.x + (2 * $scope.lineHeight) - 5, bar.y + $scope.lineHeight + 5);
 				context.stroke();
 				context.lineWidth = 1;
@@ -877,6 +1041,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					if(item.value >= $scope.lineHeight/2){
 						context.moveTo(item.x + 5.5, bar.y + item.value);
 						context.lineTo(item.x + 5.5, bar.y + item.value - 36);
+						context.strokeStyle = noteColour;
 						context.stroke();
 						
 						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
@@ -891,6 +1056,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 								context.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX,  tailY + 15);
 								context.lineTo(tailX, tailY);
 								context.fill();
+								context.strokeStyle = noteColour;
 								context.stroke();
 								tailController = Math.floor(tailController / 2);
 								if(tailNum == 0){tailY += 10;}
@@ -902,6 +1068,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 					}else{
 						context.moveTo(item.x - 5.5, bar.y + item.value);
 						context.lineTo(item.x - 5.5, bar.y + item.value + 36);
+						context.strokeStyle = noteColour;
 						context.stroke();
 						
 						if(item.duration && item.duration.num == 1 && item.duration.denom > 1){
@@ -916,6 +1083,7 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 								context.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX,  tailY - 15);
 								context.lineTo(tailX, tailY);
 								context.fill();
+								context.strokeStyle = noteColour;
 								context.stroke();
 								tailController = Math.floor(tailController / 2);
 								if(tailNum == 0){tailY -= 10;}
@@ -938,7 +1106,16 @@ var canvasModule = angular.module('app', ['monospaced.mousewheel', 'keypress']).
 				}
 			}
 			else if(item.type == "rest"){
+				drawRest(context, item.x, bar.y + $scope.lineHeight/3, item.duration, $scope.lineHeight/4);
 				
+				// draw mark showing if rest is selected.
+				if($scope.selectedItemID == item.id){
+					context.beginPath();
+					context.arc(item.x, bar.y + $scope.lineHeight/2, 20, 0, 2*Math.PI);
+					context.strokeStyle = "#1DDD10";
+					context.stroke();
+					context.strokeStyle = staveColour;
+				}
 			}
 			else if(item.type == "clef"){
 				

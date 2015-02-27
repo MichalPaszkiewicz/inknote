@@ -18,19 +18,40 @@ http://www.michalpaszkiewicz.co.uk/inknote/developer/
 Upcoming updates
 ------------------
 - Score chords.
-- Display rests.
 - Draw clefs and key signatures.
 - Change instance time/key signatures.
-- Display bar numbers.
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
 - Add collaboration option.
 - Guitar Tab/chord name display modes.
 - Alternative display modes - e.g. keyboard blocks, phrase blocks.
-- Donate button.
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
+- AUDIO.
+- Copy, cut and paste.
+- Undo & Redo.
+- Sharps and flats.
+
+Update 21/01/2015
+------------------
+- Draw rests
+- Selecting / deleting rests.
+
+Update 19/01/2015
+------------------
+- Print view complete.
+- Displays project title.
+
+Update 18/12/2014
+------------------
+- Displays bar numbers.
+- Can change mouse scroll sensitivity.
+- Added custom drawn scroll bar.
+- Scroll bar preview shows bar number you are going to.
+- Donate button added.
+- Allows bar selection and navigation left/right.
+- Allows change of value of all notes in bar on up/down key.
 
 Update 11/12/2014
 ------------------
