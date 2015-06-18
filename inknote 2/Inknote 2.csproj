@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{8790919E-7659-463C-A2C6-7D45CC2BC921}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="%40script.js" />
+    <Content Include="index.html" />
+    <Content Include="styles\base.css">
+      <DependentUpon>base.less</DependentUpon>
+    </Content>
+    <Content Include="styles\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="scripts\actions\baseAction.ts" />
+    <TypeScriptCompile Include="scripts\actions\canvasControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
+    <TypeScriptCompile Include="scripts\app.ts" />
+    <TypeScriptCompile Include="scripts\drawings\background.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bottomMenuButton.ts" />
+    <TypeScriptCompile Include="scripts\drawings\colours.ts" />
+    <TypeScriptCompile Include="scripts\drawings\file.ts" />
+    <TypeScriptCompile Include="scripts\drawings\keyboard.ts" />
+    <TypeScriptCompile Include="scripts\drawings\keyboardKey.ts" />
+    <TypeScriptCompile Include="scripts\drawings\loading.ts" />
+    <TypeScriptCompile Include="scripts\drawings\name.ts" />
+    <TypeScriptCompile Include="scripts\drawings\note.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rest.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\stave.ts" />
+    <TypeScriptCompile Include="scripts\helpers\array.ts" />
+    <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
+    <TypeScriptCompile Include="scripts\helpers\maths.ts" />
+    <TypeScriptCompile Include="scripts\helpers\string.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\idrawable.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\iidentifiable.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\inameable.ts" />
+    <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
+    <TypeScriptCompile Include="scripts\model\bar.ts" />
+    <TypeScriptCompile Include="scripts\model\compressedProject.ts" />
+    <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
+    <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
+    <TypeScriptCompile Include="scripts\model\instrument.ts" />
+    <TypeScriptCompile Include="scripts\model\notation.ts" />
+    <TypeScriptCompile Include="scripts\model\noteType.ts" />
+    <TypeScriptCompile Include="scripts\model\project.ts" />
+    <TypeScriptCompile Include="scripts\model\settings.ts" />
+    <TypeScriptCompile Include="scripts\services\confirmService.ts" />
+    <TypeScriptCompile Include="scripts\services\drawService.ts" />
+    <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
+    <TypeScriptCompile Include="scripts\services\identifyService.ts" />
+    <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
+    <TypeScriptCompile Include="scripts\services\scrollService.ts" />
+    <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
+    <TypeScriptCompile Include="scripts\services\logger.ts" />
+    <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
+    <TypeScriptCompile Include="_references.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="styles\base.less" />
+    <Content Include="styles\base.css.map">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Inknote_2</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56538</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56538/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptOutFile>@script.js</TypeScriptOutFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>

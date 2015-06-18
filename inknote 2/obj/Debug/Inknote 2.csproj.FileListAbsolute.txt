@@ -1,0 +1,6 @@
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\bin\Inknote 2.dll.config
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\bin\Inknote 2.dll
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\bin\Inknote 2.pdb
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\obj\Debug\Inknote 2.dll
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\obj\Debug\Inknote 2.pdb
+C:\Users\michal.paszkiewicz\Documents\github\inknote 2\obj\Debug\Inknote 2.csprojResolveAssemblyReference.cache
