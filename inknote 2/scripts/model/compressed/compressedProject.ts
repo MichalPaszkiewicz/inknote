@@ -1,8 +1,10 @@
-﻿module Inknote {
+﻿module Inknote.Compressed {
 
     export class CompressedProject implements INameable {
 
         ID: string;
+
+        instruments: Compressed.Instrument[];
 
         constructor(public name?) {
 

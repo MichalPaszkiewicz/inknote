@@ -1,13 +1,12 @@
-﻿module Inknote.Model {
+﻿module Inknote.Compressed{
 
     export class Instrument {
 
-        visible: boolean;
         bars: Bar[];
 
         constructor(public name: string) {
             this.bars = [];
-            this.visible = true;
+
             this.bars.push(new Bar());
         }
 

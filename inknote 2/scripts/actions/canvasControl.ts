@@ -8,7 +8,7 @@
 
             for (var i = 0; i < allItems.length; i++) {
                 if (mouseIsOver(allItems[i], e, this.drawService.canvas)) {
-                    //console.log(allItems[i].y + ":" + e.clientY + ":" + ScrollService.Instance.y);
+                    // log(allItems[i].y + ":" + e.clientY + ":" + ScrollService.Instance.y);
 
                     var hoverID = allItems[i].ID;
                     Managers.ProjectManager.Instance.hoverID = hoverID;
@@ -32,13 +32,13 @@
                     var selectedID = allItems[i].ID;
 
                     // if keyboard clicked, do keyboard action.
-                    if (selectedID == Keyboard.Instance.ID) {
-                        Keyboard.Instance.click(e);
+                    if (selectedID == Drawing.Keyboard.Instance.ID) {
+                        Drawing.Keyboard.Instance.click(e);
                         return;
                     }
 
-                    if (selectedID == BottomMenu.Instance.ID) {
-                        BottomMenu.Instance.click(e);
+                    if (selectedID == Drawing.BottomMenu.Instance.ID) {
+                        Drawing.BottomMenu.Instance.click(e);
                         return;
                     }
 

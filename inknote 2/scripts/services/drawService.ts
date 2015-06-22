@@ -60,7 +60,7 @@
                     break;
             }     
 
-            this.items.push(Background.Instance);
+            this.items.push(Drawing.Background.Instance);
         }
     }
 }

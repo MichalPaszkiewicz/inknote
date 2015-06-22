@@ -12,11 +12,17 @@
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />
+/// <reference path="scripts/model/timesignature.ts" />
 /// <reference path="scripts/model/notation.ts" />
+/// <reference path="scripts/model/notevalue.ts" />
+/// <reference path="scripts/model/notelength.ts" />
+/// <reference path="scripts/model/note.ts" />
 /// <reference path="scripts/model/bar.ts" />
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
-/// <reference path="scripts/model/compressedproject.ts" />
+/// <reference path="scripts/model/compressed/compressedBar.ts" />
+/// <reference path="scripts/model/compressed/compressedInstrument.ts" />
+/// <reference path="scripts/model/compressed/compressedproject.ts" />
 /// <reference path="scripts/model/drawingsettings.ts" />
 
 // drawings
@@ -45,6 +51,9 @@
 /// <reference path="scripts/services/drawservice.ts" />
 /// <reference path="scripts/services/projectconverter.ts" />
 /// <reference path="scripts/services/fileconverter.ts" />
+
+// testData
+/// <reference path="scripts/testdata/compressedproject.ts" />
 
 // managers
 /// <reference path="scripts/managers/pagemanager.ts" />

@@ -19,6 +19,16 @@
         return count;
     }
 
+    export function getItemsWhere(items: any[], xAndY: (item: any) => boolean): any[] {
+        var result = [];
+        for (var i = 0; i < items.length; i++){
+            if (xAndY(items[i])) {
+                result.push(items[i]);
+            }
+        }
+        return result;
+    }
+
     export function sum(items: any[], xAndY: (item: any) => number) {
         var total = 0;
         for (var i = 0; i < items.length; i++) {

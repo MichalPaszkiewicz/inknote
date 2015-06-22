@@ -1,7 +1,7 @@
-﻿module Inknote.Model {
+﻿module Inknote.Compressed {
 
     export class Bar {
-        
+
         constructor() {
 
         }

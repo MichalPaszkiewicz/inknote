@@ -4,6 +4,7 @@
 
         name: string;
         ID: string;
+        testMode: boolean;
 
         staveColour = "black";
         noteColour = "red";
@@ -16,6 +17,7 @@
         constructor(name?: string) {
             this.ID = getID();
             this.name = name;
+            this.testMode = false;
 
             if (!name) {
                 this.name = this.ID;

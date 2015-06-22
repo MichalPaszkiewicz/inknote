@@ -1,4 +1,4 @@
-﻿module Inknote {
+﻿module Inknote.Drawing {
 
     export class KeyboardKey {
 
@@ -15,10 +15,10 @@
 
             var grd = ctx.createLinearGradient(this.x - this.width / 2, this.y - this.height / 2, this.x + this.width / 2, this.y + this.height / 2);
             if (this.hover) {
-                grd.addColorStop(0, "lightblue");
+                grd.addColorStop(0, Colours.lightBlue);
             }
             else {
-                grd.addColorStop(0, "darkgray");
+                grd.addColorStop(0, Colours.gray);
             }
             grd.addColorStop(1, Colours.white);
             ctx.fillStyle = grd;

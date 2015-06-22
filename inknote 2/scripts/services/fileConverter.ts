@@ -1,6 +1,6 @@
 ﻿module Inknote.FileConverter {
 
-    var splash = new LoadingSplash();
+    var splash = new Drawing.LoadingSplash();
 
     export function toDrawing(drawer: DrawService): IDrawable[] {
 
@@ -18,7 +18,7 @@
         var anySelected = false;
 
         for (var i = 0; i < projects.length; i++) {
-            var file = new File(projects[i].name);
+            var file = new Drawing.File(projects[i].name);
             file.ID = projects[i].ID;
 
             if (projects[i].ID == Managers.ProjectManager.Instance.hoverID) {
@@ -41,7 +41,7 @@
         }
 
         if (anySelected) {
-            items.push(BottomMenu.Instance);
+            items.push(Drawing.BottomMenu.Instance);
         }
 
         if (Managers.ProjectManager.Instance.currentProject.pause) {

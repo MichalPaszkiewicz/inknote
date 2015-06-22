@@ -1,4 +1,4 @@
-﻿module Inknote {
+﻿module Inknote.Drawing {
 
     export class Keyboard implements IDrawable {
 
@@ -51,7 +51,11 @@
                             proj.name = "";
 
                         }
-
+                    }
+                    else if (this.keys[i].name == "|<") {
+                        if (inst.selectID == proj.ID) {
+                            proj.name = proj.name.substr(0, proj.name.length - 1);
+                        }
                     }
                     else {
                         console.log(this.keys[i].name);
@@ -79,9 +83,9 @@
 
                     //self.keys.push(new KeyboardKey("Delete", canvas.width - 40, canvas.height / 2 + 20, 70, 30));
 
-                    self.keys = self.keys.concat(keysFromArray(["", "", "", "", "Delete"], 0, canvas.height / 2, canvas.width, canvas.height / 12));
+                    self.keys = self.keys.concat(keysFromArray(["", "", "", "|<", "Delete"], 0, canvas.height / 2, canvas.width, canvas.height / 12));
                     self.keys = self.keys.concat(keysFromString("qwertyuiop", 0, canvas.height / 2 + canvas.height / 12, canvas.width, canvas.height / 12));
-                    self.keys = self.keys.concat(keysFromString("asdfghjkl;", 0, canvas.height / 2 + 2 * canvas.height / 12, canvas.width, canvas.height / 12));
+                    self.keys = self.keys.concat(keysFromString("asdfghjkl-", 0, canvas.height / 2 + 2 * canvas.height / 12, canvas.width, canvas.height / 12));
                     self.keys = self.keys.concat(keysFromString("zxcvbnm,./", 0, canvas.height / 2 + 3 * canvas.height / 12, canvas.width, canvas.height / 12));
                     self.keys = self.keys.concat(keysFromString(" ", 0, canvas.height / 2 + 4 * canvas.height / 12, canvas.width, canvas.height / 12));
                 }

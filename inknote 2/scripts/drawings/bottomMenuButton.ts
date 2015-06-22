@@ -1,4 +1,4 @@
-﻿module Inknote {
+﻿module Inknote.Drawing {
 
     export class BottomMenuButton {
 
@@ -24,28 +24,28 @@
 
             var grd = ctx.createLinearGradient(this.x, this.y, this.x + this.width, this.y + this.height);
             if (this.hover) {
-                grd.addColorStop(0, "lightblue");
+                grd.addColorStop(0, Colours.lightBlue);
             }
             else {
-                grd.addColorStop(0, "darkgray");
+                grd.addColorStop(0, Colours.gray);
             }
-            grd.addColorStop(1, "white");
+            grd.addColorStop(1, Colours.white);
             ctx.fillStyle = grd;
             if (this.negative) {
-                ctx.fillStyle = "rgb(255, 129, 129)";
+                ctx.fillStyle = Colours.negativeRed;
                 if (this.hover) {
-                    ctx.fillStyle = "rgb(255,150,150)";
+                    ctx.fillStyle = Colours.negativeHoverRed;
                 }
             }
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.fill();
             if (this.hover) {
-                ctx.strokeStyle = "white";
+                ctx.strokeStyle = Colours.white;
                 ctx.stroke();
             }
 
             ctx.beginPath();
-            ctx.fillStyle = "black";
+            ctx.fillStyle = Colours.black;
             ctx.textAlign = "center";
             ctx.fillText(this.text, this.x + this.width / 2, this.y + this.height / 2 + 5);
             ctx.fill();

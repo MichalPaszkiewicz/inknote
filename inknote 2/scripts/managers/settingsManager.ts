@@ -5,6 +5,30 @@
 
         private _settings: Setting[];
 
+        private _currentSetting: Setting;
+
+        static get Current() {
+            return SettingsManager.Instance.getCurrentSetting();
+        }
+
+        getCurrentSetting() {
+            var inst = SettingsManager.Instance;
+
+            if (!inst._currentSetting) {
+                if (!inst._settings || inst._settings.length < 1) {
+                    inst.addSetting(new Setting("Default"));
+                }
+
+                inst.setCurrentSetting(inst.getSettings()[0]);
+            }
+
+            return inst._currentSetting;
+        }
+
+        setCurrentSetting(setting: Setting) {
+            this._currentSetting = setting;
+        }
+
         public getSettings(): Setting[] {
             return this._settings;
         }
@@ -29,7 +53,7 @@
             SettingsManager._instance = this;
         }
 
-        static get Current() {
+        static get Instance() {
             if (!this._instance) {
                 this._instance = new SettingsManager();
             }

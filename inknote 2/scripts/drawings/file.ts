@@ -1,4 +1,4 @@
-﻿module Inknote {
+﻿module Inknote.Drawing {
 
     export class File implements IDrawable {
 
@@ -29,7 +29,7 @@
             self.draw = function(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, scale: number): boolean {
 
                 if (self.hover || self.select) {
-                    ctx.fillStyle = "rgb(190,220,240)";
+                    ctx.fillStyle = Colours.lightBlue;
                     ctx.beginPath();
                     ctx.rect(self.x - 60, self.y - 60, 120, 140);
                     ctx.fill();
@@ -39,14 +39,14 @@
                 
                 var fold = 20;
                 if (self.select) {
-                    grd.addColorStop(0, "rgb(240, 162, 86)");
+                    grd.addColorStop(0, Colours.lightTan);
                     fold = 0;
                 }
                 else {
-                    grd.addColorStop(0, "rgb(220, 142, 66)");
+                    grd.addColorStop(0, Colours.tan);
                 }
 
-                grd.addColorStop(1, "rgb(250, 222, 196)");
+                grd.addColorStop(1, Colours.peach);
 
                 ctx.fillStyle = grd;
 
@@ -62,18 +62,18 @@
                 ctx.moveTo(self.x - (fold + 4), self.y - 45);
                 ctx.lineTo(self.x - 45, self.y - 45);
                 ctx.lineTo(self.x - 45, self.y - (fold + 4));
-                ctx.strokeStyle = "black";
-                ctx.fillStyle = "white";
+                ctx.strokeStyle = Colours.black;
+                ctx.fillStyle = Colours.white;
                 ctx.fill();
                 ctx.stroke();
 
                 ctx.beginPath();
-                ctx.fillStyle = "black";
+                ctx.fillStyle = Colours.black;
                 ctx.textAlign = "center";
                 ctx.fillText(self.name, self.x, self.y + 70);
 
                 if (self.hover) {
-                    ctx.strokeStyle = "rgb(100,130,240)";
+                    ctx.strokeStyle = Colours.midBlue;
                     ctx.beginPath();
                     ctx.rect(self.x - 60, self.y - 60, 120, 140);
                     ctx.stroke();

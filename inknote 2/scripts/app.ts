@@ -1,9 +1,13 @@
 ﻿module Inknote.Main {
 
     // load setting manager
-    var settingsManager = Managers.SettingsManager.Current;
+    var settingsManager = Managers.SettingsManager.Instance;
 
-    settingsManager.addSetting(new Setting("Default"));
+    var appSetting = new Setting("Default");
+    // comment out the following line when live.
+    appSetting.testMode = true;
+
+    settingsManager.addSetting(appSetting);
     settingsManager.addSettings(Storage.getSettings());
 
     // load drawing settings
@@ -16,5 +20,4 @@
 
     var x = new DrawService("my-canvas");
     var y = new CanvasControl(x);
-
 }

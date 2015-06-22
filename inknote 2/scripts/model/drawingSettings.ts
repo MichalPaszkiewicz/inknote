@@ -3,7 +3,7 @@
     // stores settings of items currently to be drawn.
     export class DrawingSettings {
 
-        noteType: NoteType;
+        noteLength: Model.NoteLength;
         isNote: boolean;
 
         private static _instance;

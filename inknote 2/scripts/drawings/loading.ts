@@ -1,4 +1,4 @@
-﻿module Inknote {
+﻿module Inknote.Drawing {
 
     export class LoadingSplash implements IDrawable {
 
@@ -30,7 +30,7 @@
                 this.t++;
 
                 ctx.beginPath();
-                ctx.fillStyle = "rgba(0,0,0,0.2)";
+                ctx.fillStyle = Colours.translucentBlack;
                 ctx.rect(0, 0, canvas.width, canvas.height);
                 ctx.fill();
 

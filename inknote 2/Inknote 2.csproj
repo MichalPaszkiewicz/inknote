@@ -58,14 +58,19 @@
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
     <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
     <TypeScriptCompile Include="scripts\model\bar.ts" />
-    <TypeScriptCompile Include="scripts\model\compressedProject.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedBar.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedInstrument.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
     <TypeScriptCompile Include="scripts\model\instrument.ts" />
     <TypeScriptCompile Include="scripts\model\notation.ts" />
-    <TypeScriptCompile Include="scripts\model\noteType.ts" />
+    <TypeScriptCompile Include="scripts\model\note.ts" />
+    <TypeScriptCompile Include="scripts\model\noteLength.ts" />
+    <TypeScriptCompile Include="scripts\model\noteValue.ts" />
     <TypeScriptCompile Include="scripts\model\project.ts" />
     <TypeScriptCompile Include="scripts\model\settings.ts" />
+    <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
@@ -75,6 +80,7 @@
     <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
     <TypeScriptCompile Include="scripts\services\logger.ts" />
     <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
+    <TypeScriptCompile Include="scripts\testData\compressedProject.ts" />
     <TypeScriptCompile Include="_references.ts" />
   </ItemGroup>
   <ItemGroup>

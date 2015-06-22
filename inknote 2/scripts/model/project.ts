@@ -5,7 +5,7 @@
         name: string;
         pause: boolean;
         hover: boolean;
-        instruments: Instrument[];
+        instruments: Model.Instrument[];
 
         constructor(name?: string) {
             this.pause = false;
@@ -13,6 +13,7 @@
             this.name = name;
             this.hover = false;
             this.instruments = [];
+            this.instruments.push(new Model.Instrument("Guitar"));
 
             if (!name) {
                 this.name = "Untitled";
