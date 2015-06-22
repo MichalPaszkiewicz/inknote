@@ -359,13 +359,14 @@ var Inknote;
             lightTan: "rgb(240, 162, 86)",
             peach: "rgb(250, 222, 196)",
             black: "rgb(10,10,10)",
+            watermarkGray: "rgba(120,120,120,0.1)",
             lightGray: "lightgray",
             gray: "darkgray",
             darkgray: "gray",
             darkerGray: "rgb(100,100,100)",
             darkestGray: "rgb(80,80,80)",
             translucentBlack: "rgba(0,0,0,0.2)",
-            faintBlue: "rgb(210,210,220)",
+            faintBlue: "rgb(245,245,255)",
             lightBlue: "lightblue",
             midBlue: "rgb(100,130,240)",
             negativeRed: "rgb(255, 129, 129)",
@@ -409,6 +410,15 @@ var Inknote;
                     ctx.stroke();
                 }
                 this.t++;
+                ctx.save();
+                ctx.beginPath();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(-Math.PI / 4);
+                ctx.font = "42px Arial";
+                ctx.textAlign = "center";
+                ctx.fillStyle = Drawing.Colours.watermarkGray;
+                ctx.fillText("with ♥ - inknote", 0, 0);
+                ctx.restore();
                 return true;
             };
             return Background;

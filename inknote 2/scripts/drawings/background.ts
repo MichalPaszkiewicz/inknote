@@ -64,7 +64,18 @@
             }
         
             this.t++;
-            
+
+            // signature
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 4);
+            ctx.font = "42px Arial";
+            ctx.textAlign = "center";
+            ctx.fillStyle = Colours.watermarkGray;
+            ctx.fillText("with ♥ - inknote", 0, 0);
+            ctx.restore();
+
             return true;
         }
 
