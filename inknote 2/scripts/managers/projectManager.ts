@@ -96,6 +96,7 @@
         openSelectedProject() {
             this.setCurrentProject(this.selectID);
             Managers.PageManager.Current.page = Managers.Page.Score;
+            Managers.ProjectManager.Instance._currentProject.pause = false;
             this.selectID = null;
         }
 

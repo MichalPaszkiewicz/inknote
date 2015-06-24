@@ -23,6 +23,16 @@
             this.scrollSpeed = 20;
         }
 
+        up() {
+            this.y = this.y - this.scrollSpeed;
+
+        }
+
+        down() {
+            this.y = Math.max(0, this.scrollSpeed + this.y);
+
+        }
+
     }
 
 } 

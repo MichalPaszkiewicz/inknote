@@ -1145,6 +1145,12 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        ScrollService.prototype.up = function () {
+            this.y = this.y - this.scrollSpeed;
+        };
+        ScrollService.prototype.down = function () {
+            this.y = Math.max(0, this.scrollSpeed + this.y);
+        };
         return ScrollService;
     })();
     Inknote.ScrollService = ScrollService;
@@ -1541,6 +1547,7 @@ var Inknote;
             ProjectManager.prototype.openSelectedProject = function () {
                 this.setCurrentProject(this.selectID);
                 Managers.PageManager.Current.page = 0 /* Score */;
+                Managers.ProjectManager.Instance._currentProject.pause = false;
                 this.selectID = null;
             };
             ProjectManager.prototype.next = function () {
@@ -1710,15 +1717,19 @@ var Inknote;
                 return false;
         }
     }
+    Inknote.canScroll = canScroll;
     window.onmousewheel = function (ev) {
-        var booler = false;
-        var value = 1;
+        var isUp = false;
         if (ev.wheelDelta > 0) {
-            value = -1;
-            booler = true;
+            isUp = true;
         }
-        if (canScroll(booler)) {
-            Inknote.ScrollService.Instance.y = Math.max(0, value * Inknote.ScrollService.Instance.scrollSpeed + Inknote.ScrollService.Instance.y);
+        if (canScroll(isUp)) {
+            if (isUp) {
+                Inknote.ScrollService.Instance.up();
+            }
+            else {
+                Inknote.ScrollService.Instance.down();
+            }
         }
     };
 })(Inknote || (Inknote = {}));
@@ -1769,6 +1780,16 @@ var Inknote;
         var proj = inst.currentProject;
         if (e.keyCode == 13) {
             inst.openSelectedProject();
+        }
+        else if (e.keyCode == 38) {
+            if (Inknote.canScroll(true)) {
+                Inknote.ScrollService.Instance.up();
+            }
+        }
+        else if (e.keyCode == 40) {
+            if (Inknote.canScroll(false)) {
+                Inknote.ScrollService.Instance.down();
+            }
         }
         else if (e.keyCode == 37) {
             inst.previous();

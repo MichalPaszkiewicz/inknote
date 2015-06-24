@@ -1,6 +1,6 @@
 ﻿module Inknote {
 
-    function canScroll(up: boolean): boolean {
+    export function canScroll(up: boolean): boolean {
 
         if (up && ScrollService.Instance.y - ScrollService.Instance.scrollSpeed < 0) {
             ScrollService.Instance.y = 0;
@@ -28,17 +28,19 @@
 
     window.onmousewheel = function (ev: MouseWheelEvent) {
 
-            var booler = false;
-            var value = 1;
+            var isUp = false;
             if (ev.wheelDelta > 0) {
-                value = -1;
-                booler = true;
+                isUp = true;
             }
 
-            if (canScroll(booler)) {
+            if (canScroll(isUp)) {
 
-            ScrollService.Instance.y = Math.max(0, value * ScrollService.Instance.scrollSpeed + ScrollService.Instance.y);
-
+                if (isUp) {
+                    ScrollService.Instance.up();
+                }
+                else {
+                    ScrollService.Instance.down();
+                }
         }
     }
 
