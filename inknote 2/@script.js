@@ -1553,6 +1553,7 @@ var Inknote;
             ProjectManager.prototype.next = function () {
                 var projects = this._projects;
                 if (projects.length < 2) {
+                    this.selectID = projects[0].ID;
                     return;
                 }
                 var index = Inknote.getIndexFromID(projects, this.selectID);
@@ -1566,6 +1567,7 @@ var Inknote;
             ProjectManager.prototype.previous = function () {
                 var projects = this._projects;
                 if (projects.length < 2) {
+                    this.selectID = projects[0].ID;
                     return;
                 }
                 var index = Inknote.getIndexFromID(projects, this.selectID);

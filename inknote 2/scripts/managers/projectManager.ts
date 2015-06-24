@@ -104,6 +104,7 @@
             var projects = this._projects;
 
             if (projects.length < 2) {
+                this.selectID = projects[0].ID;
                 return;
             }
 
@@ -121,6 +122,7 @@
             var projects = this._projects;
 
             if (projects.length < 2) {
+                this.selectID = projects[0].ID;
                 return;
             }
 
