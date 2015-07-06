@@ -4,8 +4,16 @@
     var settingsManager = Managers.SettingsManager.Instance;
 
     var appSetting = new Setting("Default");
-    // comment out the following line when live.
+
+    // ***********************************************
+    // ** comment out the following line when live. **
     appSetting.testMode = true;
+    // ***********************************************
+    
+    // ***********************************************
+    // *** uncomment the following to test mobile  ***
+    // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
+    // ***********************************************
 
     settingsManager.addSetting(appSetting);
     settingsManager.addSettings(Storage.getSettings());

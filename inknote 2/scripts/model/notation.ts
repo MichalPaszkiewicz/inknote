@@ -19,14 +19,25 @@
         }
 
         isOver(x: number, y: number) {
+            var IS = Maths.isWithinRadius(x, y, this.x, this.y, 10); 
 
-            return Maths.isWithinRadius(x, y, this.x, this.y, 10);
+            if (IS) {
+                this.hover = true;
+            }
+            else {
+                this.hover = false;
+            }
+
+            return IS;
 
         }
 
-        constructor(drawFunction: (ctx: CanvasRenderingContext2D) => boolean) {
+        constructor(drawFunction?: (ctx: CanvasRenderingContext2D) => boolean) {
             this.ID = getID();
             this.order = 50;
+            if (drawFunction) {
+                this.draw = drawFunction;
+            }
         }
     }
 

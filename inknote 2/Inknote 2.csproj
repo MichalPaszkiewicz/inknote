@@ -19,12 +19,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="%40script.js" />
+    <Content Include="%40script.min.js">
+      <DependentUpon>%40script.js</DependentUpon>
+    </Content>
     <Content Include="index.html" />
     <Content Include="styles\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
     <Content Include="styles\base.min.css">
       <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.css">
+      <DependentUpon>fontfaces.less</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.min.css">
+      <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
     <Content Include="web.config" />
   </ItemGroup>
@@ -37,46 +46,81 @@
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenuButton.ts" />
+    <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
     <TypeScriptCompile Include="scripts\drawings\colours.ts" />
     <TypeScriptCompile Include="scripts\drawings\file.ts" />
+    <TypeScriptCompile Include="scripts\drawings\flat.ts" />
+    <TypeScriptCompile Include="scripts\drawings\fonts.ts" />
     <TypeScriptCompile Include="scripts\drawings\keyboard.ts" />
     <TypeScriptCompile Include="scripts\drawings\keyboardKey.ts" />
+    <TypeScriptCompile Include="scripts\drawings\licence.ts" />
     <TypeScriptCompile Include="scripts\drawings\loading.ts" />
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\fileScrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\projectScrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollThumbnail.ts" />
+    <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
     <TypeScriptCompile Include="scripts\drawings\stave.ts" />
     <TypeScriptCompile Include="scripts\helpers\array.ts" />
     <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
     <TypeScriptCompile Include="scripts\helpers\maths.ts" />
     <TypeScriptCompile Include="scripts\helpers\string.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\ichordable.ts" />
     <TypeScriptCompile Include="scripts\interfaces\idrawable.ts" />
     <TypeScriptCompile Include="scripts\interfaces\iidentifiable.ts" />
     <TypeScriptCompile Include="scripts\interfaces\inameable.ts" />
+    <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
     <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
     <TypeScriptCompile Include="scripts\model\bar.ts" />
+    <TypeScriptCompile Include="scripts\model\chord.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\doReMiChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\notationType.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\standardChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\upper_lowerChordNotation.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedBar.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedChord.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedInstrument.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
     <TypeScriptCompile Include="scripts\model\instrument.ts" />
+    <TypeScriptCompile Include="scripts\model\key\key.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyDefinitions.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyExtensions.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyTypes.ts" />
     <TypeScriptCompile Include="scripts\model\notation.ts" />
     <TypeScriptCompile Include="scripts\model\note.ts" />
     <TypeScriptCompile Include="scripts\model\noteLength.ts" />
     <TypeScriptCompile Include="scripts\model\noteValue.ts" />
     <TypeScriptCompile Include="scripts\model\project.ts" />
+    <TypeScriptCompile Include="scripts\model\rest.ts" />
     <TypeScriptCompile Include="scripts\model\settings.ts" />
     <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
+    <TypeScriptCompile Include="scripts\rights.ts" />
+    <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
+    <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
+    <TypeScriptCompile Include="scripts\services\chordService.ts" />
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
     <TypeScriptCompile Include="scripts\services\identifyService.ts" />
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
+    <TypeScriptCompile Include="scripts\services\intervalService.ts" />
+    <TypeScriptCompile Include="scripts\services\licenceService.ts" />
+    <TypeScriptCompile Include="scripts\services\noteService.ts" />
+    <TypeScriptCompile Include="scripts\services\restService.ts" />
+    <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
+    <TypeScriptCompile Include="scripts\services\scoringService.ts" />
     <TypeScriptCompile Include="scripts\services\scrollService.ts" />
+    <TypeScriptCompile Include="scripts\services\transposeService.ts" />
     <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
     <TypeScriptCompile Include="scripts\services\logger.ts" />
     <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
@@ -87,6 +131,13 @@
     <Content Include="styles\base.less" />
     <Content Include="styles\base.css.map">
       <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="%40script.min.js.map">
+      <DependentUpon>%40script.min.js</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.less" />
+    <Content Include="styles\fontfaces.css.map">
+      <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -123,7 +174,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptOutFile>@script.js</TypeScriptOutFile>
   </PropertyGroup>

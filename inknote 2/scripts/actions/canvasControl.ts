@@ -37,8 +37,21 @@
                         return;
                     }
 
+                    // " " bottom menu
                     if (selectedID == Drawing.BottomMenu.Instance.ID) {
                         Drawing.BottomMenu.Instance.click(e);
+                        return;
+                    }
+
+                    // scroll bar
+                    if (selectedID == ScrollService.ScrollBar.ID) {
+                        ScrollService.ScrollBar.click(e);
+                        return;
+                    }
+
+                    // scroll thumbnail
+                    if (selectedID == ScrollService.ScrollBar.scrollThumbnail.ID) {
+                        ScrollService.ScrollBar.scrollThumbnail.click(e);
                         return;
                     }
 
@@ -48,12 +61,25 @@
             }
 
             if (!selected) {
+                // clear
+                ScrollService.ScrollBar.scrollThumbnail.visible = false;
                 Managers.ProjectManager.Instance.selectID = null;
+                RightClickMenuService.Instance.visible = false;
             }
         }
 
         dblClick(e: MouseEvent) {
+            if (Managers.PageManager.Current.page == Managers.Page.File) {
+                if (Managers.ProjectManager.Instance.selectID) {
+                    Managers.ProjectManager.Instance.openSelectedProject();
+                }
+            }            
+        }
 
+        rightClick(e: MouseEvent) {
+            RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);
+
+            e.preventDefault();
 
         }
 
@@ -77,6 +103,11 @@
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
                 self.dblClick(e);
+            }
+
+            // right click
+            this.drawService.canvas.oncontextmenu = function (e: MouseEvent) {
+                self.rightClick(e);
             }
 
         }

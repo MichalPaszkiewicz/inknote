@@ -93,7 +93,7 @@
 
                 }
 
-                ctx.font = "12px Arial";
+                ctx.font = Fonts.standard;
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = Colours.black;
                 

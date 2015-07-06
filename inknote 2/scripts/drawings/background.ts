@@ -70,7 +70,7 @@
             ctx.beginPath();
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.rotate(-Math.PI / 4);
-            ctx.font = "42px Arial";
+            ctx.font = Fonts.watermark;
             ctx.textAlign = "center";
             ctx.fillStyle = Colours.watermarkGray;
             ctx.fillText("with ♥ - inknote", 0, 0);

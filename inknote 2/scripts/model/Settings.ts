@@ -1,10 +1,11 @@
 ﻿module Inknote {
-
     export class Setting implements INameable {
 
         name: string;
         ID: string;
         testMode: boolean;
+
+        notationType: NotationType;
 
         staveColour = "black";
         noteColour = "red";
@@ -18,6 +19,7 @@
             this.ID = getID();
             this.name = name;
             this.testMode = false;
+            this.notationType = NotationType.Standard;
 
             if (!name) {
                 this.name = this.ID;

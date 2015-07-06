@@ -12,13 +12,21 @@
             return false;
         }
 
-        constructor(public y: number) {
+        constructor(public y: number, public name?: string) {
 
 
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
             
+            if (this.name) {
+                ctx.beginPath();
+                ctx.fillStyle = Colours.black;
+                ctx.strokeStyle = Colours.black;
+                ctx.font = Fonts.small;
+                ctx.fillText(this.name, 40, this.y - 5);
+            }
+
             for (var i = 0; i < 5; i++) {
                 ctx.beginPath();
                 ctx.strokeStyle = Colours.black;

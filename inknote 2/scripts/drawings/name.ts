@@ -54,7 +54,7 @@
 
                 ctx.beginPath();
                 ctx.fillStyle = Colours.orange;
-                ctx.font = "40px Arial";
+                ctx.font = Fonts.title;
                 ctx.textAlign = "center";
                 ctx.fillText(self.name, canvas.width / 2, 100);
                 ctx.fill();
@@ -66,7 +66,7 @@
                     
                     if (!self.select) {
                         ctx.beginPath();
-                        ctx.font = "10px Arial";
+                        ctx.font = Fonts.small;
                         ctx.fillStyle = Colours.black;
                         ctx.textAlign = "center";
                         ctx.fillText("Click to edit project name", canvas.width / 2, 50);

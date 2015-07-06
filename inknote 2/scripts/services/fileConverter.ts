@@ -40,7 +40,7 @@
             }
         }
 
-        if (anySelected) {
+        if (anySelected && Managers.MachineManager.Instance.machineType != Managers.MachineType.Desktop) {
             items.push(Drawing.BottomMenu.Instance);
         }
 

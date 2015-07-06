@@ -60,15 +60,11 @@
         }
         else if (e.keyCode == 38) {
             // up
-            if (canScroll(true)) {
-                ScrollService.Instance.up();
-            }
+            ScrollService.Instance.up();
         }
         else if (e.keyCode == 40) {
             // down
-            if (canScroll(false)) {
-                ScrollService.Instance.down();
-            }
+            ScrollService.Instance.down();
         }
         else if (e.keyCode == 37) {
             // left

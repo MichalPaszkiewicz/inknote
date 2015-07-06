@@ -9,6 +9,8 @@
         angle: number) {
 
         var len = str.length, s;
+        context.beginPath();
+        context.textAlign = "center";
         context.save();
         context.translate(centerX, centerY);
         context.rotate(-1 * angle / 2);

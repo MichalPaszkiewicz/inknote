@@ -2,6 +2,8 @@
 
     export class Note {
 
+        ID: string = getID();
+
         value: NoteValue;
 
         length: NoteLength;

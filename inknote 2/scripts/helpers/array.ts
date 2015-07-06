@@ -72,4 +72,14 @@
         }
         return true;
     }
+
+    export function copySimpleArrayFrom(array: number[]| string[]): number[] | string[] {
+        var newArray = [];
+
+        for (var i = 0; i < array.length; i++) {
+            newArray.push(array[i]);
+        }
+
+        return newArray;
+    }
 }

@@ -11,6 +11,7 @@
 
         black: "rgb(10,10,10)",
         watermarkGray: "rgba(120,120,120,0.1)",
+        shadowGray: "rgba(70,70,70,0.3)",
         lightGray: "lightgray",
         gray: "darkgray",
         darkgray: "gray",

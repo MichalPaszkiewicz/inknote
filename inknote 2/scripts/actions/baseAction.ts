@@ -3,10 +3,11 @@
     export enum ActionType {
         NewProject,
         OpenProject,
-        SaveProject
+        SaveProject,
+        ToPage
     }
 
-    export function Action(aType: ActionType) {
+    export function Action(aType: ActionType, page?: Managers.Page) {
         //Managers.ProjectManager
 
         ScrollService.Instance.x = 0;
@@ -25,6 +26,12 @@
                 break;
             case ActionType.SaveProject:
                 saveProject();
+                break;
+            case ActionType.ToPage:
+                if (!page) {
+                    page = Managers.Page.Score;
+                }
+                moveToPage(page);
                 break;
             default:
                 log("Unknown action type", MessageType.Error);
@@ -55,6 +62,10 @@
 
     function saveProject() {
         Managers.ProjectManager.Instance.save();
+    }
+
+    function moveToPage(page: Managers.Page) {
+        Managers.PageManager.Current.page = page;
     }
 
 }

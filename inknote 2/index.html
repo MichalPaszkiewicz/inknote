@@ -3,13 +3,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Inknote</title>
+    <title>inknote</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/fontfaces.css" type="text/css" />
     <link rel="stylesheet" href="styles/base.css" type="text/css" />
-    <meta name="viewport" content="width=420, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">
+    <meta name="viewport" content="width=420, initial-scale=1.0, user-scalable=no">
 </head>
 <body>
     <div class="header">
-        <h1>inknote</h1>
+        <h1 style="cursor: pointer" onclick="Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.Score)">inknote</h1>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.OpenProject)">Projects</div>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.NewProject)">New</div>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">Save</div>

@@ -1,7 +1,14 @@
 ﻿module Inknote.Model {
 
-    export class NoteLength {
-
+    export enum NoteLength {
+        Breve,
+        SemiBreve,
+        Minim,
+        Crotchet,
+        Quaver,
+        SemiQuaver,
+        DemiSemiQuaver,
+        HemiDemiSemiQuaver
     }
 
 } 

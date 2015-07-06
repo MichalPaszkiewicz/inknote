@@ -9,6 +9,7 @@
         constructor(public name?) {
 
             this.ID = getID();
+            this.instruments = [];
 
             if (!name) {
                 this.name = this.ID;

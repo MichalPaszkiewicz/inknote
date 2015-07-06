@@ -1,7 +1,14 @@
-﻿// interfaces
+﻿// every added file must be added here.
+// care must be taken to ensure there are no dependency loops.
+
+// rights
+/// <reference path="scripts/rights.ts" />
+
+// interfaces
 /// <reference path="scripts/interfaces/idrawable.ts" />
 /// <reference path="scripts/interfaces/iidentifiable.ts" />
 /// <reference path="scripts/interfaces/inameable.ts" />
+/// <reference path="scripts/interfaces/ichordable.ts" />
 
 // helpers
 /// <reference path="scripts/helpers/array.ts" />
@@ -16,19 +23,41 @@
 /// <reference path="scripts/model/notation.ts" />
 /// <reference path="scripts/model/notevalue.ts" />
 /// <reference path="scripts/model/notelength.ts" />
+/// <reference path="scripts/model/rest.ts" />
 /// <reference path="scripts/model/note.ts" />
+/// <reference path="scripts/model/chord.ts" />
 /// <reference path="scripts/model/bar.ts" />
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
+/// <reference path="scripts/model/drawingsettings.ts" />
+
+// compressed
+/// <reference path="scripts/model/compressed/compressednote.ts" />
+/// <reference path="scripts/model/compressed/compressedchord.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />
-/// <reference path="scripts/model/drawingsettings.ts" />
+
+// keys
+/// <reference path="scripts/model/key/key.ts" />
+/// <reference path="scripts/model/key/keytypes.ts" />
+/// <reference path="scripts/model/key/keydefinitions.ts" />
+/// <reference path="scripts/model/key/keyextensions.ts" />
+
+// chord notation
+/// <reference path="scripts/model/chordnotation/notationtype.ts" />
+/// <reference path="scripts/model/chordnotation/doremichordnotation.ts" />
+/// <reference path="scripts/model/chordnotation/standardchordnotation.ts" />
+/// <reference path="scripts/model/chordnotation/upper_lowerchordnotation.ts" />
 
 // drawings
+/// <reference path="scripts/drawings/licence.ts" />
+/// <reference path="scripts/drawings/fonts.ts" />
 /// <reference path="scripts/drawings/colours.ts" />
 /// <reference path="scripts/drawings/background.ts" />
 /// <reference path="scripts/drawings/stave.ts" />
+/// <reference path="scripts/drawings/sharp.ts" />
+/// <reference path="scripts/drawings/flat.ts" />
 /// <reference path="scripts/drawings/note.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
@@ -39,23 +68,41 @@
 /// <reference path="scripts/drawings/bottommenubutton.ts" />
 /// <reference path="scripts/drawings/bottommenu.ts" />
 /// <reference path="scripts/drawings/scoremenu.ts" />
+/// <reference path="scripts/drawings/chordsymbol.ts" />
+/// <reference path="scripts/drawings/scrollbars/scrollbar.ts" />
+/// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
+/// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
+/// <reference path="scripts/drawings/scrollbars/projectscrollbar.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
  
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 
 // services
+/// <reference path="scripts/services/confirmservice.ts" />
 /// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
 /// <reference path="scripts/services/scrollservice.ts" />
+/// <reference path="scripts/services/licenceservice.ts" />
 /// <reference path="scripts/services/idrawableservice.ts" />
+/// <reference path="scripts/services/rightclickmenuservice.ts" /> 
 /// <reference path="scripts/services/drawservice.ts" />
+/// <reference path="scripts/services/scoringservice.ts" />
 /// <reference path="scripts/services/projectconverter.ts" />
 /// <reference path="scripts/services/fileconverter.ts" />
+/// <reference path="scripts/services/intervalservice.ts" />
+/// <reference path="scripts/services/transposeservice.ts" />
+/// <reference path="scripts/services/restservice.ts" />
+/// <reference path="scripts/services/noteservice.ts" />
+/// <reference path="scripts/services/chordservice.ts" />
+/// <reference path="scripts/services/chordnotationservice.ts" />
+/// <reference path="scripts/services/chordidentifier.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 
 // managers
+/// <reference path="scripts/managers/machinemanager.ts" />
 /// <reference path="scripts/managers/pagemanager.ts" />
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />

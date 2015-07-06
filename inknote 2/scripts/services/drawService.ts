@@ -35,6 +35,19 @@
 
                 self.arrange();
 
+                self._items.push(LicenceService.Instance.drawing);
+
+                if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+                    self._items.push(ScrollService.ScrollBar);
+                    if (ScrollService.ScrollBar.scrollThumbnail.visible) {
+                        self._items.push(ScrollService.ScrollBar.scrollThumbnail);
+                    }
+                }
+
+                if (RightClickMenuService.Instance.visible) {
+                    self._items.push(RightClickMenuService.Instance.Menu);
+                }
+
                 sortByOrder(self._items);
 
                 for (var i = 0; i < self._items.length; i++) {
