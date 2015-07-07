@@ -814,6 +814,7 @@ var Inknote;
     (function (Drawing) {
         Drawing.Fonts = {
             title: "40px Josefin Sans",
+            large: "18px Josefin Sans",
             standard: "12px Josefin Sans",
             small: "10px Josefin Sans",
             watermark: "42px Josefin Sans"
@@ -1663,18 +1664,22 @@ var Inknote;
                     grd.addColorStop(0, Drawing.Colours.lightBlue);
                 }
                 else {
-                    grd.addColorStop(0, Drawing.Colours.gray);
+                    grd.addColorStop(0, Drawing.Colours.darkestGray);
                 }
-                grd.addColorStop(1, Drawing.Colours.white);
+                grd.addColorStop(1, Drawing.Colours.black);
                 ctx.fillStyle = grd;
                 ctx.fill();
                 //ctx.stroke();
                 ctx.beginPath();
-                ctx.fillStyle = Drawing.Colours.black;
+                ctx.fillStyle = Drawing.Colours.white;
                 ctx.textAlign = "center";
-                ctx.fillText(this.name, this.x, this.y + 3);
+                ctx.font = Drawing.Fonts.large;
+                ctx.fillText(this.name, this.x, this.y + 5);
             };
             KeyboardKey.prototype.isOver = function (x, y) {
+                if (this.name == "") {
+                    return false;
+                }
                 var isRight = x > this.x - this.width / 2;
                 var isLeft = x < this.x + this.width / 2;
                 var isDown = y > this.y - this.height / 2;
@@ -1691,7 +1696,7 @@ var Inknote;
             var maxWidth = 10000;
             var column = 0;
             for (var i = 0; i < charArray.length; i++) {
-                keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 3, itemHeight - 3));
+                keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 2, itemHeight - 2));
                 column++;
             }
             return keys;
@@ -1704,7 +1709,7 @@ var Inknote;
             var maxWidth = 10000;
             var column = 0;
             for (var i = 0; i < charArray.length; i++) {
-                keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 3, itemHeight - 6));
+                keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 2, itemHeight - 4));
                 column++;
             }
             return keys;
@@ -1727,11 +1732,10 @@ var Inknote;
                         self.cSize = { x: canvas.width, y: canvas.height };
                         self.keys = [];
                         //self.keys.push(new KeyboardKey("Delete", canvas.width - 40, canvas.height / 2 + 20, 70, 30));
-                        self.keys = self.keys.concat(Drawing.keysFromArray(["", "", "", "|<", "Delete"], 0, canvas.height / 2, canvas.width, canvas.height / 12));
-                        self.keys = self.keys.concat(Drawing.keysFromString("qwertyuiop", 0, canvas.height / 2 + canvas.height / 12, canvas.width, canvas.height / 12));
-                        self.keys = self.keys.concat(Drawing.keysFromString("asdfghjkl-", 0, canvas.height / 2 + 2 * canvas.height / 12, canvas.width, canvas.height / 12));
-                        self.keys = self.keys.concat(Drawing.keysFromString("zxcvbnm,./", 0, canvas.height / 2 + 3 * canvas.height / 12, canvas.width, canvas.height / 12));
-                        self.keys = self.keys.concat(Drawing.keysFromString(" ", 0, canvas.height / 2 + 4 * canvas.height / 12, canvas.width, canvas.height / 12));
+                        self.keys = self.keys.concat(Drawing.keysFromString("qwertyuiop", 0, canvas.height / 2 + 0 * canvas.height / 8, canvas.width, canvas.height / 8));
+                        self.keys = self.keys.concat(Drawing.keysFromString("asdfghjkl-", 0, canvas.height / 2 + canvas.height / 8, canvas.width, canvas.height / 8));
+                        self.keys = self.keys.concat(Drawing.keysFromString("zxcvbnm,./", 0, canvas.height / 2 + 2 * canvas.height / 8, canvas.width, canvas.height / 8));
+                        self.keys = self.keys.concat(Drawing.keysFromArray(["|<", " ", " ", " ", "Delete"], 0, canvas.height / 2 + 3 * canvas.height / 8, canvas.width, canvas.height / 8));
                     }
                     else {
                     }
@@ -1762,15 +1766,17 @@ var Inknote;
                 configurable: true
             });
             Keyboard.prototype.isOver = function (x, y, canvas) {
+                var result = false;
                 for (var i = 0; i < this.keys.length; i++) {
                     if (this.keys[i].isOver(x, y)) {
                         this.keys[i].hover = true;
+                        result = true;
                     }
                     else {
                         this.keys[i].hover = false;
                     }
                 }
-                return y > canvas.height / 2;
+                return result;
             };
             Keyboard.prototype.click = function (e) {
                 var inst = Inknote.Managers.ProjectManager.Instance;
@@ -3609,7 +3615,7 @@ var Inknote;
         // ***********************************************
         // ***********************************************
         // *** uncomment the following to test mobile  ***
-        // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
+        Inknote.Managers.MachineManager.Instance.machineType = 2 /* Mobile */;
         // ***********************************************
         settingsManager.addSetting(appSetting);
         settingsManager.addSettings(Inknote.Storage.getSettings());

@@ -20,16 +20,19 @@
 
         isOver(x: number, y: number, canvas: HTMLCanvasElement) {
 
+            var result = false;
+
             for (var i = 0; i < this.keys.length; i++) {
                 if (this.keys[i].isOver(x, y)) {
                     this.keys[i].hover = true;
+                    result = true;
                 }
                 else {
                     this.keys[i].hover = false;
                 }
             }
 
-            return y > canvas.height / 2;
+            return result;
 
         }
 
@@ -83,11 +86,10 @@
 
                     //self.keys.push(new KeyboardKey("Delete", canvas.width - 40, canvas.height / 2 + 20, 70, 30));
 
-                    self.keys = self.keys.concat(keysFromArray(["", "", "", "|<", "Delete"], 0, canvas.height / 2, canvas.width, canvas.height / 12));
-                    self.keys = self.keys.concat(keysFromString("qwertyuiop", 0, canvas.height / 2 + canvas.height / 12, canvas.width, canvas.height / 12));
-                    self.keys = self.keys.concat(keysFromString("asdfghjkl-", 0, canvas.height / 2 + 2 * canvas.height / 12, canvas.width, canvas.height / 12));
-                    self.keys = self.keys.concat(keysFromString("zxcvbnm,./", 0, canvas.height / 2 + 3 * canvas.height / 12, canvas.width, canvas.height / 12));
-                    self.keys = self.keys.concat(keysFromString(" ", 0, canvas.height / 2 + 4 * canvas.height / 12, canvas.width, canvas.height / 12));
+                    self.keys = self.keys.concat(keysFromString("qwertyuiop", 0, canvas.height / 2 + 0 * canvas.height / 8, canvas.width, canvas.height / 8));
+                    self.keys = self.keys.concat(keysFromString("asdfghjkl-", 0, canvas.height / 2 + canvas.height / 8, canvas.width, canvas.height / 8));
+                    self.keys = self.keys.concat(keysFromString("zxcvbnm,./", 0, canvas.height / 2 + 2 * canvas.height / 8, canvas.width, canvas.height / 8));
+                    self.keys = self.keys.concat(keysFromArray(["|<"," "," "," ","Delete"], 0, canvas.height / 2 + 3 * canvas.height / 8, canvas.width, canvas.height / 8));
                 }
                 else {
 

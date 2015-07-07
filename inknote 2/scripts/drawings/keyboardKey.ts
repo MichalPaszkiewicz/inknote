@@ -18,9 +18,9 @@
                 grd.addColorStop(0, Colours.lightBlue);
             }
             else {
-                grd.addColorStop(0, Colours.gray);
+                grd.addColorStop(0, Colours.darkestGray);
             }
-            grd.addColorStop(1, Colours.white);
+            grd.addColorStop(1, Colours.black);
             ctx.fillStyle = grd;
 
             ctx.fill();
@@ -28,12 +28,17 @@
             //ctx.stroke();
 
             ctx.beginPath();
-            ctx.fillStyle = Colours.black;
+            ctx.fillStyle = Colours.white;
             ctx.textAlign = "center";
-            ctx.fillText(this.name, this.x, this.y + 3);
+            ctx.font = Fonts.large;
+            ctx.fillText(this.name, this.x, this.y + 5);
         }
 
         isOver(x: number, y: number) {
+
+            if (this.name == "") {
+                return false;
+            }
 
             var isRight = x > this.x - this.width / 2;
             var isLeft = x < this.x + this.width / 2;
@@ -60,7 +65,7 @@
         var column = 0;
 
         for (var i = 0; i < charArray.length; i++) {
-            keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 3, itemHeight - 3));
+            keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 2, itemHeight - 2));
             column++;
         }
 
@@ -77,7 +82,7 @@
         var column = 0;
 
         for (var i = 0; i < charArray.length; i++) {
-            keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 3, itemHeight - 6));
+            keys.push(new KeyboardKey(charArray[i], x + itemWidth * column + itemWidth / 2, y + itemHeight / 2, itemWidth - 2, itemHeight - 4));
             column++;
         }
 

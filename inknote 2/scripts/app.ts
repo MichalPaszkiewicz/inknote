@@ -12,7 +12,7 @@
     
     // ***********************************************
     // *** uncomment the following to test mobile  ***
-    // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
+     Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
     // ***********************************************
 
     settingsManager.addSetting(appSetting);
