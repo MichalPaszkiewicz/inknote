@@ -3615,7 +3615,7 @@ var Inknote;
         // ***********************************************
         // ***********************************************
         // *** uncomment the following to test mobile  ***
-        Inknote.Managers.MachineManager.Instance.machineType = 2 /* Mobile */;
+        // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
         // ***********************************************
         settingsManager.addSetting(appSetting);
         settingsManager.addSettings(Inknote.Storage.getSettings());
