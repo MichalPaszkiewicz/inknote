@@ -2049,7 +2049,7 @@ var Inknote;
                 function ScrollBar() {
                     this.ID = Inknote.getID();
                     this.y = 50;
-                    this.width = 30;
+                    this.width = 25;
                     this.order = 200;
                     this.buttonHeight = 20;
                     this.scrollThumbnail = new _ScrollBar.ScrollThumbnail();
@@ -2239,7 +2239,7 @@ var Inknote;
                 __extends(ProjectDcroll, _super);
                 function ProjectDcroll() {
                     _super.apply(this, arguments);
-                    this.width = 30;
+                    this.width = 25;
                 }
                 return ProjectDcroll;
             })(ScrollBar.ScrollBar);
@@ -2268,13 +2268,25 @@ var Inknote;
                     this.order = 500;
                     this.items = [];
                     this.items.push(new ClickableMenuItem("lol", function () {
+                        alert("lol");
                     }));
-                    this.items.push(new ClickableMenuItem("ha", function () {
+                    this.items.push(new ClickableMenuItem("Plugins", function () {
+                        Modal.toggle("plugins");
+                    }));
+                    this.items.push(new ClickableMenuItem("Report bug", function () {
+                        Modal.toggle("report");
                     }));
                 }
+                Object.defineProperty(RightClickMenu.prototype, "itemHeight", {
+                    get: function () {
+                        return 25;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(RightClickMenu.prototype, "height", {
                     get: function () {
-                        return this.items.length * 25;
+                        return this.items.length * this.itemHeight;
                     },
                     enumerable: true,
                     configurable: true
@@ -2291,6 +2303,12 @@ var Inknote;
                     ctx.fill();
                     ctx.stroke();
                     for (var i = 0; i < this.items.length; i++) {
+                        if (this.items[i].hover) {
+                            ctx.beginPath();
+                            ctx.fillStyle = Drawing.Colours.orange;
+                            ctx.rect(this.x, i * 25 + this.y, this.width, this.itemHeight);
+                            ctx.fill();
+                        }
                         ctx.beginPath();
                         var itemBottom = (i + 1) * 25 + this.y;
                         var textHeight = itemBottom - 8;
@@ -2298,8 +2316,9 @@ var Inknote;
                         ctx.textAlign = "center";
                         ctx.fillStyle = Drawing.Colours.black;
                         ctx.fillText(this.items[i].text, this.x + this.width / 2, textHeight);
-                        if (i > 0) {
+                        if (i < this.items.length - 1) {
                             ctx.beginPath();
+                            ctx.strokeStyle = Drawing.Colours.gray;
                             ctx.moveTo(this.x, itemBottom);
                             ctx.lineTo(this.x + this.width, itemBottom);
                             ctx.stroke();
@@ -2313,7 +2332,22 @@ var Inknote;
                     var isBelow = y > this.y;
                     var isAbove = y < this.y + this.height;
                     var result = isRight && isLeft && isBelow && isAbove;
+                    var itemNo = Math.floor((y - this.y) / this.itemHeight);
+                    for (var i = 0; i < this.items.length; i++) {
+                        if (result && i == itemNo) {
+                            this.items[i].hover = true;
+                        }
+                        else {
+                            this.items[i].hover = false;
+                        }
+                    }
                     return result;
+                };
+                RightClickMenu.prototype.click = function (e) {
+                    var x = e.clientX;
+                    var y = e.clientY - 50;
+                    var itemNo = Math.floor((y - this.y) / this.itemHeight);
+                    this.items[itemNo].click();
                 };
                 return RightClickMenu;
             })();
@@ -2571,7 +2605,7 @@ var Inknote;
                         self._items.push(Inknote.ScrollService.ScrollBar.scrollThumbnail);
                     }
                 }
-                if (Inknote.RightClickMenuService.Instance.visible) {
+                if (Inknote.RightClickMenuService.Instance.visible == true) {
                     self._items.push(Inknote.RightClickMenuService.Instance.Menu);
                 }
                 Inknote.sortByOrder(self._items);
@@ -3462,6 +3496,12 @@ var Inknote;
                         Inknote.ScrollService.ScrollBar.scrollThumbnail.click(e);
                         return;
                     }
+                    // rightClick menu
+                    if (selectedID == Inknote.RightClickMenuService.Instance.Menu.ID) {
+                        Inknote.RightClickMenuService.Instance.Menu.click(e);
+                        Inknote.RightClickMenuService.Instance.visible = false;
+                        return;
+                    }
                     Inknote.Managers.ProjectManager.Instance.selectID = selectedID;
                     selected = true;
                 }
@@ -3602,6 +3642,71 @@ var Inknote;
         }
     }
 })(Inknote || (Inknote = {}));
+var Modal;
+(function (Modal) {
+    function toggle(ID) {
+        var item = document.getElementById(ID);
+        toggleElement(item);
+        toggleElement(document.getElementById("modal-cover"));
+    }
+    Modal.toggle = toggle;
+    function hideAllModals() {
+        var modals = document.getElementsByClassName("modal");
+        for (var i = 0; i < modals.length; i++) {
+            if (modals[i].className.indexOf("hidden") == -1) {
+                hideElement(modals[i]);
+            }
+        }
+        hideElement(document.getElementById("modal-cover"));
+    }
+    Modal.hideAllModals = hideAllModals;
+    function hide(ID) {
+        var item = document.getElementById(ID);
+        hideElement(item);
+        hideElement(document.getElementById("modal-cover"));
+    }
+    Modal.hide = hide;
+    function show(ID) {
+        var item = document.getElementById(ID);
+        showElement(item);
+        showElement(document.getElementById("modal-cover"));
+    }
+    Modal.show = show;
+    function cancelReport() {
+        var textElement = document.getElementById("report-text");
+        var checkElement = document.getElementById("report-checkbox");
+        textElement.value = "";
+        checkElement.checked = false;
+        hide("report");
+    }
+    Modal.cancelReport = cancelReport;
+    function submitReport() {
+        var textElement = document.getElementById("report-text");
+        var checkElement = document.getElementById("report-checkbox");
+        var text = textElement.value;
+        var check = checkElement.checked;
+        textElement.value = "";
+        checkElement.checked = false;
+        hide("report");
+    }
+    Modal.submitReport = submitReport;
+    function toggleElement(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("hidden") != -1;
+        if (isHidden) {
+            showElement(item);
+        }
+        else {
+            hideElement(item);
+        }
+    }
+    function hideElement(item) {
+        item.className = item.className + " hidden";
+    }
+    function showElement(item) {
+        item.className = item.className.replace("hidden", "");
+    }
+})(Modal || (Modal = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
@@ -3730,6 +3835,7 @@ var Inknote;
 /// <reference path="scripts/actions/canvascontrol.ts" />
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
+/// <reference path="scripts/actions/frontendactions.ts" />
 // app
 /// <reference path="scripts/app.ts" />
 //# sourceMappingURL=@script.js.map

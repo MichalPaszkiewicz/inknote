@@ -4,7 +4,7 @@
         ID = getID();
         x: number;
         y = 50;
-        width = 30;
+        width = 25;
         height: number;
         order = 200;
         hover: boolean;

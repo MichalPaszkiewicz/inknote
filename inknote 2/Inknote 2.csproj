@@ -22,6 +22,7 @@
     <Content Include="%40script.min.js">
       <DependentUpon>%40script.js</DependentUpon>
     </Content>
+    <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="styles\base.css">
       <DependentUpon>base.less</DependentUpon>
@@ -40,6 +41,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="scripts\actions\baseAction.ts" />
     <TypeScriptCompile Include="scripts\actions\canvasControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
     <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
     <TypeScriptCompile Include="scripts\app.ts" />

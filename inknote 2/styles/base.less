@@ -5,73 +5,146 @@
     width: 100%;
 }
 
-.header, .footer, .header-push, .footer-push{
+input[type*=checkbox] {
+    width: 25px;
+    height: 25px;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+.header, .footer, .header-push, .footer-push {
     height: 50px;
 }
 
-.header, .footer{
+.header, .footer {
     background: black;
     color: white;
 
-    h1{
+    h1 {
         margin: 0;
         line-height: 50px;
     }
 
-    h1, .button{
-        display:inline-block;
-        vertical-align:middle;
+    h1, .button {
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 
-.footer, .footer-push{
+.footer, .footer-push {
     clear: both;
 }
 
-.header{
-    position:fixed;
+.header {
+    position: fixed;
     width: 100%;
 }
 
-.footer{
+.footer {
     margin-top: -50px;
 }
 
-.main-container{
-    min-height: 100%;   
-    max-height: 100%; 
+.main-container {
+    min-height: 100%;
+    max-height: 100%;
 }
 
 /*IE9*/
-canvas::selection 
-{
-    background-color:transparent;
-} 
-canvas::-moz-selection
-{
-    background-color:transparent;
+canvas::selection {
+    background-color: transparent;
 }
-canvas
-{        
+
+canvas::-moz-selection {
+    background-color: transparent;
+}
+
+canvas {
     -webkit-user-select: none;
     -moz-user-select: -moz-none;
     /*IE10*/
     -ms-user-select: none;
     user-select: none;
-} 
+}
 
-canvas{
+canvas {
     display: block;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    
 }
 
-.button{
-    background: gray;    
+.button {
+    background: gray;
     cursor: pointer;
     padding: 5px;
+    display: inline-block;
+    color: white;
 }
 
-.button:hover{
+.button:hover {
     background: darkgray;
+}
+
+.hidden {
+    display: none;
+}
+
+#modal-cover {
+    background: rgba(25,25,25,0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    top: 0;
+    left: 0;
+}
+
+.modal {
+    background: rgb(232, 232, 206);
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50%;
+    min-height: 200px;
+    max-height: 80%;
+    z-index: 1000;
+    box-sizing: border-box;
+    padding: 0 10px;
+    box-shadow: 5px 4px 9px 0px rgb(25,25,25);
+
+    h2 {
+        display: block;
+        text-align: center;
+    }
+
+    textarea {
+        display: block;
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 10px 0;
+        min-height: 100px;
+    }
+
+    .x{
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 25px;
+        display: block;
+        color: red;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+
+        &:hover{
+            color:darkred;
+        }
+    }
+}
+
+.line {
+    margin: 10px 0;
 }

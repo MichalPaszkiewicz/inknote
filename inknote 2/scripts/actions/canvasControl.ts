@@ -55,6 +55,13 @@
                         return;
                     }
 
+                    // rightClick menu
+                    if (selectedID == RightClickMenuService.Instance.Menu.ID) {
+                        RightClickMenuService.Instance.Menu.click(e);
+                        RightClickMenuService.Instance.visible = false;
+                        return;
+                    }
+
                     Managers.ProjectManager.Instance.selectID = selectedID;
                     selected = true;
                 }

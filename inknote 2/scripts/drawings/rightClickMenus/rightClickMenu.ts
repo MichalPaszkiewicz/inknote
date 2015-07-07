@@ -3,6 +3,7 @@
     export class ClickableMenuItem {
         text: string;
         click: () => void;
+        hover: boolean;
 
         constructor(text?: string, click?: () => void) {
             this.text = text;
@@ -10,7 +11,7 @@
         }
     }
 
-    export class RightClickMenu implements IDrawable{
+    export class RightClickMenu implements IDrawable {
         items: ClickableMenuItem[];
         ID = getID();
 
@@ -19,8 +20,11 @@
         x: number;
         y: number;
         width = 100;
+
+        get itemHeight() { return 25; }
+
         get height() {
-            return this.items.length * 25;
+            return this.items.length * this.itemHeight;
         }
 
         order = 500;
@@ -40,6 +44,14 @@
             ctx.stroke();
 
             for (var i = 0; i < this.items.length; i++) {
+
+                if (this.items[i].hover) {
+                    ctx.beginPath();
+                    ctx.fillStyle = Colours.orange;
+                    ctx.rect(this.x, i * 25 + this.y, this.width, this.itemHeight);
+                    ctx.fill();
+                }
+
                 ctx.beginPath();
                 var itemBottom = (i + 1) * 25 + this.y;
                 var textHeight = itemBottom - 8;
@@ -47,12 +59,14 @@
                 ctx.textAlign = "center";
                 ctx.fillStyle = Colours.black;
                 ctx.fillText(this.items[i].text, this.x + this.width / 2, textHeight);
-                if (i > 0) {
+                if (i < this.items.length - 1) {
                     ctx.beginPath();
+                    ctx.strokeStyle = Colours.gray;
                     ctx.moveTo(this.x, itemBottom);
                     ctx.lineTo(this.x + this.width, itemBottom);
                     ctx.stroke();
                 }
+
             }
 
             return true;
@@ -66,13 +80,42 @@
 
             var result = isRight && isLeft && isBelow && isAbove;
 
+
+            var itemNo = Math.floor((y - this.y) / this.itemHeight);
+
+            for (var i = 0; i < this.items.length; i++) {
+                if (result && i == itemNo) {
+                    this.items[i].hover = true;
+                }
+                else {
+                    this.items[i].hover = false;
+                }
+            }
+        
+
             return result;
+        }
+
+        click(e: MouseEvent) {
+            var x = e.clientX;
+            var y = e.clientY - 50;
+
+            var itemNo = Math.floor((y - this.y) / this.itemHeight);
+
+            this.items[itemNo].click();
+
+            
         }
 
         constructor() {
             this.items = [];
-            this.items.push(new ClickableMenuItem("lol", function () { }));
-            this.items.push(new ClickableMenuItem("ha", function () { }));
+            this.items.push(new ClickableMenuItem("lol", function () { alert("lol"); }));
+            this.items.push(new ClickableMenuItem("Plugins", function () {
+                Modal.toggle("plugins");
+            }));
+            this.items.push(new ClickableMenuItem("Report bug", function () {
+                Modal.toggle("report");
+            }));
         }
     }
 

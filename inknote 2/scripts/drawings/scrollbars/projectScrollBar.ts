@@ -2,8 +2,8 @@
 
     export class ProjectDcroll extends ScrollBar{
 
-        width = 30;
+        width = 25;
 
-    }
+    } 
 
 }  

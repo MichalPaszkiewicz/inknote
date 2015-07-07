@@ -44,7 +44,7 @@
                     }
                 }
 
-                if (RightClickMenuService.Instance.visible) {
+                if (RightClickMenuService.Instance.visible == true) {
                     self._items.push(RightClickMenuService.Instance.Menu);
                 }
 

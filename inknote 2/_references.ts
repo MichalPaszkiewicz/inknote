@@ -112,6 +112,7 @@
 /// <reference path="scripts/actions/canvascontrol.ts" />
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
+/// <reference path="scripts/actions/frontendactions.ts" />
 
 // app
 /// <reference path="scripts/app.ts" />

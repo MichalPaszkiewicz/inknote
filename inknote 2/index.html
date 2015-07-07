@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/fontfaces.css" type="text/css" />
     <link rel="stylesheet" href="styles/base.css" type="text/css" />
     <meta name="viewport" content="width=420, user-scalable=no">
+    <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
     <div class="header">
@@ -24,6 +25,27 @@
         <!--<div class="footer-push"></div>-->
     </div>
     <!--<div class="footer"></div>-->
+
+    <div id="modal-cover" class="hidden" onclick="Modal.hideAllModals()"></div>
+
+    <div id="report" class="hidden modal">
+        <div>
+            <div class="x" onclick="Modal.cancelReport()">x</div>
+            <h2>Bug report</h2>
+            <textarea id="report-text" placeholder="Please describe your issue here"></textarea>
+            <div class="line"><input id="report-checkbox" type="checkbox" />I am a human</div>
+            <div class="button" onclick="Modal.cancelReport()">Cancel</div>
+            <div class="button" onclick="Modal.submitReport()">Send</div>
+        </div>
+    </div>
+
+    <div id="plugins" class="hidden modal">
+        <div>
+            <div class="x" onclick="Modal.toggle('plugins')">x</div>
+            <h2>Plugins</h2>
+            <div class="button" onclick="Modal.toggle('plugins')">Close</div>
+        </div>
+    </div>
 
     <script src="@script.js"></script>
 </body>
