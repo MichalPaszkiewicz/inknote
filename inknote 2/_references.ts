@@ -73,7 +73,10 @@
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
 /// <reference path="scripts/drawings/scrollbars/projectscrollbar.ts" />
+
+// right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
  
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />

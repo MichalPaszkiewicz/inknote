@@ -9,6 +9,15 @@
         return true;
     }
 
+    export function anyItemIs(items: any[], xAndY: (item: any) => boolean) {
+        for (var i = 0; i < items.length; i++) {
+            if (xAndY(items[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     export function countWhere(items: any[], xAndY: (item: any) => boolean) {
         var count = 0;
         for (var i = 0; i < items.length; i++) {

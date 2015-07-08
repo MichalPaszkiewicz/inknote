@@ -62,8 +62,6 @@ canvas {
   /*IE10*/
   -ms-user-select: none;
   user-select: none;
-}
-canvas {
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -90,7 +88,7 @@ canvas {
   left: 0;
 }
 .modal {
-  background: #e8e8ce;
+  background: #f1f1ec;
   position: fixed;
   left: 0;
   right: 0;

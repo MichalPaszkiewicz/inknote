@@ -12,7 +12,16 @@
     }
 
     export class RightClickMenu implements IDrawable {
-        items: ClickableMenuItem[];
+        items: ClickableMenuItem[] = [
+            new ClickableMenuItem("lol", function () { alert("lol"); }),
+            new ClickableMenuItem("Plugins", function () {
+                Modal.toggle("plugins");
+            }),
+            new ClickableMenuItem("Report bug", function () {
+                Modal.toggle("report");
+            })
+        ]
+
         ID = getID();
 
         hover: boolean;
@@ -108,14 +117,7 @@
         }
 
         constructor() {
-            this.items = [];
-            this.items.push(new ClickableMenuItem("lol", function () { alert("lol"); }));
-            this.items.push(new ClickableMenuItem("Plugins", function () {
-                Modal.toggle("plugins");
-            }));
-            this.items.push(new ClickableMenuItem("Report bug", function () {
-                Modal.toggle("report");
-            }));
+
         }
     }
 

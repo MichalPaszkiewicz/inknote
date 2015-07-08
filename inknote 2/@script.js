@@ -29,6 +29,15 @@ var Inknote;
         return true;
     }
     Inknote.allItemsAre = allItemsAre;
+    function anyItemIs(items, xAndY) {
+        for (var i = 0; i < items.length; i++) {
+            if (xAndY(items[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    Inknote.anyItemIs = anyItemIs;
     function countWhere(items, xAndY) {
         var count = 0;
         for (var i = 0; i < items.length; i++) {
@@ -2263,19 +2272,20 @@ var Inknote;
             RightClickMenus.ClickableMenuItem = ClickableMenuItem;
             var RightClickMenu = (function () {
                 function RightClickMenu() {
+                    this.items = [
+                        new ClickableMenuItem("lol", function () {
+                            alert("lol");
+                        }),
+                        new ClickableMenuItem("Plugins", function () {
+                            Modal.toggle("plugins");
+                        }),
+                        new ClickableMenuItem("Report bug", function () {
+                            Modal.toggle("report");
+                        })
+                    ];
                     this.ID = Inknote.getID();
                     this.width = 100;
                     this.order = 500;
-                    this.items = [];
-                    this.items.push(new ClickableMenuItem("lol", function () {
-                        alert("lol");
-                    }));
-                    this.items.push(new ClickableMenuItem("Plugins", function () {
-                        Modal.toggle("plugins");
-                    }));
-                    this.items.push(new ClickableMenuItem("Report bug", function () {
-                        Modal.toggle("report");
-                    }));
                 }
                 Object.defineProperty(RightClickMenu.prototype, "itemHeight", {
                     get: function () {
@@ -2352,6 +2362,31 @@ var Inknote;
                 return RightClickMenu;
             })();
             RightClickMenus.RightClickMenu = RightClickMenu;
+        })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var RightClickMenus;
+        (function (RightClickMenus) {
+            var RightClickFile = (function (_super) {
+                __extends(RightClickFile, _super);
+                function RightClickFile(ID) {
+                    _super.call(this);
+                    this.items = [
+                        new RightClickMenus.ClickableMenuItem("open", function () {
+                            Inknote.Managers.ProjectManager.Instance.setCurrentProject(Inknote.RightClickMenuService.Instance.Menu.fileID);
+                            Inknote.Managers.ProjectManager.Instance.openSelectedProject();
+                            //Managers.PageManager.Current.page = Managers.Page.Score;
+                        })
+                    ];
+                    this.fileID = ID;
+                }
+                return RightClickFile;
+            })(RightClickMenus.RightClickMenu);
+            RightClickMenus.RightClickFile = RightClickFile;
         })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2576,6 +2611,11 @@ var Inknote;
         });
         RightClickMenuService.prototype.openMenu = function (x, y, canvas) {
             var newMenu = new Inknote.Drawing.RightClickMenus.RightClickMenu();
+            if (Inknote.anyItemIs(Inknote.Managers.ProjectManager.Instance.allProjects, function (item) {
+                return item.ID == Inknote.Managers.ProjectManager.Instance.hoverID;
+            })) {
+                newMenu = new Inknote.Drawing.RightClickMenus.RightClickFile(Inknote.Managers.ProjectManager.Instance.hoverID);
+            }
             var tooFarRight = canvas.width > (x + newMenu.width);
             newMenu.x = tooFarRight ? x : x - newMenu.width;
             newMenu.y = canvas.height > (y + newMenu.height) ? y : y - newMenu.height;
@@ -3801,7 +3841,9 @@ var Inknote;
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
 /// <reference path="scripts/drawings/scrollbars/projectscrollbar.ts" />
+// right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 // services
