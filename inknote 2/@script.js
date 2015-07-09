@@ -3234,7 +3234,6 @@ var Inknote;
         }
         var PageManager = (function () {
             function PageManager() {
-                this.page = 0 /* Score */;
                 this.openPageFromURL();
             }
             Object.defineProperty(PageManager.prototype, "page", {
@@ -3286,6 +3285,9 @@ var Inknote;
                     if (Page[keyValue[0]]) {
                         this.page = Page[keyValue[0]];
                     }
+                }
+                if (this._page == null) {
+                    this.page = 0 /* Score */;
                 }
             };
             return PageManager;

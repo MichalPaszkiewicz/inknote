@@ -82,11 +82,13 @@
                     this.page = Page[keyValue[0]];
                 }
             }
+
+            if (this._page == null) {
+                this.page = Page.Score;
+            }
         }
 
         constructor() {
-            this.page = Page.Score;
-
             this.openPageFromURL();
         }
 
