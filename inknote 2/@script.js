@@ -3259,7 +3259,7 @@ var Inknote;
                             pageURL += "=" + Managers.ProjectManager.Instance.currentProject.ID;
                             break;
                         case 4 /* Licence */:
-                            window.location.href = "/licence";
+                            window.location.href = "./licence";
                             return;
                     }
                     window.history.pushState(null, pageURL, pageURL);

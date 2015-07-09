@@ -48,7 +48,7 @@
                     pageURL += "=" + ProjectManager.Instance.currentProject.ID;
                     break;
                 case Page.Licence:
-                    window.location.href = "/licence";
+                    window.location.href = "./licence";
                     return;
             }
 
