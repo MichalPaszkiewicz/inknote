@@ -5,7 +5,8 @@
         Score,
         Form,
         File,
-        List
+        List,
+        Licence
 
     }
 
@@ -20,6 +21,8 @@
                 return "File";
             case Page.List:
                 return "List";
+            case Page.Licence:
+                return "Licence";
         }
     }
 
@@ -44,6 +47,9 @@
                 case Page.Score:
                     pageURL += "=" + ProjectManager.Instance.currentProject.ID;
                     break;
+                case Page.Licence:
+                    window.location.href = "/licence";
+                    return;
             }
 
             window.history.pushState(null, pageURL, pageURL);

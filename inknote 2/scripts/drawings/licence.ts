@@ -28,6 +28,10 @@
             return result;
         }
 
+        click(e: MouseEvent) {
+            Managers.PageManager.Current.page = Managers.Page.Licence;
+        }
+
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
             
             ctx.fillStyle = Colours.white;

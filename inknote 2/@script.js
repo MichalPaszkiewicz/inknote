@@ -788,6 +788,9 @@ var Inknote;
                 }
                 return result;
             };
+            Licence.prototype.click = function (e) {
+                Inknote.Managers.PageManager.Current.page = 4 /* Licence */;
+            };
             Licence.prototype.draw = function (ctx, canvas) {
                 ctx.fillStyle = Drawing.Colours.white;
                 ctx.strokeStyle = Drawing.Colours.black;
@@ -3218,6 +3221,7 @@ var Inknote;
             Page[Page["Form"] = 1] = "Form";
             Page[Page["File"] = 2] = "File";
             Page[Page["List"] = 3] = "List";
+            Page[Page["Licence"] = 4] = "Licence";
         })(Managers.Page || (Managers.Page = {}));
         var Page = Managers.Page;
         function pageName(page) {
@@ -3230,6 +3234,8 @@ var Inknote;
                     return "File";
                 case 3 /* List */:
                     return "List";
+                case 4 /* Licence */:
+                    return "Licence";
             }
         }
         var PageManager = (function () {
@@ -3252,6 +3258,9 @@ var Inknote;
                         case 0 /* Score */:
                             pageURL += "=" + Managers.ProjectManager.Instance.currentProject.ID;
                             break;
+                        case 4 /* Licence */:
+                            window.location.href = "/licence";
+                            return;
                     }
                     window.history.pushState(null, pageURL, pageURL);
                     this._page = item;
@@ -3615,6 +3624,11 @@ var Inknote;
                     if (selectedID == Inknote.RightClickMenuService.Instance.Menu.ID) {
                         Inknote.RightClickMenuService.Instance.Menu.click(e);
                         Inknote.RightClickMenuService.Instance.visible = false;
+                        return;
+                    }
+                    // licence
+                    if (selectedID = Inknote.LicenceService.Instance.drawing.ID) {
+                        Inknote.LicenceService.Instance.drawing.click(e);
                         return;
                     }
                     Inknote.Managers.ProjectManager.Instance.selectID = selectedID;

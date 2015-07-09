@@ -62,6 +62,12 @@
                         return;
                     }
 
+                    // licence
+                    if (selectedID = LicenceService.Instance.drawing.ID) {
+                        LicenceService.Instance.drawing.click(e);
+                        return;
+                    }
+
                     Managers.ProjectManager.Instance.selectID = selectedID;
                     selected = true;
                 }
