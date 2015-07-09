@@ -63,7 +63,7 @@ canvas {
     -moz-user-select: -moz-none;
     /*IE10*/
     -ms-user-select: none;
-    user-select: none;   
+    user-select: none;
     display: block;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -124,7 +124,7 @@ canvas {
         min-height: 100px;
     }
 
-    .x{
+    .x {
         cursor: pointer;
         width: 20px;
         height: 20px;
@@ -136,9 +136,22 @@ canvas {
         right: 5px;
         top: 5px;
 
-        &:hover{
-            color:darkred;
+        &:hover {
+            color: darkred;
         }
+    }
+}
+
+@media(max-width: 1200px){
+    .modal{
+        width: 70%;
+    }
+}
+
+@media(max-width: 900px) {
+    .modal {
+        width: 90%;
+        max-height: 90%;
     }
 }
 

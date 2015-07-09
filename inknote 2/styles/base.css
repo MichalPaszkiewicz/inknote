@@ -130,6 +130,17 @@ canvas {
 .modal .x:hover {
   color: darkred;
 }
+@media (max-width: 1200px) {
+  .modal {
+    width: 70%;
+  }
+}
+@media (max-width: 900px) {
+  .modal {
+    width: 90%;
+    max-height: 90%;
+  }
+}
 .line {
   margin: 10px 0;
 }

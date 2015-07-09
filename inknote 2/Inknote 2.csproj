@@ -60,6 +60,7 @@
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\scrollbars\fileScrollBar.ts" />

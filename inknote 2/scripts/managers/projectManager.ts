@@ -34,6 +34,18 @@
             return ProjectManager._instance;
         }
 
+        openProjectFromURL() {
+            var search = window.location.search.replace("?", "");
+            var searches = search.split("&");
+
+            for (var i = 0; i < searches.length; i++) {
+                var keyValue = searches[i].split("=");
+                if (keyValue[0] == "Score") {
+                    this.setCurrentProject(keyValue[1]);
+                }
+            }
+        }
+
         get currentProject() {
             if (!this._currentProject) {
                 this._currentProject = new Project();
@@ -95,6 +107,13 @@
 
         openSelectedProject() {
             this.setCurrentProject(this.selectID);
+            Managers.PageManager.Current.page = Managers.Page.Score;
+            Managers.ProjectManager.Instance._currentProject.pause = false;
+            this.selectID = null;
+        }
+
+        openProjectFromID(ID: string) {
+            this.setCurrentProject(ID);
             Managers.PageManager.Current.page = Managers.Page.Score;
             Managers.ProjectManager.Instance._currentProject.pause = false;
             this.selectID = null;

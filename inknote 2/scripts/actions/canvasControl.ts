@@ -84,6 +84,7 @@
         }
 
         rightClick(e: MouseEvent) {
+
             RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);
 
             e.preventDefault();

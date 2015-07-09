@@ -30,12 +30,13 @@
 
             if (anyItemIs(Managers.ProjectManager.Instance.allProjects, function (item: Project) { return item.ID == Managers.ProjectManager.Instance.hoverID; })){ 
                 newMenu = new Drawing.RightClickMenus.RightClickFile(Managers.ProjectManager.Instance.hoverID);
+                Managers.ProjectManager.Instance.selectID = Managers.ProjectManager.Instance.hoverID;
             }
 
             var tooFarRight = canvas.width > (x + newMenu.width);
             newMenu.x = tooFarRight ? x : x - newMenu.width;
             newMenu.y = canvas.height > (y + newMenu.height) ? y : y - newMenu.height;
-            RightClickMenuService.Instance._menu = newMenu;
+            this._menu = newMenu;
             this.visible = true;
 
         }

@@ -25,6 +25,7 @@
     var projectManager = Managers.ProjectManager.Instance;
     var decompressedProjects = ProjectConverter.decompressAll( Storage.getProjects() );
     projectManager.addProjects(decompressedProjects);
+    projectManager.openProjectFromURL();
 
     var x = new DrawService("my-canvas");
     var y = new CanvasControl(x);

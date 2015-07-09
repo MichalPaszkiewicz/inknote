@@ -2377,9 +2377,10 @@ var Inknote;
                     _super.call(this);
                     this.items = [
                         new RightClickMenus.ClickableMenuItem("open", function () {
-                            Inknote.Managers.ProjectManager.Instance.setCurrentProject(Inknote.RightClickMenuService.Instance.Menu.fileID);
-                            Inknote.Managers.ProjectManager.Instance.openSelectedProject();
-                            //Managers.PageManager.Current.page = Managers.Page.Score;
+                            Inknote.Managers.ProjectManager.Instance.openProjectFromID(Inknote.RightClickMenuService.Instance.Menu.fileID);
+                        }),
+                        new RightClickMenus.ClickableMenuItem("open in new tab", function () {
+                            Inknote.Managers.PageManager.Current.openNewPage(0 /* Score */, Inknote.RightClickMenuService.Instance.Menu.fileID);
                         })
                     ];
                     this.fileID = ID;
@@ -2615,11 +2616,12 @@ var Inknote;
                 return item.ID == Inknote.Managers.ProjectManager.Instance.hoverID;
             })) {
                 newMenu = new Inknote.Drawing.RightClickMenus.RightClickFile(Inknote.Managers.ProjectManager.Instance.hoverID);
+                Inknote.Managers.ProjectManager.Instance.selectID = Inknote.Managers.ProjectManager.Instance.hoverID;
             }
             var tooFarRight = canvas.width > (x + newMenu.width);
             newMenu.x = tooFarRight ? x : x - newMenu.width;
             newMenu.y = canvas.height > (y + newMenu.height) ? y : y - newMenu.height;
-            RightClickMenuService.Instance._menu = newMenu;
+            this._menu = newMenu;
             this.visible = true;
         };
         return RightClickMenuService;
@@ -3160,6 +3162,7 @@ var Inknote;
     var Testing;
     (function (Testing) {
         var _compressedProject = new Inknote.Compressed.CompressedProject("TestCompressed");
+        _compressedProject.ID = "42";
         var _compressedInstrument1 = new Inknote.Compressed.Instrument("Violin");
         var _compressedInstrument2 = new Inknote.Compressed.Instrument("Guitar");
         _compressedProject.instruments = [
@@ -3217,10 +3220,46 @@ var Inknote;
             Page[Page["List"] = 3] = "List";
         })(Managers.Page || (Managers.Page = {}));
         var Page = Managers.Page;
+        function pageName(page) {
+            switch (page) {
+                case 0 /* Score */:
+                    return "Score";
+                case 1 /* Form */:
+                    return "Form";
+                case 2 /* File */:
+                    return "File";
+                case 3 /* List */:
+                    return "List";
+            }
+        }
         var PageManager = (function () {
             function PageManager() {
                 this.page = 0 /* Score */;
+                this.openPageFromURL();
             }
+            Object.defineProperty(PageManager.prototype, "page", {
+                get: function () {
+                    return this._page;
+                },
+                set: function (item) {
+                    var pageURL = "?" + pageName(item);
+                    switch (item) {
+                        case 2 /* File */:
+                            break;
+                        case 1 /* Form */:
+                            break;
+                        case 3 /* List */:
+                            break;
+                        case 0 /* Score */:
+                            pageURL += "=" + Managers.ProjectManager.Instance.currentProject.ID;
+                            break;
+                    }
+                    window.history.pushState(null, pageURL, pageURL);
+                    this._page = item;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Object.defineProperty(PageManager, "Current", {
                 get: function () {
                     if (!PageManager._current) {
@@ -3231,6 +3270,24 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            PageManager.prototype.openNewPage = function (page, ID) {
+                var newURL = "?";
+                console.log(newURL);
+                newURL += pageName(page);
+                newURL += "=";
+                newURL += ID;
+                window.open(newURL);
+            };
+            PageManager.prototype.openPageFromURL = function () {
+                var search = window.location.search.replace("?", "");
+                var searches = search.split("&");
+                for (var i = 0; i < searches.length; i++) {
+                    var keyValue = searches[i].split("=");
+                    if (Page[keyValue[0]]) {
+                        this.page = Page[keyValue[0]];
+                    }
+                }
+            };
             return PageManager;
         })();
         Managers.PageManager = PageManager;
@@ -3322,6 +3379,16 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            ProjectManager.prototype.openProjectFromURL = function () {
+                var search = window.location.search.replace("?", "");
+                var searches = search.split("&");
+                for (var i = 0; i < searches.length; i++) {
+                    var keyValue = searches[i].split("=");
+                    if (keyValue[0] == "Score") {
+                        this.setCurrentProject(keyValue[1]);
+                    }
+                }
+            };
             Object.defineProperty(ProjectManager.prototype, "currentProject", {
                 get: function () {
                     if (!this._currentProject) {
@@ -3373,6 +3440,12 @@ var Inknote;
             };
             ProjectManager.prototype.openSelectedProject = function () {
                 this.setCurrentProject(this.selectID);
+                Managers.PageManager.Current.page = 0 /* Score */;
+                Managers.ProjectManager.Instance._currentProject.pause = false;
+                this.selectID = null;
+            };
+            ProjectManager.prototype.openProjectFromID = function (ID) {
+                this.setCurrentProject(ID);
                 Managers.PageManager.Current.page = 0 /* Score */;
                 Managers.ProjectManager.Instance._currentProject.pause = false;
                 this.selectID = null;
@@ -3770,6 +3843,7 @@ var Inknote;
         var projectManager = Inknote.Managers.ProjectManager.Instance;
         var decompressedProjects = Inknote.ProjectConverter.decompressAll(Inknote.Storage.getProjects());
         projectManager.addProjects(decompressedProjects);
+        projectManager.openProjectFromURL();
         var x = new Inknote.DrawService("my-canvas");
         var y = new Inknote.CanvasControl(x);
     })(Main = Inknote.Main || (Inknote.Main = {}));
