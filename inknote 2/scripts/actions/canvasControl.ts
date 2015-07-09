@@ -63,7 +63,7 @@
                     }
 
                     // licence
-                    if (selectedID = LicenceService.Instance.drawing.ID) {
+                    if (selectedID == LicenceService.Instance.drawing.ID) {
                         LicenceService.Instance.drawing.click(e);
                         return;
                     }

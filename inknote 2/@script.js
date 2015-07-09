@@ -3627,7 +3627,7 @@ var Inknote;
                         return;
                     }
                     // licence
-                    if (selectedID = Inknote.LicenceService.Instance.drawing.ID) {
+                    if (selectedID == Inknote.LicenceService.Instance.drawing.ID) {
                         Inknote.LicenceService.Instance.drawing.click(e);
                         return;
                     }
