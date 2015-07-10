@@ -1,6 +1,6 @@
 ﻿module Inknote.Drawing {
 
-    export class Stave implements IDrawable{
+    export class Stave implements IDrawable {
 
         order = 10;
         ID = getID();
@@ -18,7 +18,7 @@
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-            
+
             if (this.name) {
                 ctx.beginPath();
                 ctx.fillStyle = Colours.black;
@@ -34,10 +34,10 @@
                 ctx.lineTo(canvas.width - 30, this.y + 10 * i);
                 ctx.stroke();
             }
-            
+
             return true;
         }
 
     }
 
-} 
+}

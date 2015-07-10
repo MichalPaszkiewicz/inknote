@@ -24,6 +24,7 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
+    <Content Include="licence\index.html" />
     <Content Include="styles\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>

@@ -109,6 +109,10 @@
 /// <reference path="scripts/managers/pagemanager.ts" />
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
+/// <reference path="scripts/managers/pluginmanager.ts" />
+
+// plugins
+/// <reference path="scripts/plugins/plugin.ts" />
 
 // controls
 /// <reference path="scripts/actions/baseAction.ts" />

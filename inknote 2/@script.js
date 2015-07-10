@@ -3497,6 +3497,67 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Managers;
+    (function (Managers) {
+        var PluginManager = (function () {
+            function PluginManager() {
+            }
+            Object.defineProperty(PluginManager, "Instance", {
+                get: function () {
+                    if (!PluginManager._instance) {
+                        PluginManager._instance = new PluginManager();
+                    }
+                    return PluginManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(PluginManager.prototype, "plugins", {
+                get: function () {
+                    return this._plugins;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PluginManager.prototype.addPlugin = function (plugin) {
+                this._plugins.push(plugin);
+            };
+            PluginManager.prototype.removePlugin = function (ID) {
+                var newPlugins = [];
+                for (var i = 0; i < this._plugins.length; i++) {
+                    if (this._plugins[i].ID != ID) {
+                        newPlugins.push(this._plugins[i]);
+                    }
+                }
+                this._plugins = newPlugins;
+            };
+            return PluginManager;
+        })();
+        Managers.PluginManager = PluginManager;
+    })(Managers = Inknote.Managers || (Inknote.Managers = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Plugins;
+    (function (Plugins) {
+        var InknotePluginName = (function () {
+            function InknotePluginName() {
+            }
+            return InknotePluginName;
+        })();
+        Plugins.InknotePluginName = InknotePluginName;
+        var InknotePlugin = (function () {
+            function InknotePlugin(name) {
+                this.name = name;
+                this.ID = Inknote.getID();
+            }
+            return InknotePlugin;
+        })();
+        Plugins.InknotePlugin = InknotePlugin;
+    })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     (function (ActionType) {
         ActionType[ActionType["NewProject"] = 0] = "NewProject";
         ActionType[ActionType["OpenProject"] = 1] = "OpenProject";
@@ -3962,6 +4023,9 @@ var Inknote;
 /// <reference path="scripts/managers/pagemanager.ts" />
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
+/// <reference path="scripts/managers/pluginmanager.ts" />
+// plugins
+/// <reference path="scripts/plugins/plugin.ts" />
 // controls
 /// <reference path="scripts/actions/baseAction.ts" />
 /// <reference path="scripts/actions/canvascontrol.ts" />
@@ -3970,4 +4034,12 @@ var Inknote;
 /// <reference path="scripts/actions/frontendactions.ts" />
 // app
 /// <reference path="scripts/app.ts" />
+var Inknote;
+(function (Inknote) {
+    var Plugins;
+    (function (Plugins) {
+        var plugin1 = new Plugins.InknotePlugin("Plugin1");
+        Inknote.Managers.PluginManager.Instance.addPlugin(plugin1);
+    })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
+})(Inknote || (Inknote = {}));
 //# sourceMappingURL=@script.js.map
