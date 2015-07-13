@@ -71,6 +71,11 @@ canvas {
   padding: 5px;
   display: inline-block;
   color: white;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  /*IE10*/
+  -ms-user-select: none;
+  user-select: none;
 }
 .button:hover {
   background: darkgray;
@@ -78,7 +83,8 @@ canvas {
 .hidden {
   display: none;
 }
-#modal-cover {
+#modal-cover,
+#confirm-cover {
   background: rgba(25, 25, 25, 0.5);
   position: fixed;
   width: 100%;
@@ -143,5 +149,32 @@ canvas {
 }
 .line {
   margin: 10px 0;
+}
+#confirm-box {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  z-index: 5000;
+  padding: 30px;
+  font-size: 25px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  box-shadow: black 5px 5px 5px 0;
+}
+#confirm-box .button {
+  margin: 10px;
+  text-align: center;
+  min-width: 80px;
+  border: none;
+  font-size: 25px;
+}
+#confirm-box .button:focus {
+  background: orange;
+}
+#confirm-cover {
+  z-index: 4999;
+  background: rgba(0, 0, 0, 0.5);
 }
 /*# sourceMappingURL=base.css.map */

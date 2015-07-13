@@ -1,10 +1,68 @@
-﻿module Modal {
+﻿module FrontEnd {
+
+    export function toggleElement(item: HTMLElement) {
+        var classes = item.className;
+
+        var isHidden = classes.indexOf("hidden") != -1;
+
+        if (isHidden) {
+            showElement(item);
+        }
+        else {
+            hideElement(item);
+        }
+    }
+
+    export function hideElement(item: HTMLElement) {
+        var classes = item.className;
+
+        var isHidden = classes.indexOf("hidden") != -1;
+
+        if (!isHidden) {
+            item.className = item.className + " hidden";
+        }
+    }
+
+    export function showElement(item: HTMLElement) {
+        var classes = item.className;
+
+        var isHidden = classes.indexOf("hidden") != -1;
+
+        if (isHidden) {
+            item.className = item.className.replace("hidden", "");
+        }
+    }
+
+    export function deSelect(item: HTMLElement) {
+
+        var classes = item.className;
+
+        var isHidden = classes.indexOf("select") != -1;
+
+        if (isHidden) {
+            item.className = item.className.replace("select", "");
+        }
+    }
+
+    export function select(item: HTMLElement) {
+        var classes = item.className;
+
+        var isHidden = classes.indexOf("select") != -1;
+
+        if (!isHidden) {
+            item.className = item.className + " select";
+        }
+    }
+
+}
+
+module Modal {
 
     export function toggle(ID: string) {
         var item = document.getElementById(ID);
 
-        toggleElement(item);
-        toggleElement(document.getElementById("modal-cover"));
+        FrontEnd.toggleElement(item);
+        FrontEnd.toggleElement(document.getElementById("modal-cover"));
     }
 
     export function hideAllModals() {
@@ -12,26 +70,26 @@
 
         for (var i = 0; i < modals.length; i++) {
             if ((<HTMLElement>modals[i]).className.indexOf("hidden") == -1) {
-                hideElement(<HTMLElement>modals[i]);
+                FrontEnd.hideElement(<HTMLElement>modals[i]);
             }
         }
 
-        hideElement(document.getElementById("modal-cover"));
+        FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
 
     export function hide(ID: string) {
         var item = document.getElementById(ID);
 
-        hideElement(item);
-        hideElement(document.getElementById("modal-cover"));
+        FrontEnd.hideElement(item);
+        FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
 
     export function show(ID: string) {
         var item = document.getElementById(ID);
 
-        showElement(item);
+        FrontEnd.showElement(item);
 
-        showElement(document.getElementById("modal-cover"));
+        FrontEnd.showElement(document.getElementById("modal-cover"));
     }
 
     export function cancelReport() {
@@ -57,28 +115,38 @@
         hide("report");
     }
 
-    function toggleElement(item: HTMLElement) {
-        var classes = item.className;
+}
 
-        var isHidden = classes.indexOf("hidden") != -1;
+module Actions.Plugins {
 
-        if (isHidden) {
-            showElement(item);
+    export function PluginMenuClick(ev: HTMLElement ,ID: string) {
 
+        var target = <HTMLDivElement>ev;
 
+        var menuItems = document.getElementsByClassName("plugin-menu-item");
+
+        var pageItems = [
+            "plugin-list",
+            "plugin-event-list",
+            "plugin-advanced"
+        ];
+
+        for (var item = 0; item < menuItems.length; item++) {
+            FrontEnd.deSelect(<HTMLElement>menuItems[item]);
         }
-        else {
-            hideElement(item);
+
+        for (var item = 0; item < pageItems.length; item++) {
+            var pageItem = document.getElementById(pageItems[item]);
+
+            FrontEnd.hideElement(pageItem);
         }
-    }
 
-    function hideElement(item: HTMLElement) {
-        item.className = item.className + " hidden";
-    }
+        var openItem = document.getElementById(ID);
 
-    function showElement(item: HTMLElement) {
+        FrontEnd.showElement(openItem);
 
-        item.className = item.className.replace("hidden", "");
+        FrontEnd.select(target);
+
     }
 
 }

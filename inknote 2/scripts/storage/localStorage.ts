@@ -73,5 +73,16 @@
 
         saveLocal(defaults.projects, projects);
 
+        // ensure is there to deal with dependency
+        if (Managers.PluginManager) {
+            var plugins = <Inknote.Plugins.InknotePlugin[]>getItemsWhere(Managers.PluginManager.Instance.plugins, function (item: Plugins.InknotePlugin) {
+                return item.active && item.allowOnSave && item.onSave != null;
+            });
+
+            for (var i = 0; i < plugins.length; i++) {
+                plugins[i].onSave();
+            }
+        }
+
     }
 } 

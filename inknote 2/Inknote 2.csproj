@@ -37,6 +37,12 @@
     <Content Include="styles\fontfaces.min.css">
       <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
+    <Content Include="styles\modal.css">
+      <DependentUpon>modal.less</DependentUpon>
+    </Content>
+    <Content Include="styles\modal.min.css">
+      <DependentUpon>modal.css</DependentUpon>
+    </Content>
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +86,7 @@
     <TypeScriptCompile Include="scripts\interfaces\inameable.ts" />
     <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
     <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
     <TypeScriptCompile Include="scripts\model\bar.ts" />
@@ -108,6 +115,12 @@
     <TypeScriptCompile Include="scripts\model\rest.ts" />
     <TypeScriptCompile Include="scripts\model\settings.ts" />
     <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
+    <Content Include="build-plugins.bat" />
+    <None Include="scripts\plugins\instances\plugin1.ts" />
+    <None Include="scripts\plugins\instances\plugin2.ts" />
+    <None Include="scripts\plugins\instances\data-storage.ts" />
+    <TypeScriptCompile Include="scripts\plugins\plugin.ts" />
+    <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
     <TypeScriptCompile Include="scripts\rights.ts" />
     <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
     <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
@@ -142,6 +155,10 @@
     <Content Include="styles\fontfaces.less" />
     <Content Include="styles\fontfaces.css.map">
       <DependentUpon>fontfaces.css</DependentUpon>
+    </Content>
+    <Content Include="styles\modal.less" />
+    <Content Include="styles\modal.css.map">
+      <DependentUpon>modal.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -187,4 +204,8 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

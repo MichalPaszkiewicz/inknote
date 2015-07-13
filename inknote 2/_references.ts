@@ -113,6 +113,7 @@
 
 // plugins
 /// <reference path="scripts/plugins/plugin.ts" />
+/// <reference path="scripts/plugins/pluginlist.ts" />
 
 // controls
 /// <reference path="scripts/actions/baseAction.ts" />

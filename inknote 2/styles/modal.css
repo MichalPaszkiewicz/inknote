@@ -1,0 +1,31 @@
+﻿.modal-menu .modal-menu-item {
+  display: inline-block;
+  background: black;
+  color: white;
+  padding: 5px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  /*IE10*/
+  -ms-user-select: none;
+  user-select: none;
+}
+.modal-menu .modal-menu-item:hover {
+  background: gray;
+}
+.modal-menu .modal-menu-item.select {
+  color: #ccc9ac;
+  font-weight: bold;
+}
+#plugin-list-items,
+#plugin-event-list {
+  margin-bottom: 15px;
+}
+#plugin-list-items .plugin-list-item,
+#plugin-event-list .plugin-list-item {
+  margin: 5px 0;
+}
+.modal .button {
+  margin: 5px;
+}
+/*# sourceMappingURL=modal.css.map */

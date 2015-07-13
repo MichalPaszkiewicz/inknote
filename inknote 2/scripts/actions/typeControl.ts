@@ -1,12 +1,19 @@
 ﻿module Inknote {
 
     document.onkeydown = function (e) {
+        if (CONFIRM_IS_OPEN) {
+            return;
+        }
+
         if (e.keyCode == 8) {
             e.preventDefault();
         }
     }
 
     window.onkeyup = function (ev: KeyboardEvent) {
+        if (CONFIRM_IS_OPEN){
+            return;
+        }
 
         switch (Managers.PageManager.Current.page) {
             case Managers.Page.File:

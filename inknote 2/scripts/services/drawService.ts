@@ -57,6 +57,17 @@
                     }
                 }
 
+                // ensure is there to deal with dependency
+                if (Managers.PluginManager) {
+                    var plugins = <Inknote.Plugins.InknotePlugin[]>getItemsWhere(Managers.PluginManager.Instance.plugins, function (item: Plugins.InknotePlugin) {
+                        return item.active && item.allowOnDraw && item.onDraw != null;
+                    });
+
+                    for (var i = 0; i < plugins.length; i++) {
+                        plugins[i].onDraw(self._ctx, self._canvas);
+                    }
+                }
+
                 requestAnimationFrame(self.draw);
             };
 
@@ -71,7 +82,7 @@
                 case Managers.Page.File:
                     this._items = FileConverter.toDrawing(this);
                     break;
-            }     
+            }
 
             this.items.push(Drawing.Background.Instance);
         }

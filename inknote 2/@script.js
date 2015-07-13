@@ -2449,18 +2449,68 @@ var Inknote;
         Storage.getProjects = getProjects;
         function saveProjects(projects) {
             saveLocal(defaults.projects, projects);
+            // ensure is there to deal with dependency
+            if (Inknote.Managers.PluginManager) {
+                var plugins = Inknote.getItemsWhere(Inknote.Managers.PluginManager.Instance.plugins, function (item) {
+                    return item.active && item.allowOnSave && item.onSave != null;
+                });
+                for (var i = 0; i < plugins.length; i++) {
+                    plugins[i].onSave();
+                }
+            }
         }
         Storage.saveProjects = saveProjects;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    Inknote.CONFIRM_IS_OPEN = false;
     function check(text, onTrue, onFalse) {
-        if (confirm(text)) {
+        Inknote.CONFIRM_IS_OPEN = true;
+        var confirmCover = document.getElementById("confirm-cover");
+        FrontEnd.showElement(confirmCover);
+        var confirmBox = document.getElementById("confirm-box");
+        FrontEnd.showElement(confirmBox);
+        var textDiv = document.getElementById("confirm-text");
+        textDiv.innerText = text;
+        var ok = document.getElementById("confirm-ok");
+        var listener = function () {
+            FrontEnd.hideElement(confirmBox);
+            FrontEnd.hideElement(confirmCover);
             onTrue();
-            return;
-        }
-        onFalse();
+            setTimeout(function () {
+                Inknote.CONFIRM_IS_OPEN = false;
+            }, 300);
+        };
+        ok.onclick = listener;
+        ok.onmouseup = function () {
+            ok.removeEventListener("click", listener);
+        };
+        ok.focus();
+        var cancel = document.getElementById("confirm-cancel");
+        var cancelBlurListener = function (e) {
+            e.preventDefault();
+            ok.focus();
+        };
+        cancel.onblur = cancelBlurListener;
+        var cancelListener = function () {
+            FrontEnd.hideElement(confirmBox);
+            FrontEnd.hideElement(confirmCover);
+            onFalse();
+            setTimeout(function () {
+                Inknote.CONFIRM_IS_OPEN = false;
+            }, 300);
+        };
+        cancel.onclick = cancelListener;
+        cancel.onmouseup = function () {
+            cancel.removeEventListener("click", cancelListener);
+            cancel.removeEventListener("blur", cancelBlurListener);
+        };
+        //if (confirm(text)) {
+        //    onTrue();
+        //    return;
+        //}
+        //onFalse();
     }
     Inknote.check = check;
 })(Inknote || (Inknote = {}));
@@ -2658,6 +2708,15 @@ var Inknote;
                     if (self._items[i].draw(self._ctx, self._canvas) === false) {
                         Inknote.log("Drawing failed on item " + self._items[i].ID);
                         return;
+                    }
+                }
+                // ensure is there to deal with dependency
+                if (Inknote.Managers.PluginManager) {
+                    var plugins = Inknote.getItemsWhere(Inknote.Managers.PluginManager.Instance.plugins, function (item) {
+                        return item.active && item.allowOnDraw && item.onDraw != null;
+                    });
+                    for (var i = 0; i < plugins.length; i++) {
+                        plugins[i].onDraw(self._ctx, self._canvas);
                     }
                 }
                 requestAnimationFrame(self.draw);
@@ -3501,6 +3560,8 @@ var Inknote;
     (function (Managers) {
         var PluginManager = (function () {
             function PluginManager() {
+                this._plugins = [];
+                this._pluginNames = [];
             }
             Object.defineProperty(PluginManager, "Instance", {
                 get: function () {
@@ -3522,6 +3583,25 @@ var Inknote;
             PluginManager.prototype.addPlugin = function (plugin) {
                 this._plugins.push(plugin);
             };
+            Object.defineProperty(PluginManager.prototype, "pluginNames", {
+                get: function () {
+                    return this._pluginNames;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            PluginManager.prototype.addPluginName = function (pluginName, multipleUse) {
+                this._pluginNames.push(pluginName);
+                if (multipleUse !== true) {
+                    this.generatePluginHtml();
+                }
+            };
+            PluginManager.prototype.addPluginNames = function (pluginNames) {
+                for (var pluginName in pluginNames) {
+                    this.addPluginName(pluginNames[pluginName], true);
+                }
+                this.generatePluginHtml();
+            };
             PluginManager.prototype.removePlugin = function (ID) {
                 var newPlugins = [];
                 for (var i = 0; i < this._plugins.length; i++) {
@@ -3530,6 +3610,163 @@ var Inknote;
                     }
                 }
                 this._plugins = newPlugins;
+            };
+            PluginManager.prototype.setPluginNameVal = function (name, val) {
+                this._pluginNames[name].active = val;
+                this.generatePluginHtml();
+            };
+            PluginManager.prototype.generateListHtml = function () {
+                var self = this;
+                var div = document.getElementById("plugin-list-items");
+                // clear html
+                div.innerHTML = "";
+                for (var plugin in this._pluginNames) {
+                    var pluginName = this._pluginNames[plugin];
+                    var plugDiv = document.createElement("div");
+                    plugDiv.className = "plugin-list-item";
+                    var plugDivText = document.createElement("div");
+                    plugDivText.innerText = pluginName.name + " - " + pluginName.description;
+                    plugDivText.style.display = "inline-block";
+                    var plugCheck = document.createElement("input");
+                    plugCheck.type = "checkbox";
+                    plugCheck.checked = pluginName.active;
+                    plugCheck.id = "plugin-" + plugin;
+                    plugCheck.onclick = function (ev) {
+                        var target = ev.target;
+                        if (target.checked) {
+                            Inknote.check("Are you sure you want this plugin?", function () {
+                                self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                            }, function () {
+                                target.checked = !target.checked;
+                            });
+                        }
+                        else {
+                            self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                        }
+                    };
+                    plugDiv.appendChild(plugCheck);
+                    plugDiv.appendChild(plugDivText);
+                    div.appendChild(plugDiv);
+                }
+            };
+            PluginManager.prototype.getPluginsWithEvents = function () {
+                var plugins = Inknote.getItemsWhere(this._plugins, function (item) {
+                    return item.active;
+                });
+                var result = [];
+                for (var i = 0; i < plugins.length; i++) {
+                    var existingFns = plugins[i].getExistingFunctions();
+                    if (existingFns.length > 0) {
+                        result.push({
+                            name: plugins[i].name,
+                            functions: existingFns
+                        });
+                    }
+                }
+                return result;
+            };
+            PluginManager.prototype.getPluginsByEvents = function () {
+                var sortedPluginEvents = [];
+                var plugins = this.getPluginsWithEvents();
+                for (var i = 0; i < plugins.length; i++) {
+                    var tmp = plugins[i];
+                    for (var j = 0; j < tmp.functions.length; j++) {
+                        var tmpFn = tmp.functions[j];
+                        var added = false;
+                        for (var k = 0; k < sortedPluginEvents.length; k++) {
+                            var sortedPlugin = sortedPluginEvents[k];
+                            if (sortedPlugin.event == tmpFn) {
+                                sortedPlugin.plugins.push(tmp.name);
+                                added = true;
+                            }
+                        }
+                        if (added == false) {
+                            sortedPluginEvents.push({
+                                event: tmpFn,
+                                plugins: [tmp.name]
+                            });
+                        }
+                    }
+                }
+                return sortedPluginEvents;
+            };
+            PluginManager.prototype.setPluginOnSaveAllow = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnSave = value;
+            };
+            PluginManager.prototype.setPluginOnDrawAllow = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnDraw = value;
+            };
+            PluginManager.prototype.generateEventListHtml = function () {
+                var self = this;
+                var pluginsByEvents = this.getPluginsByEvents();
+                var div = document.getElementById("plugin-event-list");
+                // clear html
+                div.innerHTML = "<h3>Events</h3>";
+                for (var i = 0; i < pluginsByEvents.length; i++) {
+                    var event = pluginsByEvents[i].event;
+                    var plgs = pluginsByEvents[i].plugins;
+                    var eventDiv = document.createElement("div");
+                    eventDiv.innerText = event;
+                    eventDiv.className = "plugin-list-item";
+                    div.appendChild(eventDiv);
+                    var pluginsDiv = document.createElement("div");
+                    for (var j = 0; j < plgs.length; j++) {
+                        var plugin = this.findPluginByName(plgs[j]);
+                        if (plugin != null) {
+                            var plgCheck = document.createElement("input");
+                            plgCheck.type = "checkbox";
+                            switch (event) {
+                                case null:
+                                    break;
+                                case "on draw":
+                                    plgCheck.checked = plugin.allowOnDraw;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "ondraw..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnDrawAllow(target.id, target.checked);
+                                    };
+                                    break;
+                                case "on save":
+                                    plgCheck.checked = plugin.allowOnSave;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onsave..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnSaveAllow(target.id, target.checked);
+                                    };
+                                    break;
+                            }
+                            var plgRow = document.createElement("div");
+                            plgRow.appendChild(plgCheck);
+                            var plgSpan = document.createElement("span");
+                            plgSpan.innerText = plgs[j];
+                            plgRow.appendChild(plgSpan);
+                            pluginsDiv.appendChild(plgRow);
+                        }
+                    }
+                    div.appendChild(pluginsDiv);
+                }
+            };
+            PluginManager.prototype.generateAdvancedHtml = function () {
+            };
+            PluginManager.prototype.generatePluginHtml = function () {
+                this.generateListHtml();
+                this.generateEventListHtml();
+                this.generateAdvancedHtml();
+            };
+            PluginManager.prototype.findPluginByName = function (name) {
+                var items = Inknote.getItemsWhere(this._plugins, function (item) {
+                    return item.name == name;
+                });
+                if (items.length == 0) {
+                    return null;
+                }
+                return items[0];
             };
             return PluginManager;
         })();
@@ -3541,8 +3778,41 @@ var Inknote;
     var Plugins;
     (function (Plugins) {
         var InknotePluginName = (function () {
-            function InknotePluginName() {
+            function InknotePluginName(name, URL, description) {
+                this.name = name;
+                this.URL = URL;
+                this.description = description;
+                this._active = false;
+                this.hasOpenedURL = false;
             }
+            Object.defineProperty(InknotePluginName.prototype, "active", {
+                get: function () {
+                    return this._active;
+                },
+                set: function (newValue) {
+                    if (this.hasOpenedURL) {
+                        var plugin = Inknote.Managers.PluginManager.Instance.findPluginByName(this.name);
+                        plugin.active = newValue;
+                        // if loaded, needs to refresh sync.
+                        Inknote.Managers.PluginManager.Instance.generatePluginHtml();
+                    }
+                    else {
+                        var script = document.createElement("script");
+                        script.src = this.URL;
+                        script.onload = function () {
+                            // needs to be called on load to be async.
+                            Inknote.Managers.PluginManager.Instance.generatePluginHtml();
+                            return false;
+                        };
+                        var head = document.getElementsByTagName("head")[0];
+                        head.appendChild(script);
+                        this.hasOpenedURL = true;
+                    }
+                    this._active = newValue;
+                },
+                enumerable: true,
+                configurable: true
+            });
             return InknotePluginName;
         })();
         Plugins.InknotePluginName = InknotePluginName;
@@ -3550,10 +3820,49 @@ var Inknote;
             function InknotePlugin(name) {
                 this.name = name;
                 this.ID = Inknote.getID();
+                this._active = true;
+                this.allowOnSave = true;
+                this.allowOnDraw = true;
             }
+            Object.defineProperty(InknotePlugin.prototype, "active", {
+                get: function () {
+                    return this._active;
+                },
+                set: function (newValue) {
+                    this._active = newValue;
+                    if (newValue) {
+                        this.allowOnDraw = true;
+                        this.allowOnSave = true;
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            InknotePlugin.prototype.getExistingFunctions = function () {
+                var fns = [];
+                if (this.onSave) {
+                    fns.push("on save");
+                }
+                if (this.onDraw) {
+                    fns.push("on draw");
+                }
+                return fns;
+            };
             return InknotePlugin;
         })();
         Plugins.InknotePlugin = InknotePlugin;
+    })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Plugins;
+    (function (Plugins) {
+        var pluginList = [
+            new Plugins.InknotePluginName("plugin1", "./scripts/plugins/instances/plugin1.js", "testing event list"),
+            new Plugins.InknotePluginName("plugin2", "./scripts/plugins/instances/plugin2.js", "testing on draw"),
+            new Plugins.InknotePluginName("data storage", "./scripts/plugins/instances/data-storage.js", "testing on save")
+        ];
+        Inknote.Managers.PluginManager.Instance.addPluginNames(pluginList);
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -3760,11 +4069,17 @@ var Inknote;
 var Inknote;
 (function (Inknote) {
     document.onkeydown = function (e) {
+        if (Inknote.CONFIRM_IS_OPEN) {
+            return;
+        }
         if (e.keyCode == 8) {
             e.preventDefault();
         }
     };
     window.onkeyup = function (ev) {
+        if (Inknote.CONFIRM_IS_OPEN) {
+            return;
+        }
         switch (Inknote.Managers.PageManager.Current.page) {
             case 2 /* File */:
                 fileType(ev);
@@ -3832,34 +4147,80 @@ var Inknote;
         }
     }
 })(Inknote || (Inknote = {}));
+var FrontEnd;
+(function (FrontEnd) {
+    function toggleElement(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("hidden") != -1;
+        if (isHidden) {
+            showElement(item);
+        }
+        else {
+            hideElement(item);
+        }
+    }
+    FrontEnd.toggleElement = toggleElement;
+    function hideElement(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("hidden") != -1;
+        if (!isHidden) {
+            item.className = item.className + " hidden";
+        }
+    }
+    FrontEnd.hideElement = hideElement;
+    function showElement(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("hidden") != -1;
+        if (isHidden) {
+            item.className = item.className.replace("hidden", "");
+        }
+    }
+    FrontEnd.showElement = showElement;
+    function deSelect(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("select") != -1;
+        if (isHidden) {
+            item.className = item.className.replace("select", "");
+        }
+    }
+    FrontEnd.deSelect = deSelect;
+    function select(item) {
+        var classes = item.className;
+        var isHidden = classes.indexOf("select") != -1;
+        if (!isHidden) {
+            item.className = item.className + " select";
+        }
+    }
+    FrontEnd.select = select;
+})(FrontEnd || (FrontEnd = {}));
 var Modal;
 (function (Modal) {
     function toggle(ID) {
         var item = document.getElementById(ID);
-        toggleElement(item);
-        toggleElement(document.getElementById("modal-cover"));
+        FrontEnd.toggleElement(item);
+        FrontEnd.toggleElement(document.getElementById("modal-cover"));
     }
     Modal.toggle = toggle;
     function hideAllModals() {
         var modals = document.getElementsByClassName("modal");
         for (var i = 0; i < modals.length; i++) {
             if (modals[i].className.indexOf("hidden") == -1) {
-                hideElement(modals[i]);
+                FrontEnd.hideElement(modals[i]);
             }
         }
-        hideElement(document.getElementById("modal-cover"));
+        FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hideAllModals = hideAllModals;
     function hide(ID) {
         var item = document.getElementById(ID);
-        hideElement(item);
-        hideElement(document.getElementById("modal-cover"));
+        FrontEnd.hideElement(item);
+        FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hide = hide;
     function show(ID) {
         var item = document.getElementById(ID);
-        showElement(item);
-        showElement(document.getElementById("modal-cover"));
+        FrontEnd.showElement(item);
+        FrontEnd.showElement(document.getElementById("modal-cover"));
     }
     Modal.show = show;
     function cancelReport() {
@@ -3880,23 +4241,33 @@ var Modal;
         hide("report");
     }
     Modal.submitReport = submitReport;
-    function toggleElement(item) {
-        var classes = item.className;
-        var isHidden = classes.indexOf("hidden") != -1;
-        if (isHidden) {
-            showElement(item);
-        }
-        else {
-            hideElement(item);
-        }
-    }
-    function hideElement(item) {
-        item.className = item.className + " hidden";
-    }
-    function showElement(item) {
-        item.className = item.className.replace("hidden", "");
-    }
 })(Modal || (Modal = {}));
+var Actions;
+(function (Actions) {
+    var Plugins;
+    (function (Plugins) {
+        function PluginMenuClick(ev, ID) {
+            var target = ev;
+            var menuItems = document.getElementsByClassName("plugin-menu-item");
+            var pageItems = [
+                "plugin-list",
+                "plugin-event-list",
+                "plugin-advanced"
+            ];
+            for (var item = 0; item < menuItems.length; item++) {
+                FrontEnd.deSelect(menuItems[item]);
+            }
+            for (var item = 0; item < pageItems.length; item++) {
+                var pageItem = document.getElementById(pageItems[item]);
+                FrontEnd.hideElement(pageItem);
+            }
+            var openItem = document.getElementById(ID);
+            FrontEnd.showElement(openItem);
+            FrontEnd.select(target);
+        }
+        Plugins.PluginMenuClick = PluginMenuClick;
+    })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
+})(Actions || (Actions = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
@@ -4026,6 +4397,7 @@ var Inknote;
 /// <reference path="scripts/managers/pluginmanager.ts" />
 // plugins
 /// <reference path="scripts/plugins/plugin.ts" />
+/// <reference path="scripts/plugins/pluginlist.ts" />
 // controls
 /// <reference path="scripts/actions/baseAction.ts" />
 /// <reference path="scripts/actions/canvascontrol.ts" />
@@ -4034,12 +4406,4 @@ var Inknote;
 /// <reference path="scripts/actions/frontendactions.ts" />
 // app
 /// <reference path="scripts/app.ts" />
-var Inknote;
-(function (Inknote) {
-    var Plugins;
-    (function (Plugins) {
-        var plugin1 = new Plugins.InknotePlugin("Plugin1");
-        Inknote.Managers.PluginManager.Instance.addPlugin(plugin1);
-    })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
-})(Inknote || (Inknote = {}));
 //# sourceMappingURL=@script.js.map

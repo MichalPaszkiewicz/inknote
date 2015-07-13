@@ -7,8 +7,9 @@
     <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/fontfaces.css" type="text/css" />
     <link rel="stylesheet" href="styles/base.css" type="text/css" />
+    <link href="styles/modal.css" rel="stylesheet" />
     <meta name="viewport" content="width=420, user-scalable=no">
-    <link rel="icon" href="favicon.ico"/>
+    <link rel="icon" href="favicon.ico" />
 </head>
 <body>
     <div class="header">
@@ -17,7 +18,12 @@
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.NewProject)">New</div>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">Save</div>
     </div>
-    <div class="main-container">
+    <div id="main" class="main-container">
+        <div id="confirm-box" class="hidden">
+            <div id="confirm-text">Are you sure?</div>
+            <button id="confirm-ok" class="button">ok</button>
+            <button id="confirm-cancel" class="button">cancel</button>
+        </div>
         <div class="header-push"></div>
 
         <canvas id="my-canvas"></canvas>
@@ -27,6 +33,7 @@
     <!--<div class="footer"></div>-->
 
     <div id="modal-cover" class="hidden" onclick="Modal.hideAllModals()"></div>
+    <div id="confirm-cover" class="hidden"></div>
 
     <div id="report" class="hidden modal">
         <div>
@@ -43,6 +50,25 @@
         <div>
             <div class="x" onclick="Modal.toggle('plugins')">x</div>
             <h2>Plugins</h2>
+            <div class="modal-menu">
+                <div class="modal-menu-item plugin-menu-item select" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-list')">Plugin list</div>
+                <div class="modal-menu-item plugin-menu-item" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-event-list')">Event list</div>
+                <div class="modal-menu-item plugin-menu-item" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-advanced')">Advanced</div>
+            </div>
+            <div id="plugin-list">
+                <h3>List</h3>
+                <!-- List of plugin names goes in here. -->
+                <div id="plugin-list-items"></div>
+                <div class="button">Add external plugin</div>
+            </div>
+            <div id="plugin-event-list" class="hidden">
+                <h3>Events</h3>
+                <!-- List of events in plugin manager and plugins affecting them goes here -->
+            </div>
+            <div id="plugin-advanced" class="hidden">
+                <h3>Advanced</h3>
+                <!-- List of plugins with advanced options goes here -->
+            </div>
             <div class="button" onclick="Modal.toggle('plugins')">Close</div>
         </div>
     </div>
