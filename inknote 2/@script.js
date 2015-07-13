@@ -2400,7 +2400,8 @@ var Inknote;
     (function (Storage) {
         var defaults = {
             settings: "settings",
-            projects: "projects"
+            projects: "projects",
+            plugins: "plugins"
         };
         function getLocal(key) {
             if (!localStorage) {
@@ -2460,6 +2461,19 @@ var Inknote;
             }
         }
         Storage.saveProjects = saveProjects;
+        function savePlugins() {
+            saveLocal(defaults.plugins, Inknote.Managers.PluginManager.Instance.getCompressedPlugins());
+            Inknote.log("saved plugins");
+        }
+        Storage.savePlugins = savePlugins;
+        function getPlugins() {
+            var result = getLocal(defaults.plugins);
+            if (result == null || result == undefined) {
+                return [];
+            }
+            return result;
+        }
+        Storage.getPlugins = getPlugins;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -2909,8 +2923,10 @@ var Inknote;
             var result = new Inknote.Project(project.name);
             result.ID = project.ID;
             result.instruments = [];
-            for (var i = 0; i < project.instruments.length; i++) {
-                result.instruments.push(decompressInstrument(project.instruments[i]));
+            if (project.instruments) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    result.instruments.push(decompressInstrument(project.instruments[i]));
+                }
             }
             return result;
         }
@@ -3580,6 +3596,22 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            PluginManager.prototype.getCompressedPlugins = function () {
+                var plugins = this.plugins;
+                var compressedPlugins = [];
+                for (var i = 0; i < plugins.length; i++) {
+                    var newPlugin = new Inknote.Plugins.Compressed.InknkotePlugin(plugins[i].name);
+                    newPlugin.ID = plugins[i].ID;
+                    newPlugin.active = plugins[i].active;
+                    newPlugin.allowOnDraw = plugins[i].allowOnDraw;
+                    newPlugin.allowOnSave = plugins[i].allowOnSave;
+                    var pluginName = this.findPluginNameByName(plugins[i].name);
+                    newPlugin.URL = pluginName.URL;
+                    newPlugin.description = pluginName.description;
+                    compressedPlugins.push(newPlugin);
+                }
+                return compressedPlugins;
+            };
             PluginManager.prototype.addPlugin = function (plugin) {
                 this._plugins.push(plugin);
             };
@@ -3614,6 +3646,9 @@ var Inknote;
             PluginManager.prototype.setPluginNameVal = function (name, val) {
                 this._pluginNames[name].active = val;
                 this.generatePluginHtml();
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
             };
             PluginManager.prototype.generateListHtml = function () {
                 var self = this;
@@ -3694,11 +3729,17 @@ var Inknote;
                 var name = ID.split("...")[1];
                 var plugin = this.findPluginByName(name);
                 plugin.allowOnSave = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
             };
             PluginManager.prototype.setPluginOnDrawAllow = function (ID, value) {
                 var name = ID.split("...")[1];
                 var plugin = this.findPluginByName(name);
                 plugin.allowOnDraw = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
             };
             PluginManager.prototype.generateEventListHtml = function () {
                 var self = this;
@@ -3768,10 +3809,38 @@ var Inknote;
                 }
                 return items[0];
             };
+            PluginManager.prototype.findPluginNameByName = function (name) {
+                var items = Inknote.getItemsWhere(this._pluginNames, function (item) {
+                    return item.name == name;
+                });
+                if (items.length == 0) {
+                    return null;
+                }
+                return items[0];
+            };
             return PluginManager;
         })();
         Managers.PluginManager = PluginManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Plugins;
+    (function (Plugins) {
+        var Compressed;
+        (function (Compressed) {
+            var InknkotePlugin = (function () {
+                function InknkotePlugin(name) {
+                    this.name = name;
+                    this.ID = Inknote.getID();
+                    this.allowOnSave = true;
+                    this.allowOnDraw = true;
+                }
+                return InknkotePlugin;
+            })();
+            Compressed.InknkotePlugin = InknkotePlugin;
+        })(Compressed = Plugins.Compressed || (Plugins.Compressed = {}));
+    })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -3823,6 +3892,15 @@ var Inknote;
                 this._active = true;
                 this.allowOnSave = true;
                 this.allowOnDraw = true;
+                var existingName = Inknote.Managers.PluginManager.Instance.findPluginNameByName(name);
+                if (existingName) {
+                    if (existingName.allowOnDraw != null) {
+                        this.allowOnDraw = existingName.allowOnDraw;
+                    }
+                    if (existingName.allowOnSave != null) {
+                        this.allowOnSave = existingName.allowOnSave;
+                    }
+                }
             }
             Object.defineProperty(InknotePlugin.prototype, "active", {
                 get: function () {
@@ -3863,6 +3941,26 @@ var Inknote;
             new Plugins.InknotePluginName("data storage", "./scripts/plugins/instances/data-storage.js", "testing on save")
         ];
         Inknote.Managers.PluginManager.Instance.addPluginNames(pluginList);
+        function getPluginNameFromCompressed(compressed) {
+            var result = new Plugins.InknotePluginName(compressed.name, compressed.URL, compressed.description);
+            return result;
+        }
+        var compressedPlugins = Inknote.Storage.getPlugins();
+        for (var i = 0; i < compressedPlugins.length; i++) {
+            var decompressed = getPluginNameFromCompressed(compressedPlugins[i]);
+            var existing = Inknote.Managers.PluginManager.Instance.findPluginNameByName(decompressed.name);
+            if (!existing) {
+                Inknote.Managers.PluginManager.Instance.addPluginName(decompressed);
+            }
+            var plugged = Inknote.Managers.PluginManager.Instance.findPluginNameByName(compressedPlugins[i].name);
+            var compressed = compressedPlugins[i];
+            plugged.active = compressedPlugins[i].active;
+            plugged.allowOnDraw = compressed.allowOnDraw;
+            plugged.allowOnSave = compressed.allowOnSave;
+        }
+        setTimeout(function () {
+            Inknote.Managers.PluginManager.Instance.generatePluginHtml();
+        }, 300);
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -4277,7 +4375,7 @@ var Inknote;
         var appSetting = new Inknote.Setting("Default");
         // ***********************************************
         // ** comment out the following line when live. **
-        appSetting.testMode = true;
+        //appSetting.testMode = true;
         // ***********************************************
         // ***********************************************
         // *** uncomment the following to test mobile  ***
@@ -4396,6 +4494,7 @@ var Inknote;
 /// <reference path="scripts/managers/projectmanager.ts" />
 /// <reference path="scripts/managers/pluginmanager.ts" />
 // plugins
+/// <reference path="scripts/plugins/compressedplugin.ts" />
 /// <reference path="scripts/plugins/plugin.ts" />
 /// <reference path="scripts/plugins/pluginlist.ts" />
 // controls

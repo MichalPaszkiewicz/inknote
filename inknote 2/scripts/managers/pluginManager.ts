@@ -16,6 +16,27 @@
             return this._plugins;
         }
 
+        getCompressedPlugins(): Plugins.Compressed.InknkotePlugin[] {
+            var plugins = this.plugins;
+
+            var compressedPlugins = [];
+
+            for (var i = 0; i < plugins.length; i++) {
+                var newPlugin = new Plugins.Compressed.InknkotePlugin(plugins[i].name);
+                newPlugin.ID = plugins[i].ID;
+                newPlugin.active = plugins[i].active;
+                newPlugin.allowOnDraw = plugins[i].allowOnDraw;
+                newPlugin.allowOnSave = plugins[i].allowOnSave;
+                var pluginName = this.findPluginNameByName(plugins[i].name);
+                newPlugin.URL = pluginName.URL;
+                newPlugin.description = pluginName.description;
+
+                compressedPlugins.push(newPlugin);
+            }
+
+            return compressedPlugins;
+        }
+
         addPlugin(plugin: Inknote.Plugins.InknotePlugin) {
             this._plugins.push(plugin);
         }
@@ -57,6 +78,11 @@
             this._pluginNames[name].active = val;
 
             this.generatePluginHtml();
+
+            setTimeout(function () {
+                Storage.savePlugins();
+            }, 200);
+
         }
 
         private generateListHtml() {
@@ -165,6 +191,11 @@
             var plugin = this.findPluginByName(name);
 
             plugin.allowOnSave = value;
+
+            setTimeout(function () {
+                Storage.savePlugins();
+            }, 200);
+
         }
 
         setPluginOnDrawAllow(ID: string, value: boolean) {
@@ -172,6 +203,11 @@
             var plugin = this.findPluginByName(name);
 
             plugin.allowOnDraw = value;
+
+            setTimeout(function () {
+                Storage.savePlugins();
+            }, 200);
+
         }
 
         private generateEventListHtml() {
@@ -255,6 +291,7 @@
             this.generateListHtml();
             this.generateEventListHtml();
             this.generateAdvancedHtml();
+
         }
 
         findPluginByName(name: string): Plugins.InknotePlugin {
@@ -267,9 +304,22 @@
             return items[0];
         }
 
+        findPluginNameByName(name: string): Plugins.InknotePluginName {
+            var items = getItemsWhere(this._pluginNames, function (item: Plugins.InknotePluginName) {
+                return item.name == name;
+            });
+
+            if (items.length == 0) {
+                return null;
+            }
+
+            return items[0];
+        }
+
         constructor() {
             this._plugins = [];
             this._pluginNames = [];
+
         }
     }
 

@@ -112,6 +112,7 @@
 /// <reference path="scripts/managers/pluginmanager.ts" />
 
 // plugins
+/// <reference path="scripts/plugins/compressedplugin.ts" />
 /// <reference path="scripts/plugins/plugin.ts" />
 /// <reference path="scripts/plugins/pluginlist.ts" />
 

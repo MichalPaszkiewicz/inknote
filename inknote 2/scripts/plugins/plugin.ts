@@ -4,6 +4,9 @@
         private _active: boolean = false;
         hasOpenedURL: boolean = false;
 
+        allowOnDraw: boolean;
+        allowOnSave: boolean;
+
         get active() {
             return this._active;
         }
@@ -37,6 +40,8 @@
 
 
         constructor(public name: string, public URL: string, public description: string) {
+
+
 
         }
 
@@ -80,6 +85,16 @@
         }
         
         constructor(public name: string) {
+
+            var existingName = Inknote.Managers.PluginManager.Instance.findPluginNameByName(name);
+            if (existingName) {
+                if (existingName.allowOnDraw != null) {
+                    this.allowOnDraw = existingName.allowOnDraw;
+                }
+                if (existingName.allowOnSave != null) {
+                    this.allowOnSave = existingName.allowOnSave;
+                }
+            }
 
         } 
     }

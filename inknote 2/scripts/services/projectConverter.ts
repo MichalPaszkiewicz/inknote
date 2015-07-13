@@ -147,8 +147,10 @@
         result.ID = project.ID;
         result.instruments = [];
 
-        for (var i = 0; i < project.instruments.length; i++) {
-            result.instruments.push(decompressInstrument(project.instruments[i]));
+        if (project.instruments) {
+            for (var i = 0; i < project.instruments.length; i++) {
+                result.instruments.push(decompressInstrument(project.instruments[i]));
+            }
         }
 
         return result;

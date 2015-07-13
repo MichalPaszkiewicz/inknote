@@ -2,7 +2,8 @@
     
     var defaults = {
         settings: "settings",
-        projects: "projects"
+        projects: "projects",
+        plugins: "plugins"
     }
 
     function getLocal(key: string): any {
@@ -84,5 +85,24 @@
             }
         }
 
+    }
+
+    export function savePlugins() {
+
+        saveLocal(defaults.plugins, Managers.PluginManager.Instance.getCompressedPlugins());
+
+        log("saved plugins");
+    
+    }
+
+    export function getPlugins(): Plugins.Compressed.InknkotePlugin[] {
+
+        var result = getLocal(defaults.plugins);
+
+        if (result == null || result == undefined) {
+            return [];
+        }
+
+        return result;
     }
 } 

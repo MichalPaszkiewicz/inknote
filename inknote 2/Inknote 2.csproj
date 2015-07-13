@@ -119,6 +119,7 @@
     <None Include="scripts\plugins\instances\plugin1.ts" />
     <None Include="scripts\plugins\instances\plugin2.ts" />
     <None Include="scripts\plugins\instances\data-storage.ts" />
+    <TypeScriptCompile Include="scripts\plugins\compressedPlugin.ts" />
     <TypeScriptCompile Include="scripts\plugins\plugin.ts" />
     <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
     <TypeScriptCompile Include="scripts\rights.ts" />
