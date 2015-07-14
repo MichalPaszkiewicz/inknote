@@ -2276,13 +2276,13 @@ var Inknote;
             var RightClickMenu = (function () {
                 function RightClickMenu() {
                     this.items = [
-                        new ClickableMenuItem("lol", function () {
-                            alert("lol");
+                        new ClickableMenuItem("save", function () {
+                            Inknote.Action(2 /* SaveProject */);
                         }),
-                        new ClickableMenuItem("Plugins", function () {
+                        new ClickableMenuItem("plugins", function () {
                             Modal.toggle("plugins");
                         }),
-                        new ClickableMenuItem("Report bug", function () {
+                        new ClickableMenuItem("report bug", function () {
                             Modal.toggle("report");
                         })
                     ];
@@ -2384,6 +2384,9 @@ var Inknote;
                         }),
                         new RightClickMenus.ClickableMenuItem("open in new tab", function () {
                             Inknote.Managers.PageManager.Current.openNewPage(0 /* Score */, Inknote.RightClickMenuService.Instance.Menu.fileID);
+                        }),
+                        new RightClickMenus.ClickableMenuItem("delete", function () {
+                            Inknote.Managers.ProjectManager.Instance.deleteProjectByID(Inknote.RightClickMenuService.Instance.Menu.fileID);
                         })
                     ];
                     this.fileID = ID;
@@ -2679,7 +2682,7 @@ var Inknote;
         });
         RightClickMenuService.prototype.openMenu = function (x, y, canvas) {
             var newMenu = new Inknote.Drawing.RightClickMenus.RightClickMenu();
-            if (Inknote.anyItemIs(Inknote.Managers.ProjectManager.Instance.allProjects, function (item) {
+            if (Inknote.Managers.PageManager.Current.page == 2 /* File */ && Inknote.anyItemIs(Inknote.Managers.ProjectManager.Instance.allProjects, function (item) {
                 return item.ID == Inknote.Managers.ProjectManager.Instance.hoverID;
             })) {
                 newMenu = new Inknote.Drawing.RightClickMenus.RightClickFile(Inknote.Managers.ProjectManager.Instance.hoverID);
@@ -2718,6 +2721,15 @@ var Inknote;
                     self._items.push(Inknote.RightClickMenuService.Instance.Menu);
                 }
                 Inknote.sortByOrder(self._items);
+                // ensure is there to deal with dependency
+                if (Inknote.Managers.PluginManager) {
+                    var plugins = Inknote.getItemsWhere(Inknote.Managers.PluginManager.Instance.plugins, function (item) {
+                        return item.active && item.allowBeforeDraw && item.beforeDraw != null;
+                    });
+                    for (var i = 0; i < plugins.length; i++) {
+                        plugins[i].beforeDraw(self._ctx, self._canvas);
+                    }
+                }
                 for (var i = 0; i < self._items.length; i++) {
                     if (self._items[i].draw(self._ctx, self._canvas) === false) {
                         Inknote.log("Drawing failed on item " + self._items[i].ID);
@@ -3500,9 +3512,11 @@ var Inknote;
                 configurable: true
             });
             ProjectManager.prototype.deleteSelectedProject = function () {
-                var index = null;
-                index = Inknote.getIndexFromID(this._projects, this.selectID);
-                var proj = Inknote.getItemFromID(this._projects, this.selectID);
+                this.deleteProjectByID(this.selectID);
+            };
+            ProjectManager.prototype.deleteProjectByID = function (ID) {
+                var index = Inknote.getIndexFromID(this._projects, ID);
+                var proj = Inknote.getItemFromID(this._projects, ID);
                 var projName = proj.name;
                 var self = this;
                 Inknote.check("Are you sure you want to delete project \"" + projName + "\"", function () {
@@ -3741,6 +3755,14 @@ var Inknote;
                     Inknote.Storage.savePlugins();
                 }, 200);
             };
+            PluginManager.prototype.setPluginOnBeforeDrawAllow = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowBeforeDraw = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
             PluginManager.prototype.generateEventListHtml = function () {
                 var self = this;
                 var pluginsByEvents = this.getPluginsByEvents();
@@ -3762,6 +3784,15 @@ var Inknote;
                             plgCheck.type = "checkbox";
                             switch (event) {
                                 case null:
+                                    break;
+                                case "before draw":
+                                    plgCheck.checked = plugin.allowBeforeDraw;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "ondraw..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnBeforeDrawAllow(target.id, target.checked);
+                                    };
                                     break;
                                 case "on draw":
                                     plgCheck.checked = plugin.allowOnDraw;
@@ -3891,6 +3922,7 @@ var Inknote;
                 this.ID = Inknote.getID();
                 this._active = true;
                 this.allowOnSave = true;
+                this.allowBeforeDraw = true;
                 this.allowOnDraw = true;
                 var existingName = Inknote.Managers.PluginManager.Instance.findPluginNameByName(name);
                 if (existingName) {
@@ -3900,6 +3932,13 @@ var Inknote;
                     if (existingName.allowOnSave != null) {
                         this.allowOnSave = existingName.allowOnSave;
                     }
+                    if (existingName.allowBeforeDraw != null) {
+                        this.allowBeforeDraw = existingName.allowBeforeDraw;
+                    }
+                    this.active = existingName.active;
+                }
+                else {
+                    this.active = false;
                 }
             }
             Object.defineProperty(InknotePlugin.prototype, "active", {
@@ -3911,6 +3950,7 @@ var Inknote;
                     if (newValue) {
                         this.allowOnDraw = true;
                         this.allowOnSave = true;
+                        this.allowBeforeDraw = true;
                     }
                 },
                 enumerable: true,
@@ -3924,6 +3964,9 @@ var Inknote;
                 if (this.onDraw) {
                     fns.push("on draw");
                 }
+                if (this.beforeDraw) {
+                    fns.push("before draw");
+                }
                 return fns;
             };
             return InknotePlugin;
@@ -3936,7 +3979,7 @@ var Inknote;
     var Plugins;
     (function (Plugins) {
         var pluginList = [
-            new Plugins.InknotePluginName("plugin1", "./scripts/plugins/instances/plugin1.js", "testing event list"),
+            new Plugins.InknotePluginName("snow background", "./scripts/plugins/instances/snow-back.js", "covers the background with snow"),
             new Plugins.InknotePluginName("plugin2", "./scripts/plugins/instances/plugin2.js", "testing on draw"),
             new Plugins.InknotePluginName("data storage", "./scripts/plugins/instances/data-storage.js", "testing on save")
         ];

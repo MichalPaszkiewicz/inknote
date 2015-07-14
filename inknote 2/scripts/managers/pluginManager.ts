@@ -210,6 +210,18 @@
 
         }
 
+        setPluginOnBeforeDrawAllow(ID: string, value: boolean) {
+            var name = ID.split("...")[1];
+            var plugin = this.findPluginByName(name);
+
+            plugin.allowBeforeDraw = value;
+
+            setTimeout(function () {
+                Storage.savePlugins();
+            }, 200);
+
+        }
+
         private generateEventListHtml() {
             var self = this;
 
@@ -245,6 +257,15 @@
 
                         switch (event) {
                             case null:
+                                break;
+                            case "before draw":
+                                plgCheck.checked = plugin.allowBeforeDraw;
+                                var pluginName = plugin.name;
+                                plgCheck.id = "ondraw..." + pluginName;
+                                plgCheck.onclick = function (ev) {
+                                    var target = <HTMLInputElement>ev.target;
+                                    self.setPluginOnBeforeDrawAllow(target.id, target.checked);
+                                }
                                 break;
                             case "on draw":
                                 plgCheck.checked = plugin.allowOnDraw;

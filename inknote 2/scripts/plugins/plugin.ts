@@ -6,6 +6,7 @@
 
         allowOnDraw: boolean;
         allowOnSave: boolean;
+        allowBeforeDraw: boolean;
 
         get active() {
             return this._active;
@@ -62,11 +63,15 @@
             if (newValue) {
                 this.allowOnDraw = true;
                 this.allowOnSave = true;
+                this.allowBeforeDraw = true;
             }
         }
 
         onSave: () => void;
         allowOnSave: boolean = true;
+
+        beforeDraw: (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
+        allowBeforeDraw: boolean = true;
 
         onDraw: (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
         allowOnDraw: boolean = true;
@@ -79,6 +84,9 @@
             }
             if (this.onDraw) {
                 fns.push("on draw");
+            }
+            if (this.beforeDraw) {
+                fns.push("before draw");
             }
 
             return fns;
@@ -94,6 +102,14 @@
                 if (existingName.allowOnSave != null) {
                     this.allowOnSave = existingName.allowOnSave;
                 }
+                if (existingName.allowBeforeDraw != null) {
+                    this.allowBeforeDraw = existingName.allowBeforeDraw;
+                }
+
+                this.active = existingName.active;
+            }
+            else {
+                this.active = false;
             }
 
         } 

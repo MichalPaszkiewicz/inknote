@@ -116,10 +116,11 @@
     <TypeScriptCompile Include="scripts\model\settings.ts" />
     <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
     <Content Include="build-plugins.bat" />
-    <None Include="scripts\plugins\instances\plugin1.ts" />
+    <None Include="scripts\plugins\instances\snow-back.ts" />
     <None Include="scripts\plugins\instances\plugin2.ts" />
     <None Include="scripts\plugins\instances\data-storage.ts" />
     <TypeScriptCompile Include="scripts\plugins\compressedPlugin.ts" />
+    <None Include="scripts\plugins\instances\defs.ts" />
     <TypeScriptCompile Include="scripts\plugins\plugin.ts" />
     <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
     <TypeScriptCompile Include="scripts\rights.ts" />

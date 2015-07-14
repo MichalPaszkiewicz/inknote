@@ -1,19 +1,4 @@
-﻿module Inknote.Plugins {
-    export declare class InknotePlugin {
-        constructor(string);
-        onDraw: (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
-
-        onSave: () => void;
-    }
-}
-
-module Inknote.Managers {
-    export declare class PluginManager {
-        static Instance: PluginManager;
-
-        addPlugin: (item: Inknote.Plugins.InknotePlugin) => void;
-    };
-}
+﻿/// <reference path="defs.ts" />
 
 module Inknote.Plugins {
 

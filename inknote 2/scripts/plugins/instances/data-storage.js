@@ -11,6 +11,7 @@ var Inknote;
         ;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
+/// <reference path="defs.ts" />
 var Inknote;
 (function (Inknote) {
     var Plugins;

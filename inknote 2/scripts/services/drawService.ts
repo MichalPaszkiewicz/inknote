@@ -50,6 +50,17 @@
 
                 sortByOrder(self._items);
 
+                // ensure is there to deal with dependency
+                if (Managers.PluginManager) {
+                    var plugins = <Inknote.Plugins.InknotePlugin[]>getItemsWhere(Managers.PluginManager.Instance.plugins, function (item: Plugins.InknotePlugin) {
+                        return item.active && item.allowBeforeDraw && item.beforeDraw != null;
+                    });
+
+                    for (var i = 0; i < plugins.length; i++) {
+                        plugins[i].beforeDraw(self._ctx, self._canvas);
+                    }
+                }
+
                 for (var i = 0; i < self._items.length; i++) {
                     if (self._items[i].draw(self._ctx, self._canvas) === false) {
                         log("Drawing failed on item " + self._items[i].ID);

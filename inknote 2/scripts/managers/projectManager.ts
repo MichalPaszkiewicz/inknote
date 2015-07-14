@@ -66,11 +66,14 @@
         }
 
         deleteSelectedProject() {
-            var index = null;
 
-            index = getIndexFromID(this._projects, this.selectID);
+            this.deleteProjectByID(this.selectID);
 
-            var proj = <Project>getItemFromID(this._projects, this.selectID)
+        }
+
+        deleteProjectByID(ID: string) {
+            var index = getIndexFromID(this._projects, ID);
+            var proj = <Project>getItemFromID(this._projects, ID);
 
             var projName = proj.name;
 
@@ -78,7 +81,6 @@
 
             check("Are you sure you want to delete project \"" + projName + "\"",
                 function () {
-
                     if (index != null) {
                         self._projects.splice(index, 1);
                     }
@@ -96,7 +98,6 @@
                     setTimeout(function () {
                         self.currentProject.pause = false;
                     }, 100);
-
                 },
                 function () {
 

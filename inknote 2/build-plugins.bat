@@ -5,8 +5,8 @@ echo building data storage
 tsc scripts\plugins\instances\data-storage.ts -out scripts\plugins\instances\data-storage.js -target ES5
 
 echo.
-echo building plugin1
-tsc scripts\plugins\instances\plugin1.ts -out scripts\plugins\instances\plugin1.js -target ES5
+echo building snow background
+tsc scripts\plugins\instances\snow-back.ts -out scripts\plugins\instances\snow-back.js -target ES5
 
 echo.
 echo building plugin2

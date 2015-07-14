@@ -1,9 +1,13 @@
 ﻿module Inknote.Plugins {
     export declare class InknotePlugin {
         constructor(string);
+
+        beforeDraw: (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
+
         onDraw: (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void;
 
         onSave: () => void;
+
     }
 }
 
@@ -14,19 +18,3 @@ module Inknote.Managers {
         addPlugin: (item: Inknote.Plugins.InknotePlugin) => void;
     };
 }
-
-module Inknote.Plugins {
-     
-    var plugin1 = new InknotePlugin("plugin1");
-
-    plugin1.onDraw = function (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-        
-    }
-
-    plugin1.onSave = function () {
-
-    }
-
-    Inknote.Managers.PluginManager.Instance.addPlugin(plugin1);
-
-}   

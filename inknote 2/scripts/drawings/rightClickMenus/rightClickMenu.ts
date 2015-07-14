@@ -13,11 +13,13 @@
 
     export class RightClickMenu implements IDrawable {
         items: ClickableMenuItem[] = [
-            new ClickableMenuItem("lol", function () { alert("lol"); }),
-            new ClickableMenuItem("Plugins", function () {
+            new ClickableMenuItem("save", function () {
+                Action(ActionType.SaveProject);
+            }),
+            new ClickableMenuItem("plugins", function () {
                 Modal.toggle("plugins");
             }),
-            new ClickableMenuItem("Report bug", function () {
+            new ClickableMenuItem("report bug", function () {
                 Modal.toggle("report");
             })
         ]

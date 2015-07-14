@@ -28,7 +28,7 @@
 
             var newMenu = new Drawing.RightClickMenus.RightClickMenu();
 
-            if (anyItemIs(Managers.ProjectManager.Instance.allProjects, function (item: Project) { return item.ID == Managers.ProjectManager.Instance.hoverID; })){ 
+            if (Managers.PageManager.Current.page == Managers.Page.File && anyItemIs(Managers.ProjectManager.Instance.allProjects, function (item: Project) { return item.ID == Managers.ProjectManager.Instance.hoverID; })){ 
                 newMenu = new Drawing.RightClickMenus.RightClickFile(Managers.ProjectManager.Instance.hoverID);
                 Managers.ProjectManager.Instance.selectID = Managers.ProjectManager.Instance.hoverID;
             }
