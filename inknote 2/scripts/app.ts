@@ -27,6 +27,6 @@
     projectManager.addProjects(decompressedProjects);
     projectManager.openProjectFromURL();
 
-    var x = new DrawService("my-canvas");
+    export var x = new DrawService("my-canvas");
     var y = new CanvasControl(x);
 }

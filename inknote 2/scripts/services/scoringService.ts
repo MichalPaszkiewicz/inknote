@@ -34,6 +34,9 @@ module Inknote {
             var currentProject = Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;
 
+            // must clear items!
+            this._items = [];
+
             var flat1 = new Drawing.Flat();
             var sharp1 = new Drawing.Natural();
 

@@ -2947,6 +2947,8 @@ var Inknote;
             // put updating logic in here.
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;
+            // must clear items!
+            this._items = [];
             var flat1 = new Inknote.Drawing.Flat();
             var sharp1 = new Inknote.Drawing.Natural();
             flat1.y = 190;
@@ -4630,8 +4632,8 @@ var Inknote;
         var decompressedProjects = Inknote.ProjectConverter.decompressAll(Inknote.Storage.getProjects());
         projectManager.addProjects(decompressedProjects);
         projectManager.openProjectFromURL();
-        var x = new Inknote.DrawService("my-canvas");
-        var y = new Inknote.CanvasControl(x);
+        Main.x = new Inknote.DrawService("my-canvas");
+        var y = new Inknote.CanvasControl(Main.x);
     })(Main = Inknote.Main || (Inknote.Main = {}));
 })(Inknote || (Inknote = {}));
 if (Inknote.Managers.SettingsManager.Current.testMode) {
