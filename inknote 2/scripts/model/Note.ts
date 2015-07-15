@@ -1,5 +1,13 @@
 ﻿module Inknote.Model{
 
+    export enum AccidentalType {
+        Sharp,
+        Flat,
+        Natural,
+        DoubleSharp,
+        DoubleFlat,
+    }
+
     export class Note {
 
         ID: string = getID();
@@ -9,6 +17,8 @@
         length: NoteLength;
 
         octave: number;
+
+        accidentalType: AccidentalType;
 
         constructor(value: NoteValue, octave: number, length: NoteLength) {
             this.value = value;

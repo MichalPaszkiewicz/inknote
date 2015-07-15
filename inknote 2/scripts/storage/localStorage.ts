@@ -9,7 +9,7 @@
     function getLocal(key: string): any {
 
         if (!localStorage) {
-            log("Local storage is undefined");
+            log("Local storage is undefined", MessageType.Error);
             return null;
         }
 
@@ -24,7 +24,7 @@
         }
 
         if (!localStorage) {
-            log("Local storage is undefined");
+            log("Local storage is undefined", MessageType.Error);
             return null;
         }
 
@@ -46,7 +46,7 @@
             return <Setting[]>result;
         }
 
-        log("localStorage settings are not saved in the correct format");
+        log("localStorage settings are not saved in the correct format", MessageType.Warning);
         
         return [];
     }

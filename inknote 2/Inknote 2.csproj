@@ -65,6 +65,7 @@
     <TypeScriptCompile Include="scripts\drawings\licence.ts" />
     <TypeScriptCompile Include="scripts\drawings\loading.ts" />
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
+    <TypeScriptCompile Include="scripts\drawings\natural.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
@@ -89,6 +90,7 @@
     <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
     <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\versionManager.ts" />
     <TypeScriptCompile Include="scripts\model\bar.ts" />
     <TypeScriptCompile Include="scripts\model\chord.ts" />
     <TypeScriptCompile Include="scripts\model\chordNotation\doReMiChordNotation.ts" />
@@ -124,6 +126,7 @@
     <TypeScriptCompile Include="scripts\plugins\plugin.ts" />
     <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
     <TypeScriptCompile Include="scripts\rights.ts" />
+    <TypeScriptCompile Include="scripts\security-warning.ts" />
     <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
     <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
     <TypeScriptCompile Include="scripts\services\chordService.ts" />

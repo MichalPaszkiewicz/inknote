@@ -15,4 +15,27 @@
         Ab
     }
 
+    export function IsBlackKey(noteVal: NoteValue) {
+        switch (noteVal){
+            case NoteValue.A:
+            case NoteValue.B:
+            case NoteValue.C:
+            case NoteValue.D:
+            case NoteValue.E:
+            case NoteValue.F:
+            case NoteValue.G:
+                return false;
+            case NoteValue.Ab:
+            case NoteValue.Bb:
+            case NoteValue.Db:
+            case NoteValue.Eb:
+            case NoteValue.Gb:
+                return true;
+        }
+    }
+
+    export function IsWhiteKey(noteVal: NoteValue) {
+        return !IsBlackKey(noteVal);
+    }
+
 } 

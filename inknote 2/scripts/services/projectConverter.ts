@@ -4,51 +4,42 @@
 
     var name = new Drawing.Name("");
 
-    var flat1 = new Drawing.Flat();
-    var flat2 = new Drawing.Flat();
-
-    flat1.y = 190;
-    flat2.y = 195;
-    flat1.x = 100;
-    flat2.x = 110;
-
-    var crchtRest = new Drawing.CrotchetRest();
-
-    crchtRest.y = 200;
-    crchtRest.x = 120;
-
-    var qvrRest = new Drawing.QuaverRest();
-
-    qvrRest.y = 200;
-    qvrRest.x = 130;
-
-    var qvr = new Drawing.Quaver(false);
-
-    qvr.x = 150;
-    qvr.y = 200;
-
-    var hdsqvr = new Drawing.HemiDemiSemiQuaver(true);
-
-    hdsqvr.x = 190;
-    hdsqvr.y = 200;
-
     export function toDrawing(drawer: DrawService): IDrawable[] {
 
         var project = Managers.ProjectManager.Instance.currentProject;
 
         var items = [];
 
+        var scoreItems = ScoringService.Instance.getItems();
+
+        for (var i = 0; i < scoreItems.length; i++) {
+
+            var IS = scoreItems[i].ID == ScoringService.Instance.hoverID;
+
+            scoreItems[i].hover = IS;
+
+            if (scoreItems[i] instanceof Notation) {
+                for (var j = 0; j < (<Notation>scoreItems[i]).attached.length; j++) {
+                    (<Notation>scoreItems[i]).attached[j].hover = IS;
+                }
+            }
+
+            items.push(scoreItems[i]);
+        }
+
         if (!project) {
             items.push(splash);
             return items;
         }
 
+        // project name
         name.name = project.name;
         name.ID = project.ID;
 
         name.hover = name.ID == Managers.ProjectManager.Instance.hoverID;
         name.select = name.ID == Managers.ProjectManager.Instance.selectID;
 
+        // keyboard for changing name
         if (name.select && Managers.MachineManager.Instance.machineType != Managers.MachineType.Desktop) {
             items.push(Drawing.Keyboard.Instance)
         }
@@ -67,13 +58,6 @@
 
         items.push(name);
 
-        items.push(flat1);
-        items.push(flat2);
-        items.push(crchtRest);
-        items.push(qvrRest);
-        items.push(qvr);
-        items.push(hdsqvr);
-
         if (project.pause) {
             items.push(splash);
         }
@@ -86,6 +70,7 @@
         var compressed = new Compressed.CompressedProject(project.name);
         compressed.ID = project.ID;
         compressed.name = project.name;
+        compressed.inknoteVersion = Managers.VersionManager.Instance.version;
 
         for (var i = 0; i < project.instruments.length; i++) {
             compressed.instruments.push(compressInstrument(project.instruments[i]));
@@ -142,6 +127,11 @@
     }
 
     export function decompress(project: Compressed.CompressedProject): Project {
+
+        if (project.inknoteVersion != Managers.VersionManager.Instance.version) {
+            log("project: " + project.name + " is of version " + project.inknoteVersion, MessageType.Warning);
+            log("this may cause errors when decompressing this saved files", MessageType.Warning);
+        }
 
         var result = new Project(project.name);
         result.ID = project.ID;

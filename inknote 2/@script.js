@@ -244,12 +244,29 @@ var Inknote;
 (function (Inknote) {
     var Notation = (function () {
         function Notation(drawFunction) {
+            this.attached = [];
             this.ID = Inknote.getID();
             this.order = 50;
             if (drawFunction) {
                 this.draw = drawFunction;
             }
         }
+        Object.defineProperty(Notation.prototype, "ID", {
+            // when attached, you will get id of parent item, thereby letting you e.g. select a note by clicking flat/sharp.
+            get: function () {
+                return this.attachedToID || this._id;
+            },
+            set: function (newValue) {
+                this._id = newValue;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        // when items are attached, will hover together;
+        Notation.prototype.attach = function (item) {
+            item.attachedToID = this.ID;
+            this.attached.push(item);
+        };
         Notation.prototype.draw = function (ctx) {
             ctx.beginPath();
             ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
@@ -257,13 +274,14 @@ var Inknote;
             return false;
         };
         Notation.prototype.isOver = function (x, y) {
-            var IS = Inknote.Maths.isWithinRadius(x, y, this.x, this.y, 10);
-            if (IS) {
-                this.hover = true;
+            var ISoverThis = Inknote.Maths.isWithinRadius(x, y, this.x, this.y, 10);
+            var ISoverAttached = false;
+            for (var i = 0; i < this.attached.length; i++) {
+                if (this.attached[i].isOver(x, y)) {
+                    ISoverAttached = true;
+                }
             }
-            else {
-                this.hover = false;
-            }
+            var IS = ISoverThis || ISoverAttached;
             return IS;
         };
         return Notation;
@@ -289,6 +307,29 @@ var Inknote;
             NoteValue[NoteValue["Ab"] = 11] = "Ab";
         })(Model.NoteValue || (Model.NoteValue = {}));
         var NoteValue = Model.NoteValue;
+        function IsBlackKey(noteVal) {
+            switch (noteVal) {
+                case 0 /* A */:
+                case 2 /* B */:
+                case 3 /* C */:
+                case 5 /* D */:
+                case 7 /* E */:
+                case 8 /* F */:
+                case 10 /* G */:
+                    return false;
+                case 11 /* Ab */:
+                case 1 /* Bb */:
+                case 4 /* Db */:
+                case 6 /* Eb */:
+                case 9 /* Gb */:
+                    return true;
+            }
+        }
+        Model.IsBlackKey = IsBlackKey;
+        function IsWhiteKey(noteVal) {
+            return !IsBlackKey(noteVal);
+        }
+        Model.IsWhiteKey = IsWhiteKey;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -324,6 +365,14 @@ var Inknote;
 (function (Inknote) {
     var Model;
     (function (Model) {
+        (function (AccidentalType) {
+            AccidentalType[AccidentalType["Sharp"] = 0] = "Sharp";
+            AccidentalType[AccidentalType["Flat"] = 1] = "Flat";
+            AccidentalType[AccidentalType["Natural"] = 2] = "Natural";
+            AccidentalType[AccidentalType["DoubleSharp"] = 3] = "DoubleSharp";
+            AccidentalType[AccidentalType["DoubleFlat"] = 4] = "DoubleFlat";
+        })(Model.AccidentalType || (Model.AccidentalType = {}));
+        var AccidentalType = Model.AccidentalType;
         var Note = (function () {
             function Note(value, octave, length) {
                 this.ID = Inknote.getID();
@@ -974,11 +1023,39 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        function drawSharp(ctx, x, y, lineHeight) {
+            ctx.beginPath();
+            // up strokes
+            ctx.moveTo(x - lineHeight / 5, y + lineHeight * 4 / 3);
+            ctx.lineTo(x - lineHeight / 5, y - lineHeight * 6 / 5);
+            ctx.moveTo(x + lineHeight / 5, y + lineHeight * 6 / 5);
+            ctx.lineTo(x + lineHeight / 5, y - lineHeight * 4 / 3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            // side strokes
+            ctx.moveTo(x - lineHeight / 2, y - lineHeight / 4);
+            ctx.lineTo(x + lineHeight / 2, y - lineHeight * 3 / 4);
+            ctx.moveTo(x - lineHeight / 2, y + lineHeight * 3 / 4);
+            ctx.lineTo(x + lineHeight / 2, y + lineHeight / 4);
+            ctx.stroke();
+        }
         var Sharp = (function (_super) {
             __extends(Sharp, _super);
             function Sharp() {
                 _super.apply(this, arguments);
             }
+            Sharp.prototype.draw = function (ctx) {
+                ctx.strokeStyle = Drawing.Colours.black;
+                ctx.fillStyle = Drawing.Colours.black;
+                if (this.hover) {
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
+                drawSharp(ctx, this.x, this.y, 10);
+                ctx.lineWidth = 1;
+                return true;
+            };
             return Sharp;
         })(Inknote.Notation);
         Drawing.Sharp = Sharp;
@@ -1025,9 +1102,55 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        function drawNatural(ctx, x, y, lineHeight) {
+            ctx.beginPath();
+            // up strokes
+            ctx.moveTo(x - lineHeight / 4, y + lineHeight * 3 / 4);
+            ctx.lineTo(x - lineHeight / 4, y - lineHeight * 3 / 2);
+            ctx.moveTo(x + lineHeight / 4, y + lineHeight * 3 / 2);
+            ctx.lineTo(x + lineHeight / 4, y - lineHeight * 3 / 4);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            // side strokes
+            ctx.moveTo(x - lineHeight / 4, y - lineHeight / 4);
+            ctx.lineTo(x + lineHeight / 4, y - lineHeight * 3 / 4);
+            ctx.moveTo(x - lineHeight / 4, y + lineHeight * 3 / 4);
+            ctx.lineTo(x + lineHeight / 4, y + lineHeight / 4);
+            ctx.stroke();
+        }
+        var Natural = (function (_super) {
+            __extends(Natural, _super);
+            function Natural() {
+                _super.apply(this, arguments);
+            }
+            Natural.prototype.draw = function (ctx) {
+                ctx.strokeStyle = Drawing.Colours.black;
+                ctx.fillStyle = Drawing.Colours.black;
+                if (this.hover) {
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
+                drawNatural(ctx, this.x, this.y, 10);
+                ctx.lineWidth = 1;
+                return true;
+            };
+            return Natural;
+        })(Inknote.Notation);
+        Drawing.Natural = Natural;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
         function drawNote(ctx, x, y, note, lineHeight) {
             ctx.fillStyle = Drawing.Colours.black;
             ctx.strokeStyle = Drawing.Colours.black;
+            if (note.isPotential) {
+                ctx.fillStyle = Drawing.Colours.midBlue;
+                ctx.strokeStyle = Drawing.Colours.midBlue;
+            }
             if (note.select) {
                 ctx.beginPath();
                 ctx.arc(x, y, lineHeight, 0, 2 * Math.PI);
@@ -1131,6 +1254,7 @@ var Inknote;
             function Note(stemUp) {
                 _super.call(this);
                 this.stemUp = stemUp;
+                this.isPotential = false;
             }
             return Note;
         })(Inknote.Notation);
@@ -2408,7 +2532,7 @@ var Inknote;
         };
         function getLocal(key) {
             if (!localStorage) {
-                Inknote.log("Local storage is undefined");
+                Inknote.log("Local storage is undefined", 0 /* Error */);
                 return null;
             }
             return JSON.parse(localStorage.getItem("inknote-" + key));
@@ -2418,7 +2542,7 @@ var Inknote;
                 return;
             }
             if (!localStorage) {
-                Inknote.log("Local storage is undefined");
+                Inknote.log("Local storage is undefined", 0 /* Error */);
                 return null;
             }
             localStorage.setItem("inknote-" + key, JSON.stringify(item));
@@ -2433,7 +2557,7 @@ var Inknote;
             })) {
                 return result;
             }
-            Inknote.log("localStorage settings are not saved in the correct format");
+            Inknote.log("localStorage settings are not saved in the correct format", 2 /* Warning */);
             return [];
         }
         Storage.getSettings = getSettings;
@@ -2536,10 +2660,19 @@ var Inknote;
     (function (MessageType) {
         MessageType[MessageType["Error"] = 0] = "Error";
         MessageType[MessageType["Text"] = 1] = "Text";
+        MessageType[MessageType["Warning"] = 2] = "Warning";
     })(Inknote.MessageType || (Inknote.MessageType = {}));
     var MessageType = Inknote.MessageType;
     function log(message, msgType) {
-        console.log(message);
+        if (msgType == 0 /* Error */) {
+            console.log("%c" + message, "color:red");
+        }
+        else if (msgType == 2 /* Warning */) {
+            console.log("%c" + message, "color: orange");
+        }
+        else {
+            console.log(message);
+        }
     }
     Inknote.log = log;
 })(Inknote || (Inknote = {}));
@@ -2788,6 +2921,8 @@ var Inknote;
     var ScoringService = (function () {
         function ScoringService() {
             this._refresh = false;
+            this._items = [];
+            this.refresh();
         }
         Object.defineProperty(ScoringService, "Instance", {
             get: function () {
@@ -2812,6 +2947,36 @@ var Inknote;
             // put updating logic in here.
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;
+            var flat1 = new Inknote.Drawing.Flat();
+            var sharp1 = new Inknote.Drawing.Natural();
+            flat1.y = 190;
+            sharp1.y = 195;
+            flat1.x = 100;
+            sharp1.x = 110;
+            var crchtRest = new Inknote.Drawing.CrotchetRest();
+            crchtRest.y = 200;
+            crchtRest.x = 120;
+            var qvrRest = new Inknote.Drawing.QuaverRest();
+            qvrRest.y = 200;
+            qvrRest.x = 130;
+            var qvr = new Inknote.Drawing.Quaver(false);
+            qvr.x = 150;
+            qvr.y = 200;
+            qvr.attach(sharp1);
+            qvr.attach(flat1);
+            var hdsqvr = new Inknote.Drawing.HemiDemiSemiQuaver(true);
+            hdsqvr.x = 190;
+            hdsqvr.y = 200;
+            this._items.push(flat1);
+            this._items.push(sharp1);
+            this._items.push(crchtRest);
+            this._items.push(qvrRest);
+            this._items.push(qvr);
+            this._items.push(hdsqvr);
+            var c = new Inknote.Drawing.Crotchet(true);
+            c.x = 500;
+            c.y = 500;
+            this._items.push(c);
         };
         ScoringService.prototype.getItems = function () {
             if (this._projectID != Inknote.Managers.ProjectManager.Instance.currentProject.ID) {
@@ -2834,35 +2999,30 @@ var Inknote;
     (function (ProjectConverter) {
         var splash = new Inknote.Drawing.LoadingSplash();
         var name = new Inknote.Drawing.Name("");
-        var flat1 = new Inknote.Drawing.Flat();
-        var flat2 = new Inknote.Drawing.Flat();
-        flat1.y = 190;
-        flat2.y = 195;
-        flat1.x = 100;
-        flat2.x = 110;
-        var crchtRest = new Inknote.Drawing.CrotchetRest();
-        crchtRest.y = 200;
-        crchtRest.x = 120;
-        var qvrRest = new Inknote.Drawing.QuaverRest();
-        qvrRest.y = 200;
-        qvrRest.x = 130;
-        var qvr = new Inknote.Drawing.Quaver(false);
-        qvr.x = 150;
-        qvr.y = 200;
-        var hdsqvr = new Inknote.Drawing.HemiDemiSemiQuaver(true);
-        hdsqvr.x = 190;
-        hdsqvr.y = 200;
         function toDrawing(drawer) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var items = [];
+            var scoreItems = Inknote.ScoringService.Instance.getItems();
+            for (var i = 0; i < scoreItems.length; i++) {
+                var IS = scoreItems[i].ID == Inknote.ScoringService.Instance.hoverID;
+                scoreItems[i].hover = IS;
+                if (scoreItems[i] instanceof Inknote.Notation) {
+                    for (var j = 0; j < scoreItems[i].attached.length; j++) {
+                        scoreItems[i].attached[j].hover = IS;
+                    }
+                }
+                items.push(scoreItems[i]);
+            }
             if (!project) {
                 items.push(splash);
                 return items;
             }
+            // project name
             name.name = project.name;
             name.ID = project.ID;
             name.hover = name.ID == Inknote.Managers.ProjectManager.Instance.hoverID;
             name.select = name.ID == Inknote.Managers.ProjectManager.Instance.selectID;
+            // keyboard for changing name
             if (name.select && Inknote.Managers.MachineManager.Instance.machineType != 0 /* Desktop */) {
                 items.push(Inknote.Drawing.Keyboard.Instance);
             }
@@ -2875,12 +3035,6 @@ var Inknote;
                 startHeight += 80;
             }
             items.push(name);
-            items.push(flat1);
-            items.push(flat2);
-            items.push(crchtRest);
-            items.push(qvrRest);
-            items.push(qvr);
-            items.push(hdsqvr);
             if (project.pause) {
                 items.push(splash);
             }
@@ -2891,6 +3045,7 @@ var Inknote;
             var compressed = new Inknote.Compressed.CompressedProject(project.name);
             compressed.ID = project.ID;
             compressed.name = project.name;
+            compressed.inknoteVersion = Inknote.Managers.VersionManager.Instance.version;
             for (var i = 0; i < project.instruments.length; i++) {
                 compressed.instruments.push(compressInstrument(project.instruments[i]));
             }
@@ -2932,6 +3087,10 @@ var Inknote;
         }
         ProjectConverter.compressAll = compressAll;
         function decompress(project) {
+            if (project.inknoteVersion != Inknote.Managers.VersionManager.Instance.version) {
+                Inknote.log("project: " + project.name + " is of version " + project.inknoteVersion, 2 /* Warning */);
+                Inknote.log("this may cause errors when decompressing this saved files", 2 /* Warning */);
+            }
             var result = new Inknote.Project(project.name);
             result.ID = project.ID;
             result.instruments = [];
@@ -3261,6 +3420,29 @@ var Inknote;
         ];
         Testing.$TEST$_compressedProject = _compressedProject;
     })(Testing = Inknote.Testing || (Inknote.Testing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Managers;
+    (function (Managers) {
+        var VersionManager = (function () {
+            function VersionManager() {
+                this.version = "0.1";
+            }
+            Object.defineProperty(VersionManager, "Instance", {
+                get: function () {
+                    if (!VersionManager._instance) {
+                        VersionManager._instance = new VersionManager();
+                    }
+                    return this._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return VersionManager;
+        })();
+        Managers.VersionManager = VersionManager;
+    })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -4091,14 +4273,29 @@ var Inknote;
         CanvasControl.prototype.hover = function (e) {
             var allItems = this.drawService.items;
             var hovered = false;
+            var scoreItems = [];
             for (var i = 0; i < allItems.length; i++) {
                 if (Inknote.mouseIsOver(allItems[i], e, this.drawService.canvas)) {
                     // log(allItems[i].y + ":" + e.clientY + ":" + ScrollService.Instance.y);
+                    if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
+                        if (allItems[i] instanceof Inknote.Notation) {
+                            scoreItems.push(allItems[i]);
+                        }
+                    }
                     var hoverID = allItems[i].ID;
                     Inknote.Managers.ProjectManager.Instance.hoverID = hoverID;
                     hovered = true;
                     this.drawService.canvas.style.cursor = "pointer";
                 }
+            }
+            var sortedScoreItems = scoreItems.sort(function (a, b) {
+                return b.order - a.order;
+            });
+            if (sortedScoreItems.length > 0) {
+                Inknote.ScoringService.Instance.hoverID = sortedScoreItems[0].ID;
+            }
+            else {
+                Inknote.ScoringService.Instance.hoverID = null;
             }
             if (!hovered) {
                 Inknote.Managers.ProjectManager.Instance.hoverID = null;
@@ -4418,7 +4615,7 @@ var Inknote;
         var appSetting = new Inknote.Setting("Default");
         // ***********************************************
         // ** comment out the following line when live. **
-        //appSetting.testMode = true;
+        // appSetting.testMode = true;
         // ***********************************************
         // ***********************************************
         // *** uncomment the following to test mobile  ***
@@ -4437,6 +4634,15 @@ var Inknote;
         var y = new Inknote.CanvasControl(x);
     })(Main = Inknote.Main || (Inknote.Main = {}));
 })(Inknote || (Inknote = {}));
+if (Inknote.Managers.SettingsManager.Current.testMode) {
+    console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
+    console.log("%cthis app is running in test mode", "font-size: 15px; font-family: 'Courier New'");
+}
+else {
+    console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
+    console.log("%cthis is the developer console", "font-size: 15px; font-family: 'Courier New'");
+    console.log("%conly use this if you know what you are doing", "font-size: 15px; font-family: 'Courier New'");
+}
 // every added file must be added here.
 // care must be taken to ensure there are no dependency loops.
 // rights
@@ -4489,6 +4695,7 @@ var Inknote;
 /// <reference path="scripts/drawings/stave.ts" />
 /// <reference path="scripts/drawings/sharp.ts" />
 /// <reference path="scripts/drawings/flat.ts" />
+/// <reference path="scripts/drawings/natural.ts" />
 /// <reference path="scripts/drawings/note.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
@@ -4531,6 +4738,7 @@ var Inknote;
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers
+/// <reference path="scripts/managers/versionmanager.ts" />
 /// <reference path="scripts/managers/machinemanager.ts" />
 /// <reference path="scripts/managers/pagemanager.ts" />
 /// <reference path="scripts/managers/settingsmanager.ts" />
@@ -4548,4 +4756,5 @@ var Inknote;
 /// <reference path="scripts/actions/frontendactions.ts" />
 // app
 /// <reference path="scripts/app.ts" />
+/// <reference path="scripts/security-warning.ts" />
 //# sourceMappingURL=@script.js.map

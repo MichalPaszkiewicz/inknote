@@ -4,6 +4,8 @@
 
         ID: string;
 
+        inknoteVersion: string;
+
         instruments: Compressed.Instrument[];
 
         constructor(public name?) {

@@ -2,7 +2,17 @@
 
     export class Notation implements IDrawable, IIdentifiable{
 
-        ID: string;
+        private _id: string;
+
+        // when attached, you will get id of parent item, thereby letting you e.g. select a note by clicking flat/sharp.
+        get ID() {
+            return this.attachedToID || this._id;
+        }
+
+        set ID(newValue: string) {
+            this._id = newValue;
+        }
+
         x: number;
         y: number;
         order: number;
@@ -10,6 +20,15 @@
         scale: number;
         hover: boolean;
         select: boolean;
+
+        attachedToID: string;
+        attached: Notation[] = [];
+
+        // when items are attached, will hover together;
+        attach(item: Notation) {
+            item.attachedToID = this.ID;
+            this.attached.push(item);
+        }
 
         draw(ctx: CanvasRenderingContext2D) {
             ctx.beginPath();
@@ -19,14 +38,17 @@
         }
 
         isOver(x: number, y: number) {
-            var IS = Maths.isWithinRadius(x, y, this.x, this.y, 10); 
+            var ISoverThis = Maths.isWithinRadius(x, y, this.x, this.y, 10); 
 
-            if (IS) {
-                this.hover = true;
+            var ISoverAttached = false;
+
+            for (var i = 0; i < this.attached.length; i++) {
+                if (this.attached[i].isOver(x,y)){
+                    ISoverAttached = true;
+                }
             }
-            else {
-                this.hover = false;
-            }
+
+            var IS = ISoverThis || ISoverAttached;
 
             return IS;
 

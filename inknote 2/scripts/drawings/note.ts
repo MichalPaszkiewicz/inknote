@@ -5,6 +5,11 @@
         ctx.fillStyle = Colours.black;
         ctx.strokeStyle = Colours.black;
 
+        if (note.isPotential) {
+            ctx.fillStyle = Colours.midBlue;
+            ctx.strokeStyle = Colours.midBlue;
+        }
+
         if (note.select) {
             ctx.beginPath();
             ctx.arc(x, y, lineHeight, 0, 2 * Math.PI);
@@ -102,6 +107,7 @@
     export class Note extends Notation {
 
         noteLength: Model.NoteLength;
+        isPotential: boolean = false;
 
         constructor(public stemUp: boolean) {
 

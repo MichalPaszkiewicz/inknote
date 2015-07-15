@@ -7,7 +7,7 @@
 
     // ***********************************************
     // ** comment out the following line when live. **
-    //appSetting.testMode = true;
+    // appSetting.testMode = true;
     // ***********************************************
     
     // ***********************************************

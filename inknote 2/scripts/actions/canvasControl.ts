@@ -6,15 +6,31 @@
             var allItems = this.drawService.items;
             var hovered = false;
 
+            var scoreItems: Notation[] = [];
+
             for (var i = 0; i < allItems.length; i++) {
                 if (mouseIsOver(allItems[i], e, this.drawService.canvas)) {
                     // log(allItems[i].y + ":" + e.clientY + ":" + ScrollService.Instance.y);
+
+                    if (Managers.PageManager.Current.page == Managers.Page.Score) {
+                        if (allItems[i] instanceof Notation){
+                            scoreItems.push(<Notation>allItems[i]);
+                        }
+                    }
 
                     var hoverID = allItems[i].ID;
                     Managers.ProjectManager.Instance.hoverID = hoverID;
                     hovered = true;
                     this.drawService.canvas.style.cursor = "pointer";
                 }
+            }
+
+            var sortedScoreItems = <Notation[]>scoreItems.sort(function (a: Notation, b: Notation) { return b.order - a.order; });
+            if (sortedScoreItems.length > 0) {
+                ScoringService.Instance.hoverID = sortedScoreItems[0].ID;
+            }
+            else {
+                ScoringService.Instance.hoverID = null;
             }
 
             if (!hovered) {

@@ -58,6 +58,7 @@
 /// <reference path="scripts/drawings/stave.ts" />
 /// <reference path="scripts/drawings/sharp.ts" />
 /// <reference path="scripts/drawings/flat.ts" />
+/// <reference path="scripts/drawings/natural.ts" />
 /// <reference path="scripts/drawings/note.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
@@ -105,6 +106,7 @@
 /// <reference path="scripts/testdata/compressedproject.ts" />
 
 // managers
+/// <reference path="scripts/managers/versionmanager.ts" />
 /// <reference path="scripts/managers/machinemanager.ts" />
 /// <reference path="scripts/managers/pagemanager.ts" />
 /// <reference path="scripts/managers/settingsmanager.ts" />
@@ -125,4 +127,5 @@
 
 // app
 /// <reference path="scripts/app.ts" />
+/// <reference path="scripts/security-warning.ts" />
 
