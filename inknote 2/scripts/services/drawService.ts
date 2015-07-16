@@ -37,7 +37,7 @@
 
                 self._items.push(LicenceService.Instance.drawing);
 
-                if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+                if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop && ScrollService.Instance.showScrollBar()) {
                     self._items.push(ScrollService.ScrollBar);
                     if (ScrollService.ScrollBar.scrollThumbnail.visible) {
                         self._items.push(ScrollService.ScrollBar.scrollThumbnail);

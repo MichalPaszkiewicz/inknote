@@ -42,6 +42,10 @@
 
         scrollSpeed: number;
 
+        showScrollBar() {
+            return false;
+        }
+
         constructor() {
             this.x = 0;
             this.y = 0;

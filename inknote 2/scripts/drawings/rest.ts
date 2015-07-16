@@ -1,9 +1,18 @@
 ﻿module Inknote.Drawing {
 
     function restCommon(ctx: CanvasRenderingContext2D, rest: Rest) {
+
+        if (rest.select) {
+            ctx.beginPath();
+            ctx.arc(rest.x, rest.y, 10, 0, 2 * Math.PI);
+            ctx.strokeStyle = Colours.orange;
+            ctx.fillStyle = Colours.orange;
+            ctx.stroke();
+        }
+
         ctx.strokeStyle = Colours.black;
         ctx.fillStyle = Colours.black;
-        if (rest.hover) {
+        if (rest.hover || rest.select) {
             ctx.strokeStyle = Colours.orange;
             ctx.fillStyle = Colours.orange;
         }

@@ -1048,6 +1048,13 @@ var Inknote;
             Sharp.prototype.draw = function (ctx) {
                 ctx.strokeStyle = Drawing.Colours.black;
                 ctx.fillStyle = Drawing.Colours.black;
+                if (this.select) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.stroke();
+                }
                 if (this.hover) {
                     ctx.strokeStyle = Drawing.Colours.orange;
                     ctx.fillStyle = Drawing.Colours.orange;
@@ -1086,6 +1093,13 @@ var Inknote;
             Flat.prototype.draw = function (ctx) {
                 ctx.strokeStyle = Drawing.Colours.black;
                 ctx.fillStyle = Drawing.Colours.black;
+                if (this.select) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.stroke();
+                }
                 if (this.hover) {
                     ctx.strokeStyle = Drawing.Colours.orange;
                     ctx.fillStyle = Drawing.Colours.orange;
@@ -1127,6 +1141,13 @@ var Inknote;
             Natural.prototype.draw = function (ctx) {
                 ctx.strokeStyle = Drawing.Colours.black;
                 ctx.fillStyle = Drawing.Colours.black;
+                if (this.select) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.stroke();
+                }
                 if (this.hover) {
                     ctx.strokeStyle = Drawing.Colours.orange;
                     ctx.fillStyle = Drawing.Colours.orange;
@@ -1370,9 +1391,16 @@ var Inknote;
     var Drawing;
     (function (Drawing) {
         function restCommon(ctx, rest) {
+            if (rest.select) {
+                ctx.beginPath();
+                ctx.arc(rest.x, rest.y, 10, 0, 2 * Math.PI);
+                ctx.strokeStyle = Drawing.Colours.orange;
+                ctx.fillStyle = Drawing.Colours.orange;
+                ctx.stroke();
+            }
             ctx.strokeStyle = Drawing.Colours.black;
             ctx.fillStyle = Drawing.Colours.black;
-            if (rest.hover) {
+            if (rest.hover || rest.select) {
                 ctx.strokeStyle = Drawing.Colours.orange;
                 ctx.fillStyle = Drawing.Colours.orange;
             }
@@ -2737,6 +2765,9 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        ScrollService.prototype.showScrollBar = function () {
+            return false;
+        };
         ScrollService.prototype.up = function () {
             if (Inknote.canScroll(true)) {
                 this.y = this.y - this.scrollSpeed;
@@ -2844,7 +2875,7 @@ var Inknote;
                 self._canvas.height = self._canvas.parentElement.clientHeight - 50;
                 self.arrange();
                 self._items.push(Inknote.LicenceService.Instance.drawing);
-                if (Inknote.Managers.MachineManager.Instance.machineType == 0 /* Desktop */) {
+                if (Inknote.Managers.MachineManager.Instance.machineType == 0 /* Desktop */ && Inknote.ScrollService.Instance.showScrollBar()) {
                     self._items.push(Inknote.ScrollService.ScrollBar);
                     if (Inknote.ScrollService.ScrollBar.scrollThumbnail.visible) {
                         self._items.push(Inknote.ScrollService.ScrollBar.scrollThumbnail);
@@ -3006,11 +3037,14 @@ var Inknote;
             var items = [];
             var scoreItems = Inknote.ScoringService.Instance.getItems();
             for (var i = 0; i < scoreItems.length; i++) {
-                var IS = scoreItems[i].ID == Inknote.ScoringService.Instance.hoverID;
-                scoreItems[i].hover = IS;
+                var isHover = scoreItems[i].ID == Inknote.ScoringService.Instance.hoverID;
+                var isSelect = scoreItems[i].ID == Inknote.ScoringService.Instance.selectID;
+                scoreItems[i].hover = isHover;
+                scoreItems[i].select = isSelect;
                 if (scoreItems[i] instanceof Inknote.Notation) {
                     for (var j = 0; j < scoreItems[i].attached.length; j++) {
-                        scoreItems[i].attached[j].hover = IS;
+                        scoreItems[i].attached[j].hover = isHover;
+                        scoreItems[i].attached[j].select = isSelect;
                     }
                 }
                 items.push(scoreItems[i]);
@@ -4307,6 +4341,7 @@ var Inknote;
         CanvasControl.prototype.click = function (e) {
             var allItems = this.drawService.items;
             var selected = false;
+            var scoreItems = [];
             for (var i = 0; i < allItems.length; i++) {
                 if (Inknote.mouseIsOver(allItems[i], e, this.drawService.canvas)) {
                     var selectedID = allItems[i].ID;
@@ -4341,9 +4376,23 @@ var Inknote;
                         Inknote.LicenceService.Instance.drawing.click(e);
                         return;
                     }
+                    if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
+                        if (allItems[i] instanceof Inknote.Notation) {
+                            scoreItems.push(allItems[i]);
+                        }
+                    }
                     Inknote.Managers.ProjectManager.Instance.selectID = selectedID;
                     selected = true;
                 }
+            }
+            var sortedScoreItems = scoreItems.sort(function (a, b) {
+                return b.order - a.order;
+            });
+            if (sortedScoreItems.length > 0) {
+                Inknote.ScoringService.Instance.selectID = sortedScoreItems[0].ID;
+            }
+            else {
+                Inknote.ScoringService.Instance.selectID = null;
             }
             if (!selected) {
                 // clear

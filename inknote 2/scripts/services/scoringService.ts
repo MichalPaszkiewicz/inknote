@@ -18,6 +18,7 @@ module Inknote {
         private _items: IDrawable[] = [];
 
         hoverID: string;
+        selectID: string;
 
         // should refresh on:
         // change of window size.

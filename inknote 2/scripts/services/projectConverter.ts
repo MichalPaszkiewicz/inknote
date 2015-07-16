@@ -14,13 +14,16 @@
 
         for (var i = 0; i < scoreItems.length; i++) {
 
-            var IS = scoreItems[i].ID == ScoringService.Instance.hoverID;
+            var isHover = scoreItems[i].ID == ScoringService.Instance.hoverID;
+            var isSelect = scoreItems[i].ID == ScoringService.Instance.selectID;
 
-            scoreItems[i].hover = IS;
+            scoreItems[i].hover = isHover;
+            scoreItems[i].select = isSelect;
 
             if (scoreItems[i] instanceof Notation) {
                 for (var j = 0; j < (<Notation>scoreItems[i]).attached.length; j++) {
-                    (<Notation>scoreItems[i]).attached[j].hover = IS;
+                    (<Notation>scoreItems[i]).attached[j].hover = isHover;
+                    (<Notation>scoreItems[i]).attached[j].select = isSelect;
                 }
             }
 

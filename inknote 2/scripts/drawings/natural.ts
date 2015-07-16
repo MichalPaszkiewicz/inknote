@@ -33,6 +33,14 @@
             ctx.strokeStyle = Colours.black;
             ctx.fillStyle = Colours.black;
 
+            if (this.select) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                ctx.strokeStyle = Colours.orange;
+                ctx.fillStyle = Colours.orange;
+                ctx.stroke();
+            }
+
             if (this.hover) {
                 ctx.strokeStyle = Colours.orange;
                 ctx.fillStyle = Colours.orange;
