@@ -51,6 +51,7 @@
 
                     // note control.
                     if (selectedID == NoteControlService.Instance.ID) {
+                        NoteControlService.Instance.piano.click(e);
                         return;
                     }
 

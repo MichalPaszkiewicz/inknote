@@ -2591,10 +2591,23 @@ var Inknote;
                 this.width = 500;
                 this.height = 100;
                 this.order = 200;
+                this.leftHover = false;
+                this.rightHover = false;
                 this.octave = 4;
             }
-            Piano.prototype.isOver = function () {
-                return false;
+            Piano.prototype.isOver = function (x, y) {
+                var result = y > this.y && y < this.y + this.height;
+                this.leftHover = false;
+                this.rightHover = false;
+                if (result) {
+                    if (x < this.width / 9) {
+                        this.leftHover = true;
+                    }
+                    if (x > this.width * 8 / 9) {
+                        this.rightHover = true;
+                    }
+                }
+                return result;
             };
             Piano.prototype.draw = function (ctx, canvas) {
                 ctx.beginPath();
@@ -2609,6 +2622,18 @@ var Inknote;
                     ctx.moveTo(this.width * i / 9, this.y);
                     ctx.lineTo(this.width * i / 9, this.y + this.height);
                     ctx.stroke();
+                    if (i == 1 && this.leftHover) {
+                        ctx.beginPath();
+                        ctx.fillStyle = Drawing.Colours.orange;
+                        ctx.rect(0, this.y, this.width / 9, this.height);
+                        ctx.fill();
+                    }
+                    if (i == 8 && this.rightHover) {
+                        ctx.beginPath();
+                        ctx.fillStyle = Drawing.Colours.orange;
+                        ctx.rect(this.width * 8 / 9, this.y, this.width / 9, this.height);
+                        ctx.fill();
+                    }
                     if (i == 2 || i == 3 || i == 5 || i == 6 || i == 7) {
                         ctx.beginPath();
                         ctx.fillStyle = Drawing.Colours.black;
@@ -2616,7 +2641,34 @@ var Inknote;
                         ctx.fill();
                     }
                 }
+                ctx.strokeStyle = Drawing.Colours.black;
+                // left arrow
+                ctx.beginPath();
+                ctx.moveTo(this.width / 15, this.y + this.height * 3 / 4);
+                ctx.lineTo(this.width / 20, this.y + this.height / 2);
+                ctx.lineTo(this.width / 15, this.y + this.height / 4);
+                ctx.stroke();
+                // right arrow
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - this.width / 15, this.y + this.height * 3 / 4);
+                ctx.lineTo(canvas.width - this.width / 20, this.y + this.height / 2);
+                ctx.lineTo(canvas.width - this.width / 15, this.y + this.height / 4);
+                ctx.stroke();
+                // text
+                ctx.beginPath();
+                ctx.textAlign = "center";
+                ctx.fillStyle = Drawing.Colours.orange;
+                ctx.font = (Math.min((this.width / 20), this.height / 4)) + "px Arial";
+                ctx.fillText("C" + this.octave, this.width * 1 / 6, this.y + this.height * 3 / 4);
                 return true;
+            };
+            Piano.prototype.click = function (e) {
+                if (e.clientX < this.width / 9) {
+                    this.octave--;
+                }
+                if (e.clientX > this.width * 8 / 9) {
+                    this.octave++;
+                }
             };
             return Piano;
         })();
@@ -4465,6 +4517,7 @@ var Inknote;
                     var selectedID = allItems[i].ID;
                     // note control.
                     if (selectedID == Inknote.NoteControlService.Instance.ID) {
+                        Inknote.NoteControlService.Instance.piano.click(e);
                         return;
                     }
                     // if keyboard clicked, do keyboard action.

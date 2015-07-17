@@ -11,7 +11,7 @@
             return NoteControlService._instance;
         }
 
-        private piano: Drawing.Piano = new Drawing.Piano();
+        piano: Drawing.Piano = new Drawing.Piano();
         private background: Drawing.NoteControlBackground = new Drawing.NoteControlBackground();
 
         x = 0;
