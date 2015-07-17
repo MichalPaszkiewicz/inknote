@@ -78,6 +78,10 @@
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+
+// note controls
+/// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
+/// <reference path="scripts/drawings/notecontrols/piano.ts" />
  
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
@@ -101,6 +105,7 @@
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
+/// <reference path="scripts/services/notecontrolservice.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />

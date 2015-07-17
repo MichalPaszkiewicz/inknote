@@ -46,8 +46,13 @@
             var scoreItems: Notation[] = [];
 
             for (var i = 0; i < allItems.length; i++) {
-                if (mouseIsOver(allItems[i], e, this.drawService.canvas)){
+                if (mouseIsOver(allItems[i], e, this.drawService.canvas)) {
                     var selectedID = allItems[i].ID;
+
+                    // note control.
+                    if (selectedID == NoteControlService.Instance.ID) {
+                        return;
+                    }
 
                     // if keyboard clicked, do keyboard action.
                     if (selectedID == Drawing.Keyboard.Instance.ID) {

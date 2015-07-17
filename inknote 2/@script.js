@@ -244,9 +244,9 @@ var Inknote;
 (function (Inknote) {
     var Notation = (function () {
         function Notation(drawFunction) {
+            this.order = 50;
             this.attached = [];
             this.ID = Inknote.getID();
-            this.order = 50;
             if (drawFunction) {
                 this.draw = drawFunction;
             }
@@ -2551,6 +2551,80 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var NoteControlBackground = (function () {
+            function NoteControlBackground() {
+                this.ID = Inknote.getID();
+                this.x = 0;
+                this.y = 500;
+                this.width = 500;
+                this.height = 100;
+                this.order = 199;
+            }
+            NoteControlBackground.prototype.isOver = function () {
+                return false;
+            };
+            NoteControlBackground.prototype.draw = function (ctx, canvas) {
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.black;
+                ctx.strokeStyle = Drawing.Colours.black;
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fill();
+                ctx.stroke();
+                return true;
+            };
+            return NoteControlBackground;
+        })();
+        Drawing.NoteControlBackground = NoteControlBackground;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var Piano = (function () {
+            function Piano() {
+                this.ID = Inknote.getID();
+                this.x = 0;
+                this.y = 500;
+                this.width = 500;
+                this.height = 100;
+                this.order = 200;
+                this.octave = 4;
+            }
+            Piano.prototype.isOver = function () {
+                return false;
+            };
+            Piano.prototype.draw = function (ctx, canvas) {
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.white;
+                ctx.strokeStyle = Drawing.Colours.black;
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fill();
+                ctx.stroke();
+                for (var i = 1; i < 9; i++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = Drawing.Colours.black;
+                    ctx.moveTo(this.width * i / 9, this.y);
+                    ctx.lineTo(this.width * i / 9, this.y + this.height);
+                    ctx.stroke();
+                    if (i == 2 || i == 3 || i == 5 || i == 6 || i == 7) {
+                        ctx.beginPath();
+                        ctx.fillStyle = Drawing.Colours.black;
+                        ctx.rect(this.width * i / 9 - this.width / 24, this.y, this.width / 12, this.height / 2);
+                        ctx.fill();
+                    }
+                }
+                return true;
+            };
+            return Piano;
+        })();
+        Drawing.Piano = Piano;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Storage;
     (function (Storage) {
         var defaults = {
@@ -3049,6 +3123,10 @@ var Inknote;
                 }
                 items.push(scoreItems[i]);
             }
+            if (Inknote.ScoringService.Instance.selectID != null) {
+                var noteControls = Inknote.NoteControlService.Instance.getItems(drawer);
+                items = items.concat(noteControls);
+            }
             if (!project) {
                 items.push(splash);
                 return items;
@@ -3441,6 +3519,46 @@ var Inknote;
         return Inknote.getCurrentChordNotation(chord.notes[0], chord.notes[0], true, "#5");
     }
     Inknote.identifyChord = identifyChord;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var NoteControlService = (function () {
+        function NoteControlService() {
+            this.piano = new Inknote.Drawing.Piano();
+            this.background = new Inknote.Drawing.NoteControlBackground();
+            this.x = 0;
+            this.ID = "note_control";
+            this.piano.ID = this.ID;
+            this.background.ID = this.ID;
+        }
+        Object.defineProperty(NoteControlService, "Instance", {
+            get: function () {
+                if (!NoteControlService._instance) {
+                    NoteControlService._instance = new NoteControlService();
+                }
+                return NoteControlService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        NoteControlService.prototype.getItems = function (drawer) {
+            this.y = drawer.canvas.height / 2;
+            this.width = drawer.canvas.width;
+            this.height = drawer.canvas.height / 2;
+            var noteControls = [];
+            this.background.width = this.width;
+            this.background.height = this.height;
+            this.background.y = this.y;
+            noteControls.push(this.background);
+            this.piano.width = this.width;
+            this.piano.height = this.height / 2;
+            this.piano.y = this.y + this.height / 2;
+            noteControls.push(this.piano);
+            return noteControls;
+        };
+        return NoteControlService;
+    })();
+    Inknote.NoteControlService = NoteControlService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -4345,6 +4463,10 @@ var Inknote;
             for (var i = 0; i < allItems.length; i++) {
                 if (Inknote.mouseIsOver(allItems[i], e, this.drawService.canvas)) {
                     var selectedID = allItems[i].ID;
+                    // note control.
+                    if (selectedID == Inknote.NoteControlService.Instance.ID) {
+                        return;
+                    }
                     // if keyboard clicked, do keyboard action.
                     if (selectedID == Inknote.Drawing.Keyboard.Instance.ID) {
                         Inknote.Drawing.Keyboard.Instance.click(e);
@@ -4765,6 +4887,9 @@ else {
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+// note controls
+/// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
+/// <reference path="scripts/drawings/notecontrols/piano.ts" />
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 // services
@@ -4786,6 +4911,7 @@ else {
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
+/// <reference path="scripts/services/notecontrolservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers

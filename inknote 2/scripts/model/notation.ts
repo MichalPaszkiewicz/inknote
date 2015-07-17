@@ -15,7 +15,7 @@
 
         x: number;
         y: number;
-        order: number;
+        order = 50;
         options: DrawOptions;
         scale: number;
         hover: boolean;
@@ -56,7 +56,6 @@
 
         constructor(drawFunction?: (ctx: CanvasRenderingContext2D) => boolean) {
             this.ID = getID();
-            this.order = 50;
             if (drawFunction) {
                 this.draw = drawFunction;
             }

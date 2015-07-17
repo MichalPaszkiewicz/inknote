@@ -30,6 +30,11 @@
             items.push(scoreItems[i]);
         }
 
+        if (ScoringService.Instance.selectID != null){
+            var noteControls = NoteControlService.Instance.getItems(drawer);
+            items = items.concat(noteControls);
+        }
+
         if (!project) {
             items.push(splash);
             return items;

@@ -67,6 +67,8 @@
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
     <TypeScriptCompile Include="scripts\drawings\natural.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\noteControlBackground.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\piano.ts" />
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
@@ -137,6 +139,7 @@
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
     <TypeScriptCompile Include="scripts\services\intervalService.ts" />
     <TypeScriptCompile Include="scripts\services\licenceService.ts" />
+    <TypeScriptCompile Include="scripts\services\noteControlService.ts" />
     <TypeScriptCompile Include="scripts\services\noteService.ts" />
     <TypeScriptCompile Include="scripts\services\restService.ts" />
     <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
