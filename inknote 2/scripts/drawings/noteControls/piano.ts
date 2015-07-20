@@ -16,6 +16,13 @@
 
         octave: number = 4;
 
+        blackKeys: BlackKey[] = [];
+        whiteKeys: WhiteKey[] = [];
+
+        get allKeys(): PianoKey[] {
+            return this.whiteKeys.concat(this.blackKeys);
+        }
+
         isOver(x: number, y: number) {
 
             var result = y > this.y && y < this.y + this.height;
@@ -28,10 +35,31 @@
                 if (x < this.width / 9) {
                     this.leftHover = true;
                 }
-
-                if (x > this.width * 8 / 9) {
+                else if (x > this.width * 8 / 9) {
                     this.rightHover = true;
                 }
+
+                var isBlack = false;
+
+                for (var i = 0; i < this.blackKeys.length; i++) {
+                    if (this.blackKeys[i].isOver(x, y)) {
+                        this.blackKeys[i].hover = true;
+                        isBlack = true;
+                    }
+                    else {
+                        this.blackKeys[i].hover = false;
+                    }
+                }
+
+                for (var i = 0; i < this.whiteKeys.length; i++) {
+                    if (isBlack === false && this.whiteKeys[i].isOver(x, y)) {
+                        this.whiteKeys[i].hover = true;
+                    }
+                    else {
+                        this.whiteKeys[i].hover = false;
+                    }
+                }
+
             }
 
             return result;
@@ -50,13 +78,13 @@
             ctx.fill();
             ctx.stroke();
 
+            var noteVal = 2;
+            var whiteKeyNum = 0;
+            var blackKeyNum = 0;
+
             for (var i = 1; i < 9; i++) {
                 ctx.beginPath();
                 ctx.strokeStyle = Colours.black;
-
-                ctx.moveTo(this.width * i / 9, this.y);
-                ctx.lineTo(this.width * i / 9, this.y + this.height);
-                ctx.stroke();
 
                 if (i == 1 && this.leftHover) {
                     ctx.beginPath();
@@ -64,20 +92,51 @@
                     ctx.rect(0, this.y, this.width / 9, this.height);
                     ctx.fill();
                 }
-                
-                if (i == 8 && this.rightHover) {
+                else if (i == 8 && this.rightHover) {
                     ctx.beginPath();
                     ctx.fillStyle = Colours.orange;
-                    ctx.rect(this.width * 8 / 9 , this.y, this.width / 9, this.height);
+                    ctx.rect(this.width * 8 / 9, this.y, this.width / 9, this.height);
                     ctx.fill();
                 }
 
-                if (i == 2 || i == 3 || i == 5 || i == 6 || i == 7) {
-                    ctx.beginPath();
-                    ctx.fillStyle = Colours.black;
-                    ctx.rect(this.width * i / 9 - this.width / 24, this.y, this.width / 12, this.height / 2);
-                    ctx.fill();
+                noteVal = (noteVal + 1) % 12;
+
+                if (this.whiteKeys[whiteKeyNum] == null) {
+                    this.whiteKeys.push(new WhiteKey(this.width * i / 9, this.y, this.width / 9, this.height, noteVal));
                 }
+
+                this.whiteKeys[whiteKeyNum].x = this.width * i / 9;
+                this.whiteKeys[whiteKeyNum].y = this.y;
+                this.whiteKeys[whiteKeyNum].width = this.width / 9;
+                this.whiteKeys[whiteKeyNum].height = this.height;
+
+                whiteKeyNum++;
+
+                if (i == 1 || i == 2 || i == 4 || i == 5 || i == 6) {
+
+                    noteVal = (noteVal + 1) % 12;
+
+                    if (this.blackKeys[blackKeyNum] == null) {
+                        this.blackKeys.push(new BlackKey(this.width * (i + 1) / 9 - this.width / 24, this.y, this.width / 12, this.height / 2, noteVal));
+                    }
+
+                    this.blackKeys[blackKeyNum].x = this.width * (i + 1) / 9 - this.width / 24;
+                    this.blackKeys[blackKeyNum].y = this.y;
+                    this.blackKeys[blackKeyNum].width = this.width / 12;
+                    this.blackKeys[blackKeyNum].height = this.height / 2;
+
+                    blackKeyNum++;
+
+                }
+
+            }
+
+            for (var i = 0; i < this.whiteKeys.length; i++) {
+                this.whiteKeys[i].draw(ctx);
+            }
+
+            for (var i = 0; i < this.blackKeys.length; i++) {
+                this.blackKeys[i].draw(ctx);
             }
 
             ctx.strokeStyle = Colours.black;
@@ -100,6 +159,9 @@
             ctx.beginPath();
             ctx.textAlign = "center";
             ctx.fillStyle = Colours.orange;
+            if (this.whiteKeys[0].hover) {
+                ctx.fillStyle = Colours.black;
+            }
             ctx.font = (Math.min((this.width / 20), this.height / 4)) + "px Arial";
             ctx.fillText("C" + this.octave, this.width * 1 / 6, this.y + this.height * 3 / 4);
 
@@ -111,11 +173,20 @@
             if (e.clientX < this.width / 9) {
                 this.octave--;
             }
-
-            if (e.clientX > this.width * 8 / 9) {
+            else if (e.clientX > this.width * 8 / 9) {
                 this.octave++;
             }
+            else {
+                for (var i = 0; i < this.allKeys.length; i++) {
+                    if (this.allKeys[i].hover == true) {
+                        alert(this.allKeys[i].noteValue);
+                        
+                        ScoringService.Instance.refresh();
 
+
+                    }
+                }
+            }
         }
 
         constructor() {

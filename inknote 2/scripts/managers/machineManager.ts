@@ -1,5 +1,27 @@
 ﻿module Inknote.Managers {
 
+    interface Screen {
+        lockOrientation: (mode: string) => boolean;
+        mozLockOrientation: (mode: string) => boolean;
+        msLockOrientation: (mode: string) => boolean;
+    }
+
+    declare var screen: Screen;
+
+    var lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+    if (lockOrientation) {
+        if (lockOrientation("landscape-primary")) {
+            // orientation was locked
+        } else {
+            // orientation lock failed
+            log("orientation lock failed in this browser", MessageType.Warning);
+        }
+    }
+    else {
+        log("lockOrientation undefined in this browser", MessageType.Warning);
+    }
+
     export enum MachineType {
         Desktop,
         Tablet,

@@ -69,6 +69,7 @@
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\noteControlBackground.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\piano.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\pianoKey.ts" />
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />

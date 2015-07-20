@@ -45,9 +45,24 @@
 
             var scoreItems: Notation[] = [];
 
+            var sortedItems = [];
+
             for (var i = 0; i < allItems.length; i++) {
-                if (mouseIsOver(allItems[i], e, this.drawService.canvas)) {
-                    var selectedID = allItems[i].ID;
+                sortedItems.push(allItems[i]);
+            }
+
+            sortedItems.sort(function (a: IDrawable, b: IDrawable) { return b.order - a.order; });
+
+            for (var i = 0; i < sortedItems.length; i++) {
+                if (mouseIsOver(sortedItems[i], e, this.drawService.canvas)) {
+                    var selectedID = sortedItems[i].ID;
+
+                    // rightClick menu
+                    if (selectedID == RightClickMenuService.Instance.Menu.ID) {
+                        RightClickMenuService.Instance.Menu.click(e);
+                        RightClickMenuService.Instance.visible = false;
+                        return;
+                    }
 
                     // note control.
                     if (selectedID == NoteControlService.Instance.ID) {
@@ -79,13 +94,6 @@
                         return;
                     }
 
-                    // rightClick menu
-                    if (selectedID == RightClickMenuService.Instance.Menu.ID) {
-                        RightClickMenuService.Instance.Menu.click(e);
-                        RightClickMenuService.Instance.visible = false;
-                        return;
-                    }
-
                     // licence
                     if (selectedID == LicenceService.Instance.drawing.ID) {
                         LicenceService.Instance.drawing.click(e);
@@ -93,8 +101,8 @@
                     }
 
                     if (Managers.PageManager.Current.page == Managers.Page.Score) {
-                        if (allItems[i] instanceof Notation) {
-                            scoreItems.push(<Notation>allItems[i]);
+                        if (sortedItems[i] instanceof Notation) {
+                            scoreItems.push(<Notation>sortedItems[i]);
                         }
                     }
 

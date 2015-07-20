@@ -81,6 +81,7 @@
 
 // note controls
 /// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
+/// <reference path="scripts/drawings/notecontrols/pianokey.ts" />
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
  
 // storage
