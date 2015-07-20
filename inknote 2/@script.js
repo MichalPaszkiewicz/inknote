@@ -403,6 +403,7 @@ var Inknote;
     (function (Model) {
         var Bar = (function () {
             function Bar() {
+                this.items = [];
             }
             return Bar;
         })();
@@ -2786,8 +2787,7 @@ var Inknote;
                 else {
                     for (var i = 0; i < this.allKeys.length; i++) {
                         if (this.allKeys[i].hover == true) {
-                            alert(this.allKeys[i].noteValue);
-                            Inknote.ScoringService.Instance.refresh();
+                            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(this.allKeys[i].noteValue, this.octave, 3 /* Crotchet */));
                         }
                     }
                 }
@@ -3228,36 +3228,38 @@ var Inknote;
             this._projectID = currentProject.ID;
             // must clear items!
             this._items = [];
-            var flat1 = new Inknote.Drawing.Flat();
-            var sharp1 = new Inknote.Drawing.Natural();
-            flat1.y = 190;
-            sharp1.y = 195;
-            flat1.x = 100;
-            sharp1.x = 110;
-            var crchtRest = new Inknote.Drawing.CrotchetRest();
-            crchtRest.y = 200;
-            crchtRest.x = 120;
-            var qvrRest = new Inknote.Drawing.QuaverRest();
-            qvrRest.y = 200;
-            qvrRest.x = 130;
-            var qvr = new Inknote.Drawing.Quaver(false);
-            qvr.x = 150;
-            qvr.y = 200;
-            qvr.attach(sharp1);
-            qvr.attach(flat1);
-            var hdsqvr = new Inknote.Drawing.HemiDemiSemiQuaver(true);
-            hdsqvr.x = 190;
-            hdsqvr.y = 200;
-            this._items.push(flat1);
-            this._items.push(sharp1);
-            this._items.push(crchtRest);
-            this._items.push(qvrRest);
-            this._items.push(qvr);
-            this._items.push(hdsqvr);
-            var c = new Inknote.Drawing.Crotchet(true);
-            c.x = 500;
-            c.y = 500;
-            this._items.push(c);
+            var staveGroup = Inknote.getItemsWhere(currentProject.instruments, function (instrument) {
+                return instrument.visible;
+            });
+            var startHeight = 180;
+            var startX = 0;
+            for (var i = 0; i < staveGroup.length; i++) {
+                this._items.push(new Inknote.Drawing.Stave(startHeight, staveGroup[i].name));
+                for (var j = 0; j < staveGroup.length; j++) {
+                    for (var k = 0; k < staveGroup[j].bars.length; k++) {
+                        var bar = staveGroup[j].bars[k];
+                        for (var l = 0; l < bar.items.length; l++) {
+                            if (bar.items[l] instanceof Inknote.Model.Note) {
+                                var noteItem = bar.items[l];
+                                var drawNoteItem = Inknote.getDrawingItemFromNote(noteItem);
+                                drawNoteItem.x = startX += 20;
+                                drawNoteItem.y = startHeight;
+                                this._items.push(drawNoteItem);
+                            }
+                            else if (bar.items[l] instanceof Inknote.Model.Rest) {
+                                var restItem = bar.items[l];
+                                var drawRestItem = Inknote.getDrawingItemFromRest(restItem);
+                                drawRestItem.x = startX += 20;
+                                drawRestItem.y = startHeight;
+                                this._items.push(drawRestItem);
+                            }
+                            else if (bar.items[l] instanceof Inknote.Model.Chord) {
+                            }
+                        }
+                    }
+                }
+                startHeight += 80;
+            }
         };
         ScoringService.prototype.getItems = function () {
             if (this._projectID != Inknote.Managers.ProjectManager.Instance.currentProject.ID) {
@@ -3313,14 +3315,6 @@ var Inknote;
             // keyboard for changing name
             if (name.select && Inknote.Managers.MachineManager.Instance.machineType != 0 /* Desktop */) {
                 items.push(Inknote.Drawing.Keyboard.Instance);
-            }
-            var staveGroup = Inknote.getItemsWhere(project.instruments, function (instrument) {
-                return instrument.visible;
-            });
-            var startHeight = 180;
-            for (var i = 0; i < staveGroup.length; i++) {
-                items.push(new Inknote.Drawing.Stave(startHeight, staveGroup[i].name));
-                startHeight += 80;
             }
             items.push(name);
             if (project.pause) {
@@ -3729,6 +3723,16 @@ var Inknote;
             this.piano.y = this.y + this.height / 2;
             noteControls.push(this.piano);
             return noteControls;
+        };
+        NoteControlService.prototype.addNote = function (note) {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var instrument = project.instruments[0];
+            if (instrument.bars.length == 0) {
+                instrument.bars.push(new Inknote.Model.Bar());
+            }
+            var bar = instrument.bars[0];
+            bar.items.push(note);
+            Inknote.ScoringService.Instance.refresh();
         };
         return NoteControlService;
     })();
@@ -4800,6 +4804,48 @@ var Inknote;
         var inst = Inknote.Managers.ProjectManager.Instance;
         var proj = inst.currentProject;
         // name is selected
+        var noteVal = null;
+        switch (e.keyCode) {
+            case 65:
+                noteVal = 3 /* C */;
+                break;
+            case 87:
+                noteVal = 4 /* Db */;
+                break;
+            case 83:
+                noteVal = 5 /* D */;
+                break;
+            case 69:
+                noteVal = 6 /* Eb */;
+                break;
+            case 68:
+                noteVal = 7 /* E */;
+                break;
+            case 70:
+                noteVal = 8 /* F */;
+                break;
+            case 84:
+                noteVal = 9 /* Gb */;
+                break;
+            case 71:
+                noteVal = 10 /* G */;
+                break;
+            case 89:
+                noteVal = 11 /* Ab */;
+                break;
+            case 72:
+                noteVal = 0 /* A */;
+                break;
+            case 85:
+                noteVal = 1 /* Bb */;
+                break;
+            case 74:
+                noteVal = 2 /* B */;
+                break;
+        }
+        if (noteVal != null) {
+            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(noteVal, Inknote.NoteControlService.Instance.piano.octave, 3 /* Crotchet */));
+        }
         if (inst.selectID == proj.ID) {
             if (e.keyCode == 13) {
                 // enter

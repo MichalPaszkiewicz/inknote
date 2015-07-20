@@ -52,18 +52,6 @@
             items.push(Drawing.Keyboard.Instance)
         }
 
-        var staveGroup = <Model.Instrument[]>getItemsWhere(project.instruments,
-            function (instrument: Model.Instrument) {
-                return instrument.visible;
-            });
-
-        var startHeight = 180;
-
-        for (var i = 0; i < staveGroup.length; i++) {
-            items.push(new Drawing.Stave(startHeight, staveGroup[i].name));
-            startHeight += 80;
-        }
-
         items.push(name);
 
         if (project.pause) {

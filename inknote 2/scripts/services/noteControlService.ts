@@ -41,6 +41,23 @@
             return noteControls;
         }
 
+        addNote(note: Model.Note) {
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            var instrument = project.instruments[0];
+
+            if (instrument.bars.length == 0) {
+                instrument.bars.push(new Model.Bar());
+            }
+
+            var bar = instrument.bars[0];
+
+            bar.items.push(note);
+
+            ScoringService.Instance.refresh();
+
+        }
+
         constructor() {
             this.piano.ID = this.ID;
             this.background.ID = this.ID;

@@ -179,10 +179,8 @@
             else {
                 for (var i = 0; i < this.allKeys.length; i++) {
                     if (this.allKeys[i].hover == true) {
-                        alert(this.allKeys[i].noteValue);
                         
-                        ScoringService.Instance.refresh();
-
+                        NoteControlService.Instance.addNote(new Model.Note(this.allKeys[i].noteValue, this.octave, Model.NoteLength.Crotchet));
 
                     }
                 }

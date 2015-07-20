@@ -38,49 +38,50 @@ module Inknote {
             // must clear items!
             this._items = [];
 
-            var flat1 = new Drawing.Flat();
-            var sharp1 = new Drawing.Natural();
+            var staveGroup = <Model.Instrument[]>getItemsWhere(currentProject.instruments,
+                function (instrument: Model.Instrument) {
+                    return instrument.visible;
+                });
 
-            flat1.y = 190;
-            sharp1.y = 195;
-            flat1.x = 100;
-            sharp1.x = 110;
+            var startHeight = 180;
 
-            var crchtRest = new Drawing.CrotchetRest();
+            var startX = 0;
 
-            crchtRest.y = 200;
-            crchtRest.x = 120;
+            for (var i = 0; i < staveGroup.length; i++) {
+                this._items.push(new Drawing.Stave(startHeight, staveGroup[i].name));
 
-            var qvrRest = new Drawing.QuaverRest();
+                for (var j = 0; j < staveGroup.length; j++) {
+                    for (var k = 0; k < staveGroup[j].bars.length; k++) {
+                        var bar = staveGroup[j].bars[k];
 
-            qvrRest.y = 200;
-            qvrRest.x = 130;
+                        for (var l = 0; l < bar.items.length; l++) {
+                            if (bar.items[l] instanceof Model.Note) {
+                                var noteItem = <Model.Note> bar.items[l];
+                                var drawNoteItem = getDrawingItemFromNote(noteItem)
+                                drawNoteItem.x = startX += 20;
+                                drawNoteItem.y = startHeight;
 
-            var qvr = new Drawing.Quaver(false);
+                                this._items.push(drawNoteItem);
+                            }
+                            else if (bar.items[l] instanceof Model.Rest) {
+                                var restItem = <Model.Rest> bar.items[l];
+                                var drawRestItem = getDrawingItemFromRest(restItem)
+                                drawRestItem.x = startX += 20;
+                                drawRestItem.y = startHeight;
 
-            qvr.x = 150;
-            qvr.y = 200;
+                                this._items.push(drawRestItem);
+                            }
+                            else if (bar.items[l] instanceof Model.Chord) {
 
-            qvr.attach(sharp1);
-            qvr.attach(flat1);
+                            }
+                        }
+                    }
+                }
 
-            var hdsqvr = new Drawing.HemiDemiSemiQuaver(true);
+                startHeight += 80;
+            }
 
-            hdsqvr.x = 190;
-            hdsqvr.y = 200;
 
-            this._items.push(flat1);
-            this._items.push(sharp1);
-            this._items.push(crchtRest);
-            this._items.push(qvrRest);
-            this._items.push(qvr);
-            this._items.push(hdsqvr);
-
-            var c = new Drawing.Crotchet(true)
-            c.x = 500;
-            c.y = 500;
-
-            this._items.push(c);
         }
 
         getItems(): IDrawable[]{
