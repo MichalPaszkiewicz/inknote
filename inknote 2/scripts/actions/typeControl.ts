@@ -35,55 +35,65 @@
 
         var noteVal: Model.NoteValue = null;
 
-        switch (e.keyCode) {
-            // a
-            case 65:
-                noteVal = Model.NoteValue.C;
-                break;
-            // w
-            case 87:
-                noteVal = Model.NoteValue.Db;
-                break;
-            // s
-            case 83:
-                noteVal = Model.NoteValue.D;
-                break;
-            // e
-            case 69:
-                noteVal = Model.NoteValue.Eb;
-                break;
-            // d
-            case 68:
-                noteVal = Model.NoteValue.E;
-                break;
-            // f
-            case 70:
-                noteVal = Model.NoteValue.F;
-                break;
-            // t
-            case 84:
-                noteVal = Model.NoteValue.Gb;
-                break;
-            // g
-            case 71:
-                noteVal = Model.NoteValue.G;
-                break;
-            // y
-            case 89:
-                noteVal = Model.NoteValue.Ab;
-                break;
-            // h
-            case 72:
-                noteVal = Model.NoteValue.A;
-                break;
-            // u
-            case 85:
-                noteVal = Model.NoteValue.Bb;
-                break;
-            // j
-            case 74:
-                noteVal = Model.NoteValue.B;
-                break;
+        if (!ProjectConverter.name.select) {
+            switch (e.keyCode) {
+                // a
+                case 65:
+                    noteVal = Model.NoteValue.C;
+                    break;
+                // w
+                case 87:
+                    noteVal = Model.NoteValue.Db;
+                    break;
+                // s
+                case 83:
+                    noteVal = Model.NoteValue.D;
+                    break;
+                // e
+                case 69:
+                    noteVal = Model.NoteValue.Eb;
+                    break;
+                // d
+                case 68:
+                    noteVal = Model.NoteValue.E;
+                    break;
+                // f
+                case 70:
+                    noteVal = Model.NoteValue.F;
+                    break;
+                // t
+                case 84:
+                    noteVal = Model.NoteValue.Gb;
+                    break;
+                // g
+                case 71:
+                    noteVal = Model.NoteValue.G;
+                    break;
+                // y
+                case 89:
+                    noteVal = Model.NoteValue.Ab;
+                    break;
+                // h
+                case 72:
+                    noteVal = Model.NoteValue.A;
+                    break;
+                // u
+                case 85:
+                    noteVal = Model.NoteValue.Bb;
+                    break;
+                // j
+                case 74:
+                    noteVal = Model.NoteValue.B;
+                    break;
+                // left
+                case 37:
+                    ScoringService.Instance.cursorLeft();
+                    break;
+                // right
+                case 39:
+                    ScoringService.Instance.cursorRight();
+                    break;
+            }
         }
 
         if (noteVal != null) {

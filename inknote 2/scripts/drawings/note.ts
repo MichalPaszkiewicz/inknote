@@ -120,7 +120,12 @@
         noteLength = Model.NoteLength.Breve;
 
         draw(ctx: CanvasRenderingContext2D) {
-            drawNote(ctx, this.x, this.y, this, 10);
+            ctx.beginPath();
+            ctx.fillStyle = Colours.white;
+            ctx.strokeStyle = Colours.black;
+            ctx.rect(this.x - 5, this.y - 5, 10, 10);
+            ctx.stroke();
+
             return true;
         }
     }

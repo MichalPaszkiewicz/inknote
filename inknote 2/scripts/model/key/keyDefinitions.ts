@@ -9,15 +9,15 @@
             [0, 2, 3, 5, 7, 8, 11])
     ];
 
-    var C_MAJOR = new Key("C_MAJOR",
+    export var C_MAJOR = new Key("C_MAJOR",
         [
             NoteValue.C, NoteValue.D, NoteValue.E,
             NoteValue.F, NoteValue.G, NoteValue.A, NoteValue.B
         ], [], []);
 
     function getSharpsFromNotesAndTranspose(notes: NoteValue[]): NoteValue[] {
-         
-        var aligned = Maths.alignSimilarArrayTo(notes, C_MAJOR.notesInKey);   
+
+        var aligned = Maths.alignSimilarArrayTo(notes, C_MAJOR.notesInKey);
 
         var sharps = [];
 
@@ -56,15 +56,17 @@
             var kt = keyTypes[i];
 
             for (var j in NoteValue) {
-                var allKeyNotes = [];
-                var baseNote = new Note(parseInt(NoteValue[j]), 4, 1);
-                baseNote.value = (baseNote.value + transpose) % 12;
-                for (var k = 0; k < kt.intervals.length; k++) {
-                    var tempNote = getNoteOfDistance(baseNote, kt.intervals[k]);
-                    allKeyNotes.push(tempNote.value);
-                }
+                if (isNaN(j)) {
+                    var allKeyNotes = [];
+                    var baseNote = new Note(parseInt(NoteValue[j]), 4, 1);
+                    baseNote.value = (baseNote.value + transpose) % 12;
+                    for (var k = 0; k < kt.intervals.length; k++) {
+                        var tempNote = getNoteOfDistance(baseNote, kt.intervals[k]);
+                        allKeyNotes.push(tempNote.value);
+                    }
 
-                allKeys.push(new Key(j + " " + kt.name, allKeyNotes, getSharpsFromNotesAndTranspose(allKeyNotes), getFlatsFromNotesAndTranspose( allKeyNotes)));
+                    allKeys.push(new Key(j + " " + kt.name, allKeyNotes, getSharpsFromNotesAndTranspose(allKeyNotes), getFlatsFromNotesAndTranspose(allKeyNotes)));
+                }
             }
         }
 
@@ -75,7 +77,7 @@
 
         private static _instance: KeyHolder;
 
-        static Instance(): KeyHolder {
+        static get Instance(): KeyHolder {
             if (!KeyHolder._instance) {
                 KeyHolder._instance = new KeyHolder();
             }

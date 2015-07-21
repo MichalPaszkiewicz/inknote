@@ -38,6 +38,11 @@ module Inknote {
             // must clear items!
             this._items = [];
 
+            var ts = new Drawing.TimeSignature(4, 4);
+            ts.x = 40;
+            ts.y = 200;
+            this._items.push(ts);
+
             var staveGroup = <Model.Instrument[]>getItemsWhere(currentProject.instruments,
                 function (instrument: Model.Instrument) {
                     return instrument.visible;
@@ -45,7 +50,7 @@ module Inknote {
 
             var startHeight = 180;
 
-            var startX = 0;
+            var startX = 50;
 
             for (var i = 0; i < staveGroup.length; i++) {
                 this._items.push(new Drawing.Stave(startHeight, staveGroup[i].name));
@@ -59,7 +64,7 @@ module Inknote {
                                 var noteItem = <Model.Note> bar.items[l];
                                 var drawNoteItem = getDrawingItemFromNote(noteItem)
                                 drawNoteItem.x = startX += 20;
-                                drawNoteItem.y = startHeight;
+                                drawNoteItem.y = startHeight + 20 - noteItem.value * 5;
 
                                 this._items.push(drawNoteItem);
                             }
@@ -96,6 +101,36 @@ module Inknote {
 
             this._refresh = false;
             return this._items;
+        }
+
+        cursorLeft() {
+            var lastID = null;
+
+            for (var i = 0; i < this._items.length; i++) {
+                var id = this._items[i].ID;
+
+                if (id == this.selectID) {
+                    this.selectID = lastID;
+                    break;
+                }
+
+                lastID = id;
+            }
+        }
+
+        cursorRight() {
+            var lastID = null;
+
+            for (var i = 0; i < this._items.length; i++) {
+                var id = this._items[i].ID;
+
+                if (lastID == this.selectID) {
+                    this.selectID = id;
+                    break;
+                }
+
+                lastID = id;
+            }
         }
 
         constructor() {

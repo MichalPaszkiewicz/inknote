@@ -2,7 +2,7 @@
 
     var splash = new Drawing.LoadingSplash();
 
-    var name = new Drawing.Name("");
+    export var name = new Drawing.Name("");
 
     export function toDrawing(drawer: DrawService): IDrawable[] {
 
@@ -88,6 +88,24 @@
     function compressBar(bar: Model.Bar): Compressed.Bar {
         var result = new Compressed.Bar();
 
+        for (var i = 0; i < bar.items.length; i++) {
+            if (bar.items[i] instanceof Model.Note) {
+                var compressedNote = compressNote(<Model.Note>bar.items[i]);
+
+                result.items.push(compressedNote);
+            }
+            else if (bar.items[i] instanceof Model.Rest) {
+                var compressedRest = compressRest(<Model.Rest>bar.items[i])
+
+                result.items.push(compressedRest);
+            }
+            else if (bar.items[i] instanceof Model.Chord) {
+                var compressedChord = compressChord(<Model.Chord>bar.items[i]);
+
+                result.items.push(compressedChord);
+            }
+        }
+
         return result;
     }
 
@@ -107,6 +125,12 @@
 
     function compressNote(note: Model.Note): Compressed.CompressedNote {
         var result = new Compressed.CompressedNote(note.value, note.octave, note.length);
+
+        return result;
+    }
+
+    function compressRest(rest: Model.Rest): Compressed.CompressedRest {
+        var result = new Compressed.CompressedRest(rest.length);
 
         return result;
     }
@@ -157,6 +181,28 @@
     function decompressBar(bar: Compressed.Bar): Model.Bar {
         var result = new Model.Bar();
 
+        for (var i = 0; i < bar.items.length; i++) {
+            if (bar.items[i].i == Compressed.ItemIdentifier.NOTE) {
+                var decompressedNote = decompressNote(<Compressed.CompressedNote>bar.items[i]);
+
+                result.items.push(decompressedNote);
+            }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.REST) {
+                var decompressedRest = decompressRest(<Compressed.CompressedRest>bar.items[i]);
+
+                result.items.push(decompressedRest);
+            }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.CHORD) {
+                var decompressedChord = decompressChord(<Compressed.CompressedChord>bar.items[i]);
+
+                result.items.push(decompressedChord);
+            }
+            else {
+                log("object in bar unidentified", MessageType.Warning);
+                console.log(bar.items[i]);
+            }
+        }
+
         return result;
     }
 
@@ -176,6 +222,12 @@
 
     function decompressNote(note: Compressed.CompressedNote): Model.Note {
         var result = new Model.Note(note.value, note.octave, note.length);
+
+        return result;
+    }
+
+    function decompressRest(rest: Compressed.CompressedRest): Model.Rest {
+        var result = new Model.Rest(rest.length);
 
         return result;
     }

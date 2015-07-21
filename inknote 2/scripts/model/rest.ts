@@ -2,7 +2,9 @@
 
     export class Rest {
 
-        length: NoteLength;
+        constructor(public length: NoteLength) {
+
+        }
 
     }
 

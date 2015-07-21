@@ -19,6 +19,7 @@
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />
+/// <reference path="scripts/model/clef.ts" />
 /// <reference path="scripts/model/timesignature.ts" />
 /// <reference path="scripts/model/notation.ts" />
 /// <reference path="scripts/model/notevalue.ts" />
@@ -32,8 +33,10 @@
 /// <reference path="scripts/model/drawingsettings.ts" />
 
 // compressed
+/// <reference path="scripts/model/compressed/compresseditemidentifier.ts" />
 /// <reference path="scripts/model/compressed/compressednote.ts" />
 /// <reference path="scripts/model/compressed/compressedchord.ts" />
+/// <reference path="scripts/model/compressed/compressedrest.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />
@@ -56,6 +59,8 @@
 /// <reference path="scripts/drawings/colours.ts" />
 /// <reference path="scripts/drawings/background.ts" />
 /// <reference path="scripts/drawings/stave.ts" />
+/// <reference path="scripts/drawings/clef.ts" />
+/// <reference path="scripts/drawings/timesignature.ts" />
 /// <reference path="scripts/drawings/sharp.ts" />
 /// <reference path="scripts/drawings/flat.ts" />
 /// <reference path="scripts/drawings/natural.ts" />
@@ -83,6 +88,7 @@
 /// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
+/// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
  
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />

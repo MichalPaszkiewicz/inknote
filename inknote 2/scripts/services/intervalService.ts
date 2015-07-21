@@ -47,4 +47,5 @@
     export function getMajorSeventh(note: Model.Note): Model.Note{
         return getNoteOfDistance(note, 11);
     }
+
 } 

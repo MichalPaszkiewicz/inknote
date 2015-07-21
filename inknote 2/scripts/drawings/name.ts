@@ -39,6 +39,7 @@
                     if (this.name.length > 0) {
                         ctx.beginPath();
                         ctx.fillStyle = Colours.black;
+                        ctx.font = Fonts.small;
                         ctx.textAlign = "center";
                         ctx.fillText("Click delete to clear text", canvas.width / 2, 50);
                         ctx.fill();
@@ -46,6 +47,7 @@
                     else {
                         ctx.beginPath();
                         ctx.fillStyle = Colours.black;
+                        ctx.font = Fonts.small;
                         ctx.textAlign = "center";
                         ctx.fillText("Please type a project name", canvas.width / 2, 50);
                         ctx.fill();

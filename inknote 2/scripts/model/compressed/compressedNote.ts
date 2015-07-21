@@ -2,6 +2,8 @@
 
     export class CompressedNote {
 
+        i: ItemIdentifier = ItemIdentifier.NOTE;
+
         constructor(
             public value: Model.NoteValue,
             public octave: number,

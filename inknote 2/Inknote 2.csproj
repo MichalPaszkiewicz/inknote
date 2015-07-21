@@ -56,6 +56,7 @@
     <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenuButton.ts" />
     <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
+    <TypeScriptCompile Include="scripts\drawings\clef.ts" />
     <TypeScriptCompile Include="scripts\drawings\colours.ts" />
     <TypeScriptCompile Include="scripts\drawings\file.ts" />
     <TypeScriptCompile Include="scripts\drawings\flat.ts" />
@@ -67,6 +68,7 @@
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
     <TypeScriptCompile Include="scripts\drawings\natural.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\lengthControl.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\noteControlBackground.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\piano.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\pianoKey.ts" />
@@ -80,6 +82,7 @@
     <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollThumbnail.ts" />
     <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
     <TypeScriptCompile Include="scripts\drawings\stave.ts" />
+    <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
     <TypeScriptCompile Include="scripts\helpers\array.ts" />
     <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
     <TypeScriptCompile Include="scripts\helpers\maths.ts" />
@@ -100,11 +103,14 @@
     <TypeScriptCompile Include="scripts\model\chordNotation\notationType.ts" />
     <TypeScriptCompile Include="scripts\model\chordNotation\standardChordNotation.ts" />
     <TypeScriptCompile Include="scripts\model\chordNotation\upper_lowerChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\clef.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedBar.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedChord.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedInstrument.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedItemIdentifier.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedRest.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
     <TypeScriptCompile Include="scripts\model\instrument.ts" />

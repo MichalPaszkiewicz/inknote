@@ -13,6 +13,7 @@
 
         piano: Drawing.Piano = new Drawing.Piano();
         private background: Drawing.NoteControlBackground = new Drawing.NoteControlBackground();
+        private lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
 
         x = 0;
         y: number;
@@ -33,9 +34,14 @@
             this.background.y = this.y;
             noteControls.push(this.background);
 
+            this.lengthControl.y = this.y + this.height / 4;
+            this.lengthControl.width = this.width;
+            this.lengthControl.height = this.height / 4;
+            noteControls.push(this.lengthControl);
+
             this.piano.width = this.width;
             this.piano.height = this.height / 2;
-            this.piano.y = this.y + this.height / 2
+            this.piano.y = this.y + this.height / 2;
             noteControls.push(this.piano);
 
             return noteControls;
@@ -61,6 +67,7 @@
         constructor() {
             this.piano.ID = this.ID;
             this.background.ID = this.ID;
+            this.lengthControl.ID = this.ID;
         }
     }
 
