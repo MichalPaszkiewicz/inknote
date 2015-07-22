@@ -19,7 +19,19 @@
             return result;
         }
 
-        selectedLength: Model.NoteValue = 4;
+        selectedLength: Model.NoteLength = 3;
+
+        click(e: MouseEvent) {
+            var x = e.clientX;
+
+            var oneEighth = this.width / 8;
+
+            for (var i = 0; i < 8; i++) {
+                if (x > i * oneEighth && x < (i + 1) * oneEighth) {
+                    this.selectedLength = i;
+                }
+            }
+        }
         
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 

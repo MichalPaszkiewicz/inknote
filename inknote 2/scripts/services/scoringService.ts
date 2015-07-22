@@ -20,6 +20,9 @@ module Inknote {
         hoverID: string;
         selectID: string;
 
+        oldScrollY: number = 0;
+
+        // todo: ensure
         // should refresh on:
         // change of window size.
         // change of project -- Done in here inside getItems().
@@ -98,6 +101,12 @@ module Inknote {
                 // get items from project
                 this.updateItems();   
             }
+
+            for (var i = 0; i < this._items.length; i++) {
+                this._items[i].y = this._items[i].y + this.oldScrollY - ScrollService.Instance.y;
+            }
+
+            this.oldScrollY = ScrollService.Instance.y;
 
             this._refresh = false;
             return this._items;

@@ -13,7 +13,7 @@
 
         piano: Drawing.Piano = new Drawing.Piano();
         private background: Drawing.NoteControlBackground = new Drawing.NoteControlBackground();
-        private lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
+        lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
 
         x = 0;
         y: number;

@@ -1412,8 +1412,29 @@ var Inknote;
                 ctx.beginPath();
                 ctx.fillStyle = Drawing.Colours.white;
                 ctx.strokeStyle = Drawing.Colours.black;
-                ctx.rect(this.x - 5, this.y - 5, 10, 10);
+                if (this.hover || this.select) {
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                // lines down
+                ctx.moveTo(this.x - 5, this.y - 5);
+                ctx.lineTo(this.x - 5, this.y + 5);
+                ctx.moveTo(this.x + 5, this.y - 5);
+                ctx.lineTo(this.x + 5, this.y + 5);
+                ctx.lineWidth = 2;
+                // lines across
+                ctx.moveTo(this.x - 5, this.y - 3);
+                ctx.lineTo(this.x + 5, this.y - 3);
+                ctx.moveTo(this.x - 5, this.y + 3);
+                ctx.lineTo(this.x + 5, this.y + 3);
+                ctx.lineWidth = 1;
                 ctx.stroke();
+                if (this.select) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.stroke();
+                }
                 return true;
             };
             return Breve;
@@ -1798,20 +1819,18 @@ var Inknote;
             function Name(name) {
                 this.ID = Inknote.getID();
                 this.x = 0;
-                this.y = 0;
                 this.order = 100;
                 this.hover = false;
                 this.select = false;
                 this.name = name;
                 this.x = 0;
-                this.y = 0;
                 var self = this;
                 self.draw = function (ctx, canvas, scale) {
                     if (self.select) {
                         ctx.beginPath();
                         ctx.fillStyle = Drawing.Colours.white;
                         var width = Inknote.Managers.ProjectManager.Instance.currentProject.name.length * 30 + 100;
-                        ctx.rect(canvas.width / 2 - width / 2, 60, width, 50);
+                        ctx.rect(canvas.width / 2 - width / 2, this.y + 60, width, 50);
                         ctx.strokeStyle = Drawing.Colours.lightOrange;
                         ctx.lineWidth = 10;
                         ctx.stroke();
@@ -1820,7 +1839,7 @@ var Inknote;
                             ctx.fillStyle = Drawing.Colours.black;
                             ctx.font = Drawing.Fonts.small;
                             ctx.textAlign = "center";
-                            ctx.fillText("Click delete to clear text", canvas.width / 2, 50);
+                            ctx.fillText("Click delete to clear text", canvas.width / 2, this.y + 50);
                             ctx.fill();
                         }
                         else {
@@ -1828,7 +1847,7 @@ var Inknote;
                             ctx.fillStyle = Drawing.Colours.black;
                             ctx.font = Drawing.Fonts.small;
                             ctx.textAlign = "center";
-                            ctx.fillText("Please type a project name", canvas.width / 2, 50);
+                            ctx.fillText("Please type a project name", canvas.width / 2, this.y + 50);
                             ctx.fill();
                         }
                     }
@@ -1836,26 +1855,36 @@ var Inknote;
                     ctx.fillStyle = Drawing.Colours.orange;
                     ctx.font = Drawing.Fonts.title;
                     ctx.textAlign = "center";
-                    ctx.fillText(self.name, canvas.width / 2, 100);
+                    ctx.fillText(self.name, canvas.width / 2, this.y + 100);
                     ctx.fill();
                     if (self.hover) {
                         ctx.beginPath();
-                        ctx.rect(canvas.width / 2 - 50, 105, 100, 10);
+                        ctx.rect(canvas.width / 2 - 50, this.y + 105, 100, 10);
                         ctx.fill();
                         if (!self.select) {
                             ctx.beginPath();
                             ctx.font = Drawing.Fonts.small;
                             ctx.fillStyle = Drawing.Colours.black;
                             ctx.textAlign = "center";
-                            ctx.fillText("Click to edit project name", canvas.width / 2, 50);
+                            ctx.fillText("Click to edit project name", canvas.width / 2, this.y + 50);
                             ctx.fill();
                         }
                     }
                     return true;
                 };
             }
+            Object.defineProperty(Name.prototype, "y", {
+                get: function () {
+                    return -Inknote.ScrollService.Instance.y;
+                },
+                set: function (val) {
+                    return;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Name.prototype.isOver = function (x, y, canvas) {
-                return y < 100 && y > 65 && x > canvas.width / 2 - 150 && x < canvas.width / 2 + 150;
+                return y < this.y + 100 && y > this.y + 65 && x > canvas.width / 2 - 150 && x < canvas.width / 2 + 150;
             };
             return Name;
         })();
@@ -2914,7 +2943,7 @@ var Inknote;
                 else {
                     for (var i = 0; i < this.allKeys.length; i++) {
                         if (this.allKeys[i].hover == true) {
-                            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(this.allKeys[i].noteValue, this.octave, 3 /* Crotchet */));
+                            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(this.allKeys[i].noteValue, this.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
                         }
                     }
                 }
@@ -2937,7 +2966,7 @@ var Inknote;
                 this.height = 100;
                 this.order = 200;
                 this.attached = [];
-                this.selectedLength = 4;
+                this.selectedLength = 3;
                 this.attached.push(new Drawing.Breve(true));
                 this.attached.push(new Drawing.SemiBreve(true));
                 this.attached.push(new Drawing.Minim(true));
@@ -2950,6 +2979,15 @@ var Inknote;
             LengthControlBar.prototype.isOver = function (x, y) {
                 var result = y > this.y && y < this.y + this.height;
                 return result;
+            };
+            LengthControlBar.prototype.click = function (e) {
+                var x = e.clientX;
+                var oneEighth = this.width / 8;
+                for (var i = 0; i < 8; i++) {
+                    if (x > i * oneEighth && x < (i + 1) * oneEighth) {
+                        this.selectedLength = i;
+                    }
+                }
             };
             LengthControlBar.prototype.draw = function (ctx, canvas) {
                 ctx.beginPath();
@@ -3383,6 +3421,7 @@ var Inknote;
         function ScoringService() {
             this._refresh = false;
             this._items = [];
+            this.oldScrollY = 0;
             this.refresh();
         }
         Object.defineProperty(ScoringService, "Instance", {
@@ -3395,6 +3434,7 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        // todo: ensure
         // should refresh on:
         // change of window size.
         // change of project -- Done in here inside getItems().
@@ -3455,6 +3495,10 @@ var Inknote;
                 // get items from project
                 this.updateItems();
             }
+            for (var i = 0; i < this._items.length; i++) {
+                this._items[i].y = this._items[i].y + this.oldScrollY - Inknote.ScrollService.Instance.y;
+            }
+            this.oldScrollY = Inknote.ScrollService.Instance.y;
             this._refresh = false;
             return this._items;
         };
@@ -4863,6 +4907,9 @@ var Inknote;
             this.drawService.canvas.ondblclick = function (e) {
                 self.dblClick(e);
             };
+            this.drawService.canvas.onmousedown = function (e) {
+                self.mouseDown(e, drawService);
+            };
             // right click
             this.drawService.canvas.oncontextmenu = function (e) {
                 self.rightClick(e);
@@ -4922,7 +4969,12 @@ var Inknote;
                     }
                     // note control.
                     if (selectedID == Inknote.NoteControlService.Instance.ID) {
-                        Inknote.NoteControlService.Instance.piano.click(e);
+                        if (e.clientY - 50 > Inknote.NoteControlService.Instance.piano.y) {
+                            Inknote.NoteControlService.Instance.piano.click(e);
+                        }
+                        else {
+                            Inknote.NoteControlService.Instance.lengthControl.click(e);
+                        }
                         return;
                     }
                     // if keyboard clicked, do keyboard action.
@@ -4981,6 +5033,19 @@ var Inknote;
                     Inknote.Managers.ProjectManager.Instance.openSelectedProject();
                 }
             }
+        };
+        CanvasControl.prototype.mouseDown = function (e, drawService) {
+            var onMove = function (e) {
+                // ScrollService.Instance.x += e.movementX;
+                Inknote.ScrollService.Instance.y -= e.movementY;
+            };
+            drawService.canvas.addEventListener("mousemove", onMove, false);
+            drawService.canvas.onmouseup = function (e) {
+                drawService.canvas.removeEventListener("mousemove", onMove, false);
+            };
+            drawService.canvas.onmouseout = function (e) {
+                drawService.canvas.removeEventListener("mousemove", onMove, false);
+            };
         };
         CanvasControl.prototype.rightClick = function (e) {
             Inknote.RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);
@@ -5106,7 +5171,7 @@ var Inknote;
             }
         }
         if (noteVal != null) {
-            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(noteVal, Inknote.NoteControlService.Instance.piano.octave, 3 /* Crotchet */));
+            Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(noteVal, Inknote.NoteControlService.Instance.piano.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
         }
         if (inst.selectID == proj.ID) {
             if (e.keyCode == 13) {

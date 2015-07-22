@@ -1,5 +1,10 @@
 ﻿module Inknote {
 
+    interface MouseMoveEvent extends MouseEvent {
+        movementX: number;
+        movementY: number;
+    }
+
     export class CanvasControl{
 
         hover(e: MouseEvent) {
@@ -66,7 +71,12 @@
 
                     // note control.
                     if (selectedID == NoteControlService.Instance.ID) {
-                        NoteControlService.Instance.piano.click(e);
+                        if (e.clientY - 50 > NoteControlService.Instance.piano.y) {
+                            NoteControlService.Instance.piano.click(e);
+                        }
+                        else{
+                            NoteControlService.Instance.lengthControl.click(e);
+                        }
                         return;
                     }
 
@@ -135,6 +145,23 @@
             }            
         }
 
+        mouseDown(e: MouseEvent, drawService: DrawService) {
+            var onMove = function (e: MouseMoveEvent) {
+                // ScrollService.Instance.x += e.movementX;
+                ScrollService.Instance.y -= e.movementY;
+            }
+
+            drawService.canvas.addEventListener("mousemove", onMove, false);
+
+            drawService.canvas.onmouseup = function (e: MouseEvent) {
+                drawService.canvas.removeEventListener("mousemove", onMove, false);
+            }
+
+            drawService.canvas.onmouseout = function (e: MouseEvent) {
+                drawService.canvas.removeEventListener("mousemove", onMove, false);
+            }
+        }
+
         rightClick(e: MouseEvent) {
 
             RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);
@@ -163,6 +190,10 @@
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
                 self.dblClick(e);
+            }
+
+            this.drawService.canvas.onmousedown = function (e: MouseEvent) {
+                self.mouseDown(e, drawService);
             }
 
             // right click

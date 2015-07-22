@@ -180,7 +180,11 @@
                 for (var i = 0; i < this.allKeys.length; i++) {
                     if (this.allKeys[i].hover == true) {
                         
-                        NoteControlService.Instance.addNote(new Model.Note(this.allKeys[i].noteValue, this.octave, Model.NoteLength.Crotchet));
+                        NoteControlService.Instance.addNote(
+                            new Model.Note(
+                                this.allKeys[i].noteValue,
+                                this.octave,
+                                NoteControlService.Instance.lengthControl.selectedLength));
 
                     }
                 }

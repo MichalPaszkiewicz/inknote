@@ -97,7 +97,11 @@
         }
 
         if (noteVal != null) {
-            NoteControlService.Instance.addNote(new Model.Note(noteVal, NoteControlService.Instance.piano.octave, Model.NoteLength.Crotchet));
+            NoteControlService.Instance.addNote(
+                new Model.Note(
+                    noteVal,
+                    NoteControlService.Instance.piano.octave,
+                    NoteControlService.Instance.lengthControl.selectedLength));
         }
 
         if (inst.selectID == proj.ID) {

@@ -123,8 +123,38 @@
             ctx.beginPath();
             ctx.fillStyle = Colours.white;
             ctx.strokeStyle = Colours.black;
-            ctx.rect(this.x - 5, this.y - 5, 10, 10);
+
+            if (this.hover || this.select) {
+                ctx.strokeStyle = Colours.orange;
+            }
+
+            // lines down
+            ctx.moveTo(this.x - 5, this.y - 5);
+            ctx.lineTo(this.x - 5, this.y + 5);
+            
+            ctx.moveTo(this.x + 5, this.y - 5);
+            ctx.lineTo(this.x + 5, this.y + 5);
+
+            ctx.lineWidth = 2;
+
+            // lines across
+            ctx.moveTo(this.x - 5, this.y - 3);
+            ctx.lineTo(this.x + 5, this.y - 3);
+
+            ctx.moveTo(this.x - 5, this.y + 3);
+            ctx.lineTo(this.x + 5, this.y + 3);
+
+            ctx.lineWidth = 1;
+
             ctx.stroke();
+
+            if (this.select) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+                ctx.strokeStyle = Colours.orange;
+                ctx.fillStyle = Colours.orange;
+                ctx.stroke();
+            }
 
             return true;
         }
