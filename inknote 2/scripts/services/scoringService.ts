@@ -34,6 +34,7 @@ module Inknote {
         }
 
         updateItems() {
+            this.oldScrollY = 0;
             // put updating logic in here.
             var currentProject = Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;

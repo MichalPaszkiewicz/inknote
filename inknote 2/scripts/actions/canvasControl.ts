@@ -149,6 +149,7 @@
             var onMove = function (e: MouseMoveEvent) {
                 // ScrollService.Instance.x += e.movementX;
                 ScrollService.Instance.y -= e.movementY;
+                drawService.canvas.style.cursor = "-webkit-grabbing";
             }
 
             drawService.canvas.addEventListener("mousemove", onMove, false);

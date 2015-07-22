@@ -3445,6 +3445,7 @@ var Inknote;
             this._refresh = true;
         };
         ScoringService.prototype.updateItems = function () {
+            this.oldScrollY = 0;
             // put updating logic in here.
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;
@@ -5038,6 +5039,7 @@ var Inknote;
             var onMove = function (e) {
                 // ScrollService.Instance.x += e.movementX;
                 Inknote.ScrollService.Instance.y -= e.movementY;
+                drawService.canvas.style.cursor = "-webkit-grabbing";
             };
             drawService.canvas.addEventListener("mousemove", onMove, false);
             drawService.canvas.onmouseup = function (e) {
