@@ -97,11 +97,16 @@
         }
 
         if (noteVal != null) {
-            NoteControlService.Instance.addNote(
-                new Model.Note(
-                    noteVal,
-                    NoteControlService.Instance.piano.octave,
-                    NoteControlService.Instance.lengthControl.selectedLength));
+            if (ScoringService.Instance.selectID == null) {
+                NoteControlService.Instance.addNote(
+                    new Model.Note(
+                        noteVal,
+                        NoteControlService.Instance.piano.octave,
+                        NoteControlService.Instance.lengthControl.selectedLength));
+            }
+            else {
+                NoteControlService.Instance.editNoteValueAndOctave(noteVal, NoteControlService.Instance.piano.octave);
+            }
         }
 
         if (inst.selectID == proj.ID) {

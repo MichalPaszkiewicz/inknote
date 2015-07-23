@@ -14,7 +14,7 @@
         attached: IDrawable[] = [];
 
         isOver(x: number, y: number): boolean {
-            var result = y > this.y && y < this.y + this.height;
+            var result = y > this.y && y < this.y + this.height && x < this.x + this.width;
 
             return result;
         }
@@ -34,13 +34,13 @@
         }
         
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-
+            ctx.globalAlpha = 0.5;
             ctx.beginPath();
             ctx.fillStyle = Colours.white;
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.fill();
 
-            var totalWidth = canvas.width;
+            var totalWidth = this.width;
             var oneEighth = totalWidth / 8;
 
             for (var i = 0; i < 8; i++) {
@@ -58,7 +58,7 @@
                 this.attached[i].x = i * oneEighth + oneEighth / 2;
                 this.attached[i].draw(ctx, canvas);
             }
-
+            ctx.globalAlpha = 1;
             return true;
         }
 

@@ -25,7 +25,7 @@
 
         isOver(x: number, y: number) {
 
-            var result = y > this.y && y < this.y + this.height;
+            var result = y > this.y && y < this.y + this.height && x < this.x + this.width;
 
             this.leftHover = false;
             this.rightHover = false;
@@ -67,7 +67,7 @@
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-
+            ctx.globalAlpha = 0.5;
             ctx.beginPath();
 
             ctx.fillStyle = Colours.white;
@@ -99,18 +99,20 @@
                     ctx.fill();
                 }
 
-                noteVal = (noteVal + 1) % 12;
+                if (i != 8) {
+                    noteVal = (noteVal + 1) % 12;
 
-                if (this.whiteKeys[whiteKeyNum] == null) {
-                    this.whiteKeys.push(new WhiteKey(this.width * i / 9, this.y, this.width / 9, this.height, noteVal));
+                    if (this.whiteKeys[whiteKeyNum] == null) {
+                        this.whiteKeys.push(new WhiteKey(this.width * i / 9, this.y, this.width / 9, this.height, noteVal));
+                    }
+
+                    this.whiteKeys[whiteKeyNum].x = this.width * i / 9;
+                    this.whiteKeys[whiteKeyNum].y = this.y;
+                    this.whiteKeys[whiteKeyNum].width = this.width / 9;
+                    this.whiteKeys[whiteKeyNum].height = this.height;
+
+                    whiteKeyNum++;
                 }
-
-                this.whiteKeys[whiteKeyNum].x = this.width * i / 9;
-                this.whiteKeys[whiteKeyNum].y = this.y;
-                this.whiteKeys[whiteKeyNum].width = this.width / 9;
-                this.whiteKeys[whiteKeyNum].height = this.height;
-
-                whiteKeyNum++;
 
                 if (i == 1 || i == 2 || i == 4 || i == 5 || i == 6) {
 
@@ -136,7 +138,9 @@
             }
 
             for (var i = 0; i < this.blackKeys.length; i++) {
+                ctx.globalAlpha = 1;
                 this.blackKeys[i].draw(ctx);
+                ctx.globalAlpha = 0.5;
             }
 
             ctx.strokeStyle = Colours.black;
@@ -150,9 +154,9 @@
 
             // right arrow
             ctx.beginPath();
-            ctx.moveTo(canvas.width - this.width / 15, this.y + this.height * 3 / 4);
-            ctx.lineTo(canvas.width - this.width / 20, this.y + this.height / 2);
-            ctx.lineTo(canvas.width - this.width / 15, this.y + this.height / 4);
+            ctx.moveTo(this.width - this.width / 15, this.y + this.height * 3 / 4);
+            ctx.lineTo(this.width - this.width / 20, this.y + this.height / 2);
+            ctx.lineTo(this.width - this.width / 15, this.y + this.height / 4);
             ctx.stroke();
 
             // text
@@ -164,6 +168,7 @@
             }
             ctx.font = (Math.min((this.width / 20), this.height / 4)) + "px Arial";
             ctx.fillText("C" + this.octave, this.width * 1 / 6, this.y + this.height * 3 / 4);
+            ctx.globalAlpha = 1;
 
             return true;
         }
@@ -180,12 +185,16 @@
                 for (var i = 0; i < this.allKeys.length; i++) {
                     if (this.allKeys[i].hover == true) {
                         
-                        NoteControlService.Instance.addNote(
-                            new Model.Note(
-                                this.allKeys[i].noteValue,
-                                this.octave,
-                                NoteControlService.Instance.lengthControl.selectedLength));
-
+                        if (ScoringService.Instance.selectID == null) {
+                            NoteControlService.Instance.addNote(
+                                new Model.Note(
+                                    this.allKeys[i].noteValue,
+                                    this.octave,
+                                    NoteControlService.Instance.lengthControl.selectedLength));
+                        }
+                        else {
+                            NoteControlService.Instance.editNoteValueAndOctave(this.allKeys[i].noteValue, this.octave);
+                        }
                     }
                 }
             }

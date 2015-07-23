@@ -18,6 +18,7 @@
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+            ctx.globalAlpha = 0.5;
 
             ctx.beginPath();
 
@@ -28,6 +29,7 @@
 
             ctx.fill();
             ctx.stroke();
+            ctx.globalAlpha = 1;
 
             return true;
         }

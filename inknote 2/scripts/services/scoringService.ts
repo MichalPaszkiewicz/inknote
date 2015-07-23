@@ -69,6 +69,7 @@ module Inknote {
                                 var drawNoteItem = getDrawingItemFromNote(noteItem)
                                 drawNoteItem.x = startX += 20;
                                 drawNoteItem.y = startHeight + 20 - noteItem.value * 5;
+                                drawNoteItem.ID = noteItem.ID;
 
                                 this._items.push(drawNoteItem);
                             }
@@ -77,6 +78,7 @@ module Inknote {
                                 var drawRestItem = getDrawingItemFromRest(restItem)
                                 drawRestItem.x = startX += 20;
                                 drawRestItem.y = startHeight;
+                                drawRestItem.ID = restItem.ID;
 
                                 this._items.push(drawRestItem);
                             }
@@ -130,16 +132,22 @@ module Inknote {
 
         cursorRight() {
             var lastID = null;
+            var gone = false;
 
             for (var i = 0; i < this._items.length; i++) {
                 var id = this._items[i].ID;
 
                 if (lastID == this.selectID) {
                     this.selectID = id;
+                    gone = true;
                     break;
                 }
 
                 lastID = id;
+            }
+
+            if (!gone) {
+                this.selectID = null;
             }
         }
 
