@@ -5089,6 +5089,8 @@ var Inknote;
                     var movementX = touch.pageX - lastTouch.pageX;
                     var movementY = touch.pageY - lastTouch.pageY;
                     Inknote.ScrollService.Instance.y -= movementY;
+                    lastTouch.pageX = touch.pageX;
+                    lastTouch.pageY = touch.pageY;
                 }
             };
             drawService.canvas.addEventListener("touchmove", onMove, false);

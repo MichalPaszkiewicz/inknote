@@ -233,6 +233,9 @@
                     var movementY = touch.pageY - lastTouch.pageY;
 
                     ScrollService.Instance.y -= movementY;
+
+                    lastTouch.pageX = touch.pageX;
+                    lastTouch.pageY = touch.pageY;
                 }
             }
 
