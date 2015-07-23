@@ -4160,6 +4160,10 @@ var Inknote;
                 },
                 set: function (item) {
                     var pageURL = "?" + pageName(item);
+                    if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
+                        Inknote.ScrollService.Instance.x = 0;
+                        Inknote.ScrollService.Instance.y = 0;
+                    }
                     switch (item) {
                         case 2 /* File */:
                             break;
