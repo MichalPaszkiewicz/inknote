@@ -4890,9 +4890,23 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    ;
+    ;
+    var TouchCopy = (function () {
+        function TouchCopy(identifier, pageX, pageY) {
+            this.identifier = identifier;
+            this.pageX = pageX;
+            this.pageY = pageY;
+        }
+        return TouchCopy;
+    })();
+    function copyTouch(touch) {
+        return new TouchCopy(touch.identifier, touch.pageX, touch.pageY);
+    }
     var CanvasControl = (function () {
         function CanvasControl(drawService) {
             this.drawService = drawService;
+            this.touchCopies = [];
             var self = this;
             this.drawService.canvas.onmouseover = function (e) {
                 self.drawService.canvas.onmousemove = function (me) {
@@ -4915,6 +4929,9 @@ var Inknote;
             this.drawService.canvas.oncontextmenu = function (e) {
                 self.rightClick(e);
             };
+            this.drawService.canvas.addEventListener("touchstart", function (e) {
+                self.touchStart(e, self.drawService);
+            }, false);
         }
         CanvasControl.prototype.hover = function (e) {
             var allItems = this.drawService.items;
@@ -5048,6 +5065,39 @@ var Inknote;
             drawService.canvas.onmouseout = function (e) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
             };
+        };
+        CanvasControl.prototype.getTouchCopyByID = function (ID) {
+            for (var i = 0; i < this.touchCopies.length; i++) {
+                if (this.touchCopies[i].identifier == ID) {
+                    return this.touchCopies[i];
+                }
+            }
+            return null;
+        };
+        CanvasControl.prototype.touchStart = function (e, drawService) {
+            var touches = e.touches;
+            this.touchCopies = [];
+            for (var i = 0; i < touches.length; i++) {
+                this.touchCopies.push(copyTouch(touches[i]));
+            }
+            var self = this;
+            var onMove = function (e) {
+                var touches = e.changedTouches;
+                for (var i = 0; i < touches.length; i++) {
+                    var touch = touches[i];
+                    var lastTouch = self.getTouchCopyByID(touch.identifier);
+                    var movementX = touch.pageX - lastTouch.pageX;
+                    var movementY = touch.pageY - lastTouch.pageY;
+                    Inknote.ScrollService.Instance.y -= movementY;
+                }
+            };
+            drawService.canvas.addEventListener("touchmove", onMove, false);
+            drawService.canvas.addEventListener("touchend", function (e) {
+                drawService.canvas.removeEventListener("touchmove", onMove, false);
+            }, false);
+            drawService.canvas.addEventListener("touchleave", function (e) {
+                drawService.canvas.removeEventListener("touchmove", onMove, false);
+            }, false);
         };
         CanvasControl.prototype.rightClick = function (e) {
             Inknote.RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);

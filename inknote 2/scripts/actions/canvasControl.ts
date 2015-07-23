@@ -5,7 +5,43 @@
         movementY: number;
     }
 
-    export class CanvasControl{
+    interface Touch {
+        identifier: number;
+        target: EventTarget;
+        screenX: number;
+        screenY: number;
+        clientX: number;
+        clientY: number;
+        pageX: number;
+        pageY: number;
+    };
+
+    interface TouchEvent extends UIEvent {
+        touches: Touch[];
+        targetTouches: Touch[];
+        changedTouches: Touch[];
+        altKey: boolean;
+        metaKey: boolean;
+        ctrlKey: boolean;
+        shiftKey: boolean;
+    };
+
+    declare var TouchEvent: {
+        prototype: TouchEvent;
+        new (): TouchEvent;
+    }
+
+    class TouchCopy {
+        constructor(public identifier: number, public pageX: number, public pageY: number) {
+
+        }
+    }
+
+    function copyTouch(touch: Touch): TouchCopy {
+        return new TouchCopy(touch.identifier, touch.pageX, touch.pageY);
+    }
+
+    export class CanvasControl {
 
         hover(e: MouseEvent) {
             var allItems = this.drawService.items;
@@ -18,7 +54,7 @@
                     // log(allItems[i].y + ":" + e.clientY + ":" + ScrollService.Instance.y);
 
                     if (Managers.PageManager.Current.page == Managers.Page.Score) {
-                        if (allItems[i] instanceof Notation){
+                        if (allItems[i] instanceof Notation) {
                             scoreItems.push(<Notation>allItems[i]);
                         }
                     }
@@ -74,7 +110,7 @@
                         if (e.clientY - 50 > NoteControlService.Instance.piano.y) {
                             NoteControlService.Instance.piano.click(e);
                         }
-                        else{
+                        else {
                             NoteControlService.Instance.lengthControl.click(e);
                         }
                         return;
@@ -142,7 +178,7 @@
                 if (Managers.ProjectManager.Instance.selectID) {
                     Managers.ProjectManager.Instance.openSelectedProject();
                 }
-            }            
+            }
         }
 
         mouseDown(e: MouseEvent, drawService: DrawService) {
@@ -163,6 +199,54 @@
             }
         }
 
+        touchCopies: TouchCopy[] = [];
+        getTouchCopyByID(ID: number): TouchCopy{
+            for (var i = 0; i < this.touchCopies.length; i++) {
+                if (this.touchCopies[i].identifier == ID) {
+                    return this.touchCopies[i];
+                }
+            }
+            return null;
+        }
+
+        touchStart(e: TouchEvent, drawService: DrawService) {
+
+            var touches = e.touches;
+
+            this.touchCopies = [];
+
+            for (var i = 0; i < touches.length; i++) {
+                this.touchCopies.push(copyTouch(touches[i]));
+            }
+
+            var self = this;
+
+            var onMove = function (e: TouchEvent) {
+                var touches = e.changedTouches;
+
+                for (var i = 0; i < touches.length; i++) {
+                    var touch = touches[i];
+
+                    var lastTouch = self.getTouchCopyByID(touch.identifier);
+
+                    var movementX = touch.pageX - lastTouch.pageX;
+                    var movementY = touch.pageY - lastTouch.pageY;
+
+                    ScrollService.Instance.y -= movementY;
+                }
+            }
+
+            drawService.canvas.addEventListener("touchmove", onMove, false);
+
+            drawService.canvas.addEventListener("touchend", function (e: TouchEvent) {
+                drawService.canvas.removeEventListener("touchmove", onMove, false);
+            }, false);
+
+            drawService.canvas.addEventListener("touchleave", function (e: TouchEvent) {
+                drawService.canvas.removeEventListener("touchmove", onMove, false);
+            }, false);
+        }
+
         rightClick(e: MouseEvent) {
 
             RightClickMenuService.Instance.openMenu(e.clientX, e.clientY - 50, this.drawService.canvas);
@@ -171,7 +255,7 @@
 
         }
 
-        constructor(public drawService: DrawService){
+        constructor(public drawService: DrawService) {
 
             var self = this;
 
@@ -180,7 +264,7 @@
                     self.hover(me);
                 }
             }
-             
+
             this.drawService.canvas.onmouseout = function (e: MouseEvent) {
                 self.drawService.canvas.onmousemove = null;
             }
@@ -202,7 +286,9 @@
                 self.rightClick(e);
             }
 
-            
+            this.drawService.canvas.addEventListener("touchstart", function (e: TouchEvent) {
+                self.touchStart(e, self.drawService);
+            }, false);
 
         }
 
