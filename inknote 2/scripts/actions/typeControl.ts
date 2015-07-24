@@ -93,15 +93,28 @@
                 case 39:
                     ScoringService.Instance.cursorRight();
                     break;
+                // up
+                case 38:
+                    NoteControlService.Instance.noteValueUp();
+                    break;
+                // down
+                case 40:
+                    NoteControlService.Instance.noteValueDown();
+                    break;
             }
         }
 
         if (noteVal != null) {
-            NoteControlService.Instance.addNote(
-                new Model.Note(
-                    noteVal,
-                    NoteControlService.Instance.piano.octave,
-                    NoteControlService.Instance.lengthControl.selectedLength));
+            if (ScoringService.Instance.selectID == null) {
+                NoteControlService.Instance.addNote(
+                    new Model.Note(
+                        noteVal,
+                        NoteControlService.Instance.piano.octave,
+                        NoteControlService.Instance.lengthControl.selectedLength));
+            }
+            else {
+                NoteControlService.Instance.editNoteValueAndOctave(noteVal, NoteControlService.Instance.piano.octave);
+            }
         }
 
         if (inst.selectID == proj.ID) {

@@ -24,7 +24,7 @@
 
         getItems(drawer: DrawService): IDrawable[]{
             this.y = drawer.canvas.height / 2;
-            this.width = drawer.canvas.width;
+            this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
 
             var noteControls = [];
@@ -59,6 +59,97 @@
             var bar = instrument.bars[0];
 
             bar.items.push(note);
+
+            ScoringService.Instance.refresh();
+
+        }
+
+        editNoteValueAndOctave(value: Model.NoteValue, octave: number) {
+
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == ScoringService.Instance.selectID) {
+                            if (item instanceof Model.Note) {
+                                item.value = value;
+                                item.octave = octave;
+                            }
+                            else if (item instanceof Model.Rest) {
+
+                            }
+                            else if (item instanceof Model.Chord) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            ScoringService.Instance.refresh();
+        }
+
+        noteValueUp() {
+            
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == ScoringService.Instance.selectID) {
+                            if (item instanceof Model.Note) {
+                                var newVal = item.value + 1;
+                                item.value = newVal%12;
+                                item.octave = newVal > 11 ? item.octave + 1 : item.octave;
+                            }
+                            else if (item instanceof Model.Rest) {
+
+                            }
+                            else if (item instanceof Model.Chord) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            ScoringService.Instance.refresh();
+
+        }
+
+        noteValueDown() {
+
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == ScoringService.Instance.selectID) {
+                            if (item instanceof Model.Note) {
+                                var newVal = item.value + 11;
+                                item.value = newVal % 12;
+                                item.octave = newVal < 12 ? item.octave - 1 : item.octave;
+                            }
+                            else if (item instanceof Model.Rest) {
+                                
+                            }
+                            else if (item instanceof Model.Chord) {
+                                
+                            }
+                        }
+                    }
+                }
+            }
 
             ScoringService.Instance.refresh();
 
