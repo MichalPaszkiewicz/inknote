@@ -93,6 +93,14 @@
                 case 39:
                     ScoringService.Instance.cursorRight();
                     break;
+                // up
+                case 38:
+                    NoteControlService.Instance.noteValueUp();
+                    break;
+                // down
+                case 40:
+                    NoteControlService.Instance.noteValueDown();
+                    break;
             }
         }
 

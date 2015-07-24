@@ -6,7 +6,8 @@
         ID = getID();
         hover: boolean;
         select: boolean;
-        x: number;
+        x: number = 30;
+        width: number = 0;
 
         isOver(x: number, y: number) {
             return false;
@@ -27,11 +28,13 @@
                 ctx.fillText(this.name, 40, this.y - 5);
             }
 
+            this.width = canvas.width - this.x * 2;
+
             for (var i = 0; i < 5; i++) {
                 ctx.beginPath();
                 ctx.strokeStyle = Colours.black;
-                ctx.moveTo(30, this.y + 10 * i);
-                ctx.lineTo(canvas.width - 30, this.y + 10 * i);
+                ctx.moveTo(this.x, this.y + 10 * i);
+                ctx.lineTo(canvas.width - this.x, this.y + 10 * i);
                 ctx.stroke();
             }
 

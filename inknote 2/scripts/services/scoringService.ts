@@ -42,11 +42,6 @@ module Inknote {
             // must clear items!
             this._items = [];
 
-            var ts = new Drawing.TimeSignature(4, 4);
-            ts.x = 40;
-            ts.y = 200;
-            this._items.push(ts);
-
             var staveGroup = <Model.Instrument[]>getItemsWhere(currentProject.instruments,
                 function (instrument: Model.Instrument) {
                     return instrument.visible;
@@ -56,12 +51,31 @@ module Inknote {
 
             var startX = 50;
 
+            var timeSignature = null;
+
             for (var i = 0; i < staveGroup.length; i++) {
-                this._items.push(new Drawing.Stave(startHeight, staveGroup[i].name));
+                var newStave = new Drawing.Stave(startHeight, staveGroup[i].name);
+
+                this._items.push(newStave);
 
                 for (var j = 0; j < staveGroup.length; j++) {
                     for (var k = 0; k < staveGroup[j].bars.length; k++) {
                         var bar = staveGroup[j].bars[k];
+
+                        var drawBar = new Drawing.Bar();
+
+                        var ts = new Drawing.TimeSignature(4, 4);
+                        ts.x = 40;
+                        ts.y = 200;
+
+                        drawBar.x = newStave.x;
+
+                        drawBar.y = startHeight;
+                        drawBar.height = 40;
+                        drawBar.width = 30;
+
+                        this._items.push(drawBar);
+                        this._items.push(ts);
 
                         for (var l = 0; l < bar.items.length; l++) {
                             if (bar.items[l] instanceof Model.Note) {
@@ -71,6 +85,8 @@ module Inknote {
                                 drawNoteItem.y = startHeight + 20 - noteItem.value * 5;
                                 drawNoteItem.ID = noteItem.ID;
 
+                                drawBar.width += requiredNoteSpace(drawNoteItem, 10);
+
                                 this._items.push(drawNoteItem);
                             }
                             else if (bar.items[l] instanceof Model.Rest) {
@@ -79,6 +95,8 @@ module Inknote {
                                 drawRestItem.x = startX += 20;
                                 drawRestItem.y = startHeight;
                                 drawRestItem.ID = restItem.ID;
+
+                                drawBar.width += requiredRestSpace(drawRestItem, 10);
 
                                 this._items.push(drawRestItem);
                             }
@@ -92,7 +110,15 @@ module Inknote {
                 startHeight += 80;
             }
 
+        }
 
+        get SelectedItem(): IDrawable {
+            for (var i = 0; i < this._items.length; i++) {
+                if (this._items[i].ID == this.selectID) {
+                    return this._items[i];
+                }
+            }
+            return null;
         }
 
         getItems(): IDrawable[]{
@@ -119,6 +145,9 @@ module Inknote {
             var lastID = null;
 
             for (var i = 0; i < this._items.length; i++) {
+                if (this._items[i] instanceof Drawing.Stave) {
+                    continue;
+                }
                 var id = this._items[i].ID;
 
                 if (id == this.selectID) {
@@ -135,6 +164,9 @@ module Inknote {
             var gone = false;
 
             for (var i = 0; i < this._items.length; i++) {
+                if (this._items[i] instanceof Drawing.Stave) {
+                    continue;
+                }
                 var id = this._items[i].ID;
 
                 if (lastID == this.selectID) {

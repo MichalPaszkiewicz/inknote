@@ -53,6 +53,7 @@
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
     <TypeScriptCompile Include="scripts\app.ts" />
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bar.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenuButton.ts" />
     <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
