@@ -90,7 +90,8 @@
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
 /// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
- 
+/// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
+
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 

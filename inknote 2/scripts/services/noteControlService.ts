@@ -14,16 +14,45 @@
         piano: Drawing.Piano = new Drawing.Piano();
         private background: Drawing.NoteControlBackground = new Drawing.NoteControlBackground();
         lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
+        minimise: Drawing.Minimise = new Drawing.Minimise();
 
         x = 0;
         y: number;
         width: number;
         height: number;
 
+        hidden: boolean = false;
+
+        hiddenY: number = 0;
+        
+        hide() {
+            this.hidden = true;
+        }
+
+        show() {
+            this.hidden = false;
+        }
+
         ID: string = "note_control";
 
         getItems(drawer: DrawService): IDrawable[]{
-            this.y = drawer.canvas.height / 2;
+            if (this.hidden) {
+                if (this.hiddenY > drawer.canvas.height / 2) {
+                    this.hiddenY = drawer.canvas.height / 2;
+                }
+                else if (this.hiddenY < drawer.canvas.height / 2) {
+                    this.hiddenY += 10;
+                }
+            }
+            else {
+                if (this.hiddenY > 0) {
+                    this.hiddenY -= 10;
+                }
+                else {
+                    this.hiddenY = 0;
+                }
+            }
+            this.y = drawer.canvas.height / 2 + this.hiddenY;
             this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
 
@@ -43,6 +72,12 @@
             this.piano.height = this.height / 2;
             this.piano.y = this.y + this.height / 2;
             noteControls.push(this.piano);
+
+            this.minimise.width = 40;
+            this.minimise.height = 20;
+            this.minimise.x = this.x;
+            this.minimise.y = this.y - this.minimise.height;
+            noteControls.push(this.minimise);
 
             return noteControls;
         }
@@ -159,6 +194,7 @@
             this.piano.ID = this.ID;
             this.background.ID = this.ID;
             this.lengthControl.ID = this.ID;
+            this.minimise.ID = this.ID;
         }
     }
 

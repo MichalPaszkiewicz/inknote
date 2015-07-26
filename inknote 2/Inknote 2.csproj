@@ -70,6 +70,7 @@
     <TypeScriptCompile Include="scripts\drawings\natural.ts" />
     <TypeScriptCompile Include="scripts\drawings\note.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\lengthControl.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\minimise.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\noteControlBackground.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\piano.ts" />
     <TypeScriptCompile Include="scripts\drawings\noteControls\pianoKey.ts" />

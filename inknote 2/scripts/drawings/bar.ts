@@ -41,6 +41,14 @@
             ctx.lineTo(this.x + this.width, this.y + this.height);
             ctx.stroke();
 
+            // line under
+            if (this.select) {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y + this.height + 10);
+                ctx.lineTo(this.x + this.width, this.y + this.height + 10);
+                ctx.stroke();
+            }
+
             ctx.lineWidth = 1;
 
             return true;

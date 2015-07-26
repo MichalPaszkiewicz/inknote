@@ -1806,6 +1806,13 @@ var Inknote;
                 ctx.moveTo(this.x + this.width, this.y);
                 ctx.lineTo(this.x + this.width, this.y + this.height);
                 ctx.stroke();
+                // line under
+                if (this.select) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y + this.height + 10);
+                    ctx.lineTo(this.x + this.width, this.y + this.height + 10);
+                    ctx.stroke();
+                }
                 ctx.lineWidth = 1;
                 return true;
             };
@@ -2794,6 +2801,48 @@ var Inknote;
             PianoKeyColour[PianoKeyColour["UNASSIGNED"] = 2] = "UNASSIGNED";
         })(Drawing.PianoKeyColour || (Drawing.PianoKeyColour = {}));
         var PianoKeyColour = Drawing.PianoKeyColour;
+        function getKeyboardKeyFromNoteValue(val) {
+            var key = "";
+            switch (val) {
+                case 0 /* A */:
+                    key = "h";
+                    break;
+                case 1 /* Bb */:
+                    key = "u";
+                    break;
+                case 2 /* B */:
+                    key = "j";
+                    break;
+                case 3 /* C */:
+                    key = "a";
+                    break;
+                case 4 /* Db */:
+                    key = "w";
+                    break;
+                case 5 /* D */:
+                    key = "s";
+                    break;
+                case 6 /* Eb */:
+                    key = "e";
+                    break;
+                case 7 /* E */:
+                    key = "d";
+                    break;
+                case 8 /* F */:
+                    key = "f";
+                    break;
+                case 9 /* Gb */:
+                    key = "t";
+                    break;
+                case 10 /* G */:
+                    key = "g";
+                    break;
+                case 11 /* Ab */:
+                    key = "y";
+                    break;
+            }
+            return key.toUpperCase();
+        }
         var PianoKey = (function () {
             function PianoKey(x, y, width, height, noteValue) {
                 this.x = x;
@@ -2824,6 +2873,20 @@ var Inknote;
                 ctx.rect(this.x, this.y, this.width, this.height);
                 ctx.fill();
                 ctx.stroke();
+                // key text
+                if (Inknote.Managers.MachineManager.Instance.machineType == 0 /* Desktop */) {
+                    ctx.beginPath();
+                    var text = getKeyboardKeyFromNoteValue(this.noteValue);
+                    ctx.textAlign = "center";
+                    ctx.font = (Math.min((this.width * 12 / 20), this.height / 4)) + "px Arial";
+                    if (this.colour == 0 /* WHITE */) {
+                        ctx.fillStyle = Drawing.Colours.black;
+                    }
+                    else {
+                        ctx.fillStyle = Drawing.Colours.white;
+                    }
+                    ctx.fillText(text, this.x + this.width / 2, this.y + this.height - 2);
+                }
             };
             return PianoKey;
         })();
@@ -2901,6 +2964,11 @@ var Inknote;
                         else {
                             this.whiteKeys[i].hover = false;
                         }
+                    }
+                }
+                else {
+                    for (var i = 0; i < this.allKeys.length; i++) {
+                        this.allKeys[i].hover = false;
                     }
                 }
                 return result;
@@ -3076,6 +3144,64 @@ var Inknote;
             return LengthControlBar;
         })();
         Drawing.LengthControlBar = LengthControlBar;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var Minimise = (function () {
+            function Minimise() {
+                this.ID = Inknote.getID();
+                this.x = 0;
+                this.y = 0;
+                this.width = 0;
+                this.height = 0;
+                this.order = 200;
+            }
+            Minimise.prototype.isOver = function (x, y) {
+                var isLeft = x < this.x + this.width;
+                var isRight = x > this.x;
+                var isAbove = y < this.y + this.height;
+                var isBelow = y > this.y;
+                var result = isLeft && isRight && isAbove && isBelow;
+                this.hover = result;
+                return result;
+            };
+            Minimise.prototype.click = function (e) {
+                if (Inknote.NoteControlService.Instance.hidden) {
+                    Inknote.NoteControlService.Instance.show();
+                }
+                else {
+                    Inknote.NoteControlService.Instance.hide();
+                }
+            };
+            Minimise.prototype.draw = function (ctx, canvas) {
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.black;
+                if (this.hover) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fill();
+                // text
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.white;
+                ctx.textAlign = "center";
+                ctx.font = Drawing.Fonts.standard;
+                ctx.textBaseline = "middle";
+                if (Inknote.NoteControlService.Instance.hidden) {
+                    ctx.fillText("+", this.x + this.width / 2, this.y + this.height / 2);
+                }
+                else {
+                    ctx.fillText("-", this.x + this.width / 2, this.y + this.height / 2);
+                }
+                ctx.textBaseline = "bottom";
+                return true;
+            };
+            return Minimise;
+        })();
+        Drawing.Minimise = Minimise;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -4108,11 +4234,15 @@ var Inknote;
             this.piano = new Inknote.Drawing.Piano();
             this.background = new Inknote.Drawing.NoteControlBackground();
             this.lengthControl = new Inknote.Drawing.LengthControlBar();
+            this.minimise = new Inknote.Drawing.Minimise();
             this.x = 0;
+            this.hidden = false;
+            this.hiddenY = 0;
             this.ID = "note_control";
             this.piano.ID = this.ID;
             this.background.ID = this.ID;
             this.lengthControl.ID = this.ID;
+            this.minimise.ID = this.ID;
         }
         Object.defineProperty(NoteControlService, "Instance", {
             get: function () {
@@ -4124,8 +4254,30 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        NoteControlService.prototype.hide = function () {
+            this.hidden = true;
+        };
+        NoteControlService.prototype.show = function () {
+            this.hidden = false;
+        };
         NoteControlService.prototype.getItems = function (drawer) {
-            this.y = drawer.canvas.height / 2;
+            if (this.hidden) {
+                if (this.hiddenY > drawer.canvas.height / 2) {
+                    this.hiddenY = drawer.canvas.height / 2;
+                }
+                else if (this.hiddenY < drawer.canvas.height / 2) {
+                    this.hiddenY += 10;
+                }
+            }
+            else {
+                if (this.hiddenY > 0) {
+                    this.hiddenY -= 10;
+                }
+                else {
+                    this.hiddenY = 0;
+                }
+            }
+            this.y = drawer.canvas.height / 2 + this.hiddenY;
             this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
             var noteControls = [];
@@ -4141,6 +4293,11 @@ var Inknote;
             this.piano.height = this.height / 2;
             this.piano.y = this.y + this.height / 2;
             noteControls.push(this.piano);
+            this.minimise.width = 40;
+            this.minimise.height = 20;
+            this.minimise.x = this.x;
+            this.minimise.y = this.y - this.minimise.height;
+            noteControls.push(this.minimise);
             return noteControls;
         };
         NoteControlService.prototype.addNote = function (note) {
@@ -5182,6 +5339,9 @@ var Inknote;
                         if (e.clientY - 50 > Inknote.NoteControlService.Instance.piano.y) {
                             Inknote.NoteControlService.Instance.piano.click(e);
                         }
+                        else if (e.clientY - 50 < Inknote.NoteControlService.Instance.y) {
+                            Inknote.NoteControlService.Instance.minimise.click(e);
+                        }
                         else {
                             Inknote.NoteControlService.Instance.lengthControl.click(e);
                         }
@@ -5698,6 +5858,7 @@ else {
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
 /// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
+/// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 // services

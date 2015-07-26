@@ -110,6 +110,9 @@
                         if (e.clientY - 50 > NoteControlService.Instance.piano.y) {
                             NoteControlService.Instance.piano.click(e);
                         }
+                        else if (e.clientY - 50 < NoteControlService.Instance.y){
+                            NoteControlService.Instance.minimise.click(e);
+                        }
                         else {
                             NoteControlService.Instance.lengthControl.click(e);
                         }

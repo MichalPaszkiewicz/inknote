@@ -61,6 +61,11 @@
                 }
 
             }
+            else {
+                for (var i = 0; i < this.allKeys.length; i++) {
+                    this.allKeys[i].hover = false;
+                }
+            }
 
             return result;
 
