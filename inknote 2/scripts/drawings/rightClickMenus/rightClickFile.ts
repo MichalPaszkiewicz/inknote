@@ -11,6 +11,14 @@
             new ClickableMenuItem("open in new tab", function () {
                 Managers.PageManager.Current.openNewPage(Managers.Page.Score,(<RightClickFile>RightClickMenuService.Instance.Menu).fileID);
             }),
+            new ClickableMenuItem("download", function () {
+                var selectedProjectID = (<RightClickFile>RightClickMenuService.Instance.Menu).fileID;
+                var project = <Project>getItemFromID(Managers.ProjectManager.Instance.allProjects, selectedProjectID);
+
+                var compressedProject = ProjectConverter.compress(project);
+
+                Storage.download(compressedProject.name + ".score", JSON.stringify(compressedProject));
+            }),
             new ClickableMenuItem("delete", function () {
                 Managers.ProjectManager.Instance.deleteProjectByID((<RightClickFile>RightClickMenuService.Instance.Menu).fileID);
             })

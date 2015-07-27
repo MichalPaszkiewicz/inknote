@@ -155,6 +155,7 @@
     <TypeScriptCompile Include="scripts\services\scoringService.ts" />
     <TypeScriptCompile Include="scripts\services\scrollService.ts" />
     <TypeScriptCompile Include="scripts\services\transposeService.ts" />
+    <TypeScriptCompile Include="scripts\storage\driveStorage.ts" />
     <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
     <TypeScriptCompile Include="scripts\services\logger.ts" />
     <TypeScriptCompile Include="scripts\services\projectConverter.ts" />

@@ -200,8 +200,6 @@ var Inknote;
             this.staveColour = "black";
             this.noteColour = "red";
             this.textColour = "green";
-            this.keypressFuncsOn = true;
-            this.serverURL = "https://lit-basin-6551.herokuapp.com";
             this.ID = Inknote.getID();
             this.name = name;
             this.testMode = false;
@@ -497,10 +495,10 @@ var Inknote;
     var Compressed;
     (function (Compressed) {
         var CompressedNote = (function () {
-            function CompressedNote(value, octave, length) {
-                this.value = value;
-                this.octave = octave;
-                this.length = length;
+            function CompressedNote(v, o, l) {
+                this.v = v;
+                this.o = o;
+                this.l = l;
                 this.i = 0 /* NOTE */;
             }
             return CompressedNote;
@@ -527,8 +525,8 @@ var Inknote;
     var Compressed;
     (function (Compressed) {
         var CompressedRest = (function () {
-            function CompressedRest(length) {
-                this.length = length;
+            function CompressedRest(l) {
+                this.l = l;
                 this.i = 1 /* REST */;
             }
             return CompressedRest;
@@ -2747,6 +2745,12 @@ var Inknote;
                         new RightClickMenus.ClickableMenuItem("open in new tab", function () {
                             Inknote.Managers.PageManager.Current.openNewPage(0 /* Score */, Inknote.RightClickMenuService.Instance.Menu.fileID);
                         }),
+                        new RightClickMenus.ClickableMenuItem("download", function () {
+                            var selectedProjectID = Inknote.RightClickMenuService.Instance.Menu.fileID;
+                            var project = Inknote.getItemFromID(Inknote.Managers.ProjectManager.Instance.allProjects, selectedProjectID);
+                            var compressedProject = Inknote.ProjectConverter.compress(project);
+                            Inknote.Storage.download(compressedProject.name + ".score", JSON.stringify(compressedProject));
+                        }),
                         new RightClickMenus.ClickableMenuItem("delete", function () {
                             Inknote.Managers.ProjectManager.Instance.deleteProjectByID(Inknote.RightClickMenuService.Instance.Menu.fileID);
                         })
@@ -3288,6 +3292,74 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Storage;
+    (function (Storage) {
+        document.body.ondrag = function (e) {
+            //e.preventDefault();
+            return false;
+        };
+        document.body.ondrop = function (e) {
+            e.preventDefault();
+            var files = e.dataTransfer.files;
+            var blah = e.dataTransfer.getData("utf8");
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    console.log(e.target);
+                    Inknote.log("loaded");
+                    var thisFile = file;
+                    var fileText = e.target.result;
+                    if (thisFile.name.indexOf(".score") == -1) {
+                        Inknote.log("incorrect file type", 0 /* Error */);
+                    }
+                    else {
+                        try {
+                            var innerScore = JSON.parse(fileText);
+                            var decompressedInnerScore = Inknote.ProjectConverter.decompress(innerScore);
+                            Inknote.Managers.ProjectManager.Instance.addProject(decompressedInnerScore, function (item) {
+                                Inknote.Managers.ProjectManager.Instance.setCurrentProject(item.ID);
+                            });
+                        }
+                        catch (e) {
+                            Inknote.log("incorrect file format", 0 /* Error */);
+                        }
+                    }
+                };
+                reader.readAsText(file);
+            }
+            return false;
+        };
+        document.body.ondragend = function (e) {
+            e.preventDefault();
+            return false;
+        };
+        document.body.ondragstart = function (e) {
+            e.preventDefault();
+            return false;
+        };
+        document.body.ondragover = function (e) {
+            e.preventDefault();
+            return false;
+        };
+        document.body.ondragleave = function (e) {
+            e.preventDefault();
+            return false;
+        };
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+        Storage.download = download;
+    })(Storage = Inknote.Storage || (Inknote.Storage = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     Inknote.CONFIRM_IS_OPEN = false;
     function check(text, onTrue, onFalse) {
         Inknote.CONFIRM_IS_OPEN = true;
@@ -3786,8 +3858,8 @@ var Inknote;
             var items = [];
             var scoreItems = Inknote.ScoringService.Instance.getItems();
             for (var i = 0; i < scoreItems.length; i++) {
-                var isHover = scoreItems[i].ID == Inknote.ScoringService.Instance.hoverID;
-                var isSelect = scoreItems[i].ID == Inknote.ScoringService.Instance.selectID;
+                var isHover = scoreItems[i].ID === Inknote.ScoringService.Instance.hoverID;
+                var isSelect = scoreItems[i].ID === Inknote.ScoringService.Instance.selectID;
                 scoreItems[i].hover = isHover;
                 scoreItems[i].select = isSelect;
                 if (scoreItems[i] instanceof Inknote.Notation) {
@@ -3798,10 +3870,10 @@ var Inknote;
                 }
                 items.push(scoreItems[i]);
             }
-            //if (ScoringService.Instance.selectID != null){
+            // if (ScoringService.Instance.selectID != null){
             var noteControls = Inknote.NoteControlService.Instance.getItems(drawer);
             items = items.concat(noteControls);
-            //}
+            // }
             if (!project) {
                 items.push(splash);
                 return items;
@@ -3809,10 +3881,10 @@ var Inknote;
             // project name
             ProjectConverter.name.name = project.name;
             ProjectConverter.name.ID = project.ID;
-            ProjectConverter.name.hover = ProjectConverter.name.ID == Inknote.Managers.ProjectManager.Instance.hoverID;
-            ProjectConverter.name.select = ProjectConverter.name.ID == Inknote.Managers.ProjectManager.Instance.selectID;
+            ProjectConverter.name.hover = ProjectConverter.name.ID === Inknote.Managers.ProjectManager.Instance.hoverID;
+            ProjectConverter.name.select = ProjectConverter.name.ID === Inknote.Managers.ProjectManager.Instance.selectID;
             // keyboard for changing name
-            if (ProjectConverter.name.select && Inknote.Managers.MachineManager.Instance.machineType != 0 /* Desktop */) {
+            if (ProjectConverter.name.select && Inknote.Managers.MachineManager.Instance.machineType !== 0 /* Desktop */) {
                 items.push(Inknote.Drawing.Keyboard.Instance);
             }
             items.push(ProjectConverter.name);
@@ -3847,11 +3919,11 @@ var Inknote;
                     var compressedNote = compressNote(bar.items[i]);
                     result.items.push(compressedNote);
                 }
-                else if (bar.items[i] instanceof Inknote.Model.Rest) {
+                if (bar.items[i] instanceof Inknote.Model.Rest) {
                     var compressedRest = compressRest(bar.items[i]);
                     result.items.push(compressedRest);
                 }
-                else if (bar.items[i] instanceof Inknote.Model.Chord) {
+                if (bar.items[i] instanceof Inknote.Model.Chord) {
                     var compressedChord = compressChord(bar.items[i]);
                     result.items.push(compressedChord);
                 }
@@ -3886,7 +3958,7 @@ var Inknote;
         }
         ProjectConverter.compressAll = compressAll;
         function decompress(project) {
-            if (project.inknoteVersion != Inknote.Managers.VersionManager.Instance.version) {
+            if (project.inknoteVersion !== Inknote.Managers.VersionManager.Instance.version) {
                 Inknote.log("project: " + project.name + " is of version " + project.inknoteVersion, 2 /* Warning */);
                 Inknote.log("this may cause errors when decompressing this saved files", 2 /* Warning */);
             }
@@ -3935,18 +4007,18 @@ var Inknote;
             var notes = [];
             for (var i = 0; i < chord.notes.length; i++) {
                 var theNote = chord.notes[i];
-                var realNote = new Inknote.Model.Note(theNote.value, theNote.octave, theNote.length);
+                var realNote = new Inknote.Model.Note(theNote.v, theNote.o, theNote.l);
                 notes.push(realNote);
             }
             var result = new Inknote.Model.Chord(notes);
             return result;
         }
         function decompressNote(note) {
-            var result = new Inknote.Model.Note(note.value, note.octave, note.length);
+            var result = new Inknote.Model.Note(note.v, note.o, note.l);
             return result;
         }
         function decompressRest(rest) {
-            var result = new Inknote.Model.Rest(rest.length);
+            var result = new Inknote.Model.Rest(rest.l);
             return result;
         }
         function decompressAll(projects) {
@@ -4635,8 +4707,29 @@ var Inknote;
             ProjectManager.prototype.addProjects = function (items) {
                 this._projects = this._projects.concat(items);
             };
-            ProjectManager.prototype.addProject = function (item) {
-                this._projects.push(item);
+            // synchronous call.
+            ProjectManager.prototype.addProject = function (item, callback) {
+                var self = this;
+                var itemAlreadyExists = Inknote.anyItemIs(this._projects, function (proj) {
+                    return proj.ID == item.ID;
+                });
+                if (itemAlreadyExists) {
+                    Inknote.check("an item already exists with this ID. Change this project's ID and continue?", function () {
+                        item.ID = Inknote.getID();
+                        self._projects.push(item);
+                        if (callback) {
+                            callback(item);
+                        }
+                    }, function () {
+                        return;
+                    });
+                }
+                else {
+                    this._projects.push(item);
+                    if (callback) {
+                        callback(item);
+                    }
+                }
             };
             ProjectManager.prototype.setCurrentProject = function (ID) {
                 this._currentProject = Inknote.getItemFromID(this._projects, ID);
@@ -5222,10 +5315,11 @@ var Inknote;
     Inknote.Action = Action;
     function newProject() {
         var newProj = new Inknote.Project("Untitled");
-        Inknote.Managers.ProjectManager.Instance.addProject(newProj);
-        Inknote.Managers.ProjectManager.Instance.setCurrentProject(newProj.ID);
-        Inknote.Managers.PageManager.Current.page = 0 /* Score */;
-        Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
+        Inknote.Managers.ProjectManager.Instance.addProject(newProj, function (item) {
+            Inknote.Managers.ProjectManager.Instance.setCurrentProject(item.ID);
+            Inknote.Managers.PageManager.Current.page = 0 /* Score */;
+            Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
+        });
     }
     function openProject() {
         Inknote.Managers.PageManager.Current.page = 2 /* File */;
@@ -5861,6 +5955,7 @@ else {
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
+/// <reference path="scripts/storage/drivestorage.ts" />
 // services
 /// <reference path="scripts/services/confirmservice.ts" />
 /// <reference path="scripts/services/logger.ts" />

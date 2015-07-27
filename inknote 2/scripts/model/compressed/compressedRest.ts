@@ -5,7 +5,7 @@
         i: ItemIdentifier = ItemIdentifier.REST;
 
         constructor(
-            public length: Model.NoteLength
+            public l: Model.NoteLength
             ) {
 
         }

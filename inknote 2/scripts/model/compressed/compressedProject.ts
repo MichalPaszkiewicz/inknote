@@ -8,7 +8,7 @@
 
         instruments: Compressed.Instrument[];
 
-        constructor(public name?) {
+        constructor(public name?: string) {
 
             this.ID = getID();
             this.instruments = [];

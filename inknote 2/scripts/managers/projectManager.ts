@@ -15,8 +15,30 @@
             this._projects = this._projects.concat(items);
         }
 
-        addProject(item: Project) {
-            this._projects.push(item);
+        // synchronous call.
+        addProject(item: Project, callback?: (item: Project) => void) {
+            var self = this;
+
+            var itemAlreadyExists = anyItemIs(this._projects, function (proj: Project) {
+                return proj.ID == item.ID;
+            });
+            if (itemAlreadyExists) {
+                check("an item already exists with this ID. Change this project's ID and continue?", function () {
+                    item.ID = getID();
+                    self._projects.push(item);
+                    if (callback) {
+                        callback(item);
+                    }
+                }, function () {
+                        return;
+                    });
+            }
+            else {
+                this._projects.push(item);
+                if (callback) {
+                    callback(item);
+                }
+            }
         }
 
         constructor() {

@@ -14,8 +14,8 @@
 
         for (var i = 0; i < scoreItems.length; i++) {
 
-            var isHover = scoreItems[i].ID == ScoringService.Instance.hoverID;
-            var isSelect = scoreItems[i].ID == ScoringService.Instance.selectID;
+            var isHover = scoreItems[i].ID === ScoringService.Instance.hoverID;
+            var isSelect = scoreItems[i].ID === ScoringService.Instance.selectID;
 
             scoreItems[i].hover = isHover;
             scoreItems[i].select = isSelect;
@@ -30,10 +30,10 @@
             items.push(scoreItems[i]);
         }
 
-        //if (ScoringService.Instance.selectID != null){
+        // if (ScoringService.Instance.selectID != null){
             var noteControls = NoteControlService.Instance.getItems(drawer);
             items = items.concat(noteControls);
-        //}
+        // }
 
         if (!project) {
             items.push(splash);
@@ -44,12 +44,12 @@
         name.name = project.name;
         name.ID = project.ID;
 
-        name.hover = name.ID == Managers.ProjectManager.Instance.hoverID;
-        name.select = name.ID == Managers.ProjectManager.Instance.selectID;
+        name.hover = name.ID === Managers.ProjectManager.Instance.hoverID;
+        name.select = name.ID === Managers.ProjectManager.Instance.selectID;
 
         // keyboard for changing name
-        if (name.select && Managers.MachineManager.Instance.machineType != Managers.MachineType.Desktop) {
-            items.push(Drawing.Keyboard.Instance)
+        if (name.select && Managers.MachineManager.Instance.machineType !== Managers.MachineType.Desktop) {
+            items.push(Drawing.Keyboard.Instance);
         }
 
         items.push(name);
@@ -94,12 +94,12 @@
 
                 result.items.push(compressedNote);
             }
-            else if (bar.items[i] instanceof Model.Rest) {
-                var compressedRest = compressRest(<Model.Rest>bar.items[i])
+            if (bar.items[i] instanceof Model.Rest) {
+                var compressedRest = compressRest(<Model.Rest>bar.items[i]);
 
                 result.items.push(compressedRest);
             }
-            else if (bar.items[i] instanceof Model.Chord) {
+            if (bar.items[i] instanceof Model.Chord) {
                 var compressedChord = compressChord(<Model.Chord>bar.items[i]);
 
                 result.items.push(compressedChord);
@@ -148,7 +148,7 @@
 
     export function decompress(project: Compressed.CompressedProject): Project {
 
-        if (project.inknoteVersion != Managers.VersionManager.Instance.version) {
+        if (project.inknoteVersion !== Managers.VersionManager.Instance.version) {
             log("project: " + project.name + " is of version " + project.inknoteVersion, MessageType.Warning);
             log("this may cause errors when decompressing this saved files", MessageType.Warning);
         }
@@ -211,7 +211,7 @@
 
         for (var i = 0; i < chord.notes.length; i++) {
             var theNote = chord.notes[i];
-            var realNote = new Model.Note(theNote.value, theNote.octave, theNote.length);
+            var realNote = new Model.Note(theNote.v, theNote.o, theNote.l);
             notes.push(realNote);
         }
 
@@ -221,13 +221,13 @@
     }
 
     function decompressNote(note: Compressed.CompressedNote): Model.Note {
-        var result = new Model.Note(note.value, note.octave, note.length);
+        var result = new Model.Note(note.v, note.o, note.l);
 
         return result;
     }
 
     function decompressRest(rest: Compressed.CompressedRest): Model.Rest {
-        var result = new Model.Rest(rest.length);
+        var result = new Model.Rest(rest.l);
 
         return result;
     }

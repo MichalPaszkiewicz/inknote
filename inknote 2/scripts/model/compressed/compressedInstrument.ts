@@ -1,4 +1,4 @@
-﻿module Inknote.Compressed{
+﻿module Inknote.Compressed {
 
     export class Instrument {
 

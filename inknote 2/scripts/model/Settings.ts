@@ -11,10 +11,6 @@
         noteColour = "red";
         textColour = "green";
 
-        keypressFuncsOn = true;
-
-        serverURL = "https://lit-basin-6551.herokuapp.com";
-
         constructor(name?: string) {
             this.ID = getID();
             this.name = name;

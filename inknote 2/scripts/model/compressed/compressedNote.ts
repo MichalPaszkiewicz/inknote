@@ -5,9 +5,9 @@
         i: ItemIdentifier = ItemIdentifier.NOTE;
 
         constructor(
-            public value: Model.NoteValue,
-            public octave: number,
-            public length: Model.NoteLength
+            public v: Model.NoteValue,
+            public o: number,
+            public l: Model.NoteLength
             ) {
 
         }

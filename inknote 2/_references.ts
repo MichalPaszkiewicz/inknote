@@ -94,6 +94,7 @@
 
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
+/// <reference path="scripts/storage/drivestorage.ts" />
 
 // services
 /// <reference path="scripts/services/confirmservice.ts" />

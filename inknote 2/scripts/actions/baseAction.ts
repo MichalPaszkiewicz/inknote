@@ -47,13 +47,14 @@
     function newProject() {
         var newProj = new Project("Untitled");
 
-        Managers.ProjectManager.Instance.addProject(newProj);
-        Managers.ProjectManager.Instance.setCurrentProject(newProj.ID);
+        Managers.ProjectManager.Instance.addProject(newProj, function (item: Project) {
+            Managers.ProjectManager.Instance.setCurrentProject(item.ID);
 
-        Managers.PageManager.Current.page = Managers.Page.Score;
+            Managers.PageManager.Current.page = Managers.Page.Score;
 
-        Managers.ProjectManager.Instance.currentProject.pause = true;
+            Managers.ProjectManager.Instance.currentProject.pause = true;
 
+        });
     }
 
     function openProject() {
