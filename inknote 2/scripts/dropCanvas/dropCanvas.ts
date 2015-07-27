@@ -45,12 +45,12 @@
             this.canvas.width = this.canvas.parentElement.clientWidth;
             this.canvas.height = this.canvas.parentElement.clientHeight;
 
-            var segmentSize = 20;
+            var segmentSize = 10;
             var segments = Math.floor(this.canvas.width / segmentSize);
             this.springs = [];
 
-            for (var i = 0; i < 1; i++) {
-                this.springs.push(new Spring((i + 1) * segmentSize, this.canvas.height / 10, this.canvas.height));
+            for (var i = 0; i <= segments + 1; i++) {
+                this.springs.push(new Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height));
             }
 
             var self = this;
@@ -66,10 +66,24 @@
 
             self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
 
+            self.ctx.beginPath();
+            self.ctx.moveTo(0, self.canvas.height);
+
+            updateSprings(self.springs);
+
             for (var i = 0; i < this.springs.length; i++) {
-                self.springs[i].update();
-                self.springs[i].draw(self.ctx);
+
+                self.ctx.lineTo(self.springs[i].x, self.springs[i].bottomY - self.springs[i].baseY - self.springs[i].y);
+
             }
+
+            self.ctx.lineTo(self.canvas.width, self.canvas.height);
+            self.ctx.lineTo(0, self.canvas.height);
+
+            self.ctx.fillStyle = Drawing.Colours.black;
+            self.ctx.strokeStyle = Drawing.Colours.black;
+            self.ctx.fill();
+            self.ctx.stroke();
 
             if (self.running == true) {
                 window.requestAnimationFrame(function () { self.draw(self) } );
@@ -84,6 +98,12 @@
         stop() {
             this.running = false;
             FrontEnd.hideElement(document.getElementById("drag-drop"));
+        }
+
+        splash(index: number, speed: number) {
+            if (index >= 0 && index < this.springs.length) {
+                this.springs[index].velocity = speed;
+            }
         }
 
     }

@@ -5,13 +5,14 @@
 
         }
 
-        y: number = 30;
+        y: number = 20 * Math.random() - 10;
 
-        tension: number = 0.01;
-        velocity: number = 0;
+        tension: number = 0.01; 
+        dampeningFactor: number = 0.001;
+        velocity: number = 1 * Math.random() - 0.5;
 
         get acceleration() {
-            return -this.y * this.tension;
+            return -this.y * this.tension - this.velocity * this.dampeningFactor;
         }
 
         update() {
@@ -19,15 +20,44 @@
             this.velocity += this.acceleration;
         }
 
-        draw(ctx: CanvasRenderingContext2D) {
-            ctx.beginPath();
-            ctx.strokeStyle = Inknote.Drawing.Colours.black;
-            ctx.moveTo(this.x, this.bottomY - this.baseY - this.y);
-            ctx.lineTo(this.x, this.bottomY);
-            ctx.stroke();
+    }
+
+    export function updateSprings(springs: Spring[]): void {
+
+        for (var i = 0; i < springs.length; i++) {
+            springs[i].update();
         }
+        
+        var leftDeltas = [];
+        var rightDeltas = [];
 
+        var Spread = 0.01;
 
+        for (var j = 0; j < 8; j++) {
+
+            for (var i = 0; i < springs.length; i++) {
+
+                if (i > 0) {
+                    leftDeltas[i] = Spread * (springs[i].y - springs[i - 1].y);
+                    springs[i - 1].velocity += leftDeltas[i];
+                }
+
+                if (i < springs.length - 1) {
+                    rightDeltas[i] = Spread * (springs[i].y - springs[i + 1].y);
+                    springs[i + 1].velocity += rightDeltas[i];
+                }
+
+            }
+
+            for (var i = 0; i < springs.length; i++) {
+                if (i > 0) {
+                    springs[i - 1].y += leftDeltas[i];
+                }
+                if (i < springs.length - 1) {
+                    springs[i + 1].y += rightDeltas[i];
+                }
+            }
+        }
 
     }
 }

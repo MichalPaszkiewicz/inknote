@@ -2786,13 +2786,14 @@ var Inknote;
                 this.x = x;
                 this.baseY = baseY;
                 this.bottomY = bottomY;
-                this.y = 30;
+                this.y = 20 * Math.random() - 10;
                 this.tension = 0.01;
-                this.velocity = 0;
+                this.dampeningFactor = 0.001;
+                this.velocity = 1 * Math.random() - 0.5;
             }
             Object.defineProperty(Spring.prototype, "acceleration", {
                 get: function () {
-                    return -this.y * this.tension;
+                    return -this.y * this.tension - this.velocity * this.dampeningFactor;
                 },
                 enumerable: true,
                 configurable: true
@@ -2801,16 +2802,38 @@ var Inknote;
                 this.y += this.velocity;
                 this.velocity += this.acceleration;
             };
-            Spring.prototype.draw = function (ctx) {
-                ctx.beginPath();
-                ctx.strokeStyle = Inknote.Drawing.Colours.black;
-                ctx.moveTo(this.x, this.bottomY - this.baseY - this.y);
-                ctx.lineTo(this.x, this.bottomY);
-                ctx.stroke();
-            };
             return Spring;
         })();
         DropCanvas.Spring = Spring;
+        function updateSprings(springs) {
+            for (var i = 0; i < springs.length; i++) {
+                springs[i].update();
+            }
+            var leftDeltas = [];
+            var rightDeltas = [];
+            var Spread = 0.01;
+            for (var j = 0; j < 8; j++) {
+                for (var i = 0; i < springs.length; i++) {
+                    if (i > 0) {
+                        leftDeltas[i] = Spread * (springs[i].y - springs[i - 1].y);
+                        springs[i - 1].velocity += leftDeltas[i];
+                    }
+                    if (i < springs.length - 1) {
+                        rightDeltas[i] = Spread * (springs[i].y - springs[i + 1].y);
+                        springs[i + 1].velocity += rightDeltas[i];
+                    }
+                }
+                for (var i = 0; i < springs.length; i++) {
+                    if (i > 0) {
+                        springs[i - 1].y += leftDeltas[i];
+                    }
+                    if (i < springs.length - 1) {
+                        springs[i + 1].y += rightDeltas[i];
+                    }
+                }
+            }
+        }
+        DropCanvas.updateSprings = updateSprings;
     })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -2860,11 +2883,11 @@ var Inknote;
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
-                var segmentSize = 20;
+                var segmentSize = 10;
                 var segments = Math.floor(this.canvas.width / segmentSize);
                 this.springs = [];
-                for (var i = 0; i < 1; i++) {
-                    this.springs.push(new _DropCanvas.Spring((i + 1) * segmentSize, this.canvas.height / 10, this.canvas.height));
+                for (var i = 0; i <= segments + 1; i++) {
+                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height));
                 }
                 var self = this;
                 this.draw(self);
@@ -2874,10 +2897,18 @@ var Inknote;
                     return;
                 }
                 self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                self.ctx.beginPath();
+                self.ctx.moveTo(0, self.canvas.height);
+                _DropCanvas.updateSprings(self.springs);
                 for (var i = 0; i < this.springs.length; i++) {
-                    self.springs[i].update();
-                    self.springs[i].draw(self.ctx);
+                    self.ctx.lineTo(self.springs[i].x, self.springs[i].bottomY - self.springs[i].baseY - self.springs[i].y);
                 }
+                self.ctx.lineTo(self.canvas.width, self.canvas.height);
+                self.ctx.lineTo(0, self.canvas.height);
+                self.ctx.fillStyle = Inknote.Drawing.Colours.black;
+                self.ctx.strokeStyle = Inknote.Drawing.Colours.black;
+                self.ctx.fill();
+                self.ctx.stroke();
                 if (self.running == true) {
                     window.requestAnimationFrame(function () {
                         self.draw(self);
@@ -2891,6 +2922,11 @@ var Inknote;
             DropCanvas.prototype.stop = function () {
                 this.running = false;
                 FrontEnd.hideElement(document.getElementById("drag-drop"));
+            };
+            DropCanvas.prototype.splash = function (index, speed) {
+                if (index >= 0 && index < this.springs.length) {
+                    this.springs[index].velocity = speed;
+                }
             };
             return DropCanvas;
         })();
