@@ -31,6 +31,12 @@
     <Content Include="styles\base.min.css">
       <DependentUpon>base.css</DependentUpon>
     </Content>
+    <Content Include="styles\cover.css">
+      <DependentUpon>cover.less</DependentUpon>
+    </Content>
+    <Content Include="styles\cover.min.css">
+      <DependentUpon>cover.css</DependentUpon>
+    </Content>
     <Content Include="styles\fontfaces.css">
       <DependentUpon>fontfaces.less</DependentUpon>
     </Content>
@@ -85,6 +91,9 @@
     <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
     <TypeScriptCompile Include="scripts\drawings\stave.ts" />
     <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\dropCanvas.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\dropFile.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\springs.ts" />
     <TypeScriptCompile Include="scripts\helpers\array.ts" />
     <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
     <TypeScriptCompile Include="scripts\helpers\maths.ts" />
@@ -177,6 +186,10 @@
     <Content Include="styles\modal.less" />
     <Content Include="styles\modal.css.map">
       <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="styles\cover.less" />
+    <Content Include="styles\cover.css.map">
+      <DependentUpon>cover.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

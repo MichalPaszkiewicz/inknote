@@ -85,6 +85,11 @@
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
 
+// dropCanvas
+/// <reference path="scripts/dropcanvas/dropfile.ts" />
+/// <reference path="scripts/dropcanvas/springs.ts" />
+/// <reference path="scripts/dropcanvas/dropcanvas.ts" />
+
 // note controls
 /// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />

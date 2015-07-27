@@ -8,10 +8,14 @@
 
     declare var screen: Screen;
 
-    var lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+    interface Screen {
+        lockOrientationUniversal: any;
+    }
 
-    if (lockOrientation) {
-        if (lockOrientation("landscape-primary")) {
+    screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+    if (screen.lockOrientationUniversal) {
+        if (screen.lockOrientationUniversal("landscape-primary")) {
             // orientation was locked
         } else {
             // orientation lock failed

@@ -2,11 +2,14 @@
 
     document.body.ondrag = function (e) {
         //e.preventDefault();
+
         return false;
     }
 
     document.body.ondrop = function (e) {
         e.preventDefault();
+
+        DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
 
         var files = e.dataTransfer.files;
 
@@ -27,6 +30,7 @@
 
                 if (thisFile.name.indexOf(".score") == -1) {
                     log("incorrect file type", MessageType.Error);
+                    check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted" , null);
                 }
                 else {
                     try {
@@ -43,7 +47,7 @@
                     }
                 }
             }
-            
+
             reader.readAsText(file);
         }
 
@@ -53,10 +57,21 @@
     document.body.ondragend = function (e) {
         e.preventDefault();
 
+        DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
+
+
         return false;
     }
 
+    var inCorrectFiles = false;
+
     document.body.ondragstart = function (e) {
+        e.preventDefault();
+
+        return false;
+    }
+
+    document.body.ondragenter = function (e) {
         e.preventDefault();
 
         return false;
@@ -65,11 +80,22 @@
     document.body.ondragover = function (e) {
         e.preventDefault();
 
+        DropCanvas.DropCanvas.Instance.start();
+
         return false;
     }
 
-    document.body.ondragleave = function (e) {
+    document.getElementById("drag-drop").ondragleave = function (e) {
         e.preventDefault();
+
+        DropCanvas.DropCanvas.Instance.stop();
+
+        return false;
+    }
+
+    document.getElementById("drag-drop-text").ondragleave = function (e) {
+        e.preventDefault();
+
         return false;
     }
 

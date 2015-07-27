@@ -2765,6 +2765,140 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var DropCanvas;
+    (function (DropCanvas) {
+        var DropFile = (function () {
+            function DropFile(x, y) {
+                this.x = x;
+                this.tilt = Math.random() * 2 * Math.PI;
+            }
+            return DropFile;
+        })();
+        DropCanvas.DropFile = DropFile;
+    })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var DropCanvas;
+    (function (DropCanvas) {
+        var Spring = (function () {
+            function Spring(x, baseY, bottomY) {
+                this.x = x;
+                this.baseY = baseY;
+                this.bottomY = bottomY;
+                this.y = 30;
+                this.tension = 0.01;
+                this.velocity = 0;
+            }
+            Object.defineProperty(Spring.prototype, "acceleration", {
+                get: function () {
+                    return -this.y * this.tension;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Spring.prototype.update = function () {
+                this.y += this.velocity;
+                this.velocity += this.acceleration;
+            };
+            Spring.prototype.draw = function (ctx) {
+                ctx.beginPath();
+                ctx.strokeStyle = Inknote.Drawing.Colours.black;
+                ctx.moveTo(this.x, this.bottomY - this.baseY - this.y);
+                ctx.lineTo(this.x, this.bottomY);
+                ctx.stroke();
+            };
+            return Spring;
+        })();
+        DropCanvas.Spring = Spring;
+    })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var DropCanvas;
+    (function (_DropCanvas) {
+        var DropCanvas = (function () {
+            function DropCanvas() {
+                this.running = false;
+                this.springs = [];
+            }
+            Object.defineProperty(DropCanvas, "Instance", {
+                get: function () {
+                    if (!DropCanvas._instance) {
+                        DropCanvas._instance = new DropCanvas();
+                    }
+                    return DropCanvas._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DropCanvas.prototype, "canvas", {
+                get: function () {
+                    if (!this._canvas) {
+                        this._canvas = document.getElementById("drag-drop-canvas");
+                    }
+                    return this._canvas;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DropCanvas.prototype, "ctx", {
+                get: function () {
+                    if (!this._ctx) {
+                        this._ctx = this.canvas.getContext("2d");
+                    }
+                    return this._ctx;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            DropCanvas.prototype.start = function () {
+                if (this.running == true) {
+                    return;
+                }
+                this.running = true;
+                FrontEnd.showElement(document.getElementById("drag-drop"));
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                var segmentSize = 20;
+                var segments = Math.floor(this.canvas.width / segmentSize);
+                this.springs = [];
+                for (var i = 0; i < 1; i++) {
+                    this.springs.push(new _DropCanvas.Spring((i + 1) * segmentSize, this.canvas.height / 10, this.canvas.height));
+                }
+                var self = this;
+                this.draw(self);
+            };
+            DropCanvas.prototype.draw = function (self) {
+                if (self.running == false) {
+                    return;
+                }
+                self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                for (var i = 0; i < this.springs.length; i++) {
+                    self.springs[i].update();
+                    self.springs[i].draw(self.ctx);
+                }
+                if (self.running == true) {
+                    window.requestAnimationFrame(function () {
+                        self.draw(self);
+                    });
+                }
+            };
+            DropCanvas.prototype.drop = function (x, y) {
+                this.running = false;
+                FrontEnd.hideElement(document.getElementById("drag-drop"));
+            };
+            DropCanvas.prototype.stop = function () {
+                this.running = false;
+                FrontEnd.hideElement(document.getElementById("drag-drop"));
+            };
+            return DropCanvas;
+        })();
+        _DropCanvas.DropCanvas = DropCanvas;
+    })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Drawing;
     (function (Drawing) {
         var NoteControlBackground = (function () {
@@ -3300,6 +3434,7 @@ var Inknote;
         };
         document.body.ondrop = function (e) {
             e.preventDefault();
+            Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
             var files = e.dataTransfer.files;
             var blah = e.dataTransfer.getData("utf8");
             for (var i = 0; i < files.length; i++) {
@@ -3312,6 +3447,7 @@ var Inknote;
                     var fileText = e.target.result;
                     if (thisFile.name.indexOf(".score") == -1) {
                         Inknote.log("incorrect file type", 0 /* Error */);
+                        Inknote.check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted", null);
                     }
                     else {
                         try {
@@ -3332,17 +3468,29 @@ var Inknote;
         };
         document.body.ondragend = function (e) {
             e.preventDefault();
+            Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
             return false;
         };
+        var inCorrectFiles = false;
         document.body.ondragstart = function (e) {
+            e.preventDefault();
+            return false;
+        };
+        document.body.ondragenter = function (e) {
             e.preventDefault();
             return false;
         };
         document.body.ondragover = function (e) {
             e.preventDefault();
+            Inknote.DropCanvas.DropCanvas.Instance.start();
             return false;
         };
-        document.body.ondragleave = function (e) {
+        document.getElementById("drag-drop").ondragleave = function (e) {
+            e.preventDefault();
+            Inknote.DropCanvas.DropCanvas.Instance.stop();
+            return false;
+        };
+        document.getElementById("drag-drop-text").ondragleave = function (e) {
             e.preventDefault();
             return false;
         };
@@ -4496,9 +4644,9 @@ var Inknote;
 (function (Inknote) {
     var Managers;
     (function (Managers) {
-        var lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-        if (lockOrientation) {
-            if (lockOrientation("landscape-primary")) {
+        screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+        if (screen.lockOrientationUniversal) {
+            if (screen.lockOrientationUniversal("landscape-primary")) {
             }
             else {
                 // orientation lock failed
@@ -5729,6 +5877,7 @@ var FrontEnd;
         var classes = item.className;
         var isHidden = classes.indexOf("hidden") != -1;
         if (!isHidden) {
+            item.className = item.className.trim();
             item.className = item.className + " hidden";
         }
     }
@@ -5947,6 +6096,10 @@ else {
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+// dropCanvas
+/// <reference path="scripts/dropcanvas/dropfile.ts" />
+/// <reference path="scripts/dropcanvas/springs.ts" />
+/// <reference path="scripts/dropcanvas/dropcanvas.ts" />
 // note controls
 /// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />

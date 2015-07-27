@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/fontfaces.css" type="text/css" />
     <link rel="stylesheet" href="styles/base.css" type="text/css" />
     <link href="styles/modal.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/cover.css" type="text/css" />
     <meta name="viewport" content="width=420, user-scalable=no">
     <link rel="icon" href="favicon.ico" />
 </head>
@@ -70,6 +71,15 @@
                 <!-- List of plugins with advanced options goes here -->
             </div>
             <div class="button" onclick="Modal.toggle('plugins')">Close</div>
+        </div>
+    </div>
+
+    <div id="drag-drop" class="hidden cover">
+        <canvas id="drag-drop-canvas"></canvas>
+        <div class="dashed-border">
+            <div id="drag-drop-text" class="cover-text">
+                drop your file(s) here!
+            </div>
         </div>
     </div>
 

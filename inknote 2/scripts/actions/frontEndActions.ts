@@ -19,6 +19,7 @@
         var isHidden = classes.indexOf("hidden") != -1;
 
         if (!isHidden) {
+            item.className = item.className.trim();
             item.className = item.className + " hidden";
         }
     }
