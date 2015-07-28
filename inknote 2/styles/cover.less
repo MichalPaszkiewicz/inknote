@@ -10,12 +10,12 @@
         left: 0;
 
         canvas {
-            position: fixed;
+            position: absolute;
             left: 0;
             top: 0;
         }
 
-        .dashed-border {
+        .dashed-border, .central {
             border: 5px dashed gray;
             height: 90%;
             margin: 2%;
@@ -41,5 +41,26 @@
     #drag-drop-bad {
         background: red;
         color: white;
+    }
+}
+
+#landing {
+    background: black;
+    color: white;
+    cursor: pointer;
+
+    .central {
+        border: none;
+
+        .cover-text {
+            font-size: 34px;
+        }
+    }
+
+    &.hidden{
+        transition: ease-in top 1s;
+
+        display: block;
+        top: -100%;
     }
 }

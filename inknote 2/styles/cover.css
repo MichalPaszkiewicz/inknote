@@ -8,11 +8,12 @@
   left: 0;
 }
 body .cover canvas {
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
 }
-body .cover .dashed-border {
+body .cover .dashed-border,
+body .cover .central {
   border: 5px dashed gray;
   height: 90%;
   margin: 2%;
@@ -22,7 +23,8 @@ body .cover .dashed-border {
   z-index: 3000;
   position: relative;
 }
-body .cover .dashed-border .cover-text {
+body .cover .dashed-border .cover-text,
+body .cover .central .cover-text {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -35,5 +37,21 @@ body .cover .dashed-border .cover-text {
 body #drag-drop-bad {
   background: red;
   color: white;
+}
+#landing {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+#landing .central {
+  border: none;
+}
+#landing .central .cover-text {
+  font-size: 34px;
+}
+#landing.hidden {
+  transition: ease-in top 1s;
+  display: block;
+  top: -100%;
 }
 /*# sourceMappingURL=cover.css.map */

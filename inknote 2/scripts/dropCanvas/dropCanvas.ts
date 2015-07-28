@@ -79,7 +79,6 @@
         splashTime: number = 0;
 
         draw(self: DropCanvas) {
-
             if (self.running == false) {
                 FrontEnd.hideElement(document.getElementById("drag-drop"));
                 return;
