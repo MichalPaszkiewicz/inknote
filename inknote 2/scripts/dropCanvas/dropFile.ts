@@ -66,15 +66,13 @@
             return closestSpring;
         }
 
-        update(springs: Spring[]): boolean {
+        update(springTop: number): boolean {
             var willSplash = false;
             this.y += this.velocity;
             this.velocity += this.acceleration / 40;
             this.tilt += 0.01;
 
-            var closestSpring = this.getClosestSpring(springs);
-
-            if (closestSpring.bottomY - closestSpring.baseY - closestSpring.y < this.y) {
+            if (springTop < this.y) {
                 willSplash = true;
                 this.removeThis = true;
             }
@@ -89,11 +87,11 @@
         }
     }
 
-    export function updateFiles(files: DropFile[], springs): Splash[] {
+    export function updateFiles(files: DropFile[], springs: Spring[], springTop: number): Splash[] {
         var splashes = [];
 
         for (var i = 0; i < files.length; i++) {
-            var willSplash = files[i].update(springs);
+            var willSplash = files[i].update(springTop);
 
             if (willSplash) {
                 var spring = files[i].getClosestSpring(springs);

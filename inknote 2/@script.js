@@ -2817,13 +2817,12 @@ var Inknote;
                 }
                 return closestSpring;
             };
-            DropFile.prototype.update = function (springs) {
+            DropFile.prototype.update = function (springTop) {
                 var willSplash = false;
                 this.y += this.velocity;
                 this.velocity += this.acceleration / 40;
                 this.tilt += 0.01;
-                var closestSpring = this.getClosestSpring(springs);
-                if (closestSpring.bottomY - closestSpring.baseY - closestSpring.y < this.y) {
+                if (springTop < this.y) {
                     willSplash = true;
                     this.removeThis = true;
                 }
@@ -2840,10 +2839,10 @@ var Inknote;
             return Splash;
         })();
         DropCanvas.Splash = Splash;
-        function updateFiles(files, springs) {
+        function updateFiles(files, springs, springTop) {
             var splashes = [];
             for (var i = 0; i < files.length; i++) {
-                var willSplash = files[i].update(springs);
+                var willSplash = files[i].update(springTop);
                 if (willSplash) {
                     var spring = files[i].getClosestSpring(springs);
                     splashes.push(new Splash(spring.index, 80));
@@ -2872,7 +2871,7 @@ var Inknote;
                 this.index = index;
                 this.y = 20 * Math.random() - 10;
                 this.tension = 0.01;
-                this.dampeningFactor = 0.001;
+                this.dampeningFactor = 0.0005;
                 this.velocity = 1 * Math.random() - 0.5;
             }
             Object.defineProperty(Spring.prototype, "acceleration", {
@@ -2895,25 +2894,23 @@ var Inknote;
             }
             var leftDeltas = [];
             var rightDeltas = [];
-            var Spread = 0.01;
-            for (var j = 0; j < 8; j++) {
-                for (var i = 0; i < springs.length; i++) {
-                    if (i > 0) {
-                        leftDeltas[i] = Spread * (springs[i].y - springs[i - 1].y);
-                        springs[i - 1].velocity += leftDeltas[i];
-                    }
-                    if (i < springs.length - 1) {
-                        rightDeltas[i] = Spread * (springs[i].y - springs[i + 1].y);
-                        springs[i + 1].velocity += rightDeltas[i];
-                    }
+            var Spread = 0.1;
+            for (var i = 0; i < springs.length; i++) {
+                if (i > 0) {
+                    leftDeltas[i] = Spread * (springs[i].y - springs[i - 1].y);
+                    springs[i - 1].velocity += leftDeltas[i];
                 }
-                for (var i = 0; i < springs.length; i++) {
-                    if (i > 0) {
-                        springs[i - 1].y += leftDeltas[i];
-                    }
-                    if (i < springs.length - 1) {
-                        springs[i + 1].y += rightDeltas[i];
-                    }
+                if (i < springs.length - 1) {
+                    rightDeltas[i] = Spread * (springs[i].y - springs[i + 1].y);
+                    springs[i + 1].velocity += rightDeltas[i];
+                }
+            }
+            for (var i = 0; i < springs.length; i++) {
+                if (i > 0) {
+                    springs[i - 1].y += leftDeltas[i];
+                }
+                if (i < springs.length - 1) {
+                    springs[i + 1].y += rightDeltas[i];
                 }
             }
         }
@@ -2978,12 +2975,13 @@ var Inknote;
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
-                var segmentSize = 10;
+                var segmentSize = 15;
                 var segments = Math.floor(this.canvas.width / segmentSize);
                 this.springs = [];
                 this.files = [];
+                this.springBaseSize = this.canvas.height / 10;
                 for (var i = 0; i <= segments + 1; i++) {
-                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height, i));
+                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.springBaseSize, this.canvas.height, i));
                 }
                 var self = this;
                 this.draw(self);
@@ -2994,7 +2992,7 @@ var Inknote;
                     return;
                 }
                 self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-                var splashes = _DropCanvas.updateFiles(self.files, self.springs);
+                var splashes = _DropCanvas.updateFiles(self.files, self.springs, self.canvas.height - self.springBaseSize);
                 for (var i = 0; i < splashes.length; i++) {
                     self.splash(splashes[i].index, splashes[i].strength);
                 }

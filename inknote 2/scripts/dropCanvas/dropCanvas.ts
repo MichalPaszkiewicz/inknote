@@ -36,6 +36,7 @@
         splashed: boolean = false;
         splashCounter: number = 0;
         finished: boolean = false;
+        springBaseSize: number;
 
         springs: Spring[] = [];
         files: DropFile[] = [];
@@ -56,13 +57,15 @@
             this.canvas.width = this.canvas.parentElement.clientWidth;
             this.canvas.height = this.canvas.parentElement.clientHeight;
 
-            var segmentSize = 10;
+            var segmentSize = 15;
             var segments = Math.floor(this.canvas.width / segmentSize);
             this.springs = [];
             this.files = [];
 
+            this.springBaseSize = this.canvas.height / 10;
+
             for (var i = 0; i <= segments + 1; i++) {
-                this.springs.push(new Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height, i));
+                this.springs.push(new Spring(i * segmentSize, this.springBaseSize, this.canvas.height, i));
             }
 
             var self = this;
@@ -81,7 +84,7 @@
 
             self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
 
-            var splashes = updateFiles(self.files, self.springs);
+            var splashes = updateFiles(self.files, self.springs, self.canvas.height - self.springBaseSize);
 
             for (var i = 0; i < splashes.length; i++) {
                 self.splash(splashes[i].index, splashes[i].strength);
