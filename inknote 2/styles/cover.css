@@ -19,6 +19,8 @@ body .cover .dashed-border {
   box-sizing: border-box;
   vertical-align: middle;
   text-align: center;
+  z-index: 3000;
+  position: relative;
 }
 body .cover .dashed-border .cover-text {
   position: absolute;

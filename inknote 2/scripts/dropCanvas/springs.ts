@@ -1,7 +1,7 @@
 ﻿module Inknote.DropCanvas {
     export class Spring {
 
-        constructor(public x: number, public baseY: number, public bottomY: number) {
+        constructor(public x: number, public baseY: number, public bottomY: number, public index: number) {
 
         }
 

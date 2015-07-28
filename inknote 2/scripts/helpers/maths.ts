@@ -15,7 +15,7 @@
 
         var lastValue = copiedArray.pop();
 
-        var permutatedArray = [lastValue].concat( copiedArray );
+        var permutatedArray = [lastValue].concat(copiedArray);
 
         return permutatedArray;
     }
@@ -25,10 +25,10 @@
         var bestValue = Infinity;
         var bestPermutation: number[] = <number[]>copySimpleArrayFrom(permutation);
         var permutations = toBeAligned.length;
-        
+
         for (var i = 0; i < permutations; i++) {
             permutation = permutateSimpleNumberArray(permutation);
-            
+
             var score = 0;
             // todo: if difference is less than bestValue
             for (var j = 0; j < permutation.length; j++) {

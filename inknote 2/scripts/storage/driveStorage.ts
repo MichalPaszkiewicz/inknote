@@ -59,7 +59,6 @@
 
         DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
 
-
         return false;
     }
 
@@ -85,16 +84,10 @@
         return false;
     }
 
-    document.getElementById("drag-drop").ondragleave = function (e) {
+    document.getElementById("drag-drop-canvas").ondragleave = function (e) {
         e.preventDefault();
 
         DropCanvas.DropCanvas.Instance.stop();
-
-        return false;
-    }
-
-    document.getElementById("drag-drop-text").ondragleave = function (e) {
-        e.preventDefault();
 
         return false;
     }

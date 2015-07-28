@@ -2770,11 +2770,94 @@ var Inknote;
         var DropFile = (function () {
             function DropFile(x, y) {
                 this.x = x;
+                this.y = y;
                 this.tilt = Math.random() * 2 * Math.PI;
+                this.velocity = 0;
+                this.acceleration = 9.8;
+                this.removeThis = false;
             }
+            DropFile.prototype.draw = function (ctx) {
+                var self = this;
+                ctx.translate(self.x, self.y);
+                ctx.rotate(self.tilt);
+                ctx.translate(-self.x, -self.y);
+                var grd = ctx.createLinearGradient(self.x - 50, self.y - 50, self.x + 50, self.y + 50);
+                var fold = 20;
+                grd.addColorStop(0, Inknote.Drawing.Colours.tan);
+                grd.addColorStop(1, Inknote.Drawing.Colours.peach);
+                ctx.fillStyle = grd;
+                ctx.beginPath();
+                ctx.moveTo(self.x - 50, self.y + 50);
+                ctx.lineTo(self.x + 50, self.y + 50);
+                ctx.lineTo(self.x + 50, self.y - 50);
+                ctx.lineTo(self.x - fold, self.y - 50);
+                ctx.lineTo(self.x - 50, self.y - fold);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(self.x - (fold + 4), self.y - 45);
+                ctx.lineTo(self.x - 45, self.y - 45);
+                ctx.lineTo(self.x - 45, self.y - (fold + 4));
+                ctx.strokeStyle = Inknote.Drawing.Colours.black;
+                ctx.fillStyle = Inknote.Drawing.Colours.white;
+                ctx.fill();
+                ctx.stroke();
+                ctx.translate(self.x, self.y);
+                ctx.rotate(-self.tilt);
+                ctx.translate(-self.x, -self.y);
+            };
+            DropFile.prototype.getClosestSpring = function (springs) {
+                var closestSpring = null;
+                var dist = Infinity;
+                for (var i = 0; i < springs.length; i++) {
+                    var tempDist = Math.abs(springs[i].x - this.x);
+                    if (tempDist < dist) {
+                        closestSpring = springs[i];
+                        dist = tempDist;
+                    }
+                }
+                return closestSpring;
+            };
+            DropFile.prototype.update = function (springs) {
+                var willSplash = false;
+                this.y += this.velocity;
+                this.velocity += this.acceleration / 40;
+                this.tilt += 0.01;
+                var closestSpring = this.getClosestSpring(springs);
+                if (closestSpring.bottomY - closestSpring.baseY - closestSpring.y < this.y) {
+                    willSplash = true;
+                    this.removeThis = true;
+                }
+                return willSplash;
+            };
             return DropFile;
         })();
         DropCanvas.DropFile = DropFile;
+        var Splash = (function () {
+            function Splash(index, strength) {
+                this.index = index;
+                this.strength = strength;
+            }
+            return Splash;
+        })();
+        DropCanvas.Splash = Splash;
+        function updateFiles(files, springs) {
+            var splashes = [];
+            for (var i = 0; i < files.length; i++) {
+                var willSplash = files[i].update(springs);
+                if (willSplash) {
+                    var spring = files[i].getClosestSpring(springs);
+                    splashes.push(new Splash(spring.index, 80));
+                }
+            }
+            return splashes;
+        }
+        DropCanvas.updateFiles = updateFiles;
+        function drawFiles(files, ctx) {
+            for (var i = 0; i < files.length; i++) {
+                files[i].draw(ctx);
+            }
+        }
+        DropCanvas.drawFiles = drawFiles;
     })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -2782,10 +2865,11 @@ var Inknote;
     var DropCanvas;
     (function (DropCanvas) {
         var Spring = (function () {
-            function Spring(x, baseY, bottomY) {
+            function Spring(x, baseY, bottomY, index) {
                 this.x = x;
                 this.baseY = baseY;
                 this.bottomY = bottomY;
+                this.index = index;
                 this.y = 20 * Math.random() - 10;
                 this.tension = 0.01;
                 this.dampeningFactor = 0.001;
@@ -2842,8 +2926,15 @@ var Inknote;
     (function (_DropCanvas) {
         var DropCanvas = (function () {
             function DropCanvas() {
+                this.maxSplashTime = 200;
                 this.running = false;
+                this.dropped = false;
+                this.splashed = false;
+                this.splashCounter = 0;
+                this.finished = false;
                 this.springs = [];
+                this.files = [];
+                this.splashTime = 0;
             }
             Object.defineProperty(DropCanvas, "Instance", {
                 get: function () {
@@ -2880,23 +2971,55 @@ var Inknote;
                     return;
                 }
                 this.running = true;
+                this.dropped = false;
+                this.splashed = false;
+                this.splashCounter = 0;
+                this.finished = false;
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
                 var segmentSize = 10;
                 var segments = Math.floor(this.canvas.width / segmentSize);
                 this.springs = [];
+                this.files = [];
                 for (var i = 0; i <= segments + 1; i++) {
-                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height));
+                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.canvas.height / 10, this.canvas.height, i));
                 }
                 var self = this;
                 this.draw(self);
             };
             DropCanvas.prototype.draw = function (self) {
                 if (self.running == false) {
+                    FrontEnd.hideElement(document.getElementById("drag-drop"));
                     return;
                 }
                 self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                var splashes = _DropCanvas.updateFiles(self.files, self.springs);
+                for (var i = 0; i < splashes.length; i++) {
+                    self.splash(splashes[i].index, splashes[i].strength);
+                }
+                var newFiles = [];
+                for (var i = 0; i < self.files.length; i++) {
+                    if (self.files[i].removeThis == false) {
+                        newFiles.push(self.files[i]);
+                    }
+                    else {
+                        self.splashed = true;
+                    }
+                }
+                if (self.splashed == true) {
+                    self.splashCounter++;
+                    if (self.splashCounter > self.maxSplashTime) {
+                        self.finished = true;
+                        self.stop();
+                    }
+                }
+                self.files = newFiles;
+                _DropCanvas.drawFiles(self.files, self.ctx);
+                if (self.splashTime == 0) {
+                    this.splash(Math.floor(Math.random() * this.springs.length), 2 * Math.random());
+                }
+                self.splashTime = (self.splashTime + 1) % 4;
                 self.ctx.beginPath();
                 self.ctx.moveTo(0, self.canvas.height);
                 _DropCanvas.updateSprings(self.springs);
@@ -2914,12 +3037,18 @@ var Inknote;
                         self.draw(self);
                     });
                 }
+                else {
+                    FrontEnd.hideElement(document.getElementById("drag-drop"));
+                }
             };
             DropCanvas.prototype.drop = function (x, y) {
-                this.running = false;
-                FrontEnd.hideElement(document.getElementById("drag-drop"));
+                this.dropped = true;
+                this.files.push(new _DropCanvas.DropFile(x, y));
             };
             DropCanvas.prototype.stop = function () {
+                if (this.dropped && !this.finished) {
+                    return;
+                }
                 this.running = false;
                 FrontEnd.hideElement(document.getElementById("drag-drop"));
             };
@@ -3521,13 +3650,9 @@ var Inknote;
             Inknote.DropCanvas.DropCanvas.Instance.start();
             return false;
         };
-        document.getElementById("drag-drop").ondragleave = function (e) {
+        document.getElementById("drag-drop-canvas").ondragleave = function (e) {
             e.preventDefault();
             Inknote.DropCanvas.DropCanvas.Instance.stop();
-            return false;
-        };
-        document.getElementById("drag-drop-text").ondragleave = function (e) {
-            e.preventDefault();
             return false;
         };
         function download(filename, text) {
@@ -3576,7 +3701,9 @@ var Inknote;
         var cancelListener = function () {
             FrontEnd.hideElement(confirmBox);
             FrontEnd.hideElement(confirmCover);
-            onFalse();
+            if (onFalse) {
+                onFalse();
+            }
             setTimeout(function () {
                 Inknote.CONFIRM_IS_OPEN = false;
             }, 300);

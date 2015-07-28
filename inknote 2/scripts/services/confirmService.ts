@@ -44,7 +44,9 @@
         var cancelListener = function () {
             FrontEnd.hideElement(confirmBox);
             FrontEnd.hideElement(confirmCover);
-            onFalse();
+            if (onFalse) {
+                onFalse();
+            }
             setTimeout(function () {
                 CONFIRM_IS_OPEN = false;
             }, 300);
