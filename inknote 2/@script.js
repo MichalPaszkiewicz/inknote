@@ -2767,13 +2767,20 @@ var Inknote;
 (function (Inknote) {
     var DropCanvas;
     (function (DropCanvas) {
+        DropCanvas.GRAVITY = 0.4;
+    })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var DropCanvas;
+    (function (DropCanvas) {
         var DropFile = (function () {
             function DropFile(x, y) {
                 this.x = x;
                 this.y = y;
                 this.tilt = Math.random() * 2 * Math.PI;
                 this.velocity = 0;
-                this.acceleration = 0.4;
+                this.acceleration = DropCanvas.GRAVITY;
                 this.removeThis = false;
             }
             DropFile.prototype.draw = function (ctx) {
@@ -2925,6 +2932,61 @@ var Inknote;
 var Inknote;
 (function (Inknote) {
     var DropCanvas;
+    (function (DropCanvas) {
+        var Vector2 = (function () {
+            function Vector2(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            Object.defineProperty(Vector2.prototype, "speed", {
+                get: function () {
+                    return Math.sqrt(this.x * this.x + this.y * this.y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Vector2;
+        })();
+        DropCanvas.Vector2 = Vector2;
+        var Droplet = (function () {
+            function Droplet(pos, vel, r) {
+                this.r = r;
+                this.position = pos;
+                this.velocity = vel;
+            }
+            Object.defineProperty(Droplet.prototype, "orientation", {
+                get: function () {
+                    return Math.atan2(this.velocity.y, this.velocity.x);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Droplet.prototype.update = function () {
+                this.position.y += this.velocity.y;
+                this.position.x += this.velocity.x;
+                this.velocity.y += DropCanvas.GRAVITY;
+            };
+            Droplet.prototype.draw = function (ctx) {
+                ctx.beginPath();
+                var r = this.r;
+                var x = this.position.x;
+                var y = this.position.y;
+                var theta = this.orientation;
+                var tail = Math.min(this.velocity.speed / 2, 4 * r);
+                ctx.beginPath();
+                ctx.fillStyle = "black";
+                ctx.arc(x, y, r, theta - Math.PI / 2, theta + Math.PI / 2);
+                ctx.lineTo(x + 3 * tail * Math.cos(theta + Math.PI), y + 3 * tail * Math.sin(theta + Math.PI));
+                ctx.fill();
+            };
+            return Droplet;
+        })();
+        DropCanvas.Droplet = Droplet;
+    })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var DropCanvas;
     (function (_DropCanvas) {
         var DropCanvas = (function () {
             function DropCanvas() {
@@ -2934,8 +2996,10 @@ var Inknote;
                 this.splashed = false;
                 this.splashCounter = 0;
                 this.finished = false;
+                this.segmentSize = 15;
                 this.springs = [];
                 this.files = [];
+                this.droplets = [];
                 this.splashTime = 0;
             }
             Object.defineProperty(DropCanvas, "Instance", {
@@ -2980,13 +3044,13 @@ var Inknote;
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
-                var segmentSize = 15;
-                var segments = Math.floor(this.canvas.width / segmentSize);
+                var segments = Math.floor(this.canvas.width / this.segmentSize);
                 this.springs = [];
                 this.files = [];
+                this.droplets = [];
                 this.springBaseSize = this.canvas.height / 6;
                 for (var i = 0; i <= segments + 1; i++) {
-                    this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.springBaseSize, this.canvas.height, i));
+                    this.springs.push(new _DropCanvas.Spring(i * this.segmentSize, this.springBaseSize, this.canvas.height, i));
                 }
                 var self = this;
                 this.draw(self);
@@ -3019,14 +3083,23 @@ var Inknote;
                 }
                 self.files = newFiles;
                 _DropCanvas.drawFiles(self.files, self.ctx);
+                var newDroplets = [];
+                for (var i = 0; i < self.droplets.length; i++) {
+                    self.droplets[i].update();
+                    self.droplets[i].draw(self.ctx);
+                    if (self.droplets[i].position.y < self.canvas.height) {
+                        newDroplets.push(self.droplets[i]);
+                    }
+                }
+                self.droplets = newDroplets;
                 if (self.splashTime == 0) {
-                    this.splash(Math.floor(Math.random() * this.springs.length), 2 * Math.random());
+                    self.splash(Math.floor(Math.random() * self.springs.length), 2 * Math.random());
                 }
                 self.splashTime = (self.splashTime + 1) % 4;
                 self.ctx.beginPath();
                 self.ctx.moveTo(0, self.canvas.height);
                 _DropCanvas.updateSprings(self.springs);
-                for (var i = 0; i < this.springs.length; i++) {
+                for (var i = 0; i < self.springs.length; i++) {
                     self.ctx.lineTo(self.springs[i].x, self.springs[i].bottomY - self.springs[i].baseY - self.springs[i].y);
                 }
                 self.ctx.lineTo(self.canvas.width, self.canvas.height);
@@ -3058,6 +3131,14 @@ var Inknote;
             DropCanvas.prototype.splash = function (index, speed) {
                 if (index >= 0 && index < this.springs.length) {
                     this.springs[index].velocity = -speed;
+                }
+                if (speed > 10) {
+                    for (var i = 0; i < Math.floor(speed / 2); i++) {
+                        var pos = new _DropCanvas.Vector2(index * this.segmentSize, this.canvas.height);
+                        var vel = new _DropCanvas.Vector2(10 * Math.random() - 5, -speed * Math.random() / 4);
+                        var droplet = new _DropCanvas.Droplet(pos, vel, 5 * Math.random());
+                        this.droplets.push(droplet);
+                    }
                 }
             };
             return DropCanvas;
@@ -6263,8 +6344,10 @@ else {
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
 // dropCanvas
+/// <reference path="scripts/dropcanvas/environment.ts" />
 /// <reference path="scripts/dropcanvas/dropfile.ts" />
 /// <reference path="scripts/dropcanvas/springs.ts" />
+/// <reference path="scripts/dropcanvas/droplet.ts" />
 /// <reference path="scripts/dropcanvas/dropcanvas.ts" />
 // note controls
 /// <reference path="scripts/drawings/notecontrols/notecontrolbackground.ts" />

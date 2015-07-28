@@ -48,7 +48,7 @@
         }
 
         velocity = 0;
-        acceleration = 0.4;
+        acceleration = GRAVITY;
         removeThis: boolean = false;
 
         getClosestSpring(springs: Spring[]): Spring {

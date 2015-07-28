@@ -93,6 +93,8 @@
     <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropCanvas.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropFile.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\droplet.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\environment.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\springs.ts" />
     <TypeScriptCompile Include="scripts\helpers\array.ts" />
     <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
