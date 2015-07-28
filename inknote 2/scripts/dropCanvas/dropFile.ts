@@ -48,7 +48,7 @@
         }
 
         velocity = 0;
-        acceleration = 9.8;
+        acceleration = 0.4;
         removeThis: boolean = false;
 
         getClosestSpring(springs: Spring[]): Spring {
@@ -69,11 +69,18 @@
         update(springTop: number): boolean {
             var willSplash = false;
             this.y += this.velocity;
-            this.velocity += this.acceleration / 40;
+            this.velocity += this.acceleration;
             this.tilt += 0.01;
 
             if (springTop < this.y) {
                 willSplash = true;
+            }
+
+            if (this.removeThis) {
+                willSplash = false;
+            }
+
+            if (willSplash) {
                 this.removeThis = true;
             }
 
@@ -96,7 +103,7 @@
             if (willSplash) {
                 var spring = files[i].getClosestSpring(springs);
 
-                splashes.push(new Splash(spring.index, 80));
+                splashes.push(new Splash(spring.index, 5 * files[i].velocity));
             }
         }
 

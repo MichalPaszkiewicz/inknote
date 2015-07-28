@@ -62,7 +62,7 @@
             this.springs = [];
             this.files = [];
 
-            this.springBaseSize = this.canvas.height / 10;
+            this.springBaseSize = this.canvas.height / 6;
 
             for (var i = 0; i <= segments + 1; i++) {
                 this.springs.push(new Spring(i * segmentSize, this.springBaseSize, this.canvas.height, i));
@@ -92,7 +92,7 @@
 
             var newFiles = [];
             for (var i = 0; i < self.files.length; i++) {
-                if (self.files[i].removeThis == false) {
+                if (self.files[i].y < self.canvas.height) {
                     newFiles.push(self.files[i]);
                 }
                 else {
@@ -160,7 +160,7 @@
 
         splash(index: number, speed: number) {
             if (index >= 0 && index < this.springs.length) {
-                this.springs[index].velocity = speed;
+                this.springs[index].velocity = -speed;
             }
         }
 

@@ -8,7 +8,7 @@
         y: number = 20 * Math.random() - 10;
 
         tension: number = 0.01;
-        dampeningFactor: number = 0.0005;
+        dampeningFactor: number = 0.0001;
         velocity: number = 1 * Math.random() - 0.5;
 
         get acceleration() {

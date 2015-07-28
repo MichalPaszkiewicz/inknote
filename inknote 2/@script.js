@@ -2773,7 +2773,7 @@ var Inknote;
                 this.y = y;
                 this.tilt = Math.random() * 2 * Math.PI;
                 this.velocity = 0;
-                this.acceleration = 9.8;
+                this.acceleration = 0.4;
                 this.removeThis = false;
             }
             DropFile.prototype.draw = function (ctx) {
@@ -2820,10 +2820,15 @@ var Inknote;
             DropFile.prototype.update = function (springTop) {
                 var willSplash = false;
                 this.y += this.velocity;
-                this.velocity += this.acceleration / 40;
+                this.velocity += this.acceleration;
                 this.tilt += 0.01;
                 if (springTop < this.y) {
                     willSplash = true;
+                }
+                if (this.removeThis) {
+                    willSplash = false;
+                }
+                if (willSplash) {
                     this.removeThis = true;
                 }
                 return willSplash;
@@ -2845,7 +2850,7 @@ var Inknote;
                 var willSplash = files[i].update(springTop);
                 if (willSplash) {
                     var spring = files[i].getClosestSpring(springs);
-                    splashes.push(new Splash(spring.index, 80));
+                    splashes.push(new Splash(spring.index, 5 * files[i].velocity));
                 }
             }
             return splashes;
@@ -2871,7 +2876,7 @@ var Inknote;
                 this.index = index;
                 this.y = 20 * Math.random() - 10;
                 this.tension = 0.01;
-                this.dampeningFactor = 0.0005;
+                this.dampeningFactor = 0.0001;
                 this.velocity = 1 * Math.random() - 0.5;
             }
             Object.defineProperty(Spring.prototype, "acceleration", {
@@ -2979,7 +2984,7 @@ var Inknote;
                 var segments = Math.floor(this.canvas.width / segmentSize);
                 this.springs = [];
                 this.files = [];
-                this.springBaseSize = this.canvas.height / 10;
+                this.springBaseSize = this.canvas.height / 6;
                 for (var i = 0; i <= segments + 1; i++) {
                     this.springs.push(new _DropCanvas.Spring(i * segmentSize, this.springBaseSize, this.canvas.height, i));
                 }
@@ -2998,7 +3003,7 @@ var Inknote;
                 }
                 var newFiles = [];
                 for (var i = 0; i < self.files.length; i++) {
-                    if (self.files[i].removeThis == false) {
+                    if (self.files[i].y < self.canvas.height) {
                         newFiles.push(self.files[i]);
                     }
                     else {
@@ -3052,7 +3057,7 @@ var Inknote;
             };
             DropCanvas.prototype.splash = function (index, speed) {
                 if (index >= 0 && index < this.springs.length) {
-                    this.springs[index].velocity = speed;
+                    this.springs[index].velocity = -speed;
                 }
             };
             return DropCanvas;
