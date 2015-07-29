@@ -55,9 +55,12 @@ body #drag-drop-bad {
   margin-top: 0;
 }
 #landing.hidden {
-  transition: ease-in all 1s;
+  transition: ease-in all 0.5s;
   background: #000000;
   display: block;
   top: -100%;
+  left: -100%;
+  opacity: 0;
+  transform: rotate(-45deg);
 }
 /*# sourceMappingURL=cover.css.map */
