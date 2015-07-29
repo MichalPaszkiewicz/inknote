@@ -2,9 +2,16 @@
 
     export class Metaball {
 
+        running: boolean = false;
+
         position: Maths.Vector2;
         velocity: Maths.Vector2;
+
         get acceleration(): number {
+            if (this.running) {
+                return -0.02;
+            }
+
             return 0.002 * this.radius;
         }
 
@@ -30,9 +37,14 @@
 
             var damp = 0.002;
 
-            this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
-            this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
-
+            if (this.running) {
+                this.velocity.x += acc.x * this.acceleration - this.velocity.x * damp;
+                this.velocity.y += acc.y * this.acceleration - this.velocity.y * damp;
+            }
+            else {
+                this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
+                this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
+            }
         }
 
         draw(ctx: CanvasRenderingContext2D) {
@@ -87,11 +99,32 @@
 
         }
 
+        ended: boolean = false;
+
         update(x: number, y: number) {
+
             var centre = new Maths.Vector2(x, y);
 
             for (var i = 0; i < this.metaballs.length; i++) {
                 this.metaballs[i].update(centre);
+            }
+
+            if (this.ended) {
+                var newBalls = [];
+
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    var b = this.metaballs[i];
+
+                    if (b.position.x + b.radius < 0 || b.position.x - b.radius > centre.x * 2 || b.position.y + b.radius < 0 || b.position.y - b.radius > centre.y * 2) {
+                        //console.log("gone");
+                    }
+                    else {
+                        newBalls.push(b);
+                    }
+
+                }
+
+                this.metaballs = newBalls;
             }
         }
 
@@ -111,6 +144,8 @@
                 }
                 else {
                     a = 255 - Math.floor((255 - a));
+                    // g = a * 2 - 350;
+
                 }
 
                 imageData.data[i] = r;
@@ -123,7 +158,7 @@
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-             
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (var i = 0; i < this.metaballs.length; i++) {
@@ -132,6 +167,13 @@
 
             this.metabalise(ctx, canvas);
 
+        }
+
+        end() {
+            this.ended = true;
+            for (var i = 0; i < this.metaballs.length; i++) {
+                this.metaballs[i].running = true;
+            }
         }
 
     }

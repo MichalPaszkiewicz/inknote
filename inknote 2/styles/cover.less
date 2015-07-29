@@ -49,6 +49,7 @@
     color: white;
     cursor: pointer;
 
+    opacity: 1;
 
     .central {
         border: none;
@@ -64,14 +65,24 @@
         }
     }
 
-    &.hidden {
-        transition: ease-in all 0.5s;
-        //transition: ease-in background 1s;
-        background: #000000;
-        display: block;
-        top: -100%;
-        left: -100%;
+    &.faded{
+        transition: ease-in all 2s;
+        /*-webkit-transition: ease-in all 3s;
+        -moz-transition: ease-in all 3s;
+        top:0;
+        opacity: 0;*/
+
         opacity: 0;
-        transform: rotate(-45deg)
+
+        .central{
+            transition: all 1s;
+
+            opacity: 0;
+        }
+    }
+
+    &.hidden {
+
+
     }
 }

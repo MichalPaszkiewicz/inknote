@@ -2794,12 +2794,16 @@ var Inknote;
     (function (Landing) {
         var Metaball = (function () {
             function Metaball(pos, vel, r) {
+                this.running = false;
                 this.position = pos;
                 this.velocity = vel;
                 this.radius = r;
             }
             Object.defineProperty(Metaball.prototype, "acceleration", {
                 get: function () {
+                    if (this.running) {
+                        return -0.02;
+                    }
                     return 0.002 * this.radius;
                 },
                 enumerable: true,
@@ -2811,8 +2815,14 @@ var Inknote;
                 var acc = new Inknote.Maths.Vector2(centre.x - this.position.x, centre.y - this.position.y);
                 var absS = acc.abs; // * acc.abs;
                 var damp = 0.002;
-                this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
-                this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
+                if (this.running) {
+                    this.velocity.x += acc.x * this.acceleration - this.velocity.x * damp;
+                    this.velocity.y += acc.y * this.acceleration - this.velocity.y * damp;
+                }
+                else {
+                    this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
+                    this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
+                }
             };
             Metaball.prototype.draw = function (ctx) {
                 ctx.beginPath();
@@ -2828,6 +2838,7 @@ var Inknote;
         Landing.Metaball = Metaball;
         var MetaballList = (function () {
             function MetaballList(amount, canvas) {
+                this.ended = false;
                 var width = canvas.width;
                 var height = canvas.height;
                 var hW = width / 2;
@@ -2851,6 +2862,18 @@ var Inknote;
                 var centre = new Inknote.Maths.Vector2(x, y);
                 for (var i = 0; i < this.metaballs.length; i++) {
                     this.metaballs[i].update(centre);
+                }
+                if (this.ended) {
+                    var newBalls = [];
+                    for (var i = 0; i < this.metaballs.length; i++) {
+                        var b = this.metaballs[i];
+                        if (b.position.x + b.radius < 0 || b.position.x - b.radius > centre.x * 2 || b.position.y + b.radius < 0 || b.position.y - b.radius > centre.y * 2) {
+                        }
+                        else {
+                            newBalls.push(b);
+                        }
+                    }
+                    this.metaballs = newBalls;
                 }
             };
             MetaballList.prototype.metabalise = function (ctx, canvas) {
@@ -2881,6 +2904,12 @@ var Inknote;
                 }
                 this.metabalise(ctx, canvas);
             };
+            MetaballList.prototype.end = function () {
+                this.ended = true;
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].running = true;
+                }
+            };
             return MetaballList;
         })();
         Landing.MetaballList = MetaballList;
@@ -2910,6 +2939,10 @@ var Inknote;
                 configurable: true
             });
             Landing.prototype.run = function () {
+                if (this.metaballs.metaballs.length === 0) {
+                    FrontEnd.hideElement(this.canvas.parentElement);
+                    return;
+                }
                 if (this.canvas.parentElement.className.indexOf("hidden") != -1) {
                     return;
                 }
@@ -2921,6 +2954,10 @@ var Inknote;
                 window.requestAnimationFrame(function () {
                     self.run();
                 });
+            };
+            Landing.prototype.hide = function () {
+                this.metaballs.end();
+                this.canvas.parentElement.className += " faded";
             };
             return Landing;
         })();

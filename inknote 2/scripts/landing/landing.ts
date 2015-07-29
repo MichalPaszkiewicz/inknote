@@ -16,6 +16,11 @@
         metaballs: MetaballList;
 
         run() {
+            if (this.metaballs.metaballs.length === 0) {
+                FrontEnd.hideElement(this.canvas.parentElement);
+                return;
+            }
+
             if (this.canvas.parentElement.className.indexOf("hidden") != -1) {
                 return;
             }
@@ -46,6 +51,11 @@
 
             this.run();
 
+        }
+
+        hide() {
+            this.metaballs.end();
+            this.canvas.parentElement.className += " faded";
         }
 
     }

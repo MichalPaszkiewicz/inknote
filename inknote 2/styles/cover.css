@@ -42,6 +42,7 @@ body #drag-drop-bad {
   background: #FFA500;
   color: white;
   cursor: pointer;
+  opacity: 1;
 }
 #landing .central {
   border: none;
@@ -54,13 +55,16 @@ body #drag-drop-bad {
   font-size: 34px;
   margin-top: 0;
 }
-#landing.hidden {
-  transition: ease-in all 0.5s;
-  background: #000000;
-  display: block;
-  top: -100%;
-  left: -100%;
+#landing.faded {
+  transition: ease-in all 2s;
+  /*-webkit-transition: ease-in all 3s;
+        -moz-transition: ease-in all 3s;
+        top:0;
+        opacity: 0;*/
   opacity: 0;
-  transform: rotate(-45deg);
+}
+#landing.faded .central {
+  transition: all 1s;
+  opacity: 0;
 }
 /*# sourceMappingURL=cover.css.map */
