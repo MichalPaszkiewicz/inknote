@@ -129,37 +129,31 @@
         }
 
         metabalise(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+
             var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
             var pixels = imageData.data;
 
             for (var i = 0; i < pixels.length; i += 4) {
-                var r = pixels[i];
-                var g = pixels[i + 1];
-                var b = pixels[i + 2];
                 var a = pixels[i + 3];
+                //var g = pixels[i + 1];
 
                 if (a < 180) {
                     a = 0;
                 }
                 else {
-                    a = 255 - Math.floor((255 - a));
-                    // g = a * 2 - 350;
-
+                     //g = a * 2 - 350;
                 }
 
-                imageData.data[i] = r;
-                imageData.data[i + 1] = g;
-                imageData.data[i + 2] = b;
                 imageData.data[i + 3] = a;
+                //imageData.data[i + 1] = g;
+
             }
 
             ctx.putImageData(imageData, 0, 0);
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (var i = 0; i < this.metaballs.length; i++) {
                 this.metaballs[i].draw(ctx);

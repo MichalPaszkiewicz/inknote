@@ -61,10 +61,12 @@ body #drag-drop-bad {
         -moz-transition: ease-in all 3s;
         top:0;
         opacity: 0;*/
-  opacity: 0;
+  color: rgba(0, 0, 0, 0);
 }
-#landing.faded .central {
-  transition: all 1s;
-  opacity: 0;
+#landing.hidden {
+  transition: ease-in all 0.2s;
+  background: #000000;
+  margin-top: -100%;
+  display: block;
 }
 /*# sourceMappingURL=cover.css.map */

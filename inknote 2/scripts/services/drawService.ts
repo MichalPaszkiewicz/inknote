@@ -30,6 +30,12 @@
             var self = this;
 
             this.draw = function () {
+                // if landing open, don't draw;
+                if (Landing.Landing.Instance.ended === false) {
+                    requestAnimationFrame(self.draw);
+                    return;
+                }
+
                 self._canvas.width = self._canvas.parentElement.clientWidth;
                 self._canvas.height = self._canvas.parentElement.clientHeight - 50;
 

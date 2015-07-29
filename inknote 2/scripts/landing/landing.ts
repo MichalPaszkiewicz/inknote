@@ -18,6 +18,7 @@
         run() {
             if (this.metaballs.metaballs.length === 0) {
                 FrontEnd.hideElement(this.canvas.parentElement);
+
                 return;
             }
 
@@ -53,7 +54,10 @@
 
         }
 
+        ended: boolean = false;
+
         hide() {
+            this.ended = true;
             this.metaballs.end();
             this.canvas.parentElement.className += " faded";
         }
