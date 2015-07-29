@@ -45,21 +45,29 @@
 }
 
 #landing {
-    background: black;
+    background: #FFA500;
     color: white;
     cursor: pointer;
 
+
     .central {
         border: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: url(/assets/landing.png);
 
-        .cover-text {
+        .cover-text h1{
             font-size: 34px;
+            margin-top: 0;
+            
         }
     }
 
-    &.hidden{
-        transition: ease-in top 1s;
-
+    &.hidden {
+        transition: ease-in all 1s;
+        //transition: ease-in background 1s;
+        background: #000000;
         display: block;
         top: -100%;
     }

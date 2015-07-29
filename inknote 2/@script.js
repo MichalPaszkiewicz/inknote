@@ -191,6 +191,31 @@ var Inknote;
             return bestPermutation;
         }
         Maths.alignSimilarArrayTo = alignSimilarArrayTo;
+        function pythagoras(x, y) {
+            return Math.sqrt(x * x + y * y);
+        }
+        Maths.pythagoras = pythagoras;
+    })(Maths = Inknote.Maths || (Inknote.Maths = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Maths;
+    (function (Maths) {
+        var Vector2 = (function () {
+            function Vector2(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            Object.defineProperty(Vector2.prototype, "abs", {
+                get: function () {
+                    return Maths.pythagoras(this.x, this.y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Vector2;
+        })();
+        Maths.Vector2 = Vector2;
     })(Maths = Inknote.Maths || (Inknote.Maths = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -2765,6 +2790,146 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Landing;
+    (function (Landing) {
+        var Metaball = (function () {
+            function Metaball(pos, vel, r) {
+                this.position = pos;
+                this.velocity = vel;
+                this.radius = r;
+            }
+            Object.defineProperty(Metaball.prototype, "acceleration", {
+                get: function () {
+                    return 0.001 * this.radius;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Metaball.prototype.update = function (centre) {
+                this.position.x += this.velocity.x;
+                this.position.y += this.velocity.y;
+                var acc = new Inknote.Maths.Vector2(centre.x - this.position.x, centre.y - this.position.y);
+                var absS = acc.abs; // * acc.abs;
+                var damp = 0.005;
+                this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
+                this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
+            };
+            Metaball.prototype.draw = function (ctx) {
+                ctx.beginPath();
+                var grad = ctx.createRadialGradient(this.position.x, this.position.y, 10, this.position.x, this.position.y, this.radius);
+                grad.addColorStop(0, "rgba(0,0,0,1)");
+                grad.addColorStop(1, "rgba(0,0,0,0.0)");
+                ctx.fillStyle = grad;
+                ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+                ctx.fill();
+            };
+            return Metaball;
+        })();
+        Landing.Metaball = Metaball;
+        var MetaballList = (function () {
+            function MetaballList(amount, canvas) {
+                var width = canvas.width;
+                var height = canvas.height;
+                var hW = width / 2;
+                var hH = height / 2;
+                var minLength = Math.min(width, height, 600);
+                this.metaballs = [];
+                for (var i = 0; i < amount; i++) {
+                    var x = hW + minLength * Math.random() - minLength / 2;
+                    var y = hH + minLength * Math.random() - minLength / 2;
+                    var pos = new Inknote.Maths.Vector2(x, y);
+                    var speed = 4;
+                    var vx = speed * Math.random() - speed / 2;
+                    var vy = speed * Math.random() - speed / 2;
+                    var vel = new Inknote.Maths.Vector2(vx, vy);
+                    var r = 30 + minLength / 4 * Math.random();
+                    var tempBall = new Metaball(pos, vel, r);
+                    this.metaballs.push(tempBall);
+                }
+            }
+            MetaballList.prototype.update = function (x, y) {
+                var centre = new Inknote.Maths.Vector2(x, y);
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].update(centre);
+                }
+            };
+            MetaballList.prototype.metabalise = function (ctx, canvas) {
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                var pixels = imageData.data;
+                for (var i = 0; i < pixels.length; i += 4) {
+                    var r = pixels[i];
+                    var g = pixels[i + 1];
+                    var b = pixels[i + 2];
+                    var a = pixels[i + 3];
+                    if (a < 180) {
+                        a = 0;
+                    }
+                    else {
+                        a = 255 - Math.floor((255 - a));
+                    }
+                    imageData.data[i] = r;
+                    imageData.data[i + 1] = g;
+                    imageData.data[i + 2] = b;
+                    imageData.data[i + 3] = a;
+                }
+                ctx.putImageData(imageData, 0, 0);
+            };
+            MetaballList.prototype.draw = function (ctx, canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].draw(ctx);
+                }
+                this.metabalise(ctx, canvas);
+            };
+            return MetaballList;
+        })();
+        Landing.MetaballList = MetaballList;
+    })(Landing = Inknote.Landing || (Inknote.Landing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Landing;
+    (function (_Landing) {
+        var Landing = (function () {
+            function Landing() {
+                this.canvas = document.getElementById("landing-canvas");
+                this.ctx = this.canvas.getContext("2d");
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                this.metaballs = new _Landing.MetaballList(20, this.canvas);
+                this.run();
+            }
+            Object.defineProperty(Landing, "Instance", {
+                get: function () {
+                    if (!Landing._instance) {
+                        Landing._instance = new Landing();
+                    }
+                    return Landing._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Landing.prototype.run = function () {
+                if (this.canvas.parentElement.className.indexOf("hidden") != -1) {
+                    return;
+                }
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                this.metaballs.update(this.canvas.width / 2, this.canvas.height / 2);
+                this.metaballs.draw(this.ctx, this.canvas);
+                var self = this;
+                window.requestAnimationFrame(function () {
+                    self.run();
+                });
+            };
+            return Landing;
+        })();
+        _Landing.Landing = Landing;
+        Inknote.Landing.Landing.Instance;
+    })(Landing = Inknote.Landing || (Inknote.Landing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var DropCanvas;
     (function (DropCanvas) {
         DropCanvas.GRAVITY = 0.4;
@@ -2933,21 +3098,6 @@ var Inknote;
 (function (Inknote) {
     var DropCanvas;
     (function (DropCanvas) {
-        var Vector2 = (function () {
-            function Vector2(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            Object.defineProperty(Vector2.prototype, "speed", {
-                get: function () {
-                    return Math.sqrt(this.x * this.x + this.y * this.y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return Vector2;
-        })();
-        DropCanvas.Vector2 = Vector2;
         var Droplet = (function () {
             function Droplet(pos, vel, r) {
                 this.r = r;
@@ -2972,7 +3122,7 @@ var Inknote;
                 var x = this.position.x;
                 var y = this.position.y;
                 var theta = this.orientation;
-                var tail = Math.min(this.velocity.speed / 2, 4 * r);
+                var tail = Math.min(this.velocity.abs / 2, 4 * r);
                 ctx.beginPath();
                 ctx.fillStyle = "black";
                 ctx.arc(x, y, r, theta - Math.PI / 2, theta + Math.PI / 2);
@@ -3041,6 +3191,7 @@ var Inknote;
                 this.splashed = false;
                 this.splashCounter = 0;
                 this.finished = false;
+                FrontEnd.hideElement(document.getElementById("landing"));
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
@@ -3134,8 +3285,8 @@ var Inknote;
                 }
                 if (speed > 10) {
                     for (var i = 0; i < Math.floor(speed / 2); i++) {
-                        var pos = new _DropCanvas.Vector2(index * this.segmentSize, this.canvas.height);
-                        var vel = new _DropCanvas.Vector2(10 * Math.random() - 5, -speed * Math.random() / 4);
+                        var pos = new Inknote.Maths.Vector2(index * this.segmentSize, this.canvas.height);
+                        var vel = new Inknote.Maths.Vector2(10 * Math.random() - 5, -speed * Math.random() / 4);
                         var droplet = new _DropCanvas.Droplet(pos, vel, 5 * Math.random());
                         this.droplets.push(droplet);
                     }
@@ -6280,6 +6431,7 @@ else {
 /// <reference path="scripts/helpers/string.ts" />
 /// <reference path="scripts/helpers/canvas.ts" />
 /// <reference path="scripts/helpers/maths.ts" />
+/// <reference path="scripts/helpers/2d.ts" />
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />
@@ -6343,6 +6495,9 @@ else {
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+// landing
+/// <reference path="scripts/landing/metaball.ts" />
+/// <reference path="scripts/landing/landing.ts" />
 // dropCanvas
 /// <reference path="scripts/dropcanvas/environment.ts" />
 /// <reference path="scripts/dropcanvas/dropfile.ts" />
