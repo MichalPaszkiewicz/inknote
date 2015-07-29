@@ -5,7 +5,7 @@
         position: Maths.Vector2;
         velocity: Maths.Vector2;
         get acceleration(): number {
-            return 0.001 * this.radius;
+            return 0.002 * this.radius;
         }
 
         radius: number;
@@ -28,7 +28,7 @@
 
             var absS = acc.abs// * acc.abs;
 
-            var damp = 0.005;
+            var damp = 0.002;
 
             this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
             this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;

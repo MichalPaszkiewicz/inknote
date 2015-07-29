@@ -2800,7 +2800,7 @@ var Inknote;
             }
             Object.defineProperty(Metaball.prototype, "acceleration", {
                 get: function () {
-                    return 0.001 * this.radius;
+                    return 0.002 * this.radius;
                 },
                 enumerable: true,
                 configurable: true
@@ -2810,7 +2810,7 @@ var Inknote;
                 this.position.y += this.velocity.y;
                 var acc = new Inknote.Maths.Vector2(centre.x - this.position.x, centre.y - this.position.y);
                 var absS = acc.abs; // * acc.abs;
-                var damp = 0.005;
+                var damp = 0.002;
                 this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
                 this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
             };
