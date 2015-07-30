@@ -101,6 +101,9 @@
                 case 40:
                     NoteControlService.Instance.noteValueDown();
                     break;
+                // delete
+                case 46:
+                    NoteControlService.Instance.deleteItem();
             }
         }
 

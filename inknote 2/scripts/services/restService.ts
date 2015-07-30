@@ -1,6 +1,6 @@
 ﻿module Inknote {
 
-    export function requiredRestSpace(rest: Drawing.Rest, lineHeight: number): number {
+    export function requiredRestSpace(rest: Model.Rest, lineHeight: number): number {
         var spaceNeeded = lineHeight;
 
         // padding;
@@ -10,32 +10,38 @@
     }
 
     export function getDrawingItemFromRest(rest: Model.Rest): Drawing.Rest {
+        var result: Drawing.Rest = null;
+
         switch (rest.length) {
             case Model.NoteLength.Breve:
-                return new Drawing.BreveRest();
+                result = new Drawing.BreveRest();
                 break;
             case Model.NoteLength.SemiBreve:
-                return new Drawing.SemiBreveRest();
+                result = new Drawing.SemiBreveRest();
                 break;
             case Model.NoteLength.Minim:
-                return new Drawing.MinimRest();
+                result = new Drawing.MinimRest();
                 break;
             case Model.NoteLength.Crotchet:
-                return new Drawing.CrotchetRest();
+                result = new Drawing.CrotchetRest();
                 break;
             case Model.NoteLength.Quaver:
-                return new Drawing.QuaverRest();
+                result = new Drawing.QuaverRest();
                 break;
             case Model.NoteLength.SemiQuaver:
-                return new Drawing.SemiQuaverRest();
+                result = new Drawing.SemiQuaverRest();
                 break;
             case Model.NoteLength.DemiSemiQuaver:
-                return new Drawing.DemiSemiQuaverRest();
+                result = new Drawing.DemiSemiQuaverRest();
                 break;
             case Model.NoteLength.HemiDemiSemiQuaver:
-                return new Drawing.HemiDemiSemiQuaverRest();
+                result = new Drawing.HemiDemiSemiQuaverRest();
                 break;
         }
+
+        result.ID = rest.ID;
+
+        return result;
     }
 
 } 

@@ -187,7 +187,10 @@
         mouseDown(e: MouseEvent, drawService: DrawService) {
             var onMove = function (e: MouseMoveEvent) {
                 // ScrollService.Instance.x += e.movementX;
-                ScrollService.Instance.y -= e.movementY;
+
+                if (e.movementY > 0 && canScroll(true) || e.movementY < 0 && canScroll(false)) {
+                    ScrollService.Instance.y -= e.movementY;
+                }
                 drawService.canvas.style.cursor = "-webkit-grabbing";
             }
 
@@ -235,7 +238,9 @@
                     var movementX = touch.pageX - lastTouch.pageX;
                     var movementY = touch.pageY - lastTouch.pageY;
 
-                    ScrollService.Instance.y -= movementY;
+                    if (movementY > 0 && canScroll(true) || movementY < 0 && canScroll(false)) {
+                        ScrollService.Instance.y -= movementY;
+                    }
 
                     lastTouch.pageX = touch.pageX;
                     lastTouch.pageY = touch.pageY;

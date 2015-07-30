@@ -32,6 +32,9 @@
                 newMenu = new Drawing.RightClickMenus.RightClickFile(Managers.ProjectManager.Instance.hoverID);
                 Managers.ProjectManager.Instance.selectID = Managers.ProjectManager.Instance.hoverID;
             }
+            if (Managers.PageManager.Current.page == Managers.Page.Score) {
+                newMenu = new Drawing.RightClickMenus.RightClickScore();
+            }
 
             var tooFarRight = canvas.width > (x + newMenu.width);
             newMenu.x = tooFarRight ? x : x - newMenu.width;

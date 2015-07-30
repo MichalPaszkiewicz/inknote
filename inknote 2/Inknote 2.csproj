@@ -58,6 +58,7 @@
     <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
     <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\windowResize.ts" />
     <TypeScriptCompile Include="scripts\app.ts" />
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
     <TypeScriptCompile Include="scripts\drawings\bar.ts" />
@@ -84,6 +85,7 @@
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickScore.ts" />
     <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\scrollbars\fileScrollBar.ts" />
     <TypeScriptCompile Include="scripts\drawings\scrollbars\projectScrollBar.ts" />

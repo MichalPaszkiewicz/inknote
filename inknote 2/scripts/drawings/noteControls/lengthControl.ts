@@ -31,6 +31,13 @@
                     this.selectedLength = i;
                 }
             }
+
+            var selectedItem = ScoringService.Instance.SelectedItem;
+            if (selectedItem != null) {
+                if (selectedItem instanceof Drawing.Note || selectedItem instanceof Drawing.Rest) {
+                    NoteControlService.Instance.editNoteLength();
+                }
+            }
         }
         
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {

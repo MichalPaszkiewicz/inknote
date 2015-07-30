@@ -25,7 +25,9 @@
                 ctx.fillStyle = Colours.black;
                 ctx.strokeStyle = Colours.black;
                 ctx.font = Fonts.small;
-                ctx.fillText(this.name, 40, this.y - 5);
+                ctx.textAlign = "left";
+                ctx.fillText(this.name, this.x + 10, this.y - 5);
+                ctx.textAlign = "center";
             }
 
             this.width = canvas.width - this.x * 2;

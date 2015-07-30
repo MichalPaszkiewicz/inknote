@@ -85,6 +85,7 @@
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickscore.ts" />
 
 // landing
 /// <reference path="scripts/landing/metaball.ts" />

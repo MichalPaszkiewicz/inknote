@@ -11,12 +11,16 @@
             && note1.octave == note2.octave;
     }
 
-    export function requiredNoteSpace(note: Drawing.Note, lineHeight: number): number {
+    export function requiredNoteSpace(note: Model.Note, lineHeight: number): number {
         // width of head.
         var spaceNeeded = lineHeight;
 
-        if (note.noteLength > Model.NoteLength.Crotchet && note.stemUp) {
+        if (note.length > Model.NoteLength.Crotchet) {
             spaceNeeded += lineHeight;
+        }
+
+        if (Model.IsBlackKey(note.value)) {
+            spaceNeeded += 10;
         }
 
         //padding

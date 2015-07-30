@@ -2,6 +2,12 @@
 
     export class DrawService {
 
+        private static _instance: DrawService;
+
+        static get Instance(): DrawService {
+            return DrawService._instance;
+        }
+
         private _canvas: HTMLCanvasElement;
 
         private _ctx: CanvasRenderingContext2D;
@@ -89,6 +95,8 @@
             };
 
             self.draw();
+
+            DrawService._instance = self;
         }
 
         arrange() {
