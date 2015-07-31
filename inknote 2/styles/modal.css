@@ -39,6 +39,12 @@
   padding: 10px;
   min-width: 50%;
 }
+.modal .overflower {
+  overflow: auto;
+  height: 80%;
+  position: relative;
+  top: 35px;
+}
 @media (max-width: 540px) {
   .modal .form-row input {
     min-width: 90%;

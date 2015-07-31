@@ -37,8 +37,9 @@
     <div id="confirm-cover" class="hidden"></div>
 
     <div id="report" class="hidden modal">
-        <div>
-            <div class="x" onclick="Modal.cancelReport()">x</div>
+        <div class="x" onclick="Modal.cancelReport()">x</div>
+
+        <div class="overflower">
             <h2>Bug report</h2>
             <textarea id="report-text" placeholder="Please describe your issue here"></textarea>
             <div class="line"><input id="report-checkbox" type="checkbox" />I am a human</div>
@@ -48,8 +49,9 @@
     </div>
 
     <div id="plugins" class="hidden modal">
-        <div>
-            <div class="x" onclick="Modal.toggle('plugins')">x</div>
+        <div class="x" onclick="Modal.toggle('plugins')">x</div>
+
+        <div class="overflower">
             <h2>Plugins</h2>
             <div class="modal-menu">
                 <div class="modal-menu-item plugin-menu-item select" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-list')">Plugin list</div>
@@ -75,8 +77,9 @@
     </div>
 
     <div id="project-options" class="hidden modal">
-        <div>
-            <div class="x" onclick="Modal.toggle('project-options')">x</div>
+        <div class="x" onclick="Modal.toggle('project-options')">x</div>
+
+        <div class="overflower">
             <div id="project-options-details">
 
             </div>
