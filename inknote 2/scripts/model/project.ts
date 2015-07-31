@@ -6,6 +6,10 @@
         pause: boolean;
         hover: boolean;
         instruments: Model.Instrument[];
+        colour: string = "#FFFFFF";
+        composer: string;
+        arrangedBy: string;
+        notes: string;
 
         constructor(name?: string) {
             this.pause = false;

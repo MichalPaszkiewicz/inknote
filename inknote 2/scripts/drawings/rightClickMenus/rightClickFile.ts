@@ -11,6 +11,12 @@
             new ClickableMenuItem("open in new tab", function () {
                 Managers.PageManager.Current.openNewPage(Managers.Page.Score,(<RightClickFile>RightClickMenuService.Instance.Menu).fileID);
             }),
+            new ClickableMenuItem("properties", function () {
+                var selectedProjectID = (<RightClickFile>RightClickMenuService.Instance.Menu).fileID;
+                var project = <Project>getItemFromID(Managers.ProjectManager.Instance.allProjects, selectedProjectID);
+
+                ProjectOptionsService.Instance.open(project);
+            }),
             new ClickableMenuItem("download", function () {
                 var selectedProjectID = (<RightClickFile>RightClickMenuService.Instance.Menu).fileID;
                 var project = <Project>getItemFromID(Managers.ProjectManager.Instance.allProjects, selectedProjectID);

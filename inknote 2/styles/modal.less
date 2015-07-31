@@ -35,4 +35,29 @@
     .button {
         margin: 5px;
     }
+
+    .form-row {
+        margin: 10px 0;
+
+        .label {
+            min-width: 40%;
+            display: inline-block;
+        }
+
+        input {
+            padding: 10px;
+            min-width: 50%;
+        }
+    }
+}
+
+@media(max-width: 540px) {
+
+    .modal {
+        .form-row {
+            input {
+                min-width: 90%;
+            }
+        }
+    }
 }

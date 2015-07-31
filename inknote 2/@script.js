@@ -468,6 +468,7 @@ var Inknote;
 (function (Inknote) {
     var Project = (function () {
         function Project(name) {
+            this.colour = "#FFFFFF";
             this.pause = false;
             this.ID = Inknote.getID();
             this.name = name;
@@ -596,6 +597,7 @@ var Inknote;
         var CompressedProject = (function () {
             function CompressedProject(name) {
                 this.name = name;
+                this.colour = "#FFFFFF";
                 this.ID = Inknote.getID();
                 this.instruments = [];
                 if (!name) {
@@ -1980,6 +1982,7 @@ var Inknote;
                 this.order = 10;
                 this.hover = false;
                 this.select = false;
+                this.colour = "#FFFFFF";
                 var self = this;
                 self.draw = function (ctx, canvas, scale) {
                     if (self.hover || self.select) {
@@ -2006,12 +2009,19 @@ var Inknote;
                     ctx.lineTo(self.x - fold, self.y - 50);
                     ctx.lineTo(self.x - 50, self.y - fold);
                     ctx.fill();
+                    // file white bit.
                     ctx.beginPath();
                     ctx.moveTo(self.x - (fold + 4), self.y - 45);
                     ctx.lineTo(self.x - 45, self.y - 45);
                     ctx.lineTo(self.x - 45, self.y - (fold + 4));
                     ctx.strokeStyle = Drawing.Colours.black;
                     ctx.fillStyle = Drawing.Colours.white;
+                    ctx.fill();
+                    ctx.stroke();
+                    // colour tag.
+                    ctx.beginPath();
+                    ctx.rect(self.x + 30, self.y + 30, 15, 15);
+                    ctx.fillStyle = self.colour;
                     ctx.fill();
                     ctx.stroke();
                     ctx.beginPath();
@@ -2772,6 +2782,11 @@ var Inknote;
                         new RightClickMenus.ClickableMenuItem("open in new tab", function () {
                             Inknote.Managers.PageManager.Current.openNewPage(0 /* Score */, Inknote.RightClickMenuService.Instance.Menu.fileID);
                         }),
+                        new RightClickMenus.ClickableMenuItem("properties", function () {
+                            var selectedProjectID = Inknote.RightClickMenuService.Instance.Menu.fileID;
+                            var project = Inknote.getItemFromID(Inknote.Managers.ProjectManager.Instance.allProjects, selectedProjectID);
+                            Inknote.ProjectOptionsService.Instance.open(project);
+                        }),
                         new RightClickMenus.ClickableMenuItem("download", function () {
                             var selectedProjectID = Inknote.RightClickMenuService.Instance.Menu.fileID;
                             var project = Inknote.getItemFromID(Inknote.Managers.ProjectManager.Instance.allProjects, selectedProjectID);
@@ -2800,6 +2815,10 @@ var Inknote;
                 __extends(RightClickScore, _super);
                 function RightClickScore() {
                     _super.call(this);
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("properties", function () {
+                        var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        Inknote.ProjectOptionsService.Instance.open(project);
+                    }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add a bar", function () {
                         Inknote.NoteControlService.Instance.addBar();
                         Inknote.ScoringService.Instance.refresh();
@@ -4674,6 +4693,10 @@ var Inknote;
             compressed.ID = project.ID;
             compressed.name = project.name;
             compressed.inknoteVersion = Inknote.Managers.VersionManager.Instance.version;
+            compressed.colour = project.colour;
+            compressed.composer = project.composer;
+            compressed.arrangedBy = project.arrangedBy;
+            compressed.notes = project.notes;
             for (var i = 0; i < project.instruments.length; i++) {
                 compressed.instruments.push(compressInstrument(project.instruments[i]));
             }
@@ -4740,6 +4763,10 @@ var Inknote;
             var result = new Inknote.Project(project.name);
             result.ID = project.ID;
             result.instruments = [];
+            result.colour = project.colour;
+            result.composer = project.composer;
+            result.arrangedBy = project.arrangedBy;
+            result.notes = project.notes;
             if (project.instruments) {
                 for (var i = 0; i < project.instruments.length; i++) {
                     result.instruments.push(decompressInstrument(project.instruments[i]));
@@ -4832,6 +4859,7 @@ var Inknote;
                 }
                 file.x = column * 200 + 100;
                 file.y = row * 200 + 100 - Inknote.ScrollService.Instance.y;
+                file.colour = projects[i].colour;
                 items.push(file);
                 column++;
                 if (column >= maxFiles) {
@@ -5299,6 +5327,71 @@ var Inknote;
         return NoteControlService;
     })();
     Inknote.NoteControlService = NoteControlService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var ProjectOptionsService = (function () {
+        function ProjectOptionsService() {
+            this.currentProject = null;
+            this.container = document.getElementById("project-options-details");
+        }
+        Object.defineProperty(ProjectOptionsService, "Instance", {
+            get: function () {
+                if (!ProjectOptionsService._instance) {
+                    ProjectOptionsService._instance = new ProjectOptionsService();
+                }
+                return ProjectOptionsService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange) {
+            var formRow = document.createElement("div");
+            formRow.className = "form-row";
+            var rowLabel = document.createElement("span");
+            rowLabel.className = "label";
+            rowLabel.textContent = label;
+            formRow.appendChild(rowLabel);
+            var rowInput = document.createElement("input");
+            rowInput.value = startValue;
+            rowInput.onchange = onChange;
+            formRow.appendChild(rowInput);
+            this.container.appendChild(formRow);
+        };
+        ProjectOptionsService.prototype.open = function (project) {
+            this.currentProject = project;
+            this.container.innerHTML = "";
+            var header = document.createElement("h1");
+            header.textContent = project.name;
+            this.container.appendChild(header);
+            var colourRow = document.createElement("div");
+            colourRow.className = "form-row";
+            var colourLabel = document.createElement("span");
+            colourLabel.className = "label";
+            colourLabel.textContent = "tag colour:";
+            colourRow.appendChild(colourLabel);
+            var colour = document.createElement("input");
+            colour.type = "color";
+            colour.value = project.colour;
+            colour.onchange = function (e) {
+                ProjectOptionsService.Instance.currentProject.colour = colour.value;
+            };
+            colourRow.appendChild(colour);
+            this.container.appendChild(colourRow);
+            this.addRowWithData("composed by:", project.composer, function (e) {
+                ProjectOptionsService.Instance.currentProject.composer = e.target.value;
+            });
+            this.addRowWithData("arranged by:", project.arrangedBy, function (e) {
+                ProjectOptionsService.Instance.currentProject.arrangedBy = e.target.value;
+            });
+            this.addRowWithData("notes:", project.notes, function (e) {
+                ProjectOptionsService.Instance.currentProject.notes = e.target.value;
+            });
+            Modal.toggle("project-options");
+        };
+        return ProjectOptionsService;
+    })();
+    Inknote.ProjectOptionsService = ProjectOptionsService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6686,6 +6779,15 @@ var Actions;
         Plugins.PluginMenuClick = PluginMenuClick;
     })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
 })(Actions || (Actions = {}));
+var Inknkote;
+(function (Inknkote) {
+    window.onresize = function () {
+        Inknote.ScoringService.Instance.refresh();
+        if (Inknote.ScoringService.Instance.maxScrollPosition < Inknote.ScrollService.Instance.y) {
+            Inknote.ScrollService.Instance.y = Inknote.ScoringService.Instance.maxScrollPosition - 100;
+        }
+    };
+})(Inknkote || (Inknkote = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
@@ -6840,6 +6942,7 @@ else {
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/projectoptionsservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers
@@ -6859,16 +6962,8 @@ else {
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/windowresize.ts" />
 // app
 /// <reference path="scripts/app.ts" />
 /// <reference path="scripts/security-warning.ts" />
-var Inknkote;
-(function (Inknkote) {
-    window.onresize = function () {
-        Inknote.ScoringService.Instance.refresh();
-        if (Inknote.ScoringService.Instance.maxScrollPosition < Inknote.ScrollService.Instance.y) {
-            Inknote.ScrollService.Instance.y = Inknote.ScoringService.Instance.maxScrollPosition - 100;
-        }
-    };
-})(Inknkote || (Inknkote = {}));
 //# sourceMappingURL=@script.js.map

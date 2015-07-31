@@ -67,6 +67,10 @@
         compressed.ID = project.ID;
         compressed.name = project.name;
         compressed.inknoteVersion = Managers.VersionManager.Instance.version;
+        compressed.colour = project.colour;
+        compressed.composer = project.composer;
+        compressed.arrangedBy = project.arrangedBy;
+        compressed.notes = project.notes;
 
         for (var i = 0; i < project.instruments.length; i++) {
             compressed.instruments.push(compressInstrument(project.instruments[i]));
@@ -156,6 +160,10 @@
         var result = new Project(project.name);
         result.ID = project.ID;
         result.instruments = [];
+        result.colour = project.colour;
+        result.composer = project.composer;
+        result.arrangedBy = project.arrangedBy;
+        result.notes = project.notes;
 
         if (project.instruments) {
             for (var i = 0; i < project.instruments.length; i++) {

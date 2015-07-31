@@ -129,6 +129,7 @@
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/projectoptionsservice.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
@@ -152,6 +153,7 @@
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/windowresize.ts" />
 
 // app
 /// <reference path="scripts/app.ts" />

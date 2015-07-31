@@ -31,6 +31,7 @@
 
             file.x = column * 200 + 100;
             file.y = row * 200 + 100 - ScrollService.Instance.y;
+            file.colour = projects[i].colour;
             items.push(file);
 
             column++;
