@@ -19,7 +19,7 @@
                 return maxHeight > ScrollService.Instance.y + ScrollService.Instance.scrollSpeed + canvas.y;
                 break;
             case Managers.Page.Score:
-                return false;
+                return ScrollService.Instance.y < ScoringService.Instance.maxScrollPosition;
                 break;
             default:
                 return false;
@@ -50,7 +50,7 @@
                         ScrollService._scrollBar = new Drawing.ScrollBar.FileScroll();
                         break;
                     case Managers.Page.Score:
-                        ScrollService._scrollBar = new Drawing.ScrollBar.ProjectDcroll();
+                        ScrollService._scrollBar = new Drawing.ScrollBar.ProjectScroll();
                         break;
                     case Managers.Page.Form:
                     case Managers.Page.List:

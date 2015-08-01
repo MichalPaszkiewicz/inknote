@@ -15,6 +15,7 @@
 /// <reference path="scripts/helpers/string.ts" />
 /// <reference path="scripts/helpers/canvas.ts" />
 /// <reference path="scripts/helpers/maths.ts" />
+/// <reference path="scripts/helpers/2d.ts" />
  
 // model
 /// <reference path="scripts/model/settings.ts" />
@@ -84,6 +85,11 @@
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickscore.ts" />
+
+// landing
+/// <reference path="scripts/landing/metaball.ts" />
+/// <reference path="scripts/landing/landing.ts" />
 
 // dropCanvas
 /// <reference path="scripts/dropcanvas/environment.ts" />
@@ -123,6 +129,7 @@
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/projectoptionsservice.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
@@ -146,6 +153,7 @@
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/windowresize.ts" />
 
 // app
 /// <reference path="scripts/app.ts" />

@@ -8,6 +8,12 @@
 
         instruments: Compressed.Instrument[];
 
+        colour: string = "#FFFFFF";
+
+        composer: string;
+        arrangedBy: string;
+        notes: string;
+
         constructor(public name?: string) {
 
             this.ID = getID();

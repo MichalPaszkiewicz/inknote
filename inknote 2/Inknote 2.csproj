@@ -22,6 +22,7 @@
     <Content Include="%40script.min.js">
       <DependentUpon>%40script.js</DependentUpon>
     </Content>
+    <Content Include="assets\landing.png" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="licence\index.html" />
@@ -57,6 +58,7 @@
     <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
     <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\windowResize.ts" />
     <TypeScriptCompile Include="scripts\app.ts" />
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
     <TypeScriptCompile Include="scripts\drawings\bar.ts" />
@@ -83,6 +85,7 @@
     <TypeScriptCompile Include="scripts\drawings\rest.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
     <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickScore.ts" />
     <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
     <TypeScriptCompile Include="scripts\drawings\scrollbars\fileScrollBar.ts" />
     <TypeScriptCompile Include="scripts\drawings\scrollbars\projectScrollBar.ts" />
@@ -96,6 +99,7 @@
     <TypeScriptCompile Include="scripts\dropCanvas\droplet.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\environment.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\springs.ts" />
+    <TypeScriptCompile Include="scripts\helpers\2d.ts" />
     <TypeScriptCompile Include="scripts\helpers\array.ts" />
     <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
     <TypeScriptCompile Include="scripts\helpers\maths.ts" />
@@ -104,6 +108,8 @@
     <TypeScriptCompile Include="scripts\interfaces\idrawable.ts" />
     <TypeScriptCompile Include="scripts\interfaces\iidentifiable.ts" />
     <TypeScriptCompile Include="scripts\interfaces\inameable.ts" />
+    <TypeScriptCompile Include="scripts\landing\landing.ts" />
+    <TypeScriptCompile Include="scripts\landing\metaball.ts" />
     <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
@@ -161,6 +167,7 @@
     <TypeScriptCompile Include="scripts\services\licenceService.ts" />
     <TypeScriptCompile Include="scripts\services\noteControlService.ts" />
     <TypeScriptCompile Include="scripts\services\noteService.ts" />
+    <TypeScriptCompile Include="scripts\services\projectOptionsService.ts" />
     <TypeScriptCompile Include="scripts\services\restService.ts" />
     <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
     <TypeScriptCompile Include="scripts\services\scoringService.ts" />

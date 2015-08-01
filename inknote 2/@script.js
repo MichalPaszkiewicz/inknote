@@ -191,6 +191,31 @@ var Inknote;
             return bestPermutation;
         }
         Maths.alignSimilarArrayTo = alignSimilarArrayTo;
+        function pythagoras(x, y) {
+            return Math.sqrt(x * x + y * y);
+        }
+        Maths.pythagoras = pythagoras;
+    })(Maths = Inknote.Maths || (Inknote.Maths = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Maths;
+    (function (Maths) {
+        var Vector2 = (function () {
+            function Vector2(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            Object.defineProperty(Vector2.prototype, "abs", {
+                get: function () {
+                    return Maths.pythagoras(this.x, this.y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Vector2;
+        })();
+        Maths.Vector2 = Vector2;
     })(Maths = Inknote.Maths || (Inknote.Maths = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -443,6 +468,7 @@ var Inknote;
 (function (Inknote) {
     var Project = (function () {
         function Project(name) {
+            this.colour = "#FFFFFF";
             this.pause = false;
             this.ID = Inknote.getID();
             this.name = name;
@@ -571,6 +597,7 @@ var Inknote;
         var CompressedProject = (function () {
             function CompressedProject(name) {
                 this.name = name;
+                this.colour = "#FFFFFF";
                 this.ID = Inknote.getID();
                 this.instruments = [];
                 if (!name) {
@@ -1049,7 +1076,9 @@ var Inknote;
                     ctx.fillStyle = Drawing.Colours.black;
                     ctx.strokeStyle = Drawing.Colours.black;
                     ctx.font = Drawing.Fonts.small;
-                    ctx.fillText(this.name, 40, this.y - 5);
+                    ctx.textAlign = "left";
+                    ctx.fillText(this.name, this.x + 10, this.y - 5);
+                    ctx.textAlign = "center";
                 }
                 this.width = canvas.width - this.x * 2;
                 for (var i = 0; i < 5; i++) {
@@ -1953,6 +1982,7 @@ var Inknote;
                 this.order = 10;
                 this.hover = false;
                 this.select = false;
+                this.colour = "#FFFFFF";
                 var self = this;
                 self.draw = function (ctx, canvas, scale) {
                     if (self.hover || self.select) {
@@ -1979,12 +2009,19 @@ var Inknote;
                     ctx.lineTo(self.x - fold, self.y - 50);
                     ctx.lineTo(self.x - 50, self.y - fold);
                     ctx.fill();
+                    // file white bit.
                     ctx.beginPath();
                     ctx.moveTo(self.x - (fold + 4), self.y - 45);
                     ctx.lineTo(self.x - 45, self.y - 45);
                     ctx.lineTo(self.x - 45, self.y - (fold + 4));
                     ctx.strokeStyle = Drawing.Colours.black;
                     ctx.fillStyle = Drawing.Colours.white;
+                    ctx.fill();
+                    ctx.stroke();
+                    // colour tag.
+                    ctx.beginPath();
+                    ctx.rect(self.x + 30, self.y + 30, 15, 15);
+                    ctx.fillStyle = self.colour;
                     ctx.fill();
                     ctx.stroke();
                     ctx.beginPath();
@@ -2607,15 +2644,15 @@ var Inknote;
     (function (Drawing) {
         var ScrollBar;
         (function (ScrollBar) {
-            var ProjectDcroll = (function (_super) {
-                __extends(ProjectDcroll, _super);
-                function ProjectDcroll() {
+            var ProjectScroll = (function (_super) {
+                __extends(ProjectScroll, _super);
+                function ProjectScroll() {
                     _super.apply(this, arguments);
                     this.width = 25;
                 }
-                return ProjectDcroll;
+                return ProjectScroll;
             })(ScrollBar.ScrollBar);
-            ScrollBar.ProjectDcroll = ProjectDcroll;
+            ScrollBar.ProjectScroll = ProjectScroll;
         })(ScrollBar = Drawing.ScrollBar || (Drawing.ScrollBar = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2745,6 +2782,11 @@ var Inknote;
                         new RightClickMenus.ClickableMenuItem("open in new tab", function () {
                             Inknote.Managers.PageManager.Current.openNewPage(0 /* Score */, Inknote.RightClickMenuService.Instance.Menu.fileID);
                         }),
+                        new RightClickMenus.ClickableMenuItem("properties", function () {
+                            var selectedProjectID = Inknote.RightClickMenuService.Instance.Menu.fileID;
+                            var project = Inknote.getItemFromID(Inknote.Managers.ProjectManager.Instance.allProjects, selectedProjectID);
+                            Inknote.ProjectOptionsService.Instance.open(project);
+                        }),
                         new RightClickMenus.ClickableMenuItem("download", function () {
                             var selectedProjectID = Inknote.RightClickMenuService.Instance.Menu.fileID;
                             var project = Inknote.getItemFromID(Inknote.Managers.ProjectManager.Instance.allProjects, selectedProjectID);
@@ -2762,6 +2804,207 @@ var Inknote;
             RightClickMenus.RightClickFile = RightClickFile;
         })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var RightClickMenus;
+        (function (RightClickMenus) {
+            var RightClickScore = (function (_super) {
+                __extends(RightClickScore, _super);
+                function RightClickScore() {
+                    _super.call(this);
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("properties", function () {
+                        var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        Inknote.ProjectOptionsService.Instance.open(project);
+                    }));
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("add a bar", function () {
+                        Inknote.NoteControlService.Instance.addBar();
+                        Inknote.ScoringService.Instance.refresh();
+                    }));
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
+                        var name = prompt("What is the name of the new instrument?");
+                        Inknote.NoteControlService.Instance.addInstrument(name);
+                    }));
+                }
+                return RightClickScore;
+            })(RightClickMenus.RightClickMenu);
+            RightClickMenus.RightClickScore = RightClickScore;
+        })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Landing;
+    (function (Landing) {
+        var Metaball = (function () {
+            function Metaball(pos, vel, r) {
+                this.running = false;
+                this.position = pos;
+                this.velocity = vel;
+                this.radius = r;
+            }
+            Object.defineProperty(Metaball.prototype, "acceleration", {
+                get: function () {
+                    if (this.running) {
+                        return -0.02;
+                    }
+                    return 0.002 * this.radius;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Metaball.prototype.update = function (centre) {
+                this.position.x += this.velocity.x;
+                this.position.y += this.velocity.y;
+                var acc = new Inknote.Maths.Vector2(centre.x - this.position.x, centre.y - this.position.y);
+                var absS = acc.abs; // * acc.abs;
+                var damp = 0.002;
+                if (this.running) {
+                    this.velocity.x += acc.x * this.acceleration - this.velocity.x * damp;
+                    this.velocity.y += acc.y * this.acceleration - this.velocity.y * damp;
+                }
+                else {
+                    this.velocity.x += acc.x / absS * this.acceleration - this.velocity.x * damp;
+                    this.velocity.y += acc.y / absS * this.acceleration - this.velocity.y * damp;
+                }
+            };
+            Metaball.prototype.draw = function (ctx) {
+                ctx.beginPath();
+                var grad = ctx.createRadialGradient(this.position.x, this.position.y, 10, this.position.x, this.position.y, this.radius);
+                grad.addColorStop(0, "rgba(0,0,0,1)");
+                grad.addColorStop(1, "rgba(0,0,0,0.0)");
+                ctx.fillStyle = grad;
+                ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+                ctx.fill();
+            };
+            return Metaball;
+        })();
+        Landing.Metaball = Metaball;
+        var MetaballList = (function () {
+            function MetaballList(amount, canvas) {
+                this.ended = false;
+                var width = canvas.width;
+                var height = canvas.height;
+                var hW = width / 2;
+                var hH = height / 2;
+                var minLength = Math.min(width, height, 600);
+                this.metaballs = [];
+                for (var i = 0; i < amount; i++) {
+                    var x = hW + minLength * Math.random() - minLength / 2;
+                    var y = hH + minLength * Math.random() - minLength / 2;
+                    var pos = new Inknote.Maths.Vector2(x, y);
+                    var speed = 4;
+                    var vx = speed * Math.random() - speed / 2;
+                    var vy = speed * Math.random() - speed / 2;
+                    var vel = new Inknote.Maths.Vector2(vx, vy);
+                    var r = 30 + minLength / 4 * Math.random();
+                    var tempBall = new Metaball(pos, vel, r);
+                    this.metaballs.push(tempBall);
+                }
+            }
+            MetaballList.prototype.update = function (x, y) {
+                var centre = new Inknote.Maths.Vector2(x, y);
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].update(centre);
+                }
+                if (this.ended) {
+                    var newBalls = [];
+                    for (var i = 0; i < this.metaballs.length; i++) {
+                        var b = this.metaballs[i];
+                        if (b.position.x + b.radius < 0 || b.position.x - b.radius > centre.x * 2 || b.position.y + b.radius < 0 || b.position.y - b.radius > centre.y * 2) {
+                        }
+                        else {
+                            newBalls.push(b);
+                        }
+                    }
+                    this.metaballs = newBalls;
+                }
+            };
+            MetaballList.prototype.metabalise = function (ctx, canvas) {
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                var pixels = imageData.data;
+                for (var i = 0; i < pixels.length; i += 4) {
+                    var a = pixels[i + 3];
+                    //var g = pixels[i + 1];
+                    if (a < 180) {
+                        a = 0;
+                    }
+                    else {
+                    }
+                    imageData.data[i + 3] = a;
+                }
+                ctx.putImageData(imageData, 0, 0);
+            };
+            MetaballList.prototype.draw = function (ctx, canvas) {
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].draw(ctx);
+                }
+                this.metabalise(ctx, canvas);
+            };
+            MetaballList.prototype.end = function () {
+                this.ended = true;
+                for (var i = 0; i < this.metaballs.length; i++) {
+                    this.metaballs[i].running = true;
+                }
+            };
+            return MetaballList;
+        })();
+        Landing.MetaballList = MetaballList;
+    })(Landing = Inknote.Landing || (Inknote.Landing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Landing;
+    (function (_Landing) {
+        var Landing = (function () {
+            function Landing() {
+                this.ended = false;
+                this.canvas = document.getElementById("landing-canvas");
+                this.ctx = this.canvas.getContext("2d");
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                this.metaballs = new _Landing.MetaballList(20, this.canvas);
+                this.run();
+            }
+            Object.defineProperty(Landing, "Instance", {
+                get: function () {
+                    if (!Landing._instance) {
+                        Landing._instance = new Landing();
+                    }
+                    return Landing._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Landing.prototype.run = function () {
+                if (this.metaballs.metaballs.length === 0) {
+                    FrontEnd.hideElement(this.canvas.parentElement);
+                    return;
+                }
+                if (this.canvas.parentElement.className.indexOf("hidden") != -1) {
+                    return;
+                }
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                this.metaballs.update(this.canvas.width / 2, this.canvas.height / 2);
+                this.metaballs.draw(this.ctx, this.canvas);
+                var self = this;
+                window.requestAnimationFrame(function () {
+                    self.run();
+                });
+            };
+            Landing.prototype.hide = function () {
+                this.ended = true;
+                this.metaballs.end();
+                this.canvas.parentElement.className += " faded";
+            };
+            return Landing;
+        })();
+        _Landing.Landing = Landing;
+        Inknote.Landing.Landing.Instance;
+    })(Landing = Inknote.Landing || (Inknote.Landing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -2933,21 +3176,6 @@ var Inknote;
 (function (Inknote) {
     var DropCanvas;
     (function (DropCanvas) {
-        var Vector2 = (function () {
-            function Vector2(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            Object.defineProperty(Vector2.prototype, "speed", {
-                get: function () {
-                    return Math.sqrt(this.x * this.x + this.y * this.y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return Vector2;
-        })();
-        DropCanvas.Vector2 = Vector2;
         var Droplet = (function () {
             function Droplet(pos, vel, r) {
                 this.r = r;
@@ -2972,7 +3200,7 @@ var Inknote;
                 var x = this.position.x;
                 var y = this.position.y;
                 var theta = this.orientation;
-                var tail = Math.min(this.velocity.speed / 2, 4 * r);
+                var tail = Math.min(this.velocity.abs / 2, 4 * r);
                 ctx.beginPath();
                 ctx.fillStyle = "black";
                 ctx.arc(x, y, r, theta - Math.PI / 2, theta + Math.PI / 2);
@@ -3041,6 +3269,7 @@ var Inknote;
                 this.splashed = false;
                 this.splashCounter = 0;
                 this.finished = false;
+                FrontEnd.hideElement(document.getElementById("landing"));
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
@@ -3134,8 +3363,8 @@ var Inknote;
                 }
                 if (speed > 10) {
                     for (var i = 0; i < Math.floor(speed / 2); i++) {
-                        var pos = new _DropCanvas.Vector2(index * this.segmentSize, this.canvas.height);
-                        var vel = new _DropCanvas.Vector2(10 * Math.random() - 5, -speed * Math.random() / 4);
+                        var pos = new Inknote.Maths.Vector2(index * this.segmentSize, this.canvas.height);
+                        var vel = new Inknote.Maths.Vector2(10 * Math.random() - 5, -speed * Math.random() / 4);
                         var droplet = new _DropCanvas.Droplet(pos, vel, 5 * Math.random());
                         this.droplets.push(droplet);
                     }
@@ -3502,6 +3731,12 @@ var Inknote;
                         this.selectedLength = i;
                     }
                 }
+                var selectedItem = Inknote.ScoringService.Instance.SelectedItem;
+                if (selectedItem != null) {
+                    if (selectedItem instanceof Drawing.Note || selectedItem instanceof Drawing.Rest) {
+                        Inknote.NoteControlService.Instance.editNoteLength();
+                    }
+                }
             };
             LengthControlBar.prototype.draw = function (ctx, canvas) {
                 ctx.globalAlpha = 0.5;
@@ -3866,7 +4101,7 @@ var Inknote;
                 return maxHeight > ScrollService.Instance.y + ScrollService.Instance.scrollSpeed + canvas.y;
                 break;
             case 0 /* Score */:
-                return false;
+                return ScrollService.Instance.y < Inknote.ScoringService.Instance.maxScrollPosition;
                 break;
             default:
                 return false;
@@ -3898,7 +4133,7 @@ var Inknote;
                             ScrollService._scrollBar = new Inknote.Drawing.ScrollBar.FileScroll();
                             break;
                         case 0 /* Score */:
-                            ScrollService._scrollBar = new Inknote.Drawing.ScrollBar.ProjectDcroll();
+                            ScrollService._scrollBar = new Inknote.Drawing.ScrollBar.ProjectScroll();
                             break;
                         case 1 /* Form */:
                         case 3 /* List */:
@@ -3998,6 +4233,9 @@ var Inknote;
                 newMenu = new Inknote.Drawing.RightClickMenus.RightClickFile(Inknote.Managers.ProjectManager.Instance.hoverID);
                 Inknote.Managers.ProjectManager.Instance.selectID = Inknote.Managers.ProjectManager.Instance.hoverID;
             }
+            if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
+                newMenu = new Inknote.Drawing.RightClickMenus.RightClickScore();
+            }
             var tooFarRight = canvas.width > (x + newMenu.width);
             newMenu.x = tooFarRight ? x : x - newMenu.width;
             newMenu.y = canvas.height > (y + newMenu.height) ? y : y - newMenu.height;
@@ -4017,6 +4255,11 @@ var Inknote;
             this._ctx = this._canvas.getContext("2d");
             var self = this;
             this.draw = function () {
+                // if landing open, don't draw;
+                if (Inknote.Landing.Landing.Instance.ended === false) {
+                    requestAnimationFrame(self.draw);
+                    return;
+                }
                 self._canvas.width = self._canvas.parentElement.clientWidth;
                 self._canvas.height = self._canvas.parentElement.clientHeight - 50;
                 self.arrange();
@@ -4058,7 +4301,15 @@ var Inknote;
                 requestAnimationFrame(self.draw);
             };
             self.draw();
+            DrawService._instance = self;
         }
+        Object.defineProperty(DrawService, "Instance", {
+            get: function () {
+                return DrawService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
         DrawService.prototype.setItems = function (items) {
             this._items = items;
         };
@@ -4094,11 +4345,60 @@ var Inknote;
 // this file is for drawing score.
 var Inknote;
 (function (Inknote) {
+    function getBarLength(bar) {
+        var length = 20;
+        for (var i = 0; i < bar.items.length; i++) {
+            var item = bar.items[i];
+            if (item instanceof Inknote.Model.Note) {
+                length += Inknote.requiredNoteSpace(item, 10);
+            }
+            if (item instanceof Inknote.Model.Rest) {
+                length += Inknote.requiredRestSpace(item, 10);
+            }
+        }
+        return length;
+    }
+    function getMinBarLengths(instruments) {
+        var barLengths = [];
+        for (var i = 0; i < instruments[0].bars.length; i++) {
+            var maxBarLength = 0;
+            for (var j = 0; j < instruments.length; j++) {
+                var barLength = getBarLength(instruments[j].bars[i]);
+                maxBarLength = Math.max(maxBarLength, barLength);
+            }
+            barLengths.push(maxBarLength);
+        }
+        return barLengths;
+    }
+    var BarLine = (function () {
+        function BarLine() {
+            this.minLength = 0;
+            this.barLengths = [];
+            this.barIndices = [];
+        }
+        return BarLine;
+    })();
+    function splitBarsToLines(barLengths, splitLength) {
+        var barLines = [];
+        var tempBarLine = new BarLine();
+        for (var i = 0; i < barLengths.length; i++) {
+            if (tempBarLine.minLength + barLengths[i] > splitLength) {
+                barLines.push(tempBarLine);
+                tempBarLine = new BarLine();
+            }
+            tempBarLine.minLength += barLengths[i];
+            tempBarLine.barIndices.push(i);
+            tempBarLine.barLengths.push(barLengths[i]);
+        }
+        barLines.push(tempBarLine);
+        return barLines;
+    }
     // will store all score drawable items and update when necessary.
     var ScoringService = (function () {
         function ScoringService() {
             this._refresh = false;
             this._items = [];
+            this.maxScrollPosition = 0;
             this.oldScrollY = 0;
             this.refresh();
         }
@@ -4114,7 +4414,7 @@ var Inknote;
         });
         // todo: ensure
         // should refresh on:
-        // change of window size.
+        // change of window size -- actions -> windowResize.
         // change of project -- Done in here inside getItems().
         // change of score.
         // (but not on change of hover/select
@@ -4123,60 +4423,159 @@ var Inknote;
             this._refresh = true;
         };
         ScoringService.prototype.updateItems = function () {
+            if (!Inknote.DrawService.Instance) {
+                // depends on drawservice.
+                Inknote.log("draw service not instantiated", 0 /* Error */);
+                return;
+            }
+            // scrolling is handled in get items function.
             this.oldScrollY = 0;
-            // put updating logic in here.
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             this._projectID = currentProject.ID;
             // must clear items!
             this._items = [];
-            var staveGroup = Inknote.getItemsWhere(currentProject.instruments, function (instrument) {
+            var visibleInstruments = Inknote.getItemsWhere(currentProject.instruments, function (instrument) {
                 return instrument.visible;
             });
-            var startHeight = 180;
-            var startX = 50;
-            var timeSignature = null;
-            for (var i = 0; i < staveGroup.length; i++) {
-                var newStave = new Inknote.Drawing.Stave(startHeight, staveGroup[i].name);
-                this._items.push(newStave);
-                for (var j = 0; j < staveGroup.length; j++) {
-                    for (var k = 0; k < staveGroup[j].bars.length; k++) {
-                        var bar = staveGroup[j].bars[k];
+            var barMinLengths = getMinBarLengths(visibleInstruments);
+            var topLineHeight = 180;
+            var marginLeft = 50;
+            if (Inknote.DrawService.Instance.canvas.width < 600) {
+                marginLeft = 0;
+            }
+            var barX = 0;
+            var barIndex = 0;
+            var maxWidth = Inknote.DrawService.Instance.canvas.width - 2 * marginLeft;
+            var lines = splitBarsToLines(barMinLengths, maxWidth);
+            for (var i = 0; i < lines.length; i++) {
+                var tempLine = lines[i];
+                for (var j = 0; j < visibleInstruments.length; j++) {
+                    var tempInstrument = visibleInstruments[j];
+                    // add stave
+                    var drawStave = new Inknote.Drawing.Stave(topLineHeight, tempInstrument.name);
+                    drawStave.x = marginLeft;
+                    drawStave.width = maxWidth;
+                    this._items.push(drawStave);
+                    for (var k = 0; k < tempLine.barIndices.length; k++) {
+                        var tempBarLength = tempLine.barLengths[k];
+                        var bar = tempInstrument.bars[tempLine.barIndices[k]];
+                        // add bar drawing.
                         var drawBar = new Inknote.Drawing.Bar();
-                        var ts = new Inknote.Drawing.TimeSignature(4, 4);
+                        drawBar.height = 40;
+                        drawBar.y = topLineHeight;
+                        drawBar.x = marginLeft + barX;
+                        drawBar.width = tempBarLength;
+                        this._items.push(drawBar);
+                        // for getting note position.
+                        var itemX = 20;
+                        for (var l = 0; l < bar.items.length; l++) {
+                            var item = bar.items[l];
+                            if (item instanceof Inknote.Model.Note) {
+                                var isBlack = Inknote.Model.IsBlackKey(item.value);
+                                if (isBlack) {
+                                    var drawBlack = new Inknote.Drawing.Flat();
+                                    drawBlack.x = marginLeft + barX + itemX;
+                                    drawBlack.y = topLineHeight;
+                                    this._items.push(drawBlack);
+                                    // move forwards.
+                                    itemX += 10;
+                                }
+                                // add note drawing.
+                                var drawNoteItem = Inknote.getDrawingItemFromNote(item);
+                                drawNoteItem.x = marginLeft + barX + itemX;
+                                drawNoteItem.y = topLineHeight;
+                                if (isBlack) {
+                                    drawNoteItem.attach(drawBlack);
+                                }
+                                this._items.push(drawNoteItem);
+                                // move forwards
+                                itemX += Inknote.requiredNoteSpace(item, 10);
+                                if (isBlack) {
+                                    // move back a bit if sharp or flat.
+                                    itemX -= 10;
+                                }
+                            }
+                            if (item instanceof Inknote.Model.Rest) {
+                                // add rest drawing.
+                                var drawRestItem = Inknote.getDrawingItemFromRest(item);
+                                drawRestItem.x = marginLeft + barX + itemX;
+                                drawRestItem.y = topLineHeight;
+                                this._items.push(drawRestItem);
+                                // move forwards.
+                                itemX += Inknote.requiredRestSpace(item, 10);
+                            }
+                            if (item instanceof Inknote.Model.Chord) {
+                            }
+                        }
+                        // increase bar position after looping through items.
+                        barX += tempBarLength;
+                    }
+                    // iterate height between instruments;
+                    topLineHeight += 80;
+                    barX = 0;
+                }
+                // next group of staves quite a bit lower.
+                topLineHeight += 40;
+            }
+            this.maxScrollPosition = topLineHeight - 200;
+            /*
+            for (var i = 0; i < visibleInstruments.length; i++) {
+                var newStave = new Drawing.Stave(topLineHeight, visibleInstruments[i].name);
+
+                this._items.push(newStave);
+
+                for (var j = 0; j < visibleInstruments.length; j++) {
+                    for (var k = 0; k < visibleInstruments[j].bars.length; k++) {
+                        var bar = visibleInstruments[j].bars[k];
+
+                        var drawBar = new Drawing.Bar();
+
+                        var ts = new Drawing.TimeSignature(4, 4);
                         ts.x = 40;
                         ts.y = 200;
+
                         drawBar.x = newStave.x;
-                        drawBar.y = startHeight;
+
+                        drawBar.y = topLineHeight;
                         drawBar.height = 40;
                         drawBar.width = 30;
+
                         this._items.push(drawBar);
                         this._items.push(ts);
+
                         for (var l = 0; l < bar.items.length; l++) {
-                            if (bar.items[l] instanceof Inknote.Model.Note) {
-                                var noteItem = bar.items[l];
-                                var drawNoteItem = Inknote.getDrawingItemFromNote(noteItem);
-                                drawNoteItem.x = startX += 20;
-                                drawNoteItem.y = startHeight + 20 - noteItem.value * 5;
+                            if (bar.items[l] instanceof Model.Note) {
+                                var noteItem = <Model.Note> bar.items[l];
+                                var drawNoteItem = getDrawingItemFromNote(noteItem)
+                                drawNoteItem.x = marginLeft += 20;
+                                drawNoteItem.y = topLineHeight + 20 - noteItem.value * 5;
                                 drawNoteItem.ID = noteItem.ID;
-                                drawBar.width += Inknote.requiredNoteSpace(drawNoteItem, 10);
+
+                                drawBar.width += requiredNoteSpace(noteItem, 10);
+
                                 this._items.push(drawNoteItem);
                             }
-                            else if (bar.items[l] instanceof Inknote.Model.Rest) {
-                                var restItem = bar.items[l];
-                                var drawRestItem = Inknote.getDrawingItemFromRest(restItem);
-                                drawRestItem.x = startX += 20;
-                                drawRestItem.y = startHeight;
+                            else if (bar.items[l] instanceof Model.Rest) {
+                                var restItem = <Model.Rest> bar.items[l];
+                                var drawRestItem = getDrawingItemFromRest(restItem)
+                                drawRestItem.x = marginLeft += 20;
+                                drawRestItem.y = topLineHeight;
                                 drawRestItem.ID = restItem.ID;
-                                drawBar.width += Inknote.requiredRestSpace(drawRestItem, 10);
+
+                                drawBar.width += requiredRestSpace(restItem, 10);
+
                                 this._items.push(drawRestItem);
                             }
-                            else if (bar.items[l] instanceof Inknote.Model.Chord) {
+                            else if (bar.items[l] instanceof Model.Chord) {
+
                             }
                         }
                     }
                 }
-                startHeight += 80;
+
+                topLineHeight += 80;
             }
+            */
         };
         Object.defineProperty(ScoringService.prototype, "SelectedItem", {
             get: function () {
@@ -4227,7 +4626,7 @@ var Inknote;
                     continue;
                 }
                 var id = this._items[i].ID;
-                if (lastID == this.selectID) {
+                if (lastID == this.selectID && id != lastID) {
                     this.selectID = id;
                     gone = true;
                     break;
@@ -4294,6 +4693,10 @@ var Inknote;
             compressed.ID = project.ID;
             compressed.name = project.name;
             compressed.inknoteVersion = Inknote.Managers.VersionManager.Instance.version;
+            compressed.colour = project.colour;
+            compressed.composer = project.composer;
+            compressed.arrangedBy = project.arrangedBy;
+            compressed.notes = project.notes;
             for (var i = 0; i < project.instruments.length; i++) {
                 compressed.instruments.push(compressInstrument(project.instruments[i]));
             }
@@ -4360,6 +4763,10 @@ var Inknote;
             var result = new Inknote.Project(project.name);
             result.ID = project.ID;
             result.instruments = [];
+            result.colour = project.colour;
+            result.composer = project.composer;
+            result.arrangedBy = project.arrangedBy;
+            result.notes = project.notes;
             if (project.instruments) {
                 for (var i = 0; i < project.instruments.length; i++) {
                     result.instruments.push(decompressInstrument(project.instruments[i]));
@@ -4452,6 +4859,7 @@ var Inknote;
                 }
                 file.x = column * 200 + 100;
                 file.y = row * 200 + 100 - Inknote.ScrollService.Instance.y;
+                file.colour = projects[i].colour;
                 items.push(file);
                 column++;
                 if (column >= maxFiles) {
@@ -4546,32 +4954,35 @@ var Inknote;
     }
     Inknote.requiredRestSpace = requiredRestSpace;
     function getDrawingItemFromRest(rest) {
+        var result = null;
         switch (rest.length) {
             case 0 /* Breve */:
-                return new Inknote.Drawing.BreveRest();
+                result = new Inknote.Drawing.BreveRest();
                 break;
             case 1 /* SemiBreve */:
-                return new Inknote.Drawing.SemiBreveRest();
+                result = new Inknote.Drawing.SemiBreveRest();
                 break;
             case 2 /* Minim */:
-                return new Inknote.Drawing.MinimRest();
+                result = new Inknote.Drawing.MinimRest();
                 break;
             case 3 /* Crotchet */:
-                return new Inknote.Drawing.CrotchetRest();
+                result = new Inknote.Drawing.CrotchetRest();
                 break;
             case 4 /* Quaver */:
-                return new Inknote.Drawing.QuaverRest();
+                result = new Inknote.Drawing.QuaverRest();
                 break;
             case 5 /* SemiQuaver */:
-                return new Inknote.Drawing.SemiQuaverRest();
+                result = new Inknote.Drawing.SemiQuaverRest();
                 break;
             case 6 /* DemiSemiQuaver */:
-                return new Inknote.Drawing.DemiSemiQuaverRest();
+                result = new Inknote.Drawing.DemiSemiQuaverRest();
                 break;
             case 7 /* HemiDemiSemiQuaver */:
-                return new Inknote.Drawing.HemiDemiSemiQuaverRest();
+                result = new Inknote.Drawing.HemiDemiSemiQuaverRest();
                 break;
         }
+        result.ID = rest.ID;
+        return result;
     }
     Inknote.getDrawingItemFromRest = getDrawingItemFromRest;
 })(Inknote || (Inknote = {}));
@@ -4588,8 +4999,11 @@ var Inknote;
     function requiredNoteSpace(note, lineHeight) {
         // width of head.
         var spaceNeeded = lineHeight;
-        if (note.noteLength > 3 /* Crotchet */ && note.stemUp) {
+        if (note.length > 3 /* Crotchet */) {
             spaceNeeded += lineHeight;
+        }
+        if (Inknote.Model.IsBlackKey(note.value)) {
+            spaceNeeded += 10;
         }
         //padding
         spaceNeeded += lineHeight;
@@ -4767,14 +5181,78 @@ var Inknote;
             noteControls.push(this.minimise);
             return noteControls;
         };
+        NoteControlService.prototype.addInstrument = function (name) {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var barsCount = project.instruments[0].bars.length;
+            var newInstrument = new Inknote.Model.Instrument(name);
+            for (var i = 0; i < barsCount; i++) {
+                newInstrument.bars.push(new Inknote.Model.Bar());
+            }
+            project.instruments.push(newInstrument);
+            Inknote.ScoringService.Instance.refresh();
+        };
+        NoteControlService.prototype.addBar = function () {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                project.instruments[i].bars.push(new Inknote.Model.Bar());
+            }
+        };
         NoteControlService.prototype.addNote = function (note) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
-                instrument.bars.push(new Inknote.Model.Bar());
+                this.addBar();
             }
-            var bar = instrument.bars[0];
+            var bar = instrument.bars[instrument.bars.length - 1];
+            if (bar.items.length > 3) {
+                this.addBar();
+                bar = instrument.bars[instrument.bars.length - 1];
+            }
             bar.items.push(note);
+            Inknote.ScoringService.Instance.refresh();
+        };
+        NoteControlService.prototype.editNoteLength = function () {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (item instanceof Inknote.Model.Note) {
+                                item.length = this.lengthControl.selectedLength;
+                            }
+                            else if (item instanceof Inknote.Model.Rest) {
+                                item.length = this.lengthControl.selectedLength;
+                            }
+                            else if (item instanceof Inknote.Model.Chord) {
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    item.notes[l].length = this.lengthControl.selectedLength;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Inknote.ScoringService.Instance.refresh();
+        };
+        NoteControlService.prototype.deleteItem = function () {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+                    var newItems = [];
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                        }
+                        else {
+                            newItems.push(item);
+                        }
+                    }
+                    bar.items = newItems;
+                }
+            }
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteValueAndOctave = function (value, octave) {
@@ -4788,6 +5266,7 @@ var Inknote;
                             if (item instanceof Inknote.Model.Note) {
                                 item.value = value;
                                 item.octave = octave;
+                                item.length = this.lengthControl.selectedLength;
                             }
                             else if (item instanceof Inknote.Model.Rest) {
                             }
@@ -4848,6 +5327,71 @@ var Inknote;
         return NoteControlService;
     })();
     Inknote.NoteControlService = NoteControlService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var ProjectOptionsService = (function () {
+        function ProjectOptionsService() {
+            this.currentProject = null;
+            this.container = document.getElementById("project-options-details");
+        }
+        Object.defineProperty(ProjectOptionsService, "Instance", {
+            get: function () {
+                if (!ProjectOptionsService._instance) {
+                    ProjectOptionsService._instance = new ProjectOptionsService();
+                }
+                return ProjectOptionsService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange) {
+            var formRow = document.createElement("div");
+            formRow.className = "form-row";
+            var rowLabel = document.createElement("span");
+            rowLabel.className = "label";
+            rowLabel.textContent = label;
+            formRow.appendChild(rowLabel);
+            var rowInput = document.createElement("input");
+            rowInput.value = startValue;
+            rowInput.onchange = onChange;
+            formRow.appendChild(rowInput);
+            this.container.appendChild(formRow);
+        };
+        ProjectOptionsService.prototype.open = function (project) {
+            this.currentProject = project;
+            this.container.innerHTML = "";
+            var header = document.createElement("h1");
+            header.textContent = project.name;
+            this.container.appendChild(header);
+            var colourRow = document.createElement("div");
+            colourRow.className = "form-row";
+            var colourLabel = document.createElement("span");
+            colourLabel.className = "label";
+            colourLabel.textContent = "tag colour:";
+            colourRow.appendChild(colourLabel);
+            var colour = document.createElement("input");
+            colour.type = "color";
+            colour.value = project.colour;
+            colour.onchange = function (e) {
+                ProjectOptionsService.Instance.currentProject.colour = colour.value;
+            };
+            colourRow.appendChild(colour);
+            this.container.appendChild(colourRow);
+            this.addRowWithData("composed by:", project.composer, function (e) {
+                ProjectOptionsService.Instance.currentProject.composer = e.target.value;
+            });
+            this.addRowWithData("arranged by:", project.arrangedBy, function (e) {
+                ProjectOptionsService.Instance.currentProject.arrangedBy = e.target.value;
+            });
+            this.addRowWithData("notes:", project.notes, function (e) {
+                ProjectOptionsService.Instance.currentProject.notes = e.target.value;
+            });
+            Modal.toggle("project-options");
+        };
+        return ProjectOptionsService;
+    })();
+    Inknote.ProjectOptionsService = ProjectOptionsService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -5896,7 +6440,9 @@ var Inknote;
         CanvasControl.prototype.mouseDown = function (e, drawService) {
             var onMove = function (e) {
                 // ScrollService.Instance.x += e.movementX;
-                Inknote.ScrollService.Instance.y -= e.movementY;
+                if (e.movementY > 0 && Inknote.canScroll(true) || e.movementY < 0 && Inknote.canScroll(false)) {
+                    Inknote.ScrollService.Instance.y -= e.movementY;
+                }
                 drawService.canvas.style.cursor = "-webkit-grabbing";
             };
             drawService.canvas.addEventListener("mousemove", onMove, false);
@@ -5929,7 +6475,9 @@ var Inknote;
                     var lastTouch = self.getTouchCopyByID(touch.identifier);
                     var movementX = touch.pageX - lastTouch.pageX;
                     var movementY = touch.pageY - lastTouch.pageY;
-                    Inknote.ScrollService.Instance.y -= movementY;
+                    if (movementY > 0 && Inknote.canScroll(true) || movementY < 0 && Inknote.canScroll(false)) {
+                        Inknote.ScrollService.Instance.y -= movementY;
+                    }
                     lastTouch.pageX = touch.pageX;
                     lastTouch.pageY = touch.pageY;
                 }
@@ -6045,6 +6593,8 @@ var Inknote;
                 case 40:
                     Inknote.NoteControlService.Instance.noteValueDown();
                     break;
+                case 46:
+                    Inknote.NoteControlService.Instance.deleteItem();
             }
         }
         if (noteVal != null) {
@@ -6229,6 +6779,15 @@ var Actions;
         Plugins.PluginMenuClick = PluginMenuClick;
     })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
 })(Actions || (Actions = {}));
+var Inknkote;
+(function (Inknkote) {
+    window.onresize = function () {
+        Inknote.ScoringService.Instance.refresh();
+        if (Inknote.ScoringService.Instance.maxScrollPosition < Inknote.ScrollService.Instance.y) {
+            Inknote.ScrollService.Instance.y = Inknote.ScoringService.Instance.maxScrollPosition - 100;
+        }
+    };
+})(Inknkote || (Inknkote = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
@@ -6280,6 +6839,7 @@ else {
 /// <reference path="scripts/helpers/string.ts" />
 /// <reference path="scripts/helpers/canvas.ts" />
 /// <reference path="scripts/helpers/maths.ts" />
+/// <reference path="scripts/helpers/2d.ts" />
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />
@@ -6343,6 +6903,10 @@ else {
 // right click menus
 /// <reference path="scripts/drawings/rightclickmenus/rightclickmenu.ts" />
 /// <reference path="scripts/drawings/rightclickmenus/rightclickfile.ts" />
+/// <reference path="scripts/drawings/rightclickmenus/rightclickscore.ts" />
+// landing
+/// <reference path="scripts/landing/metaball.ts" />
+/// <reference path="scripts/landing/landing.ts" />
 // dropCanvas
 /// <reference path="scripts/dropcanvas/environment.ts" />
 /// <reference path="scripts/dropcanvas/dropfile.ts" />
@@ -6378,6 +6942,7 @@ else {
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/projectoptionsservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers
@@ -6397,6 +6962,7 @@ else {
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/windowresize.ts" />
 // app
 /// <reference path="scripts/app.ts" />
 /// <reference path="scripts/security-warning.ts" />

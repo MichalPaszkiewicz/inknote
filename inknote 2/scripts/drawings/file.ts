@@ -8,6 +8,7 @@
         order = 10;
         hover = false;
         select = false;
+        colour: string = "#FFFFFF";
 
         isOver(x: number, y: number) {
             if (x < this.x + 50 && x > this.x - 50) {
@@ -58,12 +59,20 @@
                 ctx.lineTo(self.x - 50, self.y - fold);
                 ctx.fill();
 
+                // file white bit.
                 ctx.beginPath();
                 ctx.moveTo(self.x - (fold + 4), self.y - 45);
                 ctx.lineTo(self.x - 45, self.y - 45);
                 ctx.lineTo(self.x - 45, self.y - (fold + 4));
                 ctx.strokeStyle = Colours.black;
                 ctx.fillStyle = Colours.white;
+                ctx.fill();
+                ctx.stroke();
+
+                // colour tag.
+                ctx.beginPath();
+                ctx.rect(self.x + 30, self.y + 30, 15, 15);
+                ctx.fillStyle = self.colour;
                 ctx.fill();
                 ctx.stroke();
 

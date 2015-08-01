@@ -55,6 +55,7 @@
             this.splashCounter = 0;
             this.finished = false;
 
+            FrontEnd.hideElement(document.getElementById("landing"));
             FrontEnd.showElement(document.getElementById("drag-drop"));
 
             this.canvas.width = this.canvas.parentElement.clientWidth;
@@ -179,8 +180,8 @@
 
             if (speed > 10) {
                 for (var i = 0; i < Math.floor(speed / 2); i++) {
-                    var pos = new Vector2(index * this.segmentSize, this.canvas.height);
-                    var vel = new Vector2(10 * Math.random() - 5,  -speed * Math.random() / 4);
+                    var pos = new Maths.Vector2(index * this.segmentSize, this.canvas.height);
+                    var vel = new Maths.Vector2(10 * Math.random() - 5,  -speed * Math.random() / 4);
                     var droplet = new Droplet(pos, vel, 5 * Math.random());
 
                     this.droplets.push(droplet);
