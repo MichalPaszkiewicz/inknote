@@ -103,7 +103,12 @@
                     break;
                 // delete
                 case 46:
-                    NoteControlService.Instance.deleteItem();
+                    if (ScoringService.Instance.SelectedItem instanceof Drawing.Note) {
+                        NoteControlService.Instance.deleteItem();
+                    }
+                    else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                        BarService.Instance.deleteSelectedBar();
+                    }
             }
         }
 

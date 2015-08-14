@@ -129,6 +129,7 @@
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
 
 // testData

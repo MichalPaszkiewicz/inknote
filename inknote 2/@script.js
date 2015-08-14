@@ -441,6 +441,7 @@ var Inknote;
     (function (Model) {
         var Bar = (function () {
             function Bar() {
+                this.ID = Inknote.getID();
                 this.items = [];
             }
             return Bar;
@@ -4477,6 +4478,7 @@ var Inknote;
                         var bar = tempInstrument.bars[tempLine.barIndices[k]];
                         // add bar drawing.
                         var drawBar = new Inknote.Drawing.Bar();
+                        drawBar.ID = bar.ID;
                         drawBar.height = 40;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
@@ -5374,6 +5376,60 @@ var Inknote;
         return NoteControlService;
     })();
     Inknote.NoteControlService = NoteControlService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var BarService = (function () {
+        function BarService() {
+        }
+        Object.defineProperty(BarService, "Instance", {
+            get: function () {
+                if (!BarService._instance) {
+                    BarService._instance = new BarService();
+                }
+                return BarService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        BarService.prototype.deleteSelectedBar = function () {
+            var runRemove = false;
+            var removeIndex = 0;
+            var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+            for (var i = 0; i < instruments.length; i++) {
+                for (var j = 0; j < instruments[i].bars.length; j++) {
+                    var bar = instruments[i].bars[j];
+                    if (bar.ID == Inknote.ScoringService.Instance.SelectedItem.ID) {
+                        if (bar.items.length == 0) {
+                            runRemove = true;
+                            for (var k = 0; k < instruments.length; k++) {
+                                if (instruments[k].bars[j].items.length > 0) {
+                                    runRemove = false;
+                                }
+                            }
+                            if (runRemove == true) {
+                                removeIndex = j;
+                            }
+                        }
+                        else {
+                            bar.items = [];
+                            Inknote.ScoringService.Instance.refresh();
+                        }
+                        break;
+                    }
+                }
+            }
+            if (runRemove === true) {
+                console.log("here");
+                for (var i = 0; i < instruments.length; i++) {
+                    instruments[i].bars.splice(removeIndex, 1);
+                    Inknote.ScoringService.Instance.refresh();
+                }
+            }
+        };
+        return BarService;
+    })();
+    Inknote.BarService = BarService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6641,7 +6697,12 @@ var Inknote;
                     Inknote.NoteControlService.Instance.noteValueDown();
                     break;
                 case 46:
-                    Inknote.NoteControlService.Instance.deleteItem();
+                    if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
+                        Inknote.NoteControlService.Instance.deleteItem();
+                    }
+                    else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                        Inknote.BarService.Instance.deleteSelectedBar();
+                    }
             }
         }
         if (noteVal != null) {
@@ -6989,6 +7050,7 @@ else {
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
 /// <reference path="scripts/services/notecontrolservice.ts" />
+/// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />

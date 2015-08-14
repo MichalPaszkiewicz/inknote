@@ -172,6 +172,7 @@ module Inknote {
 
                         // add bar drawing.
                         var drawBar = new Drawing.Bar();
+                        drawBar.ID = bar.ID;
                         drawBar.height = 40;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;

@@ -155,6 +155,7 @@
     <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
     <TypeScriptCompile Include="scripts\rights.ts" />
     <TypeScriptCompile Include="scripts\security-warning.ts" />
+    <TypeScriptCompile Include="scripts\services\barService.ts" />
     <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
     <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
     <TypeScriptCompile Include="scripts\services\chordService.ts" />
