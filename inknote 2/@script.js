@@ -2970,6 +2970,9 @@ var Inknote;
                 this.ended = false;
                 this.canvas = document.getElementById("landing-canvas");
                 this.ctx = this.canvas.getContext("2d");
+                if (Inknote.Managers.MachineManager.Instance.machineType != 0 /* Desktop */) {
+                    return;
+                }
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;
                 this.metaballs = new _Landing.MetaballList(20, this.canvas);
@@ -3003,6 +3006,9 @@ var Inknote;
                 });
             };
             Landing.prototype.hide = function () {
+                if (Inknote.Managers.MachineManager.Instance.machineType != 0 /* Desktop */) {
+                    this.canvas.parentElement.className += " hidden";
+                }
                 this.ended = true;
                 this.metaballs.end();
                 this.canvas.parentElement.className += " faded";
@@ -3010,7 +3016,6 @@ var Inknote;
             return Landing;
         })();
         _Landing.Landing = Landing;
-        Inknote.Landing.Landing.Instance;
     })(Landing = Inknote.Landing || (Inknote.Landing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;

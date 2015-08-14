@@ -49,7 +49,11 @@ body #drag-drop-bad {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: url(../assets/landing.png);
+}
+@media (min-width: 500px) {
+  #landing .central {
+    background: url(../assets/landing.png);
+  }
 }
 #landing .central .cover-text h1 {
   font-size: 34px;

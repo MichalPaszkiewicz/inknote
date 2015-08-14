@@ -41,9 +41,12 @@
 
         constructor() 
         {
-
             this.canvas = <HTMLCanvasElement>document.getElementById("landing-canvas");
             this.ctx = this.canvas.getContext("2d");
+
+            if (Managers.MachineManager.Instance.machineType != Managers.MachineType.Desktop) {
+                return;
+            }
 
             this.canvas.width = this.canvas.parentElement.clientWidth;
             this.canvas.height = this.canvas.parentElement.clientHeight;
@@ -57,13 +60,15 @@
         ended: boolean = false;
 
         hide() {
+            if (Managers.MachineManager.Instance.machineType != Managers.MachineType.Desktop) {
+                this.canvas.parentElement.className += " hidden";
+            }
+
             this.ended = true;
             this.metaballs.end();
             this.canvas.parentElement.className += " faded";
         }
 
     }
-
-    Inknote.Landing.Landing.Instance;
 
 } 
