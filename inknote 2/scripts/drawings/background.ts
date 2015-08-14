@@ -38,8 +38,8 @@
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, scale: number) {
 
-            
-            for (var i = 0; i < canvas.width; i += 4){
+            // uncomment for striped background.
+            /*for (var i = 0; i < canvas.width; i += 4){
                 ctx.beginPath();
                 ctx.moveTo(i, 0);
 
@@ -61,7 +61,7 @@
                 ctx.lineTo(i, canvas.height);
                 ctx.strokeStyle = Colours.faintBlue;
                 ctx.stroke();
-            }
+            }*/
         
             this.t++;
 

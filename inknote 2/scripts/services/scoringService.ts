@@ -88,9 +88,14 @@ module Inknote {
             return ScoringService._instance;
         }
 
-        private _refresh: boolean = false;
+        private _refresh: boolean = false; 
         private _projectID: string;
         private _items: IDrawable[] = [];
+
+        // use this instead of normal push.
+        addItem(item: IDrawable) {
+                this._items.push(item);
+        }
 
         hoverID: string;
         selectID: string;
@@ -157,7 +162,7 @@ module Inknote {
                     var drawStave = new Drawing.Stave(topLineHeight, tempInstrument.name);
                     drawStave.x = marginLeft;
                     drawStave.width = maxWidth;
-                    this._items.push(drawStave);
+                    this.addItem(drawStave);
 
                     // loop through bars in line
                     // warning: do not use k. use the barIndex values.
@@ -171,7 +176,7 @@ module Inknote {
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
-                        this._items.push(drawBar);
+                        this.addItem(drawBar);
 
                         // for getting note position.
                         var itemX = 20;
@@ -188,9 +193,9 @@ module Inknote {
                                     var drawBlack = new Drawing.Flat();
 
                                     drawBlack.x = marginLeft + barX + itemX;
-                                    drawBlack.y = topLineHeight;
+                                    drawBlack.y = topLineHeight - 5 * getIntervalDistance(new Model.Note(Model.NoteValue.F, 5, Model.NoteLength.Crotchet), item);
 
-                                    this._items.push(drawBlack);
+                                    this.addItem(drawBlack);
 
                                     // move forwards.
                                     itemX += 10;
@@ -200,13 +205,13 @@ module Inknote {
                                 var drawNoteItem = getDrawingItemFromNote(item);
 
                                 drawNoteItem.x = marginLeft + barX + itemX;
-                                drawNoteItem.y = topLineHeight;
+                                drawNoteItem.y = topLineHeight - 5 * getIntervalDistance(new Model.Note(Model.NoteValue.F, 5, Model.NoteLength.Crotchet), item);;
 
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
                                 }
 
-                                this._items.push(drawNoteItem);
+                                this.addItem(drawNoteItem);
 
                                 // move forwards
                                 itemX += requiredNoteSpace(item, 10);
@@ -224,7 +229,7 @@ module Inknote {
                                 drawRestItem.x = marginLeft + barX + itemX;
                                 drawRestItem.y = topLineHeight;
 
-                                this._items.push(drawRestItem);
+                                this.addItem(drawRestItem);
 
 
                                 // move forwards.
@@ -337,15 +342,20 @@ module Inknote {
                 this.updateItems();
             }
 
+            var visibleItems = [];
+
             // deals with scrolling.
             for (var i = 0; i < this._items.length; i++) {
                 this._items[i].y = this._items[i].y + this.oldScrollY - ScrollService.Instance.y;
+                if (this._items[i].y > 0 && this._items[i].y < DrawService.Instance.canvas.height) {
+                    visibleItems.push(this._items[i]);
+                }
             }
 
             this.oldScrollY = ScrollService.Instance.y;
 
             this._refresh = false;
-            return this._items;
+            return visibleItems;
         }
 
         cursorLeft() {

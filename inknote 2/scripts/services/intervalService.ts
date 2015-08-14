@@ -48,4 +48,38 @@
         return getNoteOfDistance(note, 11);
     }
 
+    export function getIntervalDistance(note: Model.Note, note2: Model.Note): number {
+
+        var distanceFromOctave = (note2.octave - note.octave) * 7;
+
+        // this correction needs to work.
+        if (note2.value < Model.NoteValue.C) {
+            distanceFromOctave++;
+        }
+
+        var note1Value = note.value;
+
+        var diff = note2.value - note.value;
+
+        var distanceOfNote = 0;
+
+        if (diff > 0) {
+
+            for (var i = 0; i < diff; i++) {
+                if (!Model.IsBlackKey((i + note1Value) % 12)) {
+                    distanceOfNote++;
+                }
+            }
+
+        }
+        else {
+            for (var i = 0; i > diff; i--) {
+                if (!Model.IsBlackKey((i + note1Value) % 12)) {
+                    distanceOfNote--;
+                }
+            }
+        }
+
+        return distanceFromOctave + distanceOfNote;
+    }
 } 

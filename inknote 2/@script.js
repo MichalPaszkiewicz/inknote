@@ -1016,14 +1016,17 @@ var Inknote;
                 return false;
             };
             Background.prototype.draw = function (ctx, canvas, scale) {
-                for (var i = 0; i < canvas.width; i += 4) {
+                // uncomment for striped background.
+                /*for (var i = 0; i < canvas.width; i += 4){
                     ctx.beginPath();
                     ctx.moveTo(i, 0);
+    
                     // bulge around mouse?
                     //var dif = this.chase.x - i;
                     //if (dif > 0 && dif < 8) dif = 8;
                     //if (dif <= 0 && dif > -8) dif = -8;
                     //var blah = 100 / (dif);
+    
                     //if (Math.abs(dif) < 200) {
                     //    ctx.lineTo(i, this.mouse.y - Math.abs(blah) - 20);
                     //    ctx.bezierCurveTo(i - blah, this.mouse.y, i - blah, this.mouse.y, i, this.mouse.y + Math.abs(blah) + 20);
@@ -1032,10 +1035,11 @@ var Inknote;
                     //}
                     //else {
                     //}
+    
                     ctx.lineTo(i, canvas.height);
-                    ctx.strokeStyle = Drawing.Colours.faintBlue;
+                    ctx.strokeStyle = Colours.faintBlue;
                     ctx.stroke();
-                }
+                }*/
                 this.t++;
                 // signature
                 ctx.save();
@@ -1374,7 +1378,6 @@ var Inknote;
                             ctx.moveTo(tailX, tailY);
                             ctx.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
                             ctx.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX, tailY + 15);
-                            ctx.lineTo(tailX, tailY);
                             ctx.fill();
                             ctx.stroke();
                             tailController--;
@@ -1405,7 +1408,6 @@ var Inknote;
                             ctx.moveTo(tailX, tailY);
                             ctx.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
                             ctx.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX, tailY - 15);
-                            ctx.lineTo(tailX, tailY);
                             ctx.fill();
                             ctx.stroke();
                             tailController--;
@@ -2825,7 +2827,12 @@ var Inknote;
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
                         var name = prompt("What is the name of the new instrument?");
-                        Inknote.NoteControlService.Instance.addInstrument(name);
+                        if (name != "" && name != null) {
+                            Inknote.NoteControlService.Instance.addInstrument(name);
+                        }
+                        if (name == "") {
+                            Inknote.check("Your instrument name cannot be empty", null, null);
+                        }
                     }));
                 }
                 return RightClickScore;
@@ -4412,6 +4419,10 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        // use this instead of normal push.
+        ScoringService.prototype.addItem = function (item) {
+            this._items.push(item);
+        };
         // todo: ensure
         // should refresh on:
         // change of window size -- actions -> windowResize.
@@ -4455,7 +4466,7 @@ var Inknote;
                     var drawStave = new Inknote.Drawing.Stave(topLineHeight, tempInstrument.name);
                     drawStave.x = marginLeft;
                     drawStave.width = maxWidth;
-                    this._items.push(drawStave);
+                    this.addItem(drawStave);
                     for (var k = 0; k < tempLine.barIndices.length; k++) {
                         var tempBarLength = tempLine.barLengths[k];
                         var bar = tempInstrument.bars[tempLine.barIndices[k]];
@@ -4465,7 +4476,7 @@ var Inknote;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
-                        this._items.push(drawBar);
+                        this.addItem(drawBar);
                         // for getting note position.
                         var itemX = 20;
                         for (var l = 0; l < bar.items.length; l++) {
@@ -4475,19 +4486,20 @@ var Inknote;
                                 if (isBlack) {
                                     var drawBlack = new Inknote.Drawing.Flat();
                                     drawBlack.x = marginLeft + barX + itemX;
-                                    drawBlack.y = topLineHeight;
-                                    this._items.push(drawBlack);
+                                    drawBlack.y = topLineHeight - 5 * Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
+                                    this.addItem(drawBlack);
                                     // move forwards.
                                     itemX += 10;
                                 }
                                 // add note drawing.
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
-                                drawNoteItem.y = topLineHeight;
+                                drawNoteItem.y = topLineHeight - 5 * Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
+                                ;
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
                                 }
-                                this._items.push(drawNoteItem);
+                                this.addItem(drawNoteItem);
                                 // move forwards
                                 itemX += Inknote.requiredNoteSpace(item, 10);
                                 if (isBlack) {
@@ -4500,7 +4512,7 @@ var Inknote;
                                 var drawRestItem = Inknote.getDrawingItemFromRest(item);
                                 drawRestItem.x = marginLeft + barX + itemX;
                                 drawRestItem.y = topLineHeight;
-                                this._items.push(drawRestItem);
+                                this.addItem(drawRestItem);
                                 // move forwards.
                                 itemX += Inknote.requiredRestSpace(item, 10);
                             }
@@ -4597,12 +4609,16 @@ var Inknote;
                 // get items from project
                 this.updateItems();
             }
+            var visibleItems = [];
             for (var i = 0; i < this._items.length; i++) {
                 this._items[i].y = this._items[i].y + this.oldScrollY - Inknote.ScrollService.Instance.y;
+                if (this._items[i].y > 0 && this._items[i].y < Inknote.DrawService.Instance.canvas.height) {
+                    visibleItems.push(this._items[i]);
+                }
             }
             this.oldScrollY = Inknote.ScrollService.Instance.y;
             this._refresh = false;
-            return this._items;
+            return visibleItems;
         };
         ScoringService.prototype.cursorLeft = function () {
             var lastID = null;
@@ -4924,6 +4940,32 @@ var Inknote;
         return getNoteOfDistance(note, 11);
     }
     Inknote.getMajorSeventh = getMajorSeventh;
+    function getIntervalDistance(note, note2) {
+        var distanceFromOctave = (note2.octave - note.octave) * 7;
+        // this correction needs to work.
+        if (note2.value < 3 /* C */) {
+            distanceFromOctave++;
+        }
+        var note1Value = note.value;
+        var diff = note2.value - note.value;
+        var distanceOfNote = 0;
+        if (diff > 0) {
+            for (var i = 0; i < diff; i++) {
+                if (!Inknote.Model.IsBlackKey((i + note1Value) % 12)) {
+                    distanceOfNote++;
+                }
+            }
+        }
+        else {
+            for (var i = 0; i > diff; i--) {
+                if (!Inknote.Model.IsBlackKey((i + note1Value) % 12)) {
+                    distanceOfNote--;
+                }
+            }
+        }
+        return distanceFromOctave + distanceOfNote;
+    }
+    Inknote.getIntervalDistance = getIntervalDistance;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {

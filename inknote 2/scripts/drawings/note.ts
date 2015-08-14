@@ -64,7 +64,6 @@
                         ctx.moveTo(tailX, tailY);
                         ctx.bezierCurveTo(tailX + 1, tailY + 10, tailX + 15, tailY + 13, tailX + 7, tailY + 25);
                         ctx.bezierCurveTo(tailX + 13, tailY + 13, tailX, tailY + 8, tailX, tailY + 15);
-                        ctx.lineTo(tailX, tailY);
                         ctx.fill();
                         ctx.stroke();
                         tailController--;
@@ -90,7 +89,6 @@
                         ctx.moveTo(tailX, tailY);
                         ctx.bezierCurveTo(tailX + 1, tailY - 10, tailX + 15, tailY - 13, tailX + 7, tailY - 25);
                         ctx.bezierCurveTo(tailX + 13, tailY - 13, tailX, tailY - 8, tailX, tailY - 15);
-                        ctx.lineTo(tailX, tailY);
                         ctx.fill();
                         ctx.stroke();
                         tailController--;

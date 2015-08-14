@@ -21,8 +21,13 @@
             this.items.unshift(new ClickableMenuItem("add instrument", function () {
 
                 var name = prompt("What is the name of the new instrument?");
-                NoteControlService.Instance.addInstrument(name);
+                if (name != "" && name != null) {
+                    NoteControlService.Instance.addInstrument(name);
+                }
 
+                if (name == "") {
+                    check("Your instrument name cannot be empty", null, null);
+                }
             }));
 
         }
