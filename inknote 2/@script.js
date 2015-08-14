@@ -4944,7 +4944,7 @@ var Inknote;
         var distanceFromOctave = (note2.octave - note.octave) * 7;
         // this correction needs to work.
         if (note2.value < 3 /* C */) {
-            distanceFromOctave++;
+            distanceFromOctave += 7;
         }
         var note1Value = note.value;
         var diff = note2.value - note.value;
@@ -4958,7 +4958,7 @@ var Inknote;
         }
         else {
             for (var i = 0; i > diff; i--) {
-                if (!Inknote.Model.IsBlackKey((i + note1Value) % 12)) {
+                if (!Inknote.Model.IsBlackKey((i + 11 + note1Value) % 12)) {
                     distanceOfNote--;
                 }
             }

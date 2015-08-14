@@ -54,7 +54,7 @@
 
         // this correction needs to work.
         if (note2.value < Model.NoteValue.C) {
-            distanceFromOctave++;
+            distanceFromOctave += 7;
         }
 
         var note1Value = note.value;
@@ -74,7 +74,7 @@
         }
         else {
             for (var i = 0; i > diff; i--) {
-                if (!Model.IsBlackKey((i + note1Value) % 12)) {
+                if (!Model.IsBlackKey((i + 11 + note1Value) % 12)) {
                     distanceOfNote--;
                 }
             }
