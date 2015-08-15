@@ -28,8 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\model\project.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jasmine-fixture\jasmine-fixture.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jasmine-matchers\jasmine-matchers.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
   </ItemGroup>
   <ItemGroup>
