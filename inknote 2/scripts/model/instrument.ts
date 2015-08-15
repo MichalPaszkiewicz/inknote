@@ -8,7 +8,6 @@
         constructor(public name: string) {
             this.bars = [];
             this.visible = true;
-            this.bars.push(new Bar());
         }
 
     }

@@ -190,11 +190,13 @@ module Inknote {
 
                                 var isBlack = Model.IsBlackKey(item.value);
 
+                                var intervalDistance = getIntervalDistance(new Model.Note(Model.NoteValue.F, 5, Model.NoteLength.Crotchet), item);
+
                                 if (isBlack) {
                                     var drawBlack = new Drawing.Flat();
 
                                     drawBlack.x = marginLeft + barX + itemX;
-                                    drawBlack.y = topLineHeight - 5 * getIntervalDistance(new Model.Note(Model.NoteValue.F, 5, Model.NoteLength.Crotchet), item);
+                                    drawBlack.y = topLineHeight - 5 * intervalDistance;
 
                                     this.addItem(drawBlack);
 
@@ -206,7 +208,9 @@ module Inknote {
                                 var drawNoteItem = getDrawingItemFromNote(item);
 
                                 drawNoteItem.x = marginLeft + barX + itemX;
-                                drawNoteItem.y = topLineHeight - 5 * getIntervalDistance(new Model.Note(Model.NoteValue.F, 5, Model.NoteLength.Crotchet), item);;
+                                drawNoteItem.y = topLineHeight - 5 * intervalDistance;
+
+                                drawNoteItem.stemUp = intervalDistance <= -4;
 
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);

@@ -167,10 +167,7 @@
             // text
             ctx.beginPath();
             ctx.textAlign = "center";
-            ctx.fillStyle = Colours.orange;
-            if (this.whiteKeys[0].hover) {
-                ctx.fillStyle = Colours.black;
-            }
+            ctx.fillStyle = Colours.black; 
             ctx.font = (Math.min((this.width / 20), this.height / 4)) + "px Arial";
             ctx.fillText("C" + this.octave, this.width * 1 / 6, this.y + this.height * 3 / 4);
             ctx.globalAlpha = 1;

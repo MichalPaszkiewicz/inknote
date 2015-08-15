@@ -458,7 +458,6 @@ var Inknote;
                 this.name = name;
                 this.bars = [];
                 this.visible = true;
-                this.bars.push(new Model.Bar());
             }
             return Instrument;
         })();
@@ -3675,10 +3674,7 @@ var Inknote;
                 // text
                 ctx.beginPath();
                 ctx.textAlign = "center";
-                ctx.fillStyle = Drawing.Colours.orange;
-                if (this.whiteKeys[0].hover) {
-                    ctx.fillStyle = Drawing.Colours.black;
-                }
+                ctx.fillStyle = Drawing.Colours.black;
                 ctx.font = (Math.min((this.width / 20), this.height / 4)) + "px Arial";
                 ctx.fillText("C" + this.octave, this.width * 1 / 6, this.y + this.height * 3 / 4);
                 ctx.globalAlpha = 1;
@@ -4490,10 +4486,11 @@ var Inknote;
                             var item = bar.items[l];
                             if (item instanceof Inknote.Model.Note) {
                                 var isBlack = Inknote.Model.IsBlackKey(item.value);
+                                var intervalDistance = Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
                                 if (isBlack) {
                                     var drawBlack = new Inknote.Drawing.Flat();
                                     drawBlack.x = marginLeft + barX + itemX;
-                                    drawBlack.y = topLineHeight - 5 * Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
+                                    drawBlack.y = topLineHeight - 5 * intervalDistance;
                                     this.addItem(drawBlack);
                                     // move forwards.
                                     itemX += 10;
@@ -4501,8 +4498,8 @@ var Inknote;
                                 // add note drawing.
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
-                                drawNoteItem.y = topLineHeight - 5 * Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
-                                ;
+                                drawNoteItem.y = topLineHeight - 5 * intervalDistance;
+                                drawNoteItem.stemUp = intervalDistance <= -4;
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
                                 }
