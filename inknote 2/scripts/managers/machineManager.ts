@@ -12,18 +12,22 @@
         lockOrientationUniversal: any;
     }
 
-    screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+    if (typeof screen != "undefined") {
+        screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
 
-    if (screen.lockOrientationUniversal) {
-        if (screen.lockOrientationUniversal("landscape-primary")) {
-            // orientation was locked
-        } else {
-            // orientation lock failed
-            log("orientation lock failed in this browser", MessageType.Warning);
+
+        if (screen.lockOrientationUniversal) {
+            if (screen.lockOrientationUniversal("landscape-primary")) {
+                // orientation was locked
+            } else {
+                // orientation lock failed
+                log("orientation lock failed in this browser", MessageType.Warning);
+            }
         }
-    }
-    else {
-        log("lockOrientation undefined in this browser", MessageType.Warning);
+        else {
+            log("lockOrientation undefined in this browser", MessageType.Warning);
+        }
+
     }
 
     export enum MachineType {

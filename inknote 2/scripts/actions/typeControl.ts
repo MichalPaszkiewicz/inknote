@@ -1,31 +1,33 @@
 ﻿module Inknote {
 
-    document.onkeydown = function (e) {
-        if (CONFIRM_IS_OPEN) {
-            return;
+    if (typeof document != "undefined" && typeof window != "undefined"){
+        document.onkeydown = function (e) {
+            if (CONFIRM_IS_OPEN) {
+                return;
+            }
+
+            if (e.keyCode == 8) {
+                e.preventDefault();
+            }
         }
 
-        if (e.keyCode == 8) {
-            e.preventDefault();
-        }
-    }
+        window.onkeyup = function (ev: KeyboardEvent) {
+            if (CONFIRM_IS_OPEN) {
+                return;
+            }
 
-    window.onkeyup = function (ev: KeyboardEvent) {
-        if (CONFIRM_IS_OPEN){
-            return;
-        }
+            switch (Managers.PageManager.Current.page) {
+                case Managers.Page.File:
+                    fileType(ev);
+                    break;
+                case Managers.Page.Score:
+                    scoreType(ev);
+                    break;
+                default:
+                    break;
+            }
 
-        switch (Managers.PageManager.Current.page) {
-            case Managers.Page.File:
-                fileType(ev);
-                break;
-            case Managers.Page.Score:
-                scoreType(ev);
-                break;
-            default:
-                break;
         }
-
     }
 
     function scoreType(e: KeyboardEvent) {

@@ -1,95 +1,98 @@
 ﻿module Inknote.Storage {
 
-    document.body.ondrag = function (e) {
-        //e.preventDefault();
+    if (typeof document != "undefined") { 
+         
+        document.body.ondrag = function (e) {
+            //e.preventDefault();
 
-        return false;
-    }
+            return false;
+        } 
 
-    document.body.ondrop = function (e) {
-        e.preventDefault();
+        document.body.ondrop = function (e) {
+            e.preventDefault();
 
-        DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
+            DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
 
-        var files = e.dataTransfer.files;
+            var files = e.dataTransfer.files;
 
-        var blah = e.dataTransfer.getData("utf8");
+            var blah = e.dataTransfer.getData("utf8");
 
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
 
-            var reader = new FileReader();
+                var reader = new FileReader();
 
-            reader.onload = function (e) {
-                console.log(e.target);
-                log("loaded");
+                reader.onload = function (e) {
+                    console.log(e.target);
+                    log("loaded");
 
-                var thisFile = file;
+                    var thisFile = file;
 
-                var fileText = (<FileReader>e.target).result;
+                    var fileText = (<FileReader>e.target).result;
 
-                if (thisFile.name.indexOf(".score") == -1) {
-                    log("incorrect file type", MessageType.Error);
-                    check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted" , null);
-                }
-                else {
-                    try {
-                        var innerScore = JSON.parse(fileText);
-
-                        var decompressedInnerScore = ProjectConverter.decompress(innerScore);
-
-                        Managers.ProjectManager.Instance.addProject(decompressedInnerScore, function (item: Project) {
-                            Managers.ProjectManager.Instance.setCurrentProject(item.ID);
-                        });
+                    if (thisFile.name.indexOf(".score") == -1) {
+                        log("incorrect file type", MessageType.Error);
+                        check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted", null);
                     }
-                    catch (e) {
-                        log("incorrect file format", MessageType.Error);
+                    else {
+                        try {
+                            var innerScore = JSON.parse(fileText);
+
+                            var decompressedInnerScore = ProjectConverter.decompress(innerScore);
+
+                            Managers.ProjectManager.Instance.addProject(decompressedInnerScore, function (item: Project) {
+                                Managers.ProjectManager.Instance.setCurrentProject(item.ID);
+                            });
+                        }
+                        catch (e) {
+                            log("incorrect file format", MessageType.Error);
+                        }
                     }
                 }
+
+                reader.readAsText(file);
             }
 
-            reader.readAsText(file);
+            return false;
         }
 
-        return false;
-    }
+        document.body.ondragend = function (e) {
+            e.preventDefault();
 
-    document.body.ondragend = function (e) {
-        e.preventDefault();
+            DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
 
-        DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
+            return false;
+        }
 
-        return false;
-    }
+        var inCorrectFiles = false;
 
-    var inCorrectFiles = false;
+        document.body.ondragstart = function (e) {
+            e.preventDefault();
 
-    document.body.ondragstart = function (e) {
-        e.preventDefault();
+            return false;
+        }
 
-        return false;
-    }
+        document.body.ondragenter = function (e) {
+            e.preventDefault();
 
-    document.body.ondragenter = function (e) {
-        e.preventDefault();
+            return false;
+        }
 
-        return false;
-    }
+        document.body.ondragover = function (e) {
+            e.preventDefault();
 
-    document.body.ondragover = function (e) {
-        e.preventDefault();
+            DropCanvas.DropCanvas.Instance.start();
 
-        DropCanvas.DropCanvas.Instance.start();
+            return false;
+        }
 
-        return false;
-    }
+        document.getElementById("drag-drop-canvas").ondragleave = function (e) {
+            e.preventDefault();
 
-    document.getElementById("drag-drop-canvas").ondragleave = function (e) {
-        e.preventDefault();
+            DropCanvas.DropCanvas.Instance.stop();
 
-        DropCanvas.DropCanvas.Instance.stop();
-
-        return false;
+            return false;
+        }
     }
 
     export function download(filename: string, text: string) {

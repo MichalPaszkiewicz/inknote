@@ -35,7 +35,9 @@
 
     }
 
-    setTimeout(function () {
-        Inknote.Managers.PluginManager.Instance.generatePluginHtml();
-    }, 300);
+    if (typeof document != "undefined"){
+        setTimeout(function () {
+            Inknote.Managers.PluginManager.Instance.generatePluginHtml();
+        }, 300);
+    }
 } 

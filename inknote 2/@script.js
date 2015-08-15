@@ -3845,7 +3845,7 @@ var Inknote;
             plugins: "plugins"
         };
         function getLocal(key) {
-            if (!localStorage) {
+            if (typeof localStorage == "undefined") {
                 Inknote.log("Local storage is undefined", 0 /* Error */);
                 return null;
             }
@@ -3921,68 +3921,70 @@ var Inknote;
 (function (Inknote) {
     var Storage;
     (function (Storage) {
-        document.body.ondrag = function (e) {
-            //e.preventDefault();
-            return false;
-        };
-        document.body.ondrop = function (e) {
-            e.preventDefault();
-            Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
-            var files = e.dataTransfer.files;
-            var blah = e.dataTransfer.getData("utf8");
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    console.log(e.target);
-                    Inknote.log("loaded");
-                    var thisFile = file;
-                    var fileText = e.target.result;
-                    if (thisFile.name.indexOf(".score") == -1) {
-                        Inknote.log("incorrect file type", 0 /* Error */);
-                        Inknote.check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted", null);
-                    }
-                    else {
-                        try {
-                            var innerScore = JSON.parse(fileText);
-                            var decompressedInnerScore = Inknote.ProjectConverter.decompress(innerScore);
-                            Inknote.Managers.ProjectManager.Instance.addProject(decompressedInnerScore, function (item) {
-                                Inknote.Managers.ProjectManager.Instance.setCurrentProject(item.ID);
-                            });
+        if (typeof document != "undefined") {
+            document.body.ondrag = function (e) {
+                //e.preventDefault();
+                return false;
+            };
+            document.body.ondrop = function (e) {
+                e.preventDefault();
+                Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
+                var files = e.dataTransfer.files;
+                var blah = e.dataTransfer.getData("utf8");
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        console.log(e.target);
+                        Inknote.log("loaded");
+                        var thisFile = file;
+                        var fileText = e.target.result;
+                        if (thisFile.name.indexOf(".score") == -1) {
+                            Inknote.log("incorrect file type", 0 /* Error */);
+                            Inknote.check("'" + file.name + "' is of an incorrect fileType. Only .score files are accepted", null);
                         }
-                        catch (e) {
-                            Inknote.log("incorrect file format", 0 /* Error */);
+                        else {
+                            try {
+                                var innerScore = JSON.parse(fileText);
+                                var decompressedInnerScore = Inknote.ProjectConverter.decompress(innerScore);
+                                Inknote.Managers.ProjectManager.Instance.addProject(decompressedInnerScore, function (item) {
+                                    Inknote.Managers.ProjectManager.Instance.setCurrentProject(item.ID);
+                                });
+                            }
+                            catch (e) {
+                                Inknote.log("incorrect file format", 0 /* Error */);
+                            }
                         }
-                    }
-                };
-                reader.readAsText(file);
-            }
-            return false;
-        };
-        document.body.ondragend = function (e) {
-            e.preventDefault();
-            Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
-            return false;
-        };
-        var inCorrectFiles = false;
-        document.body.ondragstart = function (e) {
-            e.preventDefault();
-            return false;
-        };
-        document.body.ondragenter = function (e) {
-            e.preventDefault();
-            return false;
-        };
-        document.body.ondragover = function (e) {
-            e.preventDefault();
-            Inknote.DropCanvas.DropCanvas.Instance.start();
-            return false;
-        };
-        document.getElementById("drag-drop-canvas").ondragleave = function (e) {
-            e.preventDefault();
-            Inknote.DropCanvas.DropCanvas.Instance.stop();
-            return false;
-        };
+                    };
+                    reader.readAsText(file);
+                }
+                return false;
+            };
+            document.body.ondragend = function (e) {
+                e.preventDefault();
+                Inknote.DropCanvas.DropCanvas.Instance.drop(e.clientX, e.clientY);
+                return false;
+            };
+            var inCorrectFiles = false;
+            document.body.ondragstart = function (e) {
+                e.preventDefault();
+                return false;
+            };
+            document.body.ondragenter = function (e) {
+                e.preventDefault();
+                return false;
+            };
+            document.body.ondragover = function (e) {
+                e.preventDefault();
+                Inknote.DropCanvas.DropCanvas.Instance.start();
+                return false;
+            };
+            document.getElementById("drag-drop-canvas").ondragleave = function (e) {
+                e.preventDefault();
+                Inknote.DropCanvas.DropCanvas.Instance.stop();
+                return false;
+            };
+        }
         function download(filename, text) {
             var element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -5535,17 +5537,19 @@ var Inknote;
 (function (Inknote) {
     var Managers;
     (function (Managers) {
-        screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-        if (screen.lockOrientationUniversal) {
-            if (screen.lockOrientationUniversal("landscape-primary")) {
+        if (typeof screen != "undefined") {
+            screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+            if (screen.lockOrientationUniversal) {
+                if (screen.lockOrientationUniversal("landscape-primary")) {
+                }
+                else {
+                    // orientation lock failed
+                    Inknote.log("orientation lock failed in this browser", 2 /* Warning */);
+                }
             }
             else {
-                // orientation lock failed
-                Inknote.log("orientation lock failed in this browser", 2 /* Warning */);
+                Inknote.log("lockOrientation undefined in this browser", 2 /* Warning */);
             }
-        }
-        else {
-            Inknote.log("lockOrientation undefined in this browser", 2 /* Warning */);
         }
         (function (MachineType) {
             MachineType[MachineType["Desktop"] = 0] = "Desktop";
@@ -6133,9 +6137,11 @@ var Inknote;
             PluginManager.prototype.generateAdvancedHtml = function () {
             };
             PluginManager.prototype.generatePluginHtml = function () {
-                this.generateListHtml();
-                this.generateEventListHtml();
-                this.generateAdvancedHtml();
+                if (typeof document != "undefined") {
+                    this.generateListHtml();
+                    this.generateEventListHtml();
+                    this.generateAdvancedHtml();
+                }
             };
             PluginManager.prototype.findPluginByName = function (name) {
                 var items = Inknote.getItemsWhere(this._plugins, function (item) {
@@ -6307,9 +6313,11 @@ var Inknote;
             plugged.allowOnDraw = compressed.allowOnDraw;
             plugged.allowOnSave = compressed.allowOnSave;
         }
-        setTimeout(function () {
-            Inknote.Managers.PluginManager.Instance.generatePluginHtml();
-        }, 300);
+        if (typeof document != "undefined") {
+            setTimeout(function () {
+                Inknote.Managers.PluginManager.Instance.generatePluginHtml();
+            }, 300);
+        }
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -6600,44 +6608,48 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
-    window.onmousewheel = function (ev) {
-        var isUp = false;
-        if (ev.wheelDelta > 0) {
-            isUp = true;
-        }
-        if (isUp) {
-            Inknote.ScrollService.Instance.up();
-        }
-        else {
-            Inknote.ScrollService.Instance.down();
-        }
-    };
+    if (typeof window != "undefined") {
+        window.onmousewheel = function (ev) {
+            var isUp = false;
+            if (ev.wheelDelta > 0) {
+                isUp = true;
+            }
+            if (isUp) {
+                Inknote.ScrollService.Instance.up();
+            }
+            else {
+                Inknote.ScrollService.Instance.down();
+            }
+        };
+    }
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
-    document.onkeydown = function (e) {
-        if (Inknote.CONFIRM_IS_OPEN) {
-            return;
-        }
-        if (e.keyCode == 8) {
-            e.preventDefault();
-        }
-    };
-    window.onkeyup = function (ev) {
-        if (Inknote.CONFIRM_IS_OPEN) {
-            return;
-        }
-        switch (Inknote.Managers.PageManager.Current.page) {
-            case 2 /* File */:
-                fileType(ev);
-                break;
-            case 0 /* Score */:
-                scoreType(ev);
-                break;
-            default:
-                break;
-        }
-    };
+    if (typeof document != "undefined" && typeof window != "undefined") {
+        document.onkeydown = function (e) {
+            if (Inknote.CONFIRM_IS_OPEN) {
+                return;
+            }
+            if (e.keyCode == 8) {
+                e.preventDefault();
+            }
+        };
+        window.onkeyup = function (ev) {
+            if (Inknote.CONFIRM_IS_OPEN) {
+                return;
+            }
+            switch (Inknote.Managers.PageManager.Current.page) {
+                case 2 /* File */:
+                    fileType(ev);
+                    break;
+                case 0 /* Score */:
+                    scoreType(ev);
+                    break;
+                default:
+                    break;
+            }
+        };
+    }
     function scoreType(e) {
         var inst = Inknote.Managers.ProjectManager.Instance;
         var proj = inst.currentProject;
@@ -6886,49 +6898,56 @@ var Actions;
 })(Actions || (Actions = {}));
 var Inknkote;
 (function (Inknkote) {
-    window.onresize = function () {
-        Inknote.ScoringService.Instance.refresh();
-        if (Inknote.ScoringService.Instance.maxScrollPosition < Inknote.ScrollService.Instance.y) {
-            Inknote.ScrollService.Instance.y = Inknote.ScoringService.Instance.maxScrollPosition - 100;
-        }
-    };
+    if (typeof window != "undefined") {
+        window.onresize = function () {
+            Inknote.ScoringService.Instance.refresh();
+            if (Inknote.ScoringService.Instance.maxScrollPosition < Inknote.ScrollService.Instance.y) {
+                Inknote.ScrollService.Instance.y = Inknote.ScoringService.Instance.maxScrollPosition - 100;
+            }
+        };
+    }
 })(Inknkote || (Inknkote = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
     (function (Main) {
-        // load setting manager
-        var settingsManager = Inknote.Managers.SettingsManager.Instance;
-        var appSetting = new Inknote.Setting("Default");
-        // ***********************************************
-        // ** comment out the following line when live. **
-        // appSetting.testMode = true;
-        // ***********************************************
-        // ***********************************************
-        // *** uncomment the following to test mobile  ***
-        // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
-        // ***********************************************
-        settingsManager.addSetting(appSetting);
-        settingsManager.addSettings(Inknote.Storage.getSettings());
-        // load drawing settings
-        var drawing = Inknote.DrawingSettings.Instance;
-        // load project manager
-        var projectManager = Inknote.Managers.ProjectManager.Instance;
-        var decompressedProjects = Inknote.ProjectConverter.decompressAll(Inknote.Storage.getProjects());
-        projectManager.addProjects(decompressedProjects);
-        projectManager.openProjectFromURL();
-        Main.x = new Inknote.DrawService("my-canvas");
-        var y = new Inknote.CanvasControl(Main.x);
+        Main.x;
+        if (typeof document != "undefined") {
+            // load setting manager
+            var settingsManager = Inknote.Managers.SettingsManager.Instance;
+            var appSetting = new Inknote.Setting("Default");
+            // ***********************************************
+            // ** comment out the following line when live. **
+            // appSetting.testMode = true;
+            // ***********************************************
+            // ***********************************************
+            // *** uncomment the following to test mobile  ***
+            // Managers.MachineManager.Instance.machineType = Managers.MachineType.Mobile;
+            // ***********************************************
+            settingsManager.addSetting(appSetting);
+            settingsManager.addSettings(Inknote.Storage.getSettings());
+            // load drawing settings
+            var drawing = Inknote.DrawingSettings.Instance;
+            // load project manager
+            var projectManager = Inknote.Managers.ProjectManager.Instance;
+            var decompressedProjects = Inknote.ProjectConverter.decompressAll(Inknote.Storage.getProjects());
+            projectManager.addProjects(decompressedProjects);
+            projectManager.openProjectFromURL();
+            Main.x = new Inknote.DrawService("my-canvas");
+            var y = new Inknote.CanvasControl(Main.x);
+        }
     })(Main = Inknote.Main || (Inknote.Main = {}));
 })(Inknote || (Inknote = {}));
-if (Inknote.Managers.SettingsManager.Current.testMode) {
-    console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
-    console.log("%cthis app is running in test mode", "font-size: 15px; font-family: 'Courier New'");
-}
-else {
-    console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
-    console.log("%cthis is the developer console", "font-size: 15px; font-family: 'Courier New'");
-    console.log("%conly use this if you know what you are doing", "font-size: 15px; font-family: 'Courier New'");
+if (typeof window != "undefined") {
+    if (Inknote.Managers.SettingsManager.Current.testMode) {
+        console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
+        console.log("%cthis app is running in test mode", "font-size: 15px; font-family: 'Courier New'");
+    }
+    else {
+        console.log("%cWARNING", "color: white; border: 1px solid black; font-size: 40px; padding: 0 10px; background: red; text-shadow: 1px 1px 0 black;");
+        console.log("%cthis is the developer console", "font-size: 15px; font-family: 'Courier New'");
+        console.log("%conly use this if you know what you are doing", "font-size: 15px; font-family: 'Courier New'");
+    }
 }
 // every added file must be added here.
 // care must be taken to ensure there are no dependency loops.

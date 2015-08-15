@@ -309,10 +309,11 @@
         }
 
         generatePluginHtml() {
-            this.generateListHtml();
-            this.generateEventListHtml();
-            this.generateAdvancedHtml();
-
+            if (typeof document != "undefined"){
+                this.generateListHtml();
+                this.generateEventListHtml();
+                this.generateAdvancedHtml();
+            }
         }
 
         findPluginByName(name: string): Plugins.InknotePlugin {
