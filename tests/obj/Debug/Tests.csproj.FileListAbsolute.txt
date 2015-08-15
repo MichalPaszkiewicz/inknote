@@ -1,0 +1,6 @@
+C:\Users\Me-uth\Documents\Github\inknote\Tests\bin\Tests.dll.config
+C:\Users\Me-uth\Documents\Github\inknote\Tests\bin\Tests.dll
+C:\Users\Me-uth\Documents\Github\inknote\Tests\bin\Tests.pdb
+C:\Users\Me-uth\Documents\Github\inknote\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+C:\Users\Me-uth\Documents\Github\inknote\Tests\obj\Debug\Tests.dll
+C:\Users\Me-uth\Documents\Github\inknote\Tests\obj\Debug\Tests.pdb
