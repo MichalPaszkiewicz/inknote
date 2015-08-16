@@ -456,6 +456,7 @@ var Inknote;
         var Instrument = (function () {
             function Instrument(name) {
                 this.name = name;
+                this.ID = Inknote.getID();
                 this.bars = [];
                 this.visible = true;
             }
@@ -7093,15 +7094,303 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/security-warning.ts" />
 /// <reference path="../../../inknote 2/_references.ts" />
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
-//declare var require;
-//var fs = require('fs')
-//var myCode = fs.readFileSync('../Inknote 2/@script.js', 'utf-8') // depends on the file encoding
-//eval(myCode);
 var Inknote;
 (function (Inknote) {
     var Tests;
     (function (Tests) {
-        describe("A new project", function () {
+        describe("a new bar", function () {
+            var newBar = new Inknote.Model.Bar();
+            it("has an ID field", function () {
+                expect(newBar.ID).toBeDefined();
+            });
+            it("has its ID field set", function () {
+                expect(newBar.ID).toBeTruthy();
+            });
+            it("has an items field", function () {
+                expect(newBar.items.length).toBe(0);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("new chord", function () {
+            var newChord = new Inknote.Model.Chord([]);
+            it("has an ID field", function () {
+                expect(newChord.ID).toBeDefined();
+            });
+            it("has ID field set", function () {
+                expect(newChord.ID).toBeTruthy();
+            });
+            it("has a notes field", function () {
+                expect(newChord.notes).toBeDefined();
+            });
+            it("has notes correctly set", function () {
+                expect(newChord.notes.length).toBe(0);
+            });
+        });
+        describe("new chord with notes specified", function () {
+            var note1 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            var note2 = new Inknote.Model.Note(7 /* E */, 4, 3 /* Crotchet */);
+            var note3 = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+            var newChord = new Inknote.Model.Chord([note1, note2, note3]);
+            it("has notes correctly set", function () {
+                expect(newChord.notes.length).toBe(3);
+                expect(newChord.notes[0]).toBe(note1);
+                expect(newChord.notes[1]).toBe(note2);
+                expect(newChord.notes[2]).toBe(note3);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("a new instrument", function () {
+            var newInstrument = new Inknote.Model.Instrument("piano");
+            it("has a bars field", function () {
+                expect(newInstrument.bars).toBeDefined();
+            });
+            it("has a visible field", function () {
+                expect(newInstrument.visible).toBeDefined();
+            });
+            it("has a name field", function () {
+                expect(newInstrument.name).toBeDefined();
+            });
+            it("has name set correctly", function () {
+                expect(newInstrument.name).toBe("piano");
+            });
+            it("has an ID field", function () {
+                expect(newInstrument.ID).toBeDefined();
+            });
+            it("has ID field set", function () {
+                expect(newInstrument.ID).toBeTruthy();
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("note AccidentalType enum", function () {
+            it("has sharp value in correct place", function () {
+                expect(0 /* Sharp */).toBe(0);
+            });
+            it("has flat value in correct place", function () {
+                expect(1 /* Flat */).toBe(1);
+            });
+            it("has natural value in correct place", function () {
+                expect(2 /* Natural */).toBe(2);
+            });
+            it("has doubleSharp value in correct place", function () {
+                expect(3 /* DoubleSharp */).toBe(3);
+            });
+            it("has doubleFlat value in correct place", function () {
+                expect(4 /* DoubleFlat */).toBe(4);
+            });
+        });
+        describe("a new note", function () {
+            var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            it("has a value field", function () {
+                expect(newNote.value).toBeDefined();
+            });
+            it("has value field set correctly", function () {
+                expect(newNote.value).toBe(3 /* C */);
+            });
+            it("has an octave field", function () {
+                expect(newNote.octave).toBeDefined();
+            });
+            it("has octave field set correctly", function () {
+                expect(newNote.octave).toBe(4);
+            });
+            it("has a length field", function () {
+                expect(newNote.length).toBeDefined();
+            });
+            it("has length field set correctly", function () {
+                expect(newNote.length).toBe(3 /* Crotchet */);
+            });
+            it("has an ID field", function () {
+                expect(newNote.ID).toBeDefined();
+            });
+            it("has ID field set", function () {
+                expect(newNote.ID).toBeTruthy();
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("note length enum", function () {
+            it("has breve value in correct place", function () {
+                expect(0 /* Breve */).toBe(0);
+            });
+            it("has semibreve value in correct place", function () {
+                expect(1 /* SemiBreve */).toBe(1);
+            });
+            it("has minim value in correct place", function () {
+                expect(2 /* Minim */).toBe(2);
+            });
+            it("has crotchet value in correct place", function () {
+                expect(3 /* Crotchet */).toBe(3);
+            });
+            it("has quaver value in correct place", function () {
+                expect(4 /* Quaver */).toBe(4);
+            });
+            it("has semiquaver value in correct place", function () {
+                expect(5 /* SemiQuaver */).toBe(5);
+            });
+            it("has demisemiquaver value in correct place", function () {
+                expect(6 /* DemiSemiQuaver */).toBe(6);
+            });
+            it("has hemidemisemiquaver value in correct place", function () {
+                expect(7 /* HemiDemiSemiQuaver */).toBe(7);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("noteValue enum", function () {
+            it("has A value in correct place", function () {
+                expect(0 /* A */).toBe(0);
+            });
+            it("has Bb value in correct place", function () {
+                expect(1 /* Bb */).toBe(1);
+            });
+            it("has B value in correct place", function () {
+                expect(2 /* B */).toBe(2);
+            });
+            it("has C value in correct place", function () {
+                expect(3 /* C */).toBe(3);
+            });
+            it("has Db value in correct place", function () {
+                expect(4 /* Db */).toBe(4);
+            });
+            it("has D value in correct place", function () {
+                expect(5 /* D */).toBe(5);
+            });
+            it("has Eb value in correct place", function () {
+                expect(6 /* Eb */).toBe(6);
+            });
+            it("has E value in correct place", function () {
+                expect(7 /* E */).toBe(7);
+            });
+            it("has F value in correct place", function () {
+                expect(8 /* F */).toBe(8);
+            });
+            it("has Gb value in correct place", function () {
+                expect(9 /* Gb */).toBe(9);
+            });
+            it("has G value in correct place", function () {
+                expect(10 /* G */).toBe(10);
+            });
+            it("has Ab value in correct place", function () {
+                expect(11 /* Ab */).toBe(11);
+            });
+        });
+        describe("is black key", function () {
+            it("describes A correctly", function () {
+                expect(Inknote.Model.IsBlackKey(0 /* A */)).toBe(false);
+            });
+            it("describes Bb correctly", function () {
+                expect(Inknote.Model.IsBlackKey(1 /* Bb */)).toBe(true);
+            });
+            it("describes B correctly", function () {
+                expect(Inknote.Model.IsBlackKey(2 /* B */)).toBe(false);
+            });
+            it("describes C correctly", function () {
+                expect(Inknote.Model.IsBlackKey(3 /* C */)).toBe(false);
+            });
+            it("describes Db correctly", function () {
+                expect(Inknote.Model.IsBlackKey(4 /* Db */)).toBe(true);
+            });
+            it("describes D correctly", function () {
+                expect(Inknote.Model.IsBlackKey(5 /* D */)).toBe(false);
+            });
+            it("describes Eb correctly", function () {
+                expect(Inknote.Model.IsBlackKey(6 /* Eb */)).toBe(true);
+            });
+            it("describes E correctly", function () {
+                expect(Inknote.Model.IsBlackKey(7 /* E */)).toBe(false);
+            });
+            it("describes F correctly", function () {
+                expect(Inknote.Model.IsBlackKey(8 /* F */)).toBe(false);
+            });
+            it("describes Gb correctly", function () {
+                expect(Inknote.Model.IsBlackKey(9 /* Gb */)).toBe(true);
+            });
+            it("describes G correctly", function () {
+                expect(Inknote.Model.IsBlackKey(10 /* G */)).toBe(false);
+            });
+            it("describes Ab correctly", function () {
+                expect(Inknote.Model.IsBlackKey(11 /* Ab */)).toBe(true);
+            });
+        });
+        describe("is white key", function () {
+            it("describes A correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(0 /* A */)).toBe(true);
+            });
+            it("describes Bb correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(1 /* Bb */)).toBe(false);
+            });
+            it("describes B correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(2 /* B */)).toBe(true);
+            });
+            it("describes C correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(3 /* C */)).toBe(true);
+            });
+            it("describes Db correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(4 /* Db */)).toBe(false);
+            });
+            it("describes D correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(5 /* D */)).toBe(true);
+            });
+            it("describes Eb correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(6 /* Eb */)).toBe(false);
+            });
+            it("describes E correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(7 /* E */)).toBe(true);
+            });
+            it("describes F correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(8 /* F */)).toBe(true);
+            });
+            it("describes Gb correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(9 /* Gb */)).toBe(false);
+            });
+            it("describes G correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(10 /* G */)).toBe(true);
+            });
+            it("describes Ab correctly", function () {
+                expect(Inknote.Model.IsWhiteKey(11 /* Ab */)).toBe(false);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("a new project", function () {
             var newProject = new Inknote.Project();
             it("has an ID", function () {
                 expect(newProject.ID).toBeDefined();
@@ -7133,6 +7422,279 @@ var Inknote;
             it("has colour set to white", function () {
                 expect(newProject.colour).toBe("#FFFFFF");
             });
+        });
+        describe("A new project with a name specified", function () {
+            it("has the correct name", function () {
+                var namedProject = new Inknote.Project("Test project");
+                expect(namedProject.name).toBe("Test project");
+            });
+            it("to have 'Untitled' as title if specified name empty", function () {
+                var namedProject = new Inknote.Project("");
+                expect(namedProject.name).toBe("Untitled");
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("a new rest", function () {
+            var newRest = new Inknote.Model.Rest(3 /* Crotchet */);
+            it("has an ID field", function () {
+                expect(newRest.ID).toBeDefined();
+            });
+            it("has ID field set", function () {
+                expect(newRest.ID).toBeTruthy();
+            });
+            it("has a length field", function () {
+                expect(newRest.length).toBeDefined();
+            });
+            it("has length field set correctly", function () {
+                expect(newRest.length).toBe(3 /* Crotchet */);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("getNoteOfDistance", function () {
+            it("gets a note", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 0)).toBeTruthy();
+            });
+            it("gets a note with correct length breve", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 0 /* Breve */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(0 /* Breve */);
+            });
+            it("gets a note with correct length semibreve", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 1 /* SemiBreve */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(1 /* SemiBreve */);
+            });
+            it("gets a note with correct length minim", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 2 /* Minim */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(2 /* Minim */);
+            });
+            it("gets a note with correct length crotchet", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a note with correct length quaver", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 4 /* Quaver */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(4 /* Quaver */);
+            });
+            it("gets a note with correct length semiquaver", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 5 /* SemiQuaver */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(5 /* SemiQuaver */);
+            });
+            it("gets a note with correct length demisemiquaver", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 6 /* DemiSemiQuaver */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(6 /* DemiSemiQuaver */);
+            });
+            it("gets a note with correct length hemidemisemiquaver", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 7 /* HemiDemiSemiQuaver */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).length).toBe(7 /* HemiDemiSemiQuaver */);
+            });
+            it("gets note distance 0 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).value).toBe(0 /* A */);
+            });
+            it("gets note distance 0 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 0).octave).toBe(4);
+            });
+            it("gets note distance 1 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 1).value).toBe(1 /* Bb */);
+            });
+            it("gets note distance 1 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 1).octave).toBe(4);
+            });
+            it("gets note distance 2 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 2).value).toBe(2 /* B */);
+            });
+            it("gets note distance 2 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 2).octave).toBe(4);
+            });
+            it("gets note distance 3 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 3).value).toBe(3 /* C */);
+            });
+            it("gets note distance 3 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 3).octave).toBe(4);
+            });
+            it("gets note distance 4 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 4).value).toBe(4 /* Db */);
+            });
+            it("gets note distance 4 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 4).octave).toBe(4);
+            });
+            it("gets note distance 5 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 5).value).toBe(5 /* D */);
+            });
+            it("gets note distance 5 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 5).octave).toBe(4);
+            });
+            it("gets note distance 6 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 6).value).toBe(6 /* Eb */);
+            });
+            it("gets note distance 6 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 6).octave).toBe(4);
+            });
+            it("gets note distance 7 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 7).value).toBe(7 /* E */);
+            });
+            it("gets note distance 7 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 7).octave).toBe(4);
+            });
+            it("gets note distance 8 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 8).value).toBe(8 /* F */);
+            });
+            it("gets note distance 8 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 8).octave).toBe(4);
+            });
+            it("gets note distance 9 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 9).value).toBe(9 /* Gb */);
+            });
+            it("gets note distance 9 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 9).octave).toBe(4);
+            });
+            it("gets note distance 10 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 10).value).toBe(10 /* G */);
+            });
+            it("gets note distance 10 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 10).octave).toBe(4);
+            });
+            it("gets note distance 11 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 11).value).toBe(11 /* Ab */);
+            });
+            it("gets note distance 11 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 11).octave).toBe(4);
+            });
+            it("gets note distance 12 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(0 /* A */);
+            });
+            it("gets note distance 12 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from Bb4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(1 /* Bb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(1 /* Bb */);
+            });
+            it("gets note distance 12 from Bb4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(1 /* Bb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from B4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(2 /* B */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(2 /* B */);
+            });
+            it("gets note distance 12 from B4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(2 /* B */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from C4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(3 /* C */);
+            });
+            it("gets note distance 12 from C4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from Db4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(4 /* Db */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(4 /* Db */);
+            });
+            it("gets note distance 12 from Db4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(4 /* Db */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from D4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(5 /* D */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(5 /* D */);
+            });
+            it("gets note distance 12 from D4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(5 /* D */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from Eb4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(6 /* Eb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(6 /* Eb */);
+            });
+            it("gets note distance 12 from Eb4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(6 /* Eb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from E4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(7 /* E */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(7 /* E */);
+            });
+            it("gets note distance 12 from E4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(7 /* E */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from F4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(8 /* F */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(8 /* F */);
+            });
+            it("gets note distance 12 from F4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(8 /* F */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from Gb4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(9 /* Gb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(9 /* Gb */);
+            });
+            it("gets note distance 12 from Gb4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(9 /* Gb */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from G4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(10 /* G */);
+            });
+            it("gets note distance 12 from G4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            it("gets note distance 12 from Ab4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).value).toBe(11 /* Ab */);
+            });
+            it("gets note distance 12 from Ab4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
+            });
+            // test starting from other notes.
+            // test negative values.
         });
     })(Tests = Inknote.Tests || (Inknote.Tests = {}));
 })(Inknote || (Inknote = {}));

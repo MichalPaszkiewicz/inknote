@@ -2,6 +2,7 @@
 
     export class Instrument {
 
+        ID: string = getID();
         visible: boolean;
         bars: Bar[];
 

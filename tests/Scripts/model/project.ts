@@ -1,15 +1,9 @@
 ﻿/// <reference path="../../../inknote 2/_references.ts" />
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
 
-//declare var require;
-
-//var fs = require('fs')
-//var myCode = fs.readFileSync('../Inknote 2/@script.js', 'utf-8') // depends on the file encoding
-//eval(myCode);
- 
 module Inknote.Tests {  
           
-    describe("A new project", function () {
+    describe("a new project", function () {
         var newProject = new Inknote.Project();
 
         it("has an ID", function () {
@@ -53,4 +47,17 @@ module Inknote.Tests {
         });
     });
 
+    describe("A new project with a name specified", function () {
+        it("has the correct name", function () {
+            var namedProject = new Project("Test project");
+
+            expect(namedProject.name).toBe("Test project");
+        });
+
+        it("to have 'Untitled' as title if specified name empty", function () {
+            var namedProject = new Project("");
+
+            expect(namedProject.name).toBe("Untitled");
+        });
+    }); 
 }

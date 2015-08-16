@@ -456,6 +456,7 @@ var Inknote;
         var Instrument = (function () {
             function Instrument(name) {
                 this.name = name;
+                this.ID = Inknote.getID();
                 this.bars = [];
                 this.visible = true;
             }

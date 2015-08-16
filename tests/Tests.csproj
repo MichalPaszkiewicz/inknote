@@ -27,7 +27,15 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\model\bar.ts" />
+    <TypeScriptCompile Include="Scripts\model\chord.ts" />
+    <TypeScriptCompile Include="Scripts\model\instrument.ts" />
+    <TypeScriptCompile Include="Scripts\model\note.ts" />
+    <TypeScriptCompile Include="Scripts\model\noteLength.ts" />
+    <TypeScriptCompile Include="Scripts\model\noteValue.ts" />
     <TypeScriptCompile Include="Scripts\model\project.ts" />
+    <TypeScriptCompile Include="Scripts\model\rest.ts" />
+    <TypeScriptCompile Include="Scripts\services\intervalService.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
   </ItemGroup>
   <ItemGroup>
