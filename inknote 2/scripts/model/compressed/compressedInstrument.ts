@@ -6,8 +6,6 @@
 
         constructor(public name: string) {
             this.bars = [];
-
-            this.bars.push(new Bar());
         }
 
     }

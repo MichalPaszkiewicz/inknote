@@ -8,7 +8,7 @@
 
     Inknote.Managers.PluginManager.Instance.addPluginNames(pluginList);
 
-    function getPluginNameFromCompressed(compressed: Plugins.Compressed.InknkotePlugin): Plugins.InknotePluginName {
+    function getPluginNameFromCompressed(compressed: Plugins.Compressed.InknotePlugin): Plugins.InknotePluginName {
 
         var result = new Plugins.InknotePluginName(compressed.name, compressed.URL, compressed.description);
 

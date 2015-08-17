@@ -95,7 +95,7 @@
     
     }
 
-    export function getPlugins(): Plugins.Compressed.InknkotePlugin[] {
+    export function getPlugins(): Plugins.Compressed.InknotePlugin[] {
 
         var result = getLocal(defaults.plugins);
 

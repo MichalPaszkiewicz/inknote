@@ -16,13 +16,13 @@
             return this._plugins;
         }
 
-        getCompressedPlugins(): Plugins.Compressed.InknkotePlugin[] {
+        getCompressedPlugins(): Plugins.Compressed.InknotePlugin[] {
             var plugins = this.plugins;
 
             var compressedPlugins = [];
 
             for (var i = 0; i < plugins.length; i++) {
-                var newPlugin = new Plugins.Compressed.InknkotePlugin(plugins[i].name);
+                var newPlugin = new Plugins.Compressed.InknotePlugin(plugins[i].name);
                 newPlugin.ID = plugins[i].ID;
                 newPlugin.active = plugins[i].active;
                 newPlugin.allowOnDraw = plugins[i].allowOnDraw;

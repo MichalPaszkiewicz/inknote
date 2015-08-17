@@ -1,4 +1,4 @@
-﻿module Inknkote {
+﻿module Inknote {
 
     if (typeof window != "undefined") {
         window.onresize = function () {

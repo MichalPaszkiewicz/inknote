@@ -1,13 +1,13 @@
-﻿module Inknote.Maths{
- 
+﻿module Inknote.Maths {
+
     export class Vector2 {
-    constructor(public x, public y) {
+        constructor(public x: number, public y: number) {
 
+        }
+
+        get abs() {
+            return pythagoras(this.x, this.y);
+        }
     }
 
-    get abs() {
-        return pythagoras(this.x, this.y);
-    }
-}   
-    
 } 

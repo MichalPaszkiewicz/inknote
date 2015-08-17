@@ -21,6 +21,9 @@
 var Inknote;
 (function (Inknote) {
     function allItemsAre(items, xAndY) {
+        if (items.length === 0) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (!xAndY(items[i])) {
                 return false;
@@ -30,6 +33,9 @@ var Inknote;
     }
     Inknote.allItemsAre = allItemsAre;
     function anyItemIs(items, xAndY) {
+        if (items === null || items === undefined) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
                 return true;
@@ -39,6 +45,9 @@ var Inknote;
     }
     Inknote.anyItemIs = anyItemIs;
     function countWhere(items, xAndY) {
+        if (items === null || items === undefined) {
+            return 0;
+        }
         var count = 0;
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
@@ -49,6 +58,9 @@ var Inknote;
     }
     Inknote.countWhere = countWhere;
     function getItemsWhere(items, xAndY) {
+        if (items === null || items === undefined) {
+            return [];
+        }
         var result = [];
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
@@ -59,6 +71,9 @@ var Inknote;
     }
     Inknote.getItemsWhere = getItemsWhere;
     function sum(items, xAndY) {
+        if (items == null || items.length == 0) {
+            return 0;
+        }
         var total = 0;
         for (var i = 0; i < items.length; i++) {
             total += xAndY(items[i]);
@@ -67,6 +82,9 @@ var Inknote;
     }
     Inknote.sum = sum;
     function last(items) {
+        if (items == null || items.length == 0) {
+            return null;
+        }
         return items[items.length - 1];
     }
     Inknote.last = last;
@@ -83,7 +101,7 @@ var Inknote;
         if (arrayOne.length != arrayTwo.length) {
             return false;
         }
-        for (var i = 0, l = this.length; i < l; i++) {
+        for (var i = 0, l = arrayOne.length; i < l; i++) {
             // Check if we have nested arrays
             if (arrayOne[i] instanceof Array && arrayTwo[i] instanceof Array) {
                 // recurse into the nested arrays
@@ -266,7 +284,7 @@ var Inknote;
             function TimeSignature(top, bottom) {
                 this.top = top;
                 this.bottom = bottom;
-                if (Math.round(top) != top || Math.round(bottom) != bottom) {
+                if (Math.round(top) != top || Math.round(bottom) != bottom || top == 0 || bottom == 0) {
                     throw new Error("Time signatures can only take integers");
                 }
             }
@@ -584,7 +602,6 @@ var Inknote;
             function Instrument(name) {
                 this.name = name;
                 this.bars = [];
-                this.bars.push(new Compressed.Bar());
             }
             return Instrument;
         })();
@@ -4905,16 +4922,33 @@ var Inknote;
 (function (Inknote) {
     // returns a new note that is # semitones away from note. + is higher
     function getNoteOfDistance(note, semitones) {
+        var correctSemitones = semitones;
+        while (correctSemitones < 0) {
+            correctSemitones += 12;
+        }
         var tempNote = new Inknote.Model.Note(note.value, note.octave, note.length);
         if (Math.round(semitones) != semitones) {
             throw new Error("Number of semitones must be an integer");
         }
-        tempNote.value = (note.value + semitones % 12);
+        tempNote.value = ((note.value + correctSemitones) % 12);
         if (semitones > 0) {
-            tempNote.octave = note.octave + Math.floor(semitones / 12);
+            for (var i = 1; i <= semitones; i++) {
+                var norm = (note.value + i) % 12;
+                if (norm == 3 /* C */) {
+                    tempNote.octave++;
+                }
+            }
         }
         if (semitones < 0) {
-            tempNote.octave = note.octave + Math.ceil(semitones / 12);
+            for (var i = 1; i >= semitones; i--) {
+                var norm = note.value + i;
+                while (norm < 0) {
+                    norm += 12;
+                }
+                if (norm == 2 /* B */) {
+                    tempNote.octave--;
+                }
+            }
         }
         return tempNote;
     }
@@ -4949,12 +4983,10 @@ var Inknote;
     Inknote.getMajorSeventh = getMajorSeventh;
     function getIntervalDistance(note, note2) {
         var distanceFromOctave = (note2.octave - note.octave) * 7;
-        // this correction needs to work.
-        if (note2.value < 3 /* C */) {
-            distanceFromOctave += 7;
-        }
         var note1Value = note.value;
-        var diff = note2.value - note.value;
+        var norm1 = note.value < 3 /* C */ ? note.value + 12 : note.value;
+        var norm2 = note2.value < 3 /* C */ ? note2.value + 12 : note2.value;
+        var diff = norm2 - norm1;
         var distanceOfNote = 0;
         if (diff > 0) {
             for (var i = 0; i < diff; i++) {
@@ -5925,7 +5957,7 @@ var Inknote;
                 var plugins = this.plugins;
                 var compressedPlugins = [];
                 for (var i = 0; i < plugins.length; i++) {
-                    var newPlugin = new Inknote.Plugins.Compressed.InknkotePlugin(plugins[i].name);
+                    var newPlugin = new Inknote.Plugins.Compressed.InknotePlugin(plugins[i].name);
                     newPlugin.ID = plugins[i].ID;
                     newPlugin.active = plugins[i].active;
                     newPlugin.allowOnDraw = plugins[i].allowOnDraw;
@@ -6173,16 +6205,16 @@ var Inknote;
     (function (Plugins) {
         var Compressed;
         (function (Compressed) {
-            var InknkotePlugin = (function () {
-                function InknkotePlugin(name) {
+            var InknotePlugin = (function () {
+                function InknotePlugin(name) {
                     this.name = name;
                     this.ID = Inknote.getID();
                     this.allowOnSave = true;
                     this.allowOnDraw = true;
                 }
-                return InknkotePlugin;
+                return InknotePlugin;
             })();
-            Compressed.InknkotePlugin = InknkotePlugin;
+            Compressed.InknotePlugin = InknotePlugin;
         })(Compressed = Plugins.Compressed || (Plugins.Compressed = {}));
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
@@ -6897,8 +6929,8 @@ var Actions;
         Plugins.PluginMenuClick = PluginMenuClick;
     })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
 })(Actions || (Actions = {}));
-var Inknkote;
-(function (Inknkote) {
+var Inknote;
+(function (Inknote) {
     if (typeof window != "undefined") {
         window.onresize = function () {
             Inknote.ScoringService.Instance.refresh();
@@ -6907,7 +6939,7 @@ var Inknkote;
             }
         };
     }
-})(Inknkote || (Inknkote = {}));
+})(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
     var Main;
@@ -7092,6 +7124,377 @@ if (typeof window != "undefined") {
 // app
 /// <reference path="scripts/app.ts" />
 /// <reference path="scripts/security-warning.ts" />
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("a new vector2", function () {
+            it("sets values correctly", function () {
+                var x = 2.17;
+                var y = 3.14;
+                var testVector2 = new Inknote.Maths.Vector2(x, y);
+                expect(testVector2.x).toBe(x);
+                expect(testVector2.y).toBe(y);
+            });
+            it("calculates abs correctly", function () {
+                var x = 3;
+                var y = 4;
+                var testVector2 = new Inknote.Maths.Vector2(x, y);
+                expect(testVector2.abs).toBe(5);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        var numbersList;
+        beforeEach(function () {
+            numbersList = [];
+            for (var i = 0; i < 20; i++) {
+                numbersList.push(i);
+            }
+        });
+        describe("allItemsAre", function () {
+            it("gets all true result as true", function () {
+                expect(Inknote.allItemsAre(numbersList, function (num) {
+                    return num < 30;
+                })).toBe(true);
+            });
+            it("gets all false results as false", function () {
+                expect(Inknote.allItemsAre(numbersList, function (num) {
+                    return num > 30;
+                })).toBe(false);
+            });
+            it("gets all but 1 false results as false", function () {
+                expect(Inknote.allItemsAre(numbersList, function (num) {
+                    return num == 0;
+                })).toBe(false);
+            });
+            it("gets all but 1 true results as false", function () {
+                expect(Inknote.allItemsAre(numbersList, function (num) {
+                    return num != 17;
+                })).toBe(false);
+            });
+            it("doesn't affect the original array", function () {
+                Inknote.allItemsAre(numbersList, function (num) {
+                    return num < 30;
+                });
+                for (var i = 0; i < 20; i++) {
+                    expect(numbersList[i]).toBe(i);
+                }
+            });
+            it("returns false if given an empty array", function () {
+                expect(Inknote.allItemsAre([], function (num) {
+                    return num < 30;
+                })).toBe(false);
+            });
+            it("throws an error if given null", function () {
+                expect(function () {
+                    Inknote.allItemsAre(null, function (num) {
+                        return num < 30;
+                    });
+                }).toThrowError();
+            });
+            it("throws an error if given null", function () {
+                expect(function () {
+                    Inknote.allItemsAre(undefined, function (num) {
+                        return num < 30;
+                    });
+                }).toThrowError();
+            });
+        });
+        describe("anyItemIs", function () {
+            it("gets all true result as true", function () {
+                expect(Inknote.anyItemIs(numbersList, function (num) {
+                    return num < 30;
+                })).toBe(true);
+            });
+            it("gets all false results as false", function () {
+                expect(Inknote.anyItemIs(numbersList, function (num) {
+                    return num > 30;
+                })).toBe(false);
+            });
+            it("gets all but 1 false results as true", function () {
+                expect(Inknote.anyItemIs(numbersList, function (num) {
+                    return num == 0;
+                })).toBe(true);
+            });
+            it("gets all but 1 true results as true", function () {
+                expect(Inknote.anyItemIs(numbersList, function (num) {
+                    return num != 17;
+                })).toBe(true);
+            });
+            it("doesn't affect the original array", function () {
+                Inknote.anyItemIs(numbersList, function (num) {
+                    return num < 30;
+                });
+                for (var i = 0; i < 20; i++) {
+                    expect(numbersList[i]).toBe(i);
+                }
+            });
+            it("returns false if given an empty array", function () {
+                expect(Inknote.anyItemIs([], function (num) {
+                    return num < 30;
+                })).toBe(false);
+            });
+            it("returns false if given null", function () {
+                expect(Inknote.anyItemIs(null, function (num) {
+                    return num < 30;
+                })).toBe(false);
+            });
+            it("returns false if given undefined", function () {
+                expect(Inknote.anyItemIs(undefined, function (num) {
+                    return num < 30;
+                })).toBe(false);
+            });
+        });
+        describe("countWhere", function () {
+            it("counts all true results", function () {
+                expect(Inknote.countWhere(numbersList, function (num) {
+                    return num < 30;
+                })).toBe(numbersList.length);
+            });
+            it("counts none from all false results", function () {
+                expect(Inknote.countWhere(numbersList, function (num) {
+                    return num > 30;
+                })).toBe(0);
+            });
+            it("counts 1 from all but 1 false results", function () {
+                expect(Inknote.countWhere(numbersList, function (num) {
+                    return num == 0;
+                })).toBe(1);
+            });
+            it("counts all but 1 from all but 1 true results", function () {
+                expect(Inknote.countWhere(numbersList, function (num) {
+                    return num != 17;
+                })).toBe(numbersList.length - 1);
+            });
+            it("doesn't affect the original array", function () {
+                Inknote.countWhere(numbersList, function (num) {
+                    return num < 30;
+                });
+                for (var i = 0; i < 20; i++) {
+                    expect(numbersList[i]).toBe(i);
+                }
+            });
+            it("returns 0 if given empty array", function () {
+                expect(Inknote.countWhere([], function (num) {
+                    return num < 30;
+                })).toBe(0);
+            });
+            it("returns 0 if given null", function () {
+                expect(Inknote.countWhere(null, function (num) {
+                    return num < 30;
+                })).toBe(0);
+            });
+            it("returns 0 if given undefined", function () {
+                expect(Inknote.countWhere(undefined, function (num) {
+                    return num < 30;
+                })).toBe(0);
+            });
+        });
+        describe("getItemsWhere", function () {
+            it("gets all true results", function () {
+                expect(Inknote.getItemsWhere(numbersList, function (num) {
+                    return num < 30;
+                }).length).toBe(numbersList.length);
+            });
+            it("gets none from all false results", function () {
+                expect(Inknote.getItemsWhere(numbersList, function (num) {
+                    return num > 30;
+                }).length).toBe(0);
+            });
+            it("gets 1 from all but 1 false results", function () {
+                expect(Inknote.getItemsWhere(numbersList, function (num) {
+                    return num == 0;
+                }).length).toBe(1);
+            });
+            it("gets all but 1 from all but 1 true results", function () {
+                expect(Inknote.getItemsWhere(numbersList, function (num) {
+                    return num != 17;
+                }).length).toBe(numbersList.length - 1);
+            });
+            it("gets all the correct true results, in the correct order", function () {
+                var result = Inknote.getItemsWhere(numbersList, function (num) {
+                    return num >= 12;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    expect(result[i]).toBe(12 + i);
+                }
+            });
+            it("doesn't affect the original array", function () {
+                Inknote.getItemsWhere(numbersList, function (num) {
+                    return num < 30;
+                });
+                for (var i = 0; i < 20; i++) {
+                    expect(numbersList[i]).toBe(i);
+                }
+            });
+            it("returns empty array if given empty array", function () {
+                var result = Inknote.getItemsWhere([], function (num) {
+                    return num < 30;
+                });
+                expect(result.length).toBe(0);
+                expect(typeof result).toBe(typeof []);
+            });
+            it("returns empty array if given null", function () {
+                var result = Inknote.getItemsWhere(null, function (num) {
+                    return num < 30;
+                });
+                expect(result.length).toBe(0);
+                expect(typeof result).toBe(typeof []);
+            });
+            it("returns empty array if given undefined", function () {
+                var result = Inknote.getItemsWhere(undefined, function (num) {
+                    return num < 30;
+                });
+                expect(result.length).toBe(0);
+                expect(typeof result).toBe(typeof []);
+            });
+        });
+        describe("sum", function () {
+            it("adds items correctly", function () {
+                expect(Inknote.sum(numbersList, function (num) {
+                    return num;
+                })).toBe(190);
+            });
+            it("adds numbers correctly with inline conditions", function () {
+                expect(Inknote.sum(numbersList, function (num) {
+                    return num < 4 ? num : 0;
+                })).toBe(6);
+            });
+            it("adds constants correctly", function () {
+                expect(Inknote.sum(numbersList, function (num) {
+                    return 1;
+                })).toBe(20);
+            });
+            it("doesn't affect the original array", function () {
+                Inknote.sum(numbersList, function (num) {
+                    return num;
+                });
+                for (var i = 0; i < 20; i++) {
+                    expect(numbersList[i]).toBe(i);
+                }
+            });
+            it("returns 0 if given empty array", function () {
+                expect(Inknote.sum([], function (num) {
+                    return num;
+                })).toBe(0);
+            });
+            it("returns 0 if given null", function () {
+                expect(Inknote.sum(null, function (num) {
+                    return num;
+                })).toBe(0);
+            });
+            it("returns 0 if given null", function () {
+                expect(Inknote.sum(undefined, function (num) {
+                    return num;
+                })).toBe(0);
+            });
+        });
+        describe("last", function () {
+            it("gets the last item from the array", function () {
+                expect(Inknote.last(numbersList)).toBe(19);
+            });
+            it("returns null if given empty array", function () {
+                expect(Inknote.last([])).toBe(null);
+            });
+            it("returns null if given null", function () {
+                expect(Inknote.last(null)).toBe(null);
+            });
+            it("returns null if given undefined", function () {
+                expect(Inknote.last(undefined)).toBe(null);
+            });
+        });
+        describe("arraysAreEqual", function () {
+            it("correctly tests true numerical arrays", function () {
+                var otherTest = [];
+                for (var i = 0; i < 20; i++) {
+                    otherTest.push(i);
+                }
+                expect(Inknote.arraysAreEqual(numbersList, otherTest)).toBe(true);
+            });
+            it("correctly tests false numerical arrays of wrong length", function () {
+                var otherTest = [];
+                for (var i = 0; i < 21; i++) {
+                    otherTest.push(i);
+                }
+                expect(Inknote.arraysAreEqual(numbersList, otherTest)).toBe(false);
+            });
+            it("correctly tests false numerical arrays", function () {
+                var otherTest = [];
+                for (var i = 0; i < 20; i++) {
+                    otherTest.push(i + 1);
+                }
+                expect(Inknote.arraysAreEqual(numbersList, otherTest)).toBe(false);
+            });
+            it("correctly tests true text arrays", function () {
+                var test1 = [];
+                var test2 = [];
+                for (var i = 0; i < 20; i++) {
+                    var txt = "blah" + Math.random();
+                    test1.push(txt);
+                    test2.push(txt);
+                }
+                expect(Inknote.arraysAreEqual(test1, test2)).toBe(true);
+            });
+            it("correctly tests false text arrays", function () {
+                var test1 = [];
+                var test2 = [];
+                for (var i = 0; i < 20; i++) {
+                    var txt = "blah" + Math.random();
+                    test1.push(txt);
+                    test2.push(txt + "ha");
+                }
+                expect(Inknote.arraysAreEqual(test1, test2)).toBe(false);
+            });
+            it("correctly tests empty arrays", function () {
+                var test1 = [], test2 = [];
+                expect(Inknote.arraysAreEqual(test1, test2)).toBe(true);
+            });
+            it("correctly tests nested arrays", function () {
+                var test1 = [];
+                var test2 = [];
+                for (var i = 0; i < 20; i++) {
+                    var tempArray = [];
+                    var tempArray2 = [];
+                    for (var j = 0; j < 20; j++) {
+                        tempArray.push(j);
+                        tempArray2.push(j);
+                    }
+                    test1.push(tempArray);
+                    test2.push(tempArray2);
+                }
+                expect(Inknote.arraysAreEqual(test1, test2)).toBe(true);
+            });
+        });
+        describe("copySimpleArrayFrom", function () {
+            it("copies numerical arrays correctly", function () {
+                expect(Inknote.arraysAreEqual(Inknote.copySimpleArrayFrom(numbersList), numbersList)).toBe(true);
+            });
+            it("does not just assign the same array to a different variable", function () {
+                expect(Inknote.copySimpleArrayFrom(numbersList) != numbersList);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("isWithinRadius", function () {
+            // todo: finish these.
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
 /// <reference path="../../../inknote 2/_references.ts" />
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
 var Inknote;
@@ -7464,6 +7867,36 @@ var Inknote;
 (function (Inknote) {
     var Tests;
     (function (Tests) {
+        describe("new time signature", function () {
+            it("cannot have a top decimal", function () {
+                expect(function () {
+                    new Inknote.Model.TimeSignature(1.1, 1);
+                }).toThrow(new Error("Time signatures can only take integers"));
+            });
+            it("cannot have a bottom decimal", function () {
+                expect(function () {
+                    new Inknote.Model.TimeSignature(1, 1.1);
+                }).toThrow(new Error("Time signatures can only take integers"));
+            });
+            it("cannot take a 0 value in the top", function () {
+                expect(function () {
+                    new Inknote.Model.TimeSignature(0, 1);
+                }).toThrow(new Error("Time signatures can only take integers"));
+            });
+            it("cannot take a 0 value in the bottom", function () {
+                expect(function () {
+                    new Inknote.Model.TimeSignature(1, 0);
+                }).toThrow(new Error("Time signatures can only take integers"));
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
         describe("getNoteOfDistance", function () {
             it("gets a note", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7531,7 +7964,7 @@ var Inknote;
             });
             it("gets note distance 3 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 3).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 3).octave).toBe(5);
             });
             it("gets note distance 4 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7539,7 +7972,7 @@ var Inknote;
             });
             it("gets note distance 4 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 4).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 4).octave).toBe(5);
             });
             it("gets note distance 5 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7547,7 +7980,7 @@ var Inknote;
             });
             it("gets note distance 5 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 5).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 5).octave).toBe(5);
             });
             it("gets note distance 6 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7555,7 +7988,7 @@ var Inknote;
             });
             it("gets note distance 6 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 6).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 6).octave).toBe(5);
             });
             it("gets note distance 7 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7563,7 +7996,7 @@ var Inknote;
             });
             it("gets note distance 7 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 7).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 7).octave).toBe(5);
             });
             it("gets note distance 8 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7571,7 +8004,7 @@ var Inknote;
             });
             it("gets note distance 8 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 8).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 8).octave).toBe(5);
             });
             it("gets note distance 9 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7579,7 +8012,7 @@ var Inknote;
             });
             it("gets note distance 9 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 9).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 9).octave).toBe(5);
             });
             it("gets note distance 10 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7587,7 +8020,7 @@ var Inknote;
             });
             it("gets note distance 10 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 10).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 10).octave).toBe(5);
             });
             it("gets note distance 11 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7595,7 +8028,7 @@ var Inknote;
             });
             it("gets note distance 11 from A4 with correct octave", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
-                expect(Inknote.getNoteOfDistance(newNote, 11).octave).toBe(4);
+                expect(Inknote.getNoteOfDistance(newNote, 11).octave).toBe(5);
             });
             it("gets note distance 12 from A4 with correct noteValue", function () {
                 var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
@@ -7693,9 +8126,447 @@ var Inknote;
                 var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
                 expect(Inknote.getNoteOfDistance(newNote, 12).octave).toBe(5);
             });
-            // test starting from other notes.
+            it("gets note distance 36 from Ab4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 36).value).toBe(11 /* Ab */);
+            });
+            it("gets note distance 36 from Ab4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, 36).octave).toBe(7);
+            });
             // test negative values.
+            it("gets note distance -12 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -12).value).toBe(0 /* A */);
+            });
+            it("gets note distance -12 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -12).octave).toBe(3);
+            });
+            it("gets note distance -24 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -24).value).toBe(0 /* A */);
+            });
+            it("gets note distance -24 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -24).octave).toBe(2);
+            });
+            it("gets note distance -1 from A4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -1).value).toBe(11 /* Ab */);
+            });
+            it("gets note distance -1 from A4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -1).octave).toBe(4);
+            });
+            it("gets note distance -1 from C4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -1).value).toBe(2 /* B */);
+            });
+            it("gets note distance -1 from C4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -1).octave).toBe(3);
+            });
+            it("gets note distance -13 from C4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -13).value).toBe(2 /* B */);
+            });
+            it("gets note distance -13 from C4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -13).octave).toBe(2);
+            });
+            // todo: more testing for negative cases
+            it("gets note distance -4 from C4 with correct noteValue", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -4).value).toBe(11 /* Ab */);
+            });
+            it("gets note distance -4 from C4 with correct octave", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getNoteOfDistance(newNote, -4).octave).toBe(3);
+            });
+        });
+        describe("getThird", function () {
+            it("gets a correct third from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getThird(newNote).value).toBe(4 /* Db */);
+                expect(Inknote.getThird(newNote).octave).toBe(5);
+                expect(Inknote.getThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getThird(newNote).value).toBe(7 /* E */);
+                expect(Inknote.getThird(newNote).octave).toBe(4);
+                expect(Inknote.getThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getThird(newNote).value).toBe(3 /* C */);
+                expect(Inknote.getThird(newNote).octave).toBe(5);
+                expect(Inknote.getThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getMajorThird", function () {
+            it("gets a correct third from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorThird(newNote).value).toBe(4 /* Db */);
+                expect(Inknote.getMajorThird(newNote).octave).toBe(5);
+                expect(Inknote.getMajorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorThird(newNote).value).toBe(7 /* E */);
+                expect(Inknote.getMajorThird(newNote).octave).toBe(4);
+                expect(Inknote.getMajorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorThird(newNote).value).toBe(3 /* C */);
+                expect(Inknote.getMajorThird(newNote).octave).toBe(5);
+                expect(Inknote.getMajorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getMinorThird", function () {
+            it("gets a correct third from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMinorThird(newNote).value).toBe(3 /* C */);
+                expect(Inknote.getMinorThird(newNote).octave).toBe(5);
+                expect(Inknote.getMinorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMinorThird(newNote).value).toBe(6 /* Eb */);
+                expect(Inknote.getMinorThird(newNote).octave).toBe(4);
+                expect(Inknote.getMinorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct third from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMinorThird(newNote).value).toBe(2 /* B */);
+                expect(Inknote.getMinorThird(newNote).octave).toBe(4);
+                expect(Inknote.getMinorThird(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getFlatFifth", function () {
+            it("gets a correct note from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFlatFifth(newNote).value).toBe(6 /* Eb */);
+                expect(Inknote.getFlatFifth(newNote).octave).toBe(5);
+                expect(Inknote.getFlatFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFlatFifth(newNote).value).toBe(9 /* Gb */);
+                expect(Inknote.getFlatFifth(newNote).octave).toBe(4);
+                expect(Inknote.getFlatFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFlatFifth(newNote).value).toBe(5 /* D */);
+                expect(Inknote.getFlatFifth(newNote).octave).toBe(5);
+                expect(Inknote.getFlatFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getFifth", function () {
+            it("gets a correct note from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFifth(newNote).value).toBe(7 /* E */);
+                expect(Inknote.getFifth(newNote).octave).toBe(5);
+                expect(Inknote.getFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFifth(newNote).value).toBe(10 /* G */);
+                expect(Inknote.getFifth(newNote).octave).toBe(4);
+                expect(Inknote.getFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getFifth(newNote).value).toBe(6 /* Eb */);
+                expect(Inknote.getFifth(newNote).octave).toBe(5);
+                expect(Inknote.getFifth(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getSeventh", function () {
+            it("gets a correct note from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getSeventh(newNote).value).toBe(10 /* G */);
+                expect(Inknote.getSeventh(newNote).octave).toBe(5);
+                expect(Inknote.getSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getSeventh(newNote).value).toBe(1 /* Bb */);
+                expect(Inknote.getSeventh(newNote).octave).toBe(4);
+                expect(Inknote.getSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getSeventh(newNote).value).toBe(9 /* Gb */);
+                expect(Inknote.getSeventh(newNote).octave).toBe(5);
+                expect(Inknote.getSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getMajorSeventh", function () {
+            it("gets a correct note from A4", function () {
+                var newNote = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorSeventh(newNote).value).toBe(11 /* Ab */);
+                expect(Inknote.getMajorSeventh(newNote).octave).toBe(5);
+                expect(Inknote.getMajorSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from C4", function () {
+                var newNote = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorSeventh(newNote).value).toBe(2 /* B */);
+                expect(Inknote.getMajorSeventh(newNote).octave).toBe(4);
+                expect(Inknote.getMajorSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+            it("gets a correct note from Ab4", function () {
+                var newNote = new Inknote.Model.Note(11 /* Ab */, 4, 3 /* Crotchet */);
+                expect(Inknote.getMajorSeventh(newNote).value).toBe(10 /* G */);
+                expect(Inknote.getMajorSeventh(newNote).octave).toBe(5);
+                expect(Inknote.getMajorSeventh(newNote).length).toBe(3 /* Crotchet */);
+            });
+        });
+        describe("getIntervalDistance", function () {
+            it("gets correct distance between G4 and A4", function () {
+                var g4 = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+                var a4 = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(g4, a4)).toBe(1);
+            });
+            it("gets correct distance between A4 and G4", function () {
+                var g4 = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+                var a4 = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(a4, g4)).toBe(-1);
+            });
+            it("gets correct distance between C4 and D4", function () {
+                var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                var d4 = new Inknote.Model.Note(5 /* D */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(c4, d4)).toBe(1);
+            });
+            it("gets correct distance between D4 and C4", function () {
+                var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                var d4 = new Inknote.Model.Note(5 /* D */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(d4, c4)).toBe(-1);
+            });
+            it("gets correct distance between B3 and C4", function () {
+                var b3 = new Inknote.Model.Note(2 /* B */, 3, 3 /* Crotchet */);
+                var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(b3, c4)).toBe(1);
+            });
+            it("gets correct distance between C4 and B3", function () {
+                var b3 = new Inknote.Model.Note(2 /* B */, 3, 3 /* Crotchet */);
+                var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+                expect(Inknote.getIntervalDistance(c4, b3)).toBe(-1);
+            });
         });
     })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("compressing, then decompressing project", function () {
+            var testProject;
+            var compressedProject;
+            var decompressedProject;
+            beforeEach(function () {
+                testProject = new Inknote.Project("Blob");
+                testProject.colour = "#FF0000";
+                testProject.composer = "Michal Paszkiewicz";
+                testProject.arrangedBy = "Michal Paszkiewicz";
+                testProject.notes = "6 * 9 base 13 = 42";
+                var i0 = new Inknote.Model.Instrument("guitar");
+                var i1 = new Inknote.Model.Instrument("piano");
+                var i2 = new Inknote.Model.Instrument("violin");
+                var i3 = new Inknote.Model.Instrument("charango");
+                var i4 = new Inknote.Model.Instrument("double bass");
+                var i5 = new Inknote.Model.Instrument("clarinet");
+                for (var i = 0; i < 10; i++) {
+                    i0.bars.push(new Inknote.Model.Bar());
+                    i1.bars.push(new Inknote.Model.Bar());
+                    i2.bars.push(new Inknote.Model.Bar());
+                    i3.bars.push(new Inknote.Model.Bar());
+                    i4.bars.push(new Inknote.Model.Bar());
+                    i5.bars.push(new Inknote.Model.Bar());
+                }
+                testProject.instruments = [i0, i1, i2, i3, i4, i5];
+                compressedProject = Inknote.ProjectConverter.compress(testProject);
+                decompressedProject = Inknote.ProjectConverter.decompress(compressedProject);
+            });
+            it("maintains same number of instruments", function () {
+                expect(decompressedProject.instruments.length).toBe(testProject.instruments.length);
+            });
+            it("maintains same number of bars in all instruments", function () {
+                for (var i = 0; i < testProject.instruments.length; i++) {
+                    expect(decompressedProject.instruments[i].bars.length).toBe(testProject.instruments[i].bars.length);
+                }
+            });
+            it("keeps the same ID", function () {
+                expect(decompressedProject.ID).toBe(testProject.ID);
+            });
+            it("keeps the same name", function () {
+                expect(decompressedProject.name).toBe(testProject.name);
+            });
+            it("keeps the same colour", function () {
+                expect(decompressedProject.colour).toBe(testProject.colour);
+            });
+            it("keeps the same composer", function () {
+                expect(decompressedProject.composer).toBe(testProject.composer);
+            });
+            it("keeps the same arranger", function () {
+                expect(decompressedProject.arrangedBy).toBe(testProject.arrangedBy);
+            });
+            it("keeps the same notes", function () {
+                expect(decompressedProject.notes).toBe(testProject.notes);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    describe("transposeNote", function () {
+        it("transposes C4 by 0 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 0);
+            expect(c4.value).toBe(3 /* C */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 1 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 1);
+            expect(c4.value).toBe(4 /* Db */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 2 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 2);
+            expect(c4.value).toBe(5 /* D */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 3 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 3);
+            expect(c4.value).toBe(6 /* Eb */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 4 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 4);
+            expect(c4.value).toBe(7 /* E */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 5 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 5);
+            expect(c4.value).toBe(8 /* F */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 6 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 6);
+            expect(c4.value).toBe(9 /* Gb */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 7 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 7);
+            expect(c4.value).toBe(10 /* G */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 8 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 8);
+            expect(c4.value).toBe(11 /* Ab */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 9 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 9);
+            expect(c4.value).toBe(0 /* A */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 10 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 10);
+            expect(c4.value).toBe(1 /* Bb */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 11 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 11);
+            expect(c4.value).toBe(2 /* B */);
+            expect(c4.octave).toBe(4);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 12 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 12);
+            expect(c4.value).toBe(3 /* C */);
+            expect(c4.octave).toBe(5);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by 13 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, 13);
+            expect(c4.value).toBe(4 /* Db */);
+            expect(c4.octave).toBe(5);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes C4 by -1 semitones correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(c4, -1);
+            expect(c4.value).toBe(2 /* B */);
+            expect(c4.octave).toBe(3);
+            expect(c4.length).toBe(3 /* Crotchet */);
+        });
+        it("transposes A4 by -1 semitones correctly", function () {
+            var a4 = new Inknote.Model.Note(0 /* A */, 4, 3 /* Crotchet */);
+            Inknote.transposeNote(a4, -1);
+            expect(a4.value).toBe(11 /* Ab */);
+            expect(a4.octave).toBe(4);
+            expect(a4.length).toBe(3 /* Crotchet */);
+        });
+    });
+    describe("transposeChord", function () {
+        it("transposes a C4 major triad upwards correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            var e4 = new Inknote.Model.Note(7 /* E */, 4, 3 /* Crotchet */);
+            var g4 = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+            var Cmaj = new Inknote.Model.Chord([c4, e4, g4]);
+            Inknote.transposeChord(Cmaj, 11);
+            expect(c4.value).toBe(2 /* B */);
+            expect(c4.octave).toBe(4);
+            expect(e4.value).toBe(6 /* Eb */);
+            expect(e4.octave).toBe(5);
+            expect(g4.value).toBe(9 /* Gb */);
+            expect(g4.octave).toBe(5);
+        });
+        it("transposes a C4 major triad downwards correctly", function () {
+            var c4 = new Inknote.Model.Note(3 /* C */, 4, 3 /* Crotchet */);
+            var e4 = new Inknote.Model.Note(7 /* E */, 4, 3 /* Crotchet */);
+            var g4 = new Inknote.Model.Note(10 /* G */, 4, 3 /* Crotchet */);
+            var Cmaj = new Inknote.Model.Chord([c4, e4, g4]);
+            Inknote.transposeChord(Cmaj, -13);
+            expect(c4.value).toBe(2 /* B */);
+            expect(c4.octave).toBe(2);
+            expect(e4.value).toBe(6 /* Eb */);
+            expect(e4.octave).toBe(3);
+            expect(g4.value).toBe(9 /* Gb */);
+            expect(g4.octave).toBe(3);
+        });
+    });
 })(Inknote || (Inknote = {}));
 //# sourceMappingURL=@tests.js.map

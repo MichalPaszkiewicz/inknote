@@ -1,6 +1,9 @@
 ﻿module Inknote {
 
     export function allItemsAre(items: any[], xAndY: (item: any) => boolean) {
+        if (items.length === 0) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (!xAndY(items[i])) {
                 return false;
@@ -10,6 +13,9 @@
     }
 
     export function anyItemIs(items: any[], xAndY: (item: any) => boolean) {
+        if (items === null || items === undefined) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
                 return true;
@@ -19,6 +25,9 @@
     }
 
     export function countWhere(items: any[], xAndY: (item: any) => boolean) {
+        if (items === null || items === undefined) {
+            return 0;
+        }
         var count = 0;
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
@@ -29,6 +38,9 @@
     }
 
     export function getItemsWhere(items: any[], xAndY: (item: any) => boolean): any[] {
+        if (items === null || items === undefined) {
+            return [];
+        }
         var result = [];
         for (var i = 0; i < items.length; i++){
             if (xAndY(items[i])) {
@@ -38,7 +50,10 @@
         return result;
     }
 
-    export function sum(items: any[], xAndY: (item: any) => number) {
+    export function sum(items: any[], xAndY: (item: any) => number): number {
+        if (items == null || items.length == 0) {
+            return 0;
+        }
         var total = 0;
         for (var i = 0; i < items.length; i++) {
             total += xAndY(items[i]);
@@ -47,6 +62,9 @@
     }
 
     export function last(items: any[]) {
+        if (items == null || items.length == 0) {
+            return null; 
+        }
         return items[items.length - 1];
     }
 
@@ -66,10 +84,12 @@
             return false;
         }
 
-        for (var i = 0, l = this.length; i < l; i++) {
+        for (var i = 0, l = arrayOne.length; i < l; i++) {
+
             // Check if we have nested arrays
             if (arrayOne[i] instanceof Array && arrayTwo[i] instanceof Array) {
                 // recurse into the nested arrays
+
                 if (!arraysAreEqual(arrayOne[i], arrayTwo[i])) {
                     return false;
                 }

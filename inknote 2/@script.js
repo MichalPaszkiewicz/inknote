@@ -21,6 +21,9 @@
 var Inknote;
 (function (Inknote) {
     function allItemsAre(items, xAndY) {
+        if (items.length === 0) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (!xAndY(items[i])) {
                 return false;
@@ -30,6 +33,9 @@ var Inknote;
     }
     Inknote.allItemsAre = allItemsAre;
     function anyItemIs(items, xAndY) {
+        if (items === null || items === undefined) {
+            return false;
+        }
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
                 return true;
@@ -39,6 +45,9 @@ var Inknote;
     }
     Inknote.anyItemIs = anyItemIs;
     function countWhere(items, xAndY) {
+        if (items === null || items === undefined) {
+            return 0;
+        }
         var count = 0;
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
@@ -49,6 +58,9 @@ var Inknote;
     }
     Inknote.countWhere = countWhere;
     function getItemsWhere(items, xAndY) {
+        if (items === null || items === undefined) {
+            return [];
+        }
         var result = [];
         for (var i = 0; i < items.length; i++) {
             if (xAndY(items[i])) {
@@ -59,6 +71,9 @@ var Inknote;
     }
     Inknote.getItemsWhere = getItemsWhere;
     function sum(items, xAndY) {
+        if (items == null || items.length == 0) {
+            return 0;
+        }
         var total = 0;
         for (var i = 0; i < items.length; i++) {
             total += xAndY(items[i]);
@@ -67,6 +82,9 @@ var Inknote;
     }
     Inknote.sum = sum;
     function last(items) {
+        if (items == null || items.length == 0) {
+            return null;
+        }
         return items[items.length - 1];
     }
     Inknote.last = last;
@@ -83,7 +101,7 @@ var Inknote;
         if (arrayOne.length != arrayTwo.length) {
             return false;
         }
-        for (var i = 0, l = this.length; i < l; i++) {
+        for (var i = 0, l = arrayOne.length; i < l; i++) {
             // Check if we have nested arrays
             if (arrayOne[i] instanceof Array && arrayTwo[i] instanceof Array) {
                 // recurse into the nested arrays
@@ -266,7 +284,7 @@ var Inknote;
             function TimeSignature(top, bottom) {
                 this.top = top;
                 this.bottom = bottom;
-                if (Math.round(top) != top || Math.round(bottom) != bottom) {
+                if (Math.round(top) != top || Math.round(bottom) != bottom || top == 0 || bottom == 0) {
                     throw new Error("Time signatures can only take integers");
                 }
             }
@@ -584,7 +602,6 @@ var Inknote;
             function Instrument(name) {
                 this.name = name;
                 this.bars = [];
-                this.bars.push(new Compressed.Bar());
             }
             return Instrument;
         })();
@@ -4905,16 +4922,33 @@ var Inknote;
 (function (Inknote) {
     // returns a new note that is # semitones away from note. + is higher
     function getNoteOfDistance(note, semitones) {
+        var correctSemitones = semitones;
+        while (correctSemitones < 0) {
+            correctSemitones += 12;
+        }
         var tempNote = new Inknote.Model.Note(note.value, note.octave, note.length);
         if (Math.round(semitones) != semitones) {
             throw new Error("Number of semitones must be an integer");
         }
-        tempNote.value = (note.value + semitones % 12);
+        tempNote.value = ((note.value + correctSemitones) % 12);
         if (semitones > 0) {
-            tempNote.octave = note.octave + Math.floor(semitones / 12);
+            for (var i = 1; i <= semitones; i++) {
+                var norm = (note.value + i) % 12;
+                if (norm == 3 /* C */) {
+                    tempNote.octave++;
+                }
+            }
         }
         if (semitones < 0) {
-            tempNote.octave = note.octave + Math.ceil(semitones / 12);
+            for (var i = 1; i >= semitones; i--) {
+                var norm = note.value + i;
+                while (norm < 0) {
+                    norm += 12;
+                }
+                if (norm == 2 /* B */) {
+                    tempNote.octave--;
+                }
+            }
         }
         return tempNote;
     }
@@ -4949,12 +4983,10 @@ var Inknote;
     Inknote.getMajorSeventh = getMajorSeventh;
     function getIntervalDistance(note, note2) {
         var distanceFromOctave = (note2.octave - note.octave) * 7;
-        // this correction needs to work.
-        if (note2.value < 3 /* C */) {
-            distanceFromOctave += 7;
-        }
         var note1Value = note.value;
-        var diff = note2.value - note.value;
+        var norm1 = note.value < 3 /* C */ ? note.value + 12 : note.value;
+        var norm2 = note2.value < 3 /* C */ ? note2.value + 12 : note2.value;
+        var diff = norm2 - norm1;
         var distanceOfNote = 0;
         if (diff > 0) {
             for (var i = 0; i < diff; i++) {
@@ -5925,7 +5957,7 @@ var Inknote;
                 var plugins = this.plugins;
                 var compressedPlugins = [];
                 for (var i = 0; i < plugins.length; i++) {
-                    var newPlugin = new Inknote.Plugins.Compressed.InknkotePlugin(plugins[i].name);
+                    var newPlugin = new Inknote.Plugins.Compressed.InknotePlugin(plugins[i].name);
                     newPlugin.ID = plugins[i].ID;
                     newPlugin.active = plugins[i].active;
                     newPlugin.allowOnDraw = plugins[i].allowOnDraw;
@@ -6173,16 +6205,16 @@ var Inknote;
     (function (Plugins) {
         var Compressed;
         (function (Compressed) {
-            var InknkotePlugin = (function () {
-                function InknkotePlugin(name) {
+            var InknotePlugin = (function () {
+                function InknotePlugin(name) {
                     this.name = name;
                     this.ID = Inknote.getID();
                     this.allowOnSave = true;
                     this.allowOnDraw = true;
                 }
-                return InknkotePlugin;
+                return InknotePlugin;
             })();
-            Compressed.InknkotePlugin = InknkotePlugin;
+            Compressed.InknotePlugin = InknotePlugin;
         })(Compressed = Plugins.Compressed || (Plugins.Compressed = {}));
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
@@ -6897,8 +6929,8 @@ var Actions;
         Plugins.PluginMenuClick = PluginMenuClick;
     })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
 })(Actions || (Actions = {}));
-var Inknkote;
-(function (Inknkote) {
+var Inknote;
+(function (Inknote) {
     if (typeof window != "undefined") {
         window.onresize = function () {
             Inknote.ScoringService.Instance.refresh();
@@ -6907,7 +6939,7 @@ var Inknkote;
             }
         };
     }
-})(Inknkote || (Inknkote = {}));
+})(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
     var Main;

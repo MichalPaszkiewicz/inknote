@@ -1,6 +1,6 @@
 ﻿module Inknote.Plugins.Compressed {
 
-    export class InknkotePlugin{
+    export class InknotePlugin{
         ID: string = getID();
 
         active: boolean;
