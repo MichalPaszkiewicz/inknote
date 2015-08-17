@@ -3028,8 +3028,10 @@ var Inknote;
                     this.canvas.parentElement.className += " hidden";
                 }
                 this.ended = true;
-                this.metaballs.end();
-                this.canvas.parentElement.className += " faded";
+                if (Inknote.Managers.MachineManager.Instance.machineType == 0 /* Desktop */) {
+                    this.metaballs.end();
+                    this.canvas.parentElement.className += " faded";
+                }
             };
             return Landing;
         })();

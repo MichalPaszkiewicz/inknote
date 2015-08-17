@@ -65,8 +65,11 @@
             }
 
             this.ended = true;
-            this.metaballs.end();
-            this.canvas.parentElement.className += " faded";
+
+            if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+                this.metaballs.end();
+                this.canvas.parentElement.className += " faded";
+            }
         }
 
     }
