@@ -109,9 +109,12 @@
                     if (selectedID == NoteControlService.Instance.ID) {
                         if (e.clientY - 50 > NoteControlService.Instance.piano.y) {
                             NoteControlService.Instance.piano.click(e);
-                        }
+                        } 
                         else if (e.clientY - 50 < NoteControlService.Instance.y){
                             NoteControlService.Instance.minimise.click(e);
+                        }
+                        else if (NoteControlService.Instance.restControl.isOver(e.clientX, e.clientY - 50)){
+                            NoteControlService.Instance.restControl.click(e);
                         }
                         else {
                             NoteControlService.Instance.lengthControl.click(e);

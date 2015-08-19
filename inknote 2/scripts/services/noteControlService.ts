@@ -15,6 +15,7 @@
         private background: Drawing.NoteControlBackground = new Drawing.NoteControlBackground();
         lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
         minimise: Drawing.Minimise = new Drawing.Minimise();
+        restControl: Drawing.RestControl = new Drawing.RestControl();
 
         x = 0;
         y: number;
@@ -62,6 +63,11 @@
             this.background.height = this.height;
             this.background.y = this.y;
             noteControls.push(this.background);
+
+            this.restControl.y = this.y;
+            this.restControl.width = this.width / 8;
+            this.restControl.height = this.height / 4;
+            noteControls.push(this.restControl);
 
             this.lengthControl.y = this.y + this.height / 4;
             this.lengthControl.width = this.width;
@@ -126,6 +132,29 @@
             }
 
             bar.items.push(note);
+
+            ScoringService.Instance.refresh();
+        }
+
+        addRest(): void {
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            var instrument = project.instruments[0];
+
+            if (instrument.bars.length == 0) {
+                this.addBar();
+            }
+
+            var bar = instrument.bars[instrument.bars.length - 1];
+
+            if (bar.items.length > 3) {
+                this.addBar();
+                bar = instrument.bars[instrument.bars.length - 1];
+            }
+
+            var rest = new Model.Rest(this.lengthControl.selectedLength);
+
+            bar.items.push(rest);
 
             ScoringService.Instance.refresh();
         }

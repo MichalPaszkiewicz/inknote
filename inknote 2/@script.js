@@ -3802,6 +3802,51 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        var RestControl = (function () {
+            function RestControl() {
+                this.x = 0;
+                this.y = 500;
+                this.width = 500;
+                this.height = 100;
+                this.order = 200;
+                this.attached = [];
+                this.ID = "note_control";
+                this.selectedLength = 3;
+            }
+            RestControl.prototype.isOver = function (x, y) {
+                var result = y > this.y && y < this.y + this.height && x < this.x + this.width;
+                this.hover = result;
+                return result;
+            };
+            RestControl.prototype.click = function (e) {
+                var x = e.clientX;
+                Inknote.NoteControlService.Instance.addRest();
+            };
+            RestControl.prototype.draw = function (ctx, canvas) {
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.white;
+                if (this.hover) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fill();
+                var modelRest = new Inknote.Model.Rest(Inknote.NoteControlService.Instance.lengthControl.selectedLength);
+                var rest = Inknote.getDrawingItemFromRest(modelRest);
+                rest.y = this.y + this.height / 2;
+                rest.x = this.x + this.width / 2;
+                rest.draw(ctx);
+                return true;
+            };
+            return RestControl;
+        })();
+        Drawing.RestControl = RestControl;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
         var Minimise = (function () {
             function Minimise() {
                 this.ID = Inknote.getID();
@@ -5200,6 +5245,7 @@ var Inknote;
             this.background = new Inknote.Drawing.NoteControlBackground();
             this.lengthControl = new Inknote.Drawing.LengthControlBar();
             this.minimise = new Inknote.Drawing.Minimise();
+            this.restControl = new Inknote.Drawing.RestControl();
             this.x = 0;
             this.hidden = false;
             this.hiddenY = 0;
@@ -5250,6 +5296,10 @@ var Inknote;
             this.background.height = this.height;
             this.background.y = this.y;
             noteControls.push(this.background);
+            this.restControl.y = this.y;
+            this.restControl.width = this.width / 8;
+            this.restControl.height = this.height / 4;
+            noteControls.push(this.restControl);
             this.lengthControl.y = this.y + this.height / 4;
             this.lengthControl.width = this.width;
             this.lengthControl.height = this.height / 4;
@@ -5293,6 +5343,21 @@ var Inknote;
                 bar = instrument.bars[instrument.bars.length - 1];
             }
             bar.items.push(note);
+            Inknote.ScoringService.Instance.refresh();
+        };
+        NoteControlService.prototype.addRest = function () {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var instrument = project.instruments[0];
+            if (instrument.bars.length == 0) {
+                this.addBar();
+            }
+            var bar = instrument.bars[instrument.bars.length - 1];
+            if (bar.items.length > 3) {
+                this.addBar();
+                bar = instrument.bars[instrument.bars.length - 1];
+            }
+            var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
+            bar.items.push(rest);
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteLength = function () {
@@ -6519,6 +6584,9 @@ var Inknote;
                         else if (e.clientY - 50 < Inknote.NoteControlService.Instance.y) {
                             Inknote.NoteControlService.Instance.minimise.click(e);
                         }
+                        else if (Inknote.NoteControlService.Instance.restControl.isOver(e.clientX, e.clientY - 50)) {
+                            Inknote.NoteControlService.Instance.restControl.click(e);
+                        }
                         else {
                             Inknote.NoteControlService.Instance.lengthControl.click(e);
                         }
@@ -7078,6 +7146,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/notecontrols/pianokey.ts" />
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
 /// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
+/// <reference path="scripts/drawings/notecontrols/restcontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
@@ -7127,16 +7196,4 @@ if (typeof window != "undefined") {
 // app
 /// <reference path="scripts/app.ts" />
 /// <reference path="scripts/security-warning.ts" />
-var Inknote;
-(function (Inknote) {
-    var Drawing;
-    (function (Drawing) {
-        var RestControl = (function () {
-            function RestControl() {
-            }
-            return RestControl;
-        })();
-        Drawing.RestControl = RestControl;
-    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
-})(Inknote || (Inknote = {}));
 //# sourceMappingURL=@script.js.map
