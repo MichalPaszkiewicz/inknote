@@ -229,7 +229,7 @@
                             if (item instanceof Model.Note) {
                                 var newVal = item.value + 1;
                                 item.value = newVal % 12;
-                                item.octave = newVal > 11 ? item.octave + 1 : item.octave;
+                                item.octave = newVal % 12 == Model.NoteValue.C ? item.octave + 1 : item.octave;
                             }
                             else if (item instanceof Model.Rest) {
 
@@ -260,7 +260,7 @@
                             if (item instanceof Model.Note) {
                                 var newVal = item.value + 11;
                                 item.value = newVal % 12;
-                                item.octave = newVal < 12 ? item.octave - 1 : item.octave;
+                                item.octave = newVal % 12 == Model.NoteValue.B ? item.octave - 1 : item.octave;
                             }
                             else if (item instanceof Model.Rest) {
 

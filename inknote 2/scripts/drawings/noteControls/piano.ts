@@ -83,6 +83,8 @@
             ctx.fill();
             ctx.stroke();
 
+            ctx.textBaseline = "base";
+
             var noteVal = 2;
             var whiteKeyNum = 0;
             var blackKeyNum = 0;

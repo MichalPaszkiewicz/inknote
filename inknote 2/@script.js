@@ -3629,6 +3629,7 @@ var Inknote;
                 ctx.rect(this.x, this.y, this.width, this.height);
                 ctx.fill();
                 ctx.stroke();
+                ctx.textBaseline = "base";
                 var noteVal = 2;
                 var whiteKeyNum = 0;
                 var blackKeyNum = 0;
@@ -5372,7 +5373,7 @@ var Inknote;
                             if (item instanceof Inknote.Model.Note) {
                                 var newVal = item.value + 1;
                                 item.value = newVal % 12;
-                                item.octave = newVal > 11 ? item.octave + 1 : item.octave;
+                                item.octave = newVal % 12 == 3 /* C */ ? item.octave + 1 : item.octave;
                             }
                             else if (item instanceof Inknote.Model.Rest) {
                             }
@@ -5395,7 +5396,7 @@ var Inknote;
                             if (item instanceof Inknote.Model.Note) {
                                 var newVal = item.value + 11;
                                 item.value = newVal % 12;
-                                item.octave = newVal < 12 ? item.octave - 1 : item.octave;
+                                item.octave = newVal % 12 == 2 /* B */ ? item.octave - 1 : item.octave;
                             }
                             else if (item instanceof Inknote.Model.Rest) {
                             }
@@ -7126,4 +7127,16 @@ if (typeof window != "undefined") {
 // app
 /// <reference path="scripts/app.ts" />
 /// <reference path="scripts/security-warning.ts" />
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var RestControl = (function () {
+            function RestControl() {
+            }
+            return RestControl;
+        })();
+        Drawing.RestControl = RestControl;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
 //# sourceMappingURL=@script.js.map
