@@ -1604,6 +1604,15 @@ var Inknote;
                 ctx.fillStyle = Drawing.Colours.orange;
             }
         }
+        function drawBreveRest(ctx, x, y, height) {
+            ctx.beginPath();
+            ctx.moveTo(x, y - height);
+            ctx.lineTo(x + 2 * height / 2, y - height);
+            ctx.lineTo(x + 2 * height / 2, y + height);
+            ctx.lineTo(x, y + height);
+            ctx.lineTo(x, y - height);
+            ctx.fill();
+        }
         function drawSemiBreveRest(ctx, x, y, height) {
             ctx.beginPath();
             ctx.moveTo(x, y);
@@ -1716,12 +1725,7 @@ var Inknote;
             // todo: fix this.
             BreveRest.prototype.draw = function (ctx) {
                 restCommon(ctx, this);
-                ctx.beginPath();
-                ctx.strokeStyle = Drawing.Colours.black;
-                ctx.fillStyle = Drawing.Colours.black;
-                ctx.rect(this.x - 5, this.y - 5, this.x + 5, this.y + 5);
-                ctx.stroke();
-                throw new Error("Incorrect breve rest drawing implementation");
+                drawBreveRest(ctx, this.x, this.y, 10);
                 return true;
             };
             return BreveRest;
@@ -4583,7 +4587,7 @@ var Inknote;
                                 // add rest drawing.
                                 var drawRestItem = Inknote.getDrawingItemFromRest(item);
                                 drawRestItem.x = marginLeft + barX + itemX;
-                                drawRestItem.y = topLineHeight;
+                                drawRestItem.y = topLineHeight + 20;
                                 this.addItem(drawRestItem);
                                 // move forwards.
                                 itemX += Inknote.requiredRestSpace(item, 10);

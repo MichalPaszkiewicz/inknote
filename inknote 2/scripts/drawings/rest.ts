@@ -18,6 +18,16 @@
         }
     }
 
+    function drawBreveRest(ctx: CanvasRenderingContext2D, x: number, y: number, height: number): void {
+        ctx.beginPath();
+        ctx.moveTo(x, y - height);
+        ctx.lineTo(x + 2 * height / 2, y - height);
+        ctx.lineTo(x + 2 * height / 2, y + height);
+        ctx.lineTo(x, y + height);
+        ctx.lineTo(x, y - height);
+        ctx.fill();
+    }
+
     function drawSemiBreveRest(ctx: CanvasRenderingContext2D, x: number, y: number, height: number): void {
         ctx.beginPath();
         ctx.moveTo(x, y);
@@ -136,12 +146,8 @@
         // todo: fix this.
         draw(ctx: CanvasRenderingContext2D) {
             restCommon(ctx, this);
-            ctx.beginPath();
-            ctx.strokeStyle = Colours.black;
-            ctx.fillStyle = Colours.black;
-            ctx.rect(this.x - 5, this.y - 5, this.x + 5, this.y + 5);
-            ctx.stroke();
-            throw new Error("Incorrect breve rest drawing implementation");
+
+            drawBreveRest(ctx, this.x, this.y, 10);
             return true;
         }
     }

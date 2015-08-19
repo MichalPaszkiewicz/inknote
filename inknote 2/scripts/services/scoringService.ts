@@ -232,7 +232,7 @@ module Inknote {
                                 var drawRestItem = getDrawingItemFromRest(item);
 
                                 drawRestItem.x = marginLeft + barX + itemX;
-                                drawRestItem.y = topLineHeight;
+                                drawRestItem.y = topLineHeight + 20;
 
                                 this.addItem(drawRestItem);
 
