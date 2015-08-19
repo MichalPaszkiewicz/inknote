@@ -3305,7 +3305,9 @@ var Inknote;
                 this.splashed = false;
                 this.splashCounter = 0;
                 this.finished = false;
-                FrontEnd.hideElement(document.getElementById("landing"));
+                if (Inknote.Landing.Landing.Instance.ended === false) {
+                    Inknote.Landing.Landing.Instance.hide();
+                }
                 FrontEnd.showElement(document.getElementById("drag-drop"));
                 this.canvas.width = this.canvas.parentElement.clientWidth;
                 this.canvas.height = this.canvas.parentElement.clientHeight;

@@ -55,7 +55,10 @@
             this.splashCounter = 0;
             this.finished = false;
 
-            FrontEnd.hideElement(document.getElementById("landing"));
+            if (Landing.Landing.Instance.ended === false) {
+                Landing.Landing.Instance.hide();
+            }
+
             FrontEnd.showElement(document.getElementById("drag-drop"));
 
             this.canvas.width = this.canvas.parentElement.clientWidth;
