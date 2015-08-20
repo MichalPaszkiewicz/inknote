@@ -4608,70 +4608,14 @@ var Inknote;
                 topLineHeight += 40;
             }
             this.maxScrollPosition = topLineHeight - 200;
-            /*
-            for (var i = 0; i < visibleInstruments.length; i++) {
-                var newStave = new Drawing.Stave(topLineHeight, visibleInstruments[i].name);
-
-                this._items.push(newStave);
-
-                for (var j = 0; j < visibleInstruments.length; j++) {
-                    for (var k = 0; k < visibleInstruments[j].bars.length; k++) {
-                        var bar = visibleInstruments[j].bars[k];
-
-                        var drawBar = new Drawing.Bar();
-
-                        var ts = new Drawing.TimeSignature(4, 4);
-                        ts.x = 40;
-                        ts.y = 200;
-
-                        drawBar.x = newStave.x;
-
-                        drawBar.y = topLineHeight;
-                        drawBar.height = 40;
-                        drawBar.width = 30;
-
-                        this._items.push(drawBar);
-                        this._items.push(ts);
-
-                        for (var l = 0; l < bar.items.length; l++) {
-                            if (bar.items[l] instanceof Model.Note) {
-                                var noteItem = <Model.Note> bar.items[l];
-                                var drawNoteItem = getDrawingItemFromNote(noteItem)
-                                drawNoteItem.x = marginLeft += 20;
-                                drawNoteItem.y = topLineHeight + 20 - noteItem.value * 5;
-                                drawNoteItem.ID = noteItem.ID;
-
-                                drawBar.width += requiredNoteSpace(noteItem, 10);
-
-                                this._items.push(drawNoteItem);
-                            }
-                            else if (bar.items[l] instanceof Model.Rest) {
-                                var restItem = <Model.Rest> bar.items[l];
-                                var drawRestItem = getDrawingItemFromRest(restItem)
-                                drawRestItem.x = marginLeft += 20;
-                                drawRestItem.y = topLineHeight;
-                                drawRestItem.ID = restItem.ID;
-
-                                drawBar.width += requiredRestSpace(restItem, 10);
-
-                                this._items.push(drawRestItem);
-                            }
-                            else if (bar.items[l] instanceof Model.Chord) {
-
-                            }
-                        }
-                    }
-                }
-
-                topLineHeight += 80;
-            }
-            */
         };
         Object.defineProperty(ScoringService.prototype, "SelectedItem", {
             get: function () {
                 for (var i = 0; i < this._items.length; i++) {
                     if (this._items[i].ID == this.selectID) {
-                        return this._items[i];
+                        if (this._items[i]["attachedToID"] == null) {
+                            return this._items[i];
+                        }
                     }
                 }
                 return null;

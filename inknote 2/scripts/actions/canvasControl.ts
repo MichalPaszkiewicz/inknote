@@ -109,11 +109,11 @@
                     if (selectedID == NoteControlService.Instance.ID) {
                         if (e.clientY - 50 > NoteControlService.Instance.piano.y) {
                             NoteControlService.Instance.piano.click(e);
-                        } 
-                        else if (e.clientY - 50 < NoteControlService.Instance.y){
+                        }
+                        else if (e.clientY - 50 < NoteControlService.Instance.y) {
                             NoteControlService.Instance.minimise.click(e);
                         }
-                        else if (NoteControlService.Instance.restControl.isOver(e.clientX, e.clientY - 50)){
+                        else if (NoteControlService.Instance.restControl.isOver(e.clientX, e.clientY - 50)) {
                             NoteControlService.Instance.restControl.click(e);
                         }
                         else {
@@ -159,6 +159,7 @@
                     }
 
                     Managers.ProjectManager.Instance.selectID = selectedID;
+
                     selected = true;
                 }
             }
@@ -209,7 +210,7 @@
         }
 
         touchCopies: TouchCopy[] = [];
-        getTouchCopyByID(ID: number): TouchCopy{
+        getTouchCopyByID(ID: number): TouchCopy {
             for (var i = 0; i < this.touchCopies.length; i++) {
                 if (this.touchCopies[i].identifier == ID) {
                     return this.touchCopies[i];
