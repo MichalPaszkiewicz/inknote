@@ -15,7 +15,7 @@
         ID: string = "note_control";
 
         isOver(x: number, y: number): boolean {
-            var result = y > this.y && y < this.y + this.height && x < this.x + this.width;
+            var result = y > this.y && y < this.y + this.height && x < this.x + this.width && x > this.x;
 
             this.hover = result;
 

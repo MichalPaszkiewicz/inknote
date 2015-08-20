@@ -16,6 +16,7 @@
         lengthControl: Drawing.LengthControlBar = new Drawing.LengthControlBar();
         minimise: Drawing.Minimise = new Drawing.Minimise();
         restControl: Drawing.RestControl = new Drawing.RestControl();
+        deleteNoteControl: Drawing.DeleteNoteControl = new Drawing.DeleteNoteControl();
 
         x = 0;
         y: number;
@@ -69,6 +70,12 @@
             this.restControl.height = this.height / 4;
             noteControls.push(this.restControl);
 
+            this.deleteNoteControl.y = this.y;
+            this.deleteNoteControl.x = this.x + this.width * 7 / 8;
+            this.deleteNoteControl.width = this.width / 8;
+            this.deleteNoteControl.height = this.height / 4;
+            noteControls.push(this.deleteNoteControl);
+
             this.lengthControl.y = this.y + this.height / 4;
             this.lengthControl.width = this.width;
             this.lengthControl.height = this.height / 4;
@@ -84,6 +91,7 @@
             this.minimise.x = this.x;
             this.minimise.y = this.y - this.minimise.height;
             noteControls.push(this.minimise);
+
 
             return noteControls;
         }
@@ -188,10 +196,22 @@
             ScoringService.Instance.refresh();
         }
 
+        deleteSelected() {
+            if (ScoringService.Instance.SelectedItem instanceof Drawing.Note) {
+                NoteControlService.Instance.deleteItem();
+            }
+            else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                BarService.Instance.deleteSelectedBar();
+            }
+        }
+
         deleteItem() {
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
+
+                var previousItem: Model.Rest | Model.Note | Model.Chord = null;
+
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];
 
@@ -201,10 +221,15 @@
                         var item = bar.items[k];
                         if (item.ID == ScoringService.Instance.selectID) {
                             // have it......... dealt with
+                            if (previousItem) {
+                                ScoringService.Instance.selectID = previousItem.ID;
+                            }
                         }
                         else {
                             newItems.push(item);
                         }
+
+                        previousItem = item;
                     }
 
                     bar.items = newItems;

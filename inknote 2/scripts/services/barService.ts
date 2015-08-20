@@ -15,6 +15,8 @@
             var runRemove = false;
             var removeIndex = 0;
 
+            var previousItem: Model.Bar = null;
+
             var instruments = Managers.ProjectManager.Instance.currentProject.instruments;
             for (var i = 0; i < instruments.length; i++) {
                 for (var j = 0; j < instruments[i].bars.length; j++) {
@@ -24,6 +26,10 @@
                         if (bar.items.length == 0) {
 
                             runRemove = true;
+
+                            if (previousItem) {
+                                ScoringService.Instance.selectID = previousItem.ID;
+                            }
 
                             // do not run remove if any items in any parallel bars
                             for (var k = 0; k < instruments.length; k++) {
@@ -42,11 +48,12 @@
                         }
                         break;
                     }
+
+                    previousItem = bar;
                 }
             }
 
             if (runRemove === true) {
-                console.log("here");
                 for (var i = 0; i < instruments.length; i++) {
 
                     instruments[i].bars.splice(removeIndex, 1);

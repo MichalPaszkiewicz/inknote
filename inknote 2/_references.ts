@@ -104,6 +104,7 @@
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
 /// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/restcontrol.ts" />
+/// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 
 // storage

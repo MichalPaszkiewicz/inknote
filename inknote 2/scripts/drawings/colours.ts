@@ -21,6 +21,7 @@
         faintBlue: "rgb(245,245,255)",
         lightBlue: "lightblue",
         midBlue: "rgb(100,130,240)",
+        brightRed: "rgb(255,0,0)",
         negativeRed: "rgb(255, 129, 129)",
         negativeHoverRed: "rgb(255,150,150)"
     };
