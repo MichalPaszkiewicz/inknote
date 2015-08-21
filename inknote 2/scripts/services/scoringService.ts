@@ -8,6 +8,10 @@ module Inknote {
         for (var i = 0; i < bar.items.length; i++) {
             var item = bar.items[i];
 
+            if (item instanceof Model.Clef) {
+                length += requiredClefSpace(item, 10);
+            }
+
             if (item instanceof Model.Note) {
                 length += requiredNoteSpace(item, 10);
             }
@@ -148,6 +152,8 @@ module Inknote {
             var barIndex = 0;
             var maxWidth = DrawService.Instance.canvas.width - 2 * marginLeft;
 
+            var clefAdditionalPosition = 0;
+
             var lines = splitBarsToLines(barMinLengths, maxWidth);
 
             // loop through lines
@@ -186,6 +192,20 @@ module Inknote {
 
                             var item = bar.items[l];
 
+                            if (item instanceof Model.Clef) {
+
+                                var drawClefItem = Drawing.getDrawingFromClef(item);
+
+                                drawClefItem.x = marginLeft + barX + itemX;
+                                drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
+
+                                clefAdditionalPosition = 5 * item.positionFromTreble;
+
+                                this.addItem(drawClefItem);
+
+                                itemX += requiredClefSpace(item, 10);
+                            }
+
                             if (item instanceof Model.Note) {
 
                                 var isBlack = Model.IsBlackKey(item.value);
@@ -196,7 +216,7 @@ module Inknote {
                                     var drawBlack = new Drawing.Flat();
 
                                     drawBlack.x = marginLeft + barX + itemX;
-                                    drawBlack.y = topLineHeight - 5 * intervalDistance;
+                                    drawBlack.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
 
                                     this.addItem(drawBlack);
 
@@ -208,7 +228,7 @@ module Inknote {
                                 var drawNoteItem = getDrawingItemFromNote(item);
 
                                 drawNoteItem.x = marginLeft + barX + itemX;
-                                drawNoteItem.y = topLineHeight - 5 * intervalDistance;
+                                drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
 
                                 drawNoteItem.stemUp = intervalDistance <= -4;
 

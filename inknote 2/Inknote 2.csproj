@@ -161,6 +161,7 @@
     <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
     <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
     <TypeScriptCompile Include="scripts\services\chordService.ts" />
+    <TypeScriptCompile Include="scripts\services\clefService.ts" />
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
