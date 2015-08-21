@@ -1239,6 +1239,7 @@ var Inknote;
             function Clef(drawPosition) {
                 _super.call(this);
                 this.drawPosition = drawPosition;
+                this.lineHeight = 10;
             }
             return Clef;
         })(Inknote.Notation);
@@ -1249,8 +1250,10 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             GClef.prototype.draw = function (ctx) {
+                var hlh = this.lineHeight / 2;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 15, 0, 2 * Math.PI);
+                ctx.moveTo(this.x - hlh, this.y + hlh);
+                ctx.bezierCurveTo(this.x - hlh * 2, this.y - hlh, this.x - hlh, this.y - hlh * 2, this.x + hlh, this.y - hlh);
                 ctx.strokeStyle = "green";
                 ctx.stroke();
                 return true;
