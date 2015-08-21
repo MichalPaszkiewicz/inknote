@@ -32,6 +32,7 @@
     <TypeScriptCompile Include="Scripts\helpers\maths.ts" />
     <TypeScriptCompile Include="Scripts\model\bar.ts" />
     <TypeScriptCompile Include="Scripts\model\chord.ts" />
+    <TypeScriptCompile Include="Scripts\model\clef.ts" />
     <TypeScriptCompile Include="Scripts\model\instrument.ts" />
     <TypeScriptCompile Include="Scripts\model\note.ts" />
     <TypeScriptCompile Include="Scripts\model\noteLength.ts" />

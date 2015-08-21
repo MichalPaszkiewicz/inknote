@@ -264,6 +264,12 @@ var Inknote;
     })();
     Inknote.DrawOptions = DrawOptions;
 })(Inknote || (Inknote = {}));
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var Inknote;
 (function (Inknote) {
     var Model;
@@ -274,6 +280,93 @@ var Inknote;
             return Clef;
         })();
         Model.Clef = Clef;
+        (function (ClefType) {
+            ClefType[ClefType["GClef"] = 0] = "GClef";
+            ClefType[ClefType["CClef"] = 1] = "CClef";
+            ClefType[ClefType["FClef"] = 2] = "FClef";
+        })(Model.ClefType || (Model.ClefType = {}));
+        var ClefType = Model.ClefType;
+        var FrenchViolinClef = (function (_super) {
+            __extends(FrenchViolinClef, _super);
+            function FrenchViolinClef() {
+                _super.apply(this, arguments);
+                this.clefType = 0 /* GClef */;
+            }
+            return FrenchViolinClef;
+        })(Clef);
+        Model.FrenchViolinClef = FrenchViolinClef;
+        var TrebleClef = (function (_super) {
+            __extends(TrebleClef, _super);
+            function TrebleClef() {
+                _super.apply(this, arguments);
+                this.clefType = 0 /* GClef */;
+            }
+            return TrebleClef;
+        })(Clef);
+        Model.TrebleClef = TrebleClef;
+        var SopranoClef = (function (_super) {
+            __extends(SopranoClef, _super);
+            function SopranoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return SopranoClef;
+        })(Clef);
+        Model.SopranoClef = SopranoClef;
+        var MezzoSopranoClef = (function (_super) {
+            __extends(MezzoSopranoClef, _super);
+            function MezzoSopranoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return MezzoSopranoClef;
+        })(Clef);
+        Model.MezzoSopranoClef = MezzoSopranoClef;
+        var AltoClef = (function (_super) {
+            __extends(AltoClef, _super);
+            function AltoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return AltoClef;
+        })(Clef);
+        Model.AltoClef = AltoClef;
+        var TenorClef = (function (_super) {
+            __extends(TenorClef, _super);
+            function TenorClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return TenorClef;
+        })(Clef);
+        Model.TenorClef = TenorClef;
+        var BaritoneClef = (function (_super) {
+            __extends(BaritoneClef, _super);
+            function BaritoneClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return BaritoneClef;
+        })(Clef);
+        Model.BaritoneClef = BaritoneClef;
+        var BassClef = (function (_super) {
+            __extends(BassClef, _super);
+            function BassClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return BassClef;
+        })(Clef);
+        Model.BassClef = BassClef;
+        var SubbassClef = (function (_super) {
+            __extends(SubbassClef, _super);
+            function SubbassClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return SubbassClef;
+        })(Clef);
+        Model.SubbassClef = SubbassClef;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -1001,6 +1094,7 @@ var Inknote;
             faintBlue: "rgb(245,245,255)",
             lightBlue: "lightblue",
             midBlue: "rgb(100,130,240)",
+            brightRed: "rgb(255,0,0)",
             negativeRed: "rgb(255, 129, 129)",
             negativeHoverRed: "rgb(255,150,150)"
         };
@@ -1117,12 +1211,6 @@ var Inknote;
         Drawing.Stave = Stave;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var Inknote;
 (function (Inknote) {
     var Drawing;
@@ -3820,7 +3908,7 @@ var Inknote;
                 this.selectedLength = 3;
             }
             RestControl.prototype.isOver = function (x, y) {
-                var result = y > this.y && y < this.y + this.height && x < this.x + this.width;
+                var result = y > this.y && y < this.y + this.height && x < this.x + this.width && x > this.x;
                 this.hover = result;
                 return result;
             };
@@ -3847,6 +3935,60 @@ var Inknote;
             return RestControl;
         })();
         Drawing.RestControl = RestControl;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var DeleteNoteControl = (function () {
+            function DeleteNoteControl() {
+                this.x = 0;
+                this.y = 500;
+                this.width = 500;
+                this.height = 100;
+                this.order = 200;
+                this.attached = [];
+                this.ID = "note_control";
+                this.selectedLength = 3;
+            }
+            DeleteNoteControl.prototype.isOver = function (x, y) {
+                var result = y > this.y && y < this.y + this.height && x < this.x + this.width && x > this.x;
+                this.hover = result;
+                return result;
+            };
+            DeleteNoteControl.prototype.click = function (e) {
+                Inknote.NoteControlService.Instance.deleteSelected();
+            };
+            DeleteNoteControl.prototype.draw = function (ctx, canvas) {
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.fillStyle = Drawing.Colours.white;
+                if (this.hover) {
+                    ctx.globalAlpha = 0.7;
+                }
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fill();
+                ctx.beginPath();
+                var lineLength = 10;
+                ctx.lineWidth = 4;
+                if (this.hover) {
+                    ctx.lineWidth = 6;
+                    lineLength = 12;
+                }
+                ctx.globalAlpha = 255;
+                ctx.strokeStyle = Drawing.Colours.brightRed;
+                ctx.moveTo(this.x + this.width / 2 - lineLength, this.y + this.height / 2 - lineLength);
+                ctx.lineTo(this.x + this.width / 2 + lineLength, this.y + this.height / 2 + lineLength);
+                ctx.moveTo(this.x + this.width / 2 - lineLength, this.y + this.height / 2 + lineLength);
+                ctx.lineTo(this.x + this.width / 2 + lineLength, this.y + this.height / 2 - lineLength);
+                ctx.stroke();
+                ctx.lineWidth = 1;
+                return true;
+            };
+            return DeleteNoteControl;
+        })();
+        Drawing.DeleteNoteControl = DeleteNoteControl;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5196,6 +5338,7 @@ var Inknote;
             this.lengthControl = new Inknote.Drawing.LengthControlBar();
             this.minimise = new Inknote.Drawing.Minimise();
             this.restControl = new Inknote.Drawing.RestControl();
+            this.deleteNoteControl = new Inknote.Drawing.DeleteNoteControl();
             this.x = 0;
             this.hidden = false;
             this.hiddenY = 0;
@@ -5250,6 +5393,11 @@ var Inknote;
             this.restControl.width = this.width / 8;
             this.restControl.height = this.height / 4;
             noteControls.push(this.restControl);
+            this.deleteNoteControl.y = this.y;
+            this.deleteNoteControl.x = this.x + this.width * 7 / 8;
+            this.deleteNoteControl.width = this.width / 8;
+            this.deleteNoteControl.height = this.height / 4;
+            noteControls.push(this.deleteNoteControl);
             this.lengthControl.y = this.y + this.height / 4;
             this.lengthControl.width = this.width;
             this.lengthControl.height = this.height / 4;
@@ -5335,19 +5483,33 @@ var Inknote;
             }
             Inknote.ScoringService.Instance.refresh();
         };
+        NoteControlService.prototype.deleteSelected = function () {
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
+                NoteControlService.Instance.deleteItem();
+            }
+            else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                Inknote.BarService.Instance.deleteSelectedBar();
+            }
+        };
         NoteControlService.prototype.deleteItem = function () {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
+                var previousItem = null;
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];
                     var newItems = [];
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
                         if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                            // have it......... dealt with
+                            if (previousItem) {
+                                Inknote.ScoringService.Instance.selectID = previousItem.ID;
+                            }
                         }
                         else {
                             newItems.push(item);
                         }
+                        previousItem = item;
                     }
                     bar.items = newItems;
                 }
@@ -5445,6 +5607,7 @@ var Inknote;
         BarService.prototype.deleteSelectedBar = function () {
             var runRemove = false;
             var removeIndex = 0;
+            var previousItem = null;
             var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
             for (var i = 0; i < instruments.length; i++) {
                 for (var j = 0; j < instruments[i].bars.length; j++) {
@@ -5452,6 +5615,9 @@ var Inknote;
                     if (bar.ID == Inknote.ScoringService.Instance.SelectedItem.ID) {
                         if (bar.items.length == 0) {
                             runRemove = true;
+                            if (previousItem) {
+                                Inknote.ScoringService.Instance.selectID = previousItem.ID;
+                            }
                             for (var k = 0; k < instruments.length; k++) {
                                 if (instruments[k].bars[j].items.length > 0) {
                                     runRemove = false;
@@ -5467,10 +5633,10 @@ var Inknote;
                         }
                         break;
                     }
+                    previousItem = bar;
                 }
             }
             if (runRemove === true) {
-                console.log("here");
                 for (var i = 0; i < instruments.length; i++) {
                     instruments[i].bars.splice(removeIndex, 1);
                     Inknote.ScoringService.Instance.refresh();
@@ -6537,6 +6703,9 @@ var Inknote;
                         else if (Inknote.NoteControlService.Instance.restControl.isOver(e.clientX, e.clientY - 50)) {
                             Inknote.NoteControlService.Instance.restControl.click(e);
                         }
+                        else if (Inknote.NoteControlService.Instance.deleteNoteControl.isOver(e.clientX, e.clientY - 50)) {
+                            Inknote.NoteControlService.Instance.deleteNoteControl.click(e);
+                        }
                         else {
                             Inknote.NoteControlService.Instance.lengthControl.click(e);
                         }
@@ -6760,12 +6929,7 @@ var Inknote;
                     Inknote.NoteControlService.Instance.noteValueDown();
                     break;
                 case 46:
-                    if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
-                        Inknote.NoteControlService.Instance.deleteItem();
-                    }
-                    else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
-                        Inknote.BarService.Instance.deleteSelectedBar();
-                    }
+                    Inknote.NoteControlService.Instance.deleteSelected();
             }
         }
         if (noteVal != null) {
@@ -7097,6 +7261,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/notecontrols/piano.ts" />
 /// <reference path="scripts/drawings/notecontrols/lengthcontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/restcontrol.ts" />
+/// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
@@ -7568,6 +7733,59 @@ var Inknote;
                 expect(newChord.notes[0]).toBe(note1);
                 expect(newChord.notes[1]).toBe(note2);
                 expect(newChord.notes[2]).toBe(note3);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("french violin clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.FrenchViolinClef()).clefType).toBe(0 /* GClef */);
+            });
+        });
+        describe("treble clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.TrebleClef()).clefType).toBe(0 /* GClef */);
+            });
+        });
+        describe("soprano clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.SopranoClef()).clefType).toBe(1 /* CClef */);
+            });
+        });
+        describe("mezzo soprano clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.MezzoSopranoClef()).clefType).toBe(1 /* CClef */);
+            });
+        });
+        describe("alto clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.AltoClef()).clefType).toBe(1 /* CClef */);
+            });
+        });
+        describe("tenor clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.TenorClef()).clefType).toBe(1 /* CClef */);
+            });
+        });
+        describe("baritone clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.BaritoneClef()).clefType).toBe(2 /* FClef */);
+            });
+        });
+        describe("bass clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.BassClef()).clefType).toBe(2 /* FClef */);
+            });
+        });
+        describe("subbass clef", function () {
+            it("has the correct clef type", function () {
+                expect((new Inknote.Model.SubbassClef()).clefType).toBe(2 /* FClef */);
             });
         });
     })(Tests = Inknote.Tests || (Inknote.Tests = {}));

@@ -264,6 +264,12 @@ var Inknote;
     })();
     Inknote.DrawOptions = DrawOptions;
 })(Inknote || (Inknote = {}));
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var Inknote;
 (function (Inknote) {
     var Model;
@@ -274,6 +280,93 @@ var Inknote;
             return Clef;
         })();
         Model.Clef = Clef;
+        (function (ClefType) {
+            ClefType[ClefType["GClef"] = 0] = "GClef";
+            ClefType[ClefType["CClef"] = 1] = "CClef";
+            ClefType[ClefType["FClef"] = 2] = "FClef";
+        })(Model.ClefType || (Model.ClefType = {}));
+        var ClefType = Model.ClefType;
+        var FrenchViolinClef = (function (_super) {
+            __extends(FrenchViolinClef, _super);
+            function FrenchViolinClef() {
+                _super.apply(this, arguments);
+                this.clefType = 0 /* GClef */;
+            }
+            return FrenchViolinClef;
+        })(Clef);
+        Model.FrenchViolinClef = FrenchViolinClef;
+        var TrebleClef = (function (_super) {
+            __extends(TrebleClef, _super);
+            function TrebleClef() {
+                _super.apply(this, arguments);
+                this.clefType = 0 /* GClef */;
+            }
+            return TrebleClef;
+        })(Clef);
+        Model.TrebleClef = TrebleClef;
+        var SopranoClef = (function (_super) {
+            __extends(SopranoClef, _super);
+            function SopranoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return SopranoClef;
+        })(Clef);
+        Model.SopranoClef = SopranoClef;
+        var MezzoSopranoClef = (function (_super) {
+            __extends(MezzoSopranoClef, _super);
+            function MezzoSopranoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return MezzoSopranoClef;
+        })(Clef);
+        Model.MezzoSopranoClef = MezzoSopranoClef;
+        var AltoClef = (function (_super) {
+            __extends(AltoClef, _super);
+            function AltoClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return AltoClef;
+        })(Clef);
+        Model.AltoClef = AltoClef;
+        var TenorClef = (function (_super) {
+            __extends(TenorClef, _super);
+            function TenorClef() {
+                _super.apply(this, arguments);
+                this.clefType = 1 /* CClef */;
+            }
+            return TenorClef;
+        })(Clef);
+        Model.TenorClef = TenorClef;
+        var BaritoneClef = (function (_super) {
+            __extends(BaritoneClef, _super);
+            function BaritoneClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return BaritoneClef;
+        })(Clef);
+        Model.BaritoneClef = BaritoneClef;
+        var BassClef = (function (_super) {
+            __extends(BassClef, _super);
+            function BassClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return BassClef;
+        })(Clef);
+        Model.BassClef = BassClef;
+        var SubbassClef = (function (_super) {
+            __extends(SubbassClef, _super);
+            function SubbassClef() {
+                _super.apply(this, arguments);
+                this.clefType = 2 /* FClef */;
+            }
+            return SubbassClef;
+        })(Clef);
+        Model.SubbassClef = SubbassClef;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -1118,12 +1211,6 @@ var Inknote;
         Drawing.Stave = Stave;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var Inknote;
 (function (Inknote) {
     var Drawing;
