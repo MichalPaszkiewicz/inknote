@@ -30,6 +30,9 @@
                             if (previousItem) {
                                 ScoringService.Instance.selectID = previousItem.ID;
                             }
+                            else {
+                                ScoringService.Instance.selectID = null;
+                            }
 
                             // do not run remove if any items in any parallel bars
                             for (var k = 0; k < instruments.length; k++) {

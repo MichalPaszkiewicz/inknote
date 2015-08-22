@@ -226,6 +226,9 @@
                             if (previousItem) {
                                 ScoringService.Instance.selectID = previousItem.ID;
                             }
+                            else {
+                                ScoringService.Instance.selectID = null;
+                            }
                         }
                         else {
                             newItems.push(item);
