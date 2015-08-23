@@ -122,6 +122,20 @@
             }
         }
 
+        if (ScoringService.Instance.SelectedItem instanceof Drawing.Clef) {
+            
+            switch (e.keyCode) {
+                // up
+                case 38:
+                    NoteControlService.Instance.editCurrentClef(true);
+                    break;
+                // down
+                case 40:
+                    NoteControlService.Instance.editCurrentClef(false);
+                    break;
+            }
+        }
+
         if (inst.selectID == proj.ID) {
             if (e.keyCode == 13) {
                 // enter

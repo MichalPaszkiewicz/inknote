@@ -196,6 +196,7 @@ module Inknote {
 
                                 var drawClefItem = Drawing.getDrawingFromClef(item);
 
+                                drawClefItem.ID = item.ID;
                                 drawClefItem.x = marginLeft + barX + itemX;
                                 drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
 

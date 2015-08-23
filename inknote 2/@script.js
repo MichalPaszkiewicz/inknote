@@ -1294,9 +1294,41 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             CClef.prototype.draw = function (ctx) {
+                var hlh = this.lineHeight / 2;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 15, 0, 2 * Math.PI);
-                ctx.strokeStyle = "green";
+                ctx.fillStyle = Drawing.Colours.black;
+                ctx.strokeStyle = Drawing.Colours.black;
+                if (this.hover || this.select) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                // line 1
+                ctx.lineWidth = 4;
+                ctx.moveTo(this.x - 4, this.y + 2 * this.lineHeight);
+                ctx.lineTo(this.x - 4, this.y - 2 * this.lineHeight);
+                ctx.stroke();
+                // line 2
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y + 2 * this.lineHeight);
+                ctx.lineTo(this.x, this.y - 2 * this.lineHeight);
+                ctx.stroke();
+                // top squiggle.
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y - hlh, this.x + hlh, this.y - hlh);
+                ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y - 5 * hlh, this.x + hlh, this.y - 3 * hlh);
+                ctx.bezierCurveTo(this.x + 3 * hlh, this.y - 6 * hlh, this.x + 3 * hlh, this.y + hlh, this.x + hlh, this.y - hlh);
+                ctx.fill();
+                ctx.stroke();
+                // bottom squiggle.
+                // top squiggle.
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y + hlh, this.x + hlh, this.y + hlh);
+                ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y + 5 * hlh, this.x + hlh, this.y + 3 * hlh);
+                ctx.bezierCurveTo(this.x + 3 * hlh, this.y + 6 * hlh, this.x + 3 * hlh, this.y - hlh, this.x + hlh, this.y + hlh);
+                ctx.fill();
                 ctx.stroke();
                 return true;
             };
@@ -1317,9 +1349,6 @@ var Inknote;
                 if (this.select) {
                     ctx.fillStyle = Drawing.Colours.orange;
                     ctx.strokeStyle = Drawing.Colours.orange;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.lineHeight, 0, 2 * Math.PI);
-                    ctx.stroke();
                 }
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, hlh, 0, 2 * Math.PI);
@@ -4817,6 +4846,7 @@ var Inknote;
                             var item = bar.items[l];
                             if (item instanceof Inknote.Model.Clef) {
                                 var drawClefItem = Inknote.Drawing.getDrawingFromClef(item);
+                                drawClefItem.ID = item.ID;
                                 drawClefItem.x = marginLeft + barX + itemX;
                                 drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
                                 clefAdditionalPosition = 5 * item.positionFromTreble;
@@ -5400,6 +5430,41 @@ var Inknote;
         return 40;
     }
     Inknote.requiredClefSpace = requiredClefSpace;
+    function areSameClefs(clef, clef2) {
+        var sameClefType = clef.clefType == clef2.clefType;
+        var sameDrawLocation = clef.drawLocation == clef2.drawLocation;
+        var samePositionFromTreble = clef.positionFromTreble == clef2.positionFromTreble;
+        return sameClefType && sameDrawLocation && samePositionFromTreble;
+    }
+    Inknote.areSameClefs = areSameClefs;
+    function getNextClef(clef, goUp) {
+        var clefs = [];
+        clefs.push(new Inknote.Model.FrenchViolinClef());
+        clefs.push(new Inknote.Model.TrebleClef());
+        clefs.push(new Inknote.Model.SopranoClef());
+        clefs.push(new Inknote.Model.MezzoSopranoClef());
+        clefs.push(new Inknote.Model.AltoClef());
+        clefs.push(new Inknote.Model.TenorClef());
+        clefs.push(new Inknote.Model.BaritoneClef());
+        clefs.push(new Inknote.Model.BassClef());
+        clefs.push(new Inknote.Model.SubbassClef());
+        var resultClef = null;
+        for (var i = 0; i < clefs.length; i++) {
+            var tempClef = clefs[i];
+            if (areSameClefs(clef, tempClef)) {
+                if (goUp === true) {
+                    var index = i == 0 ? i = clefs.length - 1 : i - 1;
+                    resultClef = clefs[index];
+                }
+                else {
+                    resultClef = clefs[(i + 1) % clefs.length];
+                }
+            }
+        }
+        resultClef.ID = clef.ID;
+        return resultClef;
+    }
+    Inknote.getNextClef = getNextClef;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -5608,6 +5673,23 @@ var Inknote;
                                 for (var l = 0; l < item.notes.length; l++) {
                                     item.notes[l].length = this.lengthControl.selectedLength;
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+            Inknote.ScoringService.Instance.refresh();
+        };
+        NoteControlService.prototype.editCurrentClef = function (goUp) {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (item instanceof Inknote.Model.Clef) {
+                                bar.items[k] = Inknote.getNextClef(item, goUp);
                             }
                         }
                     }
@@ -7076,6 +7158,16 @@ var Inknote;
             }
             else {
                 Inknote.NoteControlService.Instance.editNoteValueAndOctave(noteVal, Inknote.NoteControlService.Instance.piano.octave);
+            }
+        }
+        if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Clef) {
+            switch (e.keyCode) {
+                case 38:
+                    Inknote.NoteControlService.Instance.editCurrentClef(true);
+                    break;
+                case 40:
+                    Inknote.NoteControlService.Instance.editCurrentClef(false);
+                    break;
             }
         }
         if (inst.selectID == proj.ID) {

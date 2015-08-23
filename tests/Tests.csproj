@@ -40,6 +40,7 @@
     <TypeScriptCompile Include="Scripts\model\project.ts" />
     <TypeScriptCompile Include="Scripts\model\rest.ts" />
     <TypeScriptCompile Include="Scripts\model\timeSignature.ts" />
+    <TypeScriptCompile Include="Scripts\services\clefService.ts" />
     <TypeScriptCompile Include="Scripts\services\intervalService.ts" />
     <TypeScriptCompile Include="Scripts\services\projectConverter.ts" />
     <TypeScriptCompile Include="Scripts\services\transposeService.ts" />

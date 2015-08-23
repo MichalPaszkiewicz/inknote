@@ -70,10 +70,48 @@
 
         draw(ctx: CanvasRenderingContext2D) {
 
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 15, 0, 2 * Math.PI);
-            ctx.strokeStyle = "green";
+            var hlh = this.lineHeight / 2;
 
+            ctx.beginPath();
+
+            ctx.fillStyle = Colours.black;
+            ctx.strokeStyle = Colours.black;
+
+            if (this.hover || this.select) {
+                ctx.fillStyle = Colours.orange;
+                ctx.strokeStyle = Colours.orange;
+            }
+
+            // line 1
+            ctx.lineWidth = 4;
+            ctx.moveTo(this.x - 4, this.y + 2 * this.lineHeight);
+            ctx.lineTo(this.x - 4, this.y - 2 * this.lineHeight);
+            ctx.stroke();
+
+            // line 2
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + 2 * this.lineHeight);
+            ctx.lineTo(this.x, this.y - 2 * this.lineHeight);
+            ctx.stroke();
+
+            // top squiggle.
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y - hlh, this.x + hlh, this.y - hlh);
+            ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y - 5 * hlh, this.x + hlh, this.y - 3 * hlh);
+            ctx.bezierCurveTo(this.x + 3 * hlh, this.y - 6 * hlh, this.x + 3 * hlh, this.y + hlh, this.x + hlh, this.y - hlh);
+            ctx.fill();
+            ctx.stroke();
+
+            // bottom squiggle.
+            // top squiggle.
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y + hlh, this.x + hlh, this.y + hlh);
+            ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y + 5 * hlh, this.x + hlh, this.y + 3 * hlh);
+            ctx.bezierCurveTo(this.x + 3 * hlh, this.y + 6 * hlh, this.x + 3 * hlh, this.y - hlh, this.x + hlh, this.y + hlh);
+            ctx.fill();
             ctx.stroke();
 
 
@@ -96,11 +134,6 @@
             if (this.select) {
                 ctx.fillStyle = Colours.orange;
                 ctx.strokeStyle = Colours.orange;
-
-                ctx.beginPath();
-
-                ctx.arc(this.x, this.y, this.lineHeight, 0, 2 * Math.PI);
-                ctx.stroke();
             }
 
             ctx.beginPath();

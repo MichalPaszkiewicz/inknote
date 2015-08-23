@@ -198,6 +198,28 @@
             ScoringService.Instance.refresh();
         }
 
+        editCurrentClef(goUp: boolean) {
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        
+                        if (item.ID == ScoringService.Instance.selectID) {
+                            if (item instanceof Model.Clef) {
+                                bar.items[k] = getNextClef(<Model.Clef>item, goUp);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ScoringService.Instance.refresh();
+        }
+
         deleteSelected() {
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Note) {
                 NoteControlService.Instance.deleteItem();

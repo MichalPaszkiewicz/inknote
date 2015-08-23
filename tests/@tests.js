@@ -1239,6 +1239,7 @@ var Inknote;
             function Clef(drawPosition) {
                 _super.call(this);
                 this.drawPosition = drawPosition;
+                this.lineHeight = 10;
             }
             return Clef;
         })(Inknote.Notation);
@@ -1249,10 +1250,39 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             GClef.prototype.draw = function (ctx) {
+                var hlh = this.lineHeight / 2;
+                var diag = hlh * Math.sin(Math.PI / 4);
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
+                ctx.fillStyle = Drawing.Colours.black;
+                ctx.strokeStyle = Drawing.Colours.black;
+                if (this.hover || this.select) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                //outer
+                ctx.moveTo(this.x + diag / 2, this.y + 3 * hlh);
+                ctx.lineTo(this.x - diag, this.y - 4 * hlh);
+                ctx.bezierCurveTo(this.x - 3 * hlh, this.y - 11 * hlh, this.x + 5 * hlh, this.y - 9 * hlh, this.x, this.y - 4 * hlh);
+                ctx.bezierCurveTo(this.x - 2 * hlh, this.y - 3 * hlh, this.x - 4 * hlh, this.y - 2 * hlh, this.x - 2 * hlh, this.y + diag);
+                ctx.bezierCurveTo(this.x - 2 * diag, this.y + 3 * diag, this.x, this.y + 2 * diag, this.x + diag, this.y + diag);
+                ctx.bezierCurveTo(this.x + 4 * diag, this.y - 2 * hlh, this.x - 4 * diag, this.y - 2 * hlh, this.x - diag, this.y + diag);
+                // inner
+                ctx.bezierCurveTo(this.x - 3 * diag, this.y - hlh, this.x + 3 * diag, this.y - hlh, this.x + diag, this.y + diag);
+                ctx.bezierCurveTo(this.x, this.y + 2 * diag, this.x - 2 * diag, this.y + 3 * diag, this.x - 2 * hlh, this.y + diag);
+                ctx.bezierCurveTo(this.x - 3 * hlh, this.y - 2 * hlh, this.x - hlh, this.y - 3 * hlh, this.x, this.y - 4 * hlh);
+                ctx.bezierCurveTo(this.x + 4 * hlh, this.y - 8 * hlh, this.x - 2 * hlh, this.y - 10 * hlh, this.x - diag, this.y - 4 * hlh);
+                ctx.lineTo(this.x + diag / 2, this.y + 3 * hlh);
+                ctx.fill();
                 ctx.stroke();
+                // connecting line
+                ctx.beginPath();
+                ctx.moveTo(this.x + diag / 2, this.y + 3 * hlh);
+                ctx.bezierCurveTo(this.x + diag, this.y + 5 * hlh, this.x - 2 * diag, this.y + 5 * hlh, this.x - hlh, this.y + 4 * hlh);
+                ctx.stroke();
+                // ball
+                ctx.beginPath();
+                ctx.arc(this.x - hlh, this.y + 4 * hlh, diag, 0, 2 * Math.PI);
+                ctx.fill();
                 return true;
             };
             return GClef;
@@ -1264,9 +1294,41 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             CClef.prototype.draw = function (ctx) {
+                var hlh = this.lineHeight / 2;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
+                ctx.fillStyle = Drawing.Colours.black;
+                ctx.strokeStyle = Drawing.Colours.black;
+                if (this.hover || this.select) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                // line 1
+                ctx.lineWidth = 4;
+                ctx.moveTo(this.x - 4, this.y + 2 * this.lineHeight);
+                ctx.lineTo(this.x - 4, this.y - 2 * this.lineHeight);
+                ctx.stroke();
+                // line 2
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y + 2 * this.lineHeight);
+                ctx.lineTo(this.x, this.y - 2 * this.lineHeight);
+                ctx.stroke();
+                // top squiggle.
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y - hlh, this.x + hlh, this.y - hlh);
+                ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y - 5 * hlh, this.x + hlh, this.y - 3 * hlh);
+                ctx.bezierCurveTo(this.x + 3 * hlh, this.y - 6 * hlh, this.x + 3 * hlh, this.y + hlh, this.x + hlh, this.y - hlh);
+                ctx.fill();
+                ctx.stroke();
+                // bottom squiggle.
+                // top squiggle.
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x + hlh, this.y, this.x + hlh, this.y + hlh, this.x + hlh, this.y + hlh);
+                ctx.bezierCurveTo(this.x + 2 * hlh, this.y, this.x + 2 * hlh, this.y + 5 * hlh, this.x + hlh, this.y + 3 * hlh);
+                ctx.bezierCurveTo(this.x + 3 * hlh, this.y + 6 * hlh, this.x + 3 * hlh, this.y - hlh, this.x + hlh, this.y + hlh);
+                ctx.fill();
                 ctx.stroke();
                 return true;
             };
@@ -1279,10 +1341,31 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             FClef.prototype.draw = function (ctx) {
+                var hlh = this.lineHeight / 2;
+                ctx.fillStyle = Drawing.Colours.black;
+                if (this.hover) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
+                if (this.select) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
-                ctx.stroke();
+                ctx.arc(this.x, this.y, hlh, 0, 2 * Math.PI);
+                var strt = hlh * Math.sin(Math.PI / 4);
+                ctx.moveTo(this.x - strt, this.y + strt);
+                // outer
+                ctx.bezierCurveTo(this.x - hlh, this.y, this.x - 2 * hlh, this.y - this.lineHeight, this.x + hlh * 3 / 2, this.y - this.lineHeight);
+                ctx.bezierCurveTo(this.x + 4 * hlh, this.y - hlh * 3 / 2, this.x + 4 * hlh, this.y + 2 * hlh, this.x, this.y + 2 * this.lineHeight);
+                // inner 
+                ctx.bezierCurveTo(this.x + 3 * hlh, this.y + 2 * hlh, this.x + 3 * hlh, this.y, this.x + hlh * 3 / 2, this.y - this.lineHeight);
+                ctx.bezierCurveTo(this.x - hlh, this.y - this.lineHeight, this.x - hlh / 2, this.y, this.x, this.y);
+                // ctx.stroke();
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(this.x + 4 * hlh, this.y - hlh, hlh / 2, 0, 2 * Math.PI);
+                ctx.arc(this.x + 4 * hlh, this.y + hlh, hlh / 2, 0, 2 * Math.PI);
+                ctx.fill();
                 return true;
             };
             return FClef;
@@ -4631,6 +4714,9 @@ var Inknote;
         var length = 20;
         for (var i = 0; i < bar.items.length; i++) {
             var item = bar.items[i];
+            if (item instanceof Inknote.Model.Clef) {
+                length += Inknote.requiredClefSpace(item, 10);
+            }
             if (item instanceof Inknote.Model.Note) {
                 length += Inknote.requiredNoteSpace(item, 10);
             }
@@ -4760,9 +4846,12 @@ var Inknote;
                             var item = bar.items[l];
                             if (item instanceof Inknote.Model.Clef) {
                                 var drawClefItem = Inknote.Drawing.getDrawingFromClef(item);
+                                drawClefItem.ID = item.ID;
                                 drawClefItem.x = marginLeft + barX + itemX;
                                 drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
-                                clefAdditionalPosition = item.positionFromTreble;
+                                clefAdditionalPosition = 5 * item.positionFromTreble;
+                                this.addItem(drawClefItem);
+                                itemX += Inknote.requiredClefSpace(item, 10);
                             }
                             if (item instanceof Inknote.Model.Note) {
                                 var isBlack = Inknote.Model.IsBlackKey(item.value);
@@ -5337,6 +5426,48 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    function requiredClefSpace(item, lineHeight) {
+        return 40;
+    }
+    Inknote.requiredClefSpace = requiredClefSpace;
+    function areSameClefs(clef, clef2) {
+        var sameClefType = clef.clefType == clef2.clefType;
+        var sameDrawLocation = clef.drawLocation == clef2.drawLocation;
+        var samePositionFromTreble = clef.positionFromTreble == clef2.positionFromTreble;
+        return sameClefType && sameDrawLocation && samePositionFromTreble;
+    }
+    Inknote.areSameClefs = areSameClefs;
+    function getNextClef(clef, goUp) {
+        var clefs = [];
+        clefs.push(new Inknote.Model.FrenchViolinClef());
+        clefs.push(new Inknote.Model.TrebleClef());
+        clefs.push(new Inknote.Model.SopranoClef());
+        clefs.push(new Inknote.Model.MezzoSopranoClef());
+        clefs.push(new Inknote.Model.AltoClef());
+        clefs.push(new Inknote.Model.TenorClef());
+        clefs.push(new Inknote.Model.BaritoneClef());
+        clefs.push(new Inknote.Model.BassClef());
+        clefs.push(new Inknote.Model.SubbassClef());
+        var resultClef = null;
+        for (var i = 0; i < clefs.length; i++) {
+            var tempClef = clefs[i];
+            if (areSameClefs(clef, tempClef)) {
+                if (goUp === true) {
+                    var index = i == 0 ? i = clefs.length - 1 : i - 1;
+                    resultClef = clefs[index];
+                }
+                else {
+                    resultClef = clefs[(i + 1) % clefs.length];
+                }
+            }
+        }
+        resultClef.ID = clef.ID;
+        return resultClef;
+    }
+    Inknote.getNextClef = getNextClef;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     // note: actually only checks pitches, not note length.
     function noteIsInChord(note, chord) {
         for (var i = 0; i < chord.notes.length; i++) {
@@ -5513,6 +5644,7 @@ var Inknote;
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
+                instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (bar.items.length > 3) {
@@ -5548,6 +5680,23 @@ var Inknote;
             }
             Inknote.ScoringService.Instance.refresh();
         };
+        NoteControlService.prototype.editCurrentClef = function (goUp) {
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var bar = project.instruments[i].bars[j];
+                    for (var k = 0; k < bar.items.length; k++) {
+                        var item = bar.items[k];
+                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (item instanceof Inknote.Model.Clef) {
+                                bar.items[k] = Inknote.getNextClef(item, goUp);
+                            }
+                        }
+                    }
+                }
+            }
+            Inknote.ScoringService.Instance.refresh();
+        };
         NoteControlService.prototype.deleteSelected = function () {
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
                 NoteControlService.Instance.deleteItem();
@@ -5569,6 +5718,9 @@ var Inknote;
                             // have it......... dealt with
                             if (previousItem) {
                                 Inknote.ScoringService.Instance.selectID = previousItem.ID;
+                            }
+                            else {
+                                Inknote.ScoringService.Instance.selectID = null;
                             }
                         }
                         else {
@@ -5682,6 +5834,9 @@ var Inknote;
                             runRemove = true;
                             if (previousItem) {
                                 Inknote.ScoringService.Instance.selectID = previousItem.ID;
+                            }
+                            else {
+                                Inknote.ScoringService.Instance.selectID = null;
                             }
                             for (var k = 0; k < instruments.length; k++) {
                                 if (instruments[k].bars[j].items.length > 0) {
@@ -7005,6 +7160,16 @@ var Inknote;
                 Inknote.NoteControlService.Instance.editNoteValueAndOctave(noteVal, Inknote.NoteControlService.Instance.piano.octave);
             }
         }
+        if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Clef) {
+            switch (e.keyCode) {
+                case 38:
+                    Inknote.NoteControlService.Instance.editCurrentClef(true);
+                    break;
+                case 40:
+                    Inknote.NoteControlService.Instance.editCurrentClef(false);
+                    break;
+            }
+        }
         if (inst.selectID == proj.ID) {
             if (e.keyCode == 13) {
                 // enter
@@ -7347,6 +7512,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/transposeservice.ts" />
 /// <reference path="scripts/services/restservice.ts" />
 /// <reference path="scripts/services/noteservice.ts" />
+/// <reference path="scripts/services/clefservice.ts" />
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />
@@ -8246,6 +8412,88 @@ var Inknote;
                 expect(function () {
                     new Inknote.Model.TimeSignature(1, 0);
                 }).toThrow(new Error("Time signatures can only take integers"));
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../inknote 2/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("getNextClef", function () {
+            it("gets the correct clef going down from French violin clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.FrenchViolinClef(), false) instanceof Inknote.Model.TrebleClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from Treble", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.TrebleClef(), false) instanceof Inknote.Model.SopranoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from soprano clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.SopranoClef(), false) instanceof Inknote.Model.MezzoSopranoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from mezzosoprano clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.MezzoSopranoClef(), false) instanceof Inknote.Model.AltoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from alto clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.AltoClef(), false) instanceof Inknote.Model.TenorClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from tenor clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.TenorClef(), false) instanceof Inknote.Model.BaritoneClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from baritone clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.BaritoneClef(), false) instanceof Inknote.Model.BassClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from bass clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.BassClef(), false) instanceof Inknote.Model.SubbassClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going down from subbass clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.SubbassClef(), false) instanceof Inknote.Model.FrenchViolinClef;
+                expect(result).toBe(true);
+            });
+            it("gets the correct clef going up from French violin clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.FrenchViolinClef(), true) instanceof Inknote.Model.SubbassClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from Treble", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.TrebleClef(), true) instanceof Inknote.Model.FrenchViolinClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from soprano clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.SopranoClef(), true) instanceof Inknote.Model.TrebleClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from mezzosoprano clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.MezzoSopranoClef(), true) instanceof Inknote.Model.SopranoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from alto clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.AltoClef(), true) instanceof Inknote.Model.MezzoSopranoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from tenor clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.TenorClef(), true) instanceof Inknote.Model.AltoClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from baritone clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.BaritoneClef(), true) instanceof Inknote.Model.TenorClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from bass clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.BassClef(), true) instanceof Inknote.Model.BaritoneClef;
+                expect(result).toBe(true);
+            });
+            it("gets the right clef going up from subbass clef", function () {
+                var result = Inknote.getNextClef(new Inknote.Model.SubbassClef(), true) instanceof Inknote.Model.BassClef;
+                expect(result).toBe(true);
             });
         });
     })(Tests = Inknote.Tests || (Inknote.Tests = {}));
