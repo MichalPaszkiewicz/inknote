@@ -396,6 +396,7 @@ var Inknote;
             function TimeSignature(top, bottom) {
                 this.top = top;
                 this.bottom = bottom;
+                this.ID = Inknote.getID();
                 if (Math.round(top) != top || Math.round(bottom) != bottom || top == 0 || bottom == 0) {
                     throw new Error("Time signatures can only take integers");
                 }
@@ -1239,7 +1240,7 @@ var Inknote;
                     ctx.strokeStyle = Drawing.Colours.black;
                     ctx.font = Drawing.Fonts.small;
                     ctx.textAlign = "left";
-                    ctx.fillText(this.name, this.x + 10, this.y - 5);
+                    ctx.fillText(this.name, this.x + 10, this.y - 15);
                     ctx.textAlign = "center";
                 }
                 this.width = canvas.width - this.x * 2;
@@ -4750,6 +4751,9 @@ var Inknote;
             if (item instanceof Inknote.Model.Rest) {
                 length += Inknote.requiredRestSpace(item, 10);
             }
+            if (item instanceof Inknote.Model.TimeSignature) {
+                length += Inknote.requiredTimeSignatureSpace(item, 10);
+            }
         }
         return length;
     }
@@ -4880,6 +4884,15 @@ var Inknote;
                                 this.addItem(drawClefItem);
                                 itemX += Inknote.requiredClefSpace(item, 10);
                             }
+                            if (item instanceof Inknote.Model.TimeSignature) {
+                                var timeSignatureItem = item;
+                                var drawTimeSignatureItem = new Inknote.Drawing.TimeSignature(timeSignatureItem.top, timeSignatureItem.bottom);
+                                drawTimeSignatureItem.ID = timeSignatureItem.ID;
+                                drawTimeSignatureItem.x = marginLeft + barX + itemX;
+                                drawTimeSignatureItem.y = topLineHeight + 20;
+                                this.addItem(drawTimeSignatureItem);
+                                itemX += Inknote.requiredTimeSignatureSpace(item, 10);
+                            }
                             if (item instanceof Inknote.Model.Note) {
                                 var isBlack = Inknote.Model.IsBlackKey(item.value);
                                 var intervalDistance = Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
@@ -4923,7 +4936,7 @@ var Inknote;
                         barX += tempBarLength;
                     }
                     // iterate height between instruments;
-                    topLineHeight += 80;
+                    topLineHeight += 100;
                     barX = 0;
                 }
                 // next group of staves quite a bit lower.
@@ -5567,6 +5580,13 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    function requiredTimeSignatureSpace(item, lineHeight) {
+        return 30;
+    }
+    Inknote.requiredTimeSignatureSpace = requiredTimeSignatureSpace;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     // note: actually only checks pitches, not note length.
     function noteIsInChord(note, chord) {
         for (var i = 0; i < chord.notes.length; i++) {
@@ -5728,7 +5748,8 @@ var Inknote;
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
+                instrument.bars[0].items.push(new Inknote.Model.TrebleClef());
+                instrument.bars[0].items.push(new Inknote.Model.TimeSignature(4, 4));
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (bar.items.length > 3) {
@@ -7613,6 +7634,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/restservice.ts" />
 /// <reference path="scripts/services/noteservice.ts" />
 /// <reference path="scripts/services/clefservice.ts" />
+/// <reference path="scripts/services/timesignatureservice.ts" />
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />

@@ -3,7 +3,7 @@
     export class Bar {
         ID: string = getID();
 
-        items: (Rest | Note | Chord | Clef)[] = [];
+        items: (Rest | Note | Chord | Clef | TimeSignature)[] = [];
 
         constructor() {
 

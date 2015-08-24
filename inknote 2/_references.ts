@@ -129,6 +129,7 @@
 /// <reference path="scripts/services/restservice.ts" />
 /// <reference path="scripts/services/noteservice.ts" />
 /// <reference path="scripts/services/clefservice.ts" />
+/// <reference path="scripts/services/timesignatureservice.ts" />
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />

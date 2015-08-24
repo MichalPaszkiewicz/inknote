@@ -19,6 +19,9 @@ module Inknote {
             if (item instanceof Model.Rest) {
                 length += requiredRestSpace(item, 10);
             }
+            if (item instanceof Model.TimeSignature) {
+                length += requiredTimeSignatureSpace(item, 10);
+            }
         }
 
         return length;
@@ -207,6 +210,21 @@ module Inknote {
                                 itemX += requiredClefSpace(item, 10);
                             }
 
+                            if (item instanceof Model.TimeSignature) {
+
+                                var timeSignatureItem = <Model.TimeSignature>item;
+
+                                var drawTimeSignatureItem = new Drawing.TimeSignature(timeSignatureItem.top, timeSignatureItem.bottom);
+                                drawTimeSignatureItem.ID = timeSignatureItem.ID;
+                                drawTimeSignatureItem.x = marginLeft + barX + itemX;
+                                drawTimeSignatureItem.y = topLineHeight + 20;
+
+                                this.addItem(drawTimeSignatureItem);
+
+                                itemX += requiredTimeSignatureSpace(item, 10);
+
+                            }
+
                             if (item instanceof Model.Note) {
 
                                 var isBlack = Model.IsBlackKey(item.value);
@@ -276,7 +294,7 @@ module Inknote {
                     }
 
                     // iterate height between instruments;
-                    topLineHeight += 80;
+                    topLineHeight += 100;
                     barX = 0;
 
                 }

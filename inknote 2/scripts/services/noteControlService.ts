@@ -130,7 +130,8 @@
 
             if (instrument.bars.length == 0) { 
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Model.TrebleClef());
+                instrument.bars[0].items.push(new Model.TrebleClef());
+                instrument.bars[0].items.push(new Model.TimeSignature(4, 4));
             }
 
             var bar = instrument.bars[instrument.bars.length - 1];
@@ -234,7 +235,7 @@
 
             for (var i = 0; i < project.instruments.length; i++) {
 
-                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef = null;
+                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef | Model.TimeSignature = null;
 
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];

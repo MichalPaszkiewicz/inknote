@@ -26,7 +26,7 @@
                 ctx.strokeStyle = Colours.black;
                 ctx.font = Fonts.small;
                 ctx.textAlign = "left";
-                ctx.fillText(this.name, this.x + 10, this.y - 5);
+                ctx.fillText(this.name, this.x + 10, this.y - 15);
                 ctx.textAlign = "center";
             }
 
