@@ -4,7 +4,7 @@
     // simplest way to store...?
     export class Bar {
 
-        items: (CompressedNote | CompressedRest | CompressedChord) [] = [];
+        items: (CompressedNote | CompressedRest | CompressedChord | CompressedClef) [] = [];
 
         constructor() {
 

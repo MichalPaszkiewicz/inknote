@@ -38,6 +38,7 @@
 /// <reference path="scripts/model/compressed/compressednote.ts" />
 /// <reference path="scripts/model/compressed/compressedchord.ts" />
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
+/// <reference path="scripts/model/compressed/compressedclef.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />

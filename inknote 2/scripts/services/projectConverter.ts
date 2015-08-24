@@ -108,6 +108,11 @@
 
                 result.items.push(compressedChord);
             }
+            if (bar.items[i] instanceof Model.Clef) {
+                var compressedClef = compressClef(<Model.Clef>bar.items[i]);
+
+                result.items.push(compressedClef);
+            }
         }
 
         return result;
@@ -136,6 +141,42 @@
     function compressRest(rest: Model.Rest): Compressed.CompressedRest {
         var result = new Compressed.CompressedRest(rest.length);
 
+        return result;
+    }
+
+    function compressClef(clef: Model.Clef): Compressed.CompressedClef {
+        var resultType: Compressed.CompressedClefType;
+        var result: Compressed.CompressedClef;
+
+        if (clef instanceof Model.FrenchViolinClef) {
+            resultType = Compressed.CompressedClefType.FRENCH_VIOLIN;
+        }
+        if (clef instanceof Model.TrebleClef) {
+            resultType = Compressed.CompressedClefType.TREBLE;
+        }
+        if (clef instanceof Model.SopranoClef) {
+            resultType = Compressed.CompressedClefType.SOPRANO;
+        }
+        if (clef instanceof Model.MezzoSopranoClef) {
+            resultType = Compressed.CompressedClefType.MEZZ_SOPRANO;
+        }
+        if (clef instanceof Model.AltoClef) {
+            resultType = Compressed.CompressedClefType.ALTO;
+        }
+        if (clef instanceof Model.TenorClef) {
+            resultType = Compressed.CompressedClefType.TENOR;
+        }
+        if (clef instanceof Model.BaritoneClef) {
+            resultType = Compressed.CompressedClefType.BARITONE;
+        }
+        if (clef instanceof Model.BassClef) {
+            resultType = Compressed.CompressedClefType.BASS;
+        }
+        if (clef instanceof Model.SubbassClef) {
+            resultType = Compressed.CompressedClefType.SUBBASS;
+        }
+
+        result = new Compressed.CompressedClef(resultType);
         return result;
     }
 
@@ -205,6 +246,11 @@
 
                 result.items.push(decompressedChord);
             }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.CLEF) {
+                var decompressedClef = decompressClef(<Compressed.CompressedClef>bar.items[i]);
+
+                result.items.push(decompressedClef);
+            }
             else {
                 log("object in bar unidentified", MessageType.Warning);
                 console.log(bar.items[i]);
@@ -236,6 +282,40 @@
 
     function decompressRest(rest: Compressed.CompressedRest): Model.Rest {
         var result = new Model.Rest(rest.l);
+
+        return result;
+    }
+
+    function decompressClef(clef: Compressed.CompressedClef): Model.Clef {
+        var result: Model.Clef;
+
+        if (clef.v == Compressed.CompressedClefType.FRENCH_VIOLIN) {
+            result = new Model.FrenchViolinClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.TREBLE) {
+            result = new Model.TrebleClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.SOPRANO) {
+            result = new Model.SopranoClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.MEZZ_SOPRANO) {
+            result = new Model.MezzoSopranoClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.ALTO) {
+            result = new Model.AltoClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.TENOR) {
+            result = new Model.TenorClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.BARITONE) {
+            result = new Model.BaritoneClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.BASS) {
+            result = new Model.BassClef();
+        }
+        if (clef.v == Compressed.CompressedClefType.SUBBASS) {
+            result = new Model.SubbassClef();
+        }
 
         return result;
     }

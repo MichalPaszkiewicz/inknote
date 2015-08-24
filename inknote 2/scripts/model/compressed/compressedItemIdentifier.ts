@@ -4,7 +4,8 @@
 
         NOTE,
         REST,
-        CHORD
+        CHORD,
+        CLEF
 
     }
 

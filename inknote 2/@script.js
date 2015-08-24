@@ -643,6 +643,7 @@ var Inknote;
             ItemIdentifier[ItemIdentifier["NOTE"] = 0] = "NOTE";
             ItemIdentifier[ItemIdentifier["REST"] = 1] = "REST";
             ItemIdentifier[ItemIdentifier["CHORD"] = 2] = "CHORD";
+            ItemIdentifier[ItemIdentifier["CLEF"] = 3] = "CLEF";
         })(Compressed.ItemIdentifier || (Compressed.ItemIdentifier = {}));
         var ItemIdentifier = Compressed.ItemIdentifier;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
@@ -689,6 +690,32 @@ var Inknote;
             return CompressedRest;
         })();
         Compressed.CompressedRest = CompressedRest;
+    })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Compressed;
+    (function (Compressed) {
+        (function (CompressedClefType) {
+            CompressedClefType[CompressedClefType["FRENCH_VIOLIN"] = 0] = "FRENCH_VIOLIN";
+            CompressedClefType[CompressedClefType["TREBLE"] = 1] = "TREBLE";
+            CompressedClefType[CompressedClefType["SOPRANO"] = 2] = "SOPRANO";
+            CompressedClefType[CompressedClefType["MEZZ_SOPRANO"] = 3] = "MEZZ_SOPRANO";
+            CompressedClefType[CompressedClefType["ALTO"] = 4] = "ALTO";
+            CompressedClefType[CompressedClefType["TENOR"] = 5] = "TENOR";
+            CompressedClefType[CompressedClefType["BARITONE"] = 6] = "BARITONE";
+            CompressedClefType[CompressedClefType["BASS"] = 7] = "BASS";
+            CompressedClefType[CompressedClefType["SUBBASS"] = 8] = "SUBBASS";
+        })(Compressed.CompressedClefType || (Compressed.CompressedClefType = {}));
+        var CompressedClefType = Compressed.CompressedClefType;
+        var CompressedClef = (function () {
+            function CompressedClef(v) {
+                this.v = v;
+                this.i = 3 /* CLEF */;
+            }
+            return CompressedClef;
+        })();
+        Compressed.CompressedClef = CompressedClef;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5058,6 +5085,10 @@ var Inknote;
                     var compressedChord = compressChord(bar.items[i]);
                     result.items.push(compressedChord);
                 }
+                if (bar.items[i] instanceof Inknote.Model.Clef) {
+                    var compressedClef = compressClef(bar.items[i]);
+                    result.items.push(compressedClef);
+                }
             }
             return result;
         }
@@ -5077,6 +5108,39 @@ var Inknote;
         }
         function compressRest(rest) {
             var result = new Inknote.Compressed.CompressedRest(rest.length);
+            return result;
+        }
+        function compressClef(clef) {
+            var resultType;
+            var result;
+            if (clef instanceof Inknote.Model.FrenchViolinClef) {
+                resultType = 0 /* FRENCH_VIOLIN */;
+            }
+            if (clef instanceof Inknote.Model.TrebleClef) {
+                resultType = 1 /* TREBLE */;
+            }
+            if (clef instanceof Inknote.Model.SopranoClef) {
+                resultType = 2 /* SOPRANO */;
+            }
+            if (clef instanceof Inknote.Model.MezzoSopranoClef) {
+                resultType = 3 /* MEZZ_SOPRANO */;
+            }
+            if (clef instanceof Inknote.Model.AltoClef) {
+                resultType = 4 /* ALTO */;
+            }
+            if (clef instanceof Inknote.Model.TenorClef) {
+                resultType = 5 /* TENOR */;
+            }
+            if (clef instanceof Inknote.Model.BaritoneClef) {
+                resultType = 6 /* BARITONE */;
+            }
+            if (clef instanceof Inknote.Model.BassClef) {
+                resultType = 7 /* BASS */;
+            }
+            if (clef instanceof Inknote.Model.SubbassClef) {
+                resultType = 8 /* SUBBASS */;
+            }
+            result = new Inknote.Compressed.CompressedClef(resultType);
             return result;
         }
         function compressAll(projects) {
@@ -5131,6 +5195,10 @@ var Inknote;
                     var decompressedChord = decompressChord(bar.items[i]);
                     result.items.push(decompressedChord);
                 }
+                else if (bar.items[i].i == 3 /* CLEF */) {
+                    var decompressedClef = decompressClef(bar.items[i]);
+                    result.items.push(decompressedClef);
+                }
                 else {
                     Inknote.log("object in bar unidentified", 2 /* Warning */);
                     console.log(bar.items[i]);
@@ -5154,6 +5222,37 @@ var Inknote;
         }
         function decompressRest(rest) {
             var result = new Inknote.Model.Rest(rest.l);
+            return result;
+        }
+        function decompressClef(clef) {
+            var result;
+            if (clef.v == 0 /* FRENCH_VIOLIN */) {
+                result = new Inknote.Model.FrenchViolinClef();
+            }
+            if (clef.v == 1 /* TREBLE */) {
+                result = new Inknote.Model.TrebleClef();
+            }
+            if (clef.v == 2 /* SOPRANO */) {
+                result = new Inknote.Model.SopranoClef();
+            }
+            if (clef.v == 3 /* MEZZ_SOPRANO */) {
+                result = new Inknote.Model.MezzoSopranoClef();
+            }
+            if (clef.v == 4 /* ALTO */) {
+                result = new Inknote.Model.AltoClef();
+            }
+            if (clef.v == 5 /* TENOR */) {
+                result = new Inknote.Model.TenorClef();
+            }
+            if (clef.v == 6 /* BARITONE */) {
+                result = new Inknote.Model.BaritoneClef();
+            }
+            if (clef.v == 7 /* BASS */) {
+                result = new Inknote.Model.BassClef();
+            }
+            if (clef.v == 8 /* SUBBASS */) {
+                result = new Inknote.Model.SubbassClef();
+            }
             return result;
         }
         function decompressAll(projects) {
@@ -7432,6 +7531,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/compressed/compressednote.ts" />
 /// <reference path="scripts/model/compressed/compressedchord.ts" />
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
+/// <reference path="scripts/model/compressed/compressedclef.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />

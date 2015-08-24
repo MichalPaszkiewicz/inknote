@@ -127,6 +127,7 @@
     <TypeScriptCompile Include="scripts\model\clef.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedBar.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedChord.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedClef.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedInstrument.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedItemIdentifier.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
