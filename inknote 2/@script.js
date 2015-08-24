@@ -5614,6 +5614,66 @@ var Inknote;
         return 30;
     }
     Inknote.requiredTimeSignatureSpace = requiredTimeSignatureSpace;
+    function getCrotchetsFromNoteLength(nl) {
+        switch (nl) {
+            case 0 /* Breve */:
+                return 8;
+            case 1 /* SemiBreve */:
+                return 4;
+            case 2 /* Minim */:
+                return 2;
+            case 3 /* Crotchet */:
+                return 1;
+            case 4 /* Quaver */:
+                return 1 / 2;
+            case 5 /* SemiQuaver */:
+                return 1 / 4;
+            case 6 /* DemiSemiQuaver */:
+                return 1 / 8;
+            case 7 /* HemiDemiSemiQuaver */:
+                return 1 / 16;
+        }
+        return 0;
+    }
+    var TimeSignatureService = (function () {
+        function TimeSignatureService() {
+        }
+        Object.defineProperty(TimeSignatureService, "Instance", {
+            get: function () {
+                if (!TimeSignatureService._instance) {
+                    TimeSignatureService._instance = new TimeSignatureService();
+                }
+                return TimeSignatureService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        TimeSignatureService.prototype.barIsFull = function (bar, instrument) {
+            var timeSignature = new Inknote.Model.TimeSignature(4, 4);
+            for (var i = 0; i < instrument.bars.length; i++) {
+                for (var j = 0; j < instrument.bars[i].items.length; j++) {
+                    if (instrument.bars[i].items[j] instanceof Inknote.Model.TimeSignature) {
+                        timeSignature = instrument.bars[i].items[j];
+                    }
+                }
+                if (instrument.bars[i].ID === bar.ID) {
+                    break;
+                }
+            }
+            var countables = Inknote.getItemsWhere(bar.items, function (item) {
+                var isRest = item instanceof Inknote.Model.Rest;
+                var isNote = item instanceof Inknote.Model.Note;
+                var isChord = item instanceof Inknote.Model.Chord;
+                return isRest || isNote;
+            });
+            var count = Inknote.sum(countables, function (item) {
+                return getCrotchetsFromNoteLength(item.length);
+            });
+            return count >= timeSignature.top;
+        };
+        return TimeSignatureService;
+    })();
+    Inknote.TimeSignatureService = TimeSignatureService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -5782,7 +5842,7 @@ var Inknote;
                 instrument.bars[0].items.push(new Inknote.Model.TimeSignature(4, 4));
             }
             var bar = instrument.bars[instrument.bars.length - 1];
-            if (bar.items.length > 3) {
+            if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
@@ -5797,7 +5857,7 @@ var Inknote;
                 instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
             }
             var bar = instrument.bars[instrument.bars.length - 1];
-            if (bar.items.length > 3) {
+            if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }

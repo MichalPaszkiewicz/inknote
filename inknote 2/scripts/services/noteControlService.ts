@@ -136,7 +136,7 @@
 
             var bar = instrument.bars[instrument.bars.length - 1];
 
-            if (bar.items.length > 3) {
+            if (TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
@@ -158,7 +158,7 @@
 
             var bar = instrument.bars[instrument.bars.length - 1];
 
-            if (bar.items.length > 3) {
+            if (TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
