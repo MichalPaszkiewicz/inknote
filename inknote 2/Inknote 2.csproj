@@ -133,6 +133,7 @@
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedRest.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedTimeSignature.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
     <TypeScriptCompile Include="scripts\model\instrument.ts" />

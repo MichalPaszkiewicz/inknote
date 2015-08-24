@@ -396,6 +396,7 @@ var Inknote;
             function TimeSignature(top, bottom) {
                 this.top = top;
                 this.bottom = bottom;
+                this.ID = Inknote.getID();
                 if (Math.round(top) != top || Math.round(bottom) != bottom || top == 0 || bottom == 0) {
                     throw new Error("Time signatures can only take integers");
                 }
@@ -643,6 +644,8 @@ var Inknote;
             ItemIdentifier[ItemIdentifier["NOTE"] = 0] = "NOTE";
             ItemIdentifier[ItemIdentifier["REST"] = 1] = "REST";
             ItemIdentifier[ItemIdentifier["CHORD"] = 2] = "CHORD";
+            ItemIdentifier[ItemIdentifier["CLEF"] = 3] = "CLEF";
+            ItemIdentifier[ItemIdentifier["TIMESIGNATURE"] = 4] = "TIMESIGNATURE";
         })(Compressed.ItemIdentifier || (Compressed.ItemIdentifier = {}));
         var ItemIdentifier = Compressed.ItemIdentifier;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
@@ -689,6 +692,47 @@ var Inknote;
             return CompressedRest;
         })();
         Compressed.CompressedRest = CompressedRest;
+    })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Compressed;
+    (function (Compressed) {
+        (function (CompressedClefType) {
+            CompressedClefType[CompressedClefType["FRENCH_VIOLIN"] = 0] = "FRENCH_VIOLIN";
+            CompressedClefType[CompressedClefType["TREBLE"] = 1] = "TREBLE";
+            CompressedClefType[CompressedClefType["SOPRANO"] = 2] = "SOPRANO";
+            CompressedClefType[CompressedClefType["MEZZ_SOPRANO"] = 3] = "MEZZ_SOPRANO";
+            CompressedClefType[CompressedClefType["ALTO"] = 4] = "ALTO";
+            CompressedClefType[CompressedClefType["TENOR"] = 5] = "TENOR";
+            CompressedClefType[CompressedClefType["BARITONE"] = 6] = "BARITONE";
+            CompressedClefType[CompressedClefType["BASS"] = 7] = "BASS";
+            CompressedClefType[CompressedClefType["SUBBASS"] = 8] = "SUBBASS";
+        })(Compressed.CompressedClefType || (Compressed.CompressedClefType = {}));
+        var CompressedClefType = Compressed.CompressedClefType;
+        var CompressedClef = (function () {
+            function CompressedClef(v) {
+                this.v = v;
+                this.i = 3 /* CLEF */;
+            }
+            return CompressedClef;
+        })();
+        Compressed.CompressedClef = CompressedClef;
+    })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Compressed;
+    (function (Compressed) {
+        var CompressedTimeSignature = (function () {
+            function CompressedTimeSignature(t, b) {
+                this.t = t;
+                this.b = b;
+                this.i = 4 /* TIMESIGNATURE */;
+            }
+            return CompressedTimeSignature;
+        })();
+        Compressed.CompressedTimeSignature = CompressedTimeSignature;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -1212,7 +1256,7 @@ var Inknote;
                     ctx.strokeStyle = Drawing.Colours.black;
                     ctx.font = Drawing.Fonts.small;
                     ctx.textAlign = "left";
-                    ctx.fillText(this.name, this.x + 10, this.y - 5);
+                    ctx.fillText(this.name, this.x + 10, this.y - 15);
                     ctx.textAlign = "center";
                 }
                 this.width = canvas.width - this.x * 2;
@@ -4723,6 +4767,9 @@ var Inknote;
             if (item instanceof Inknote.Model.Rest) {
                 length += Inknote.requiredRestSpace(item, 10);
             }
+            if (item instanceof Inknote.Model.TimeSignature) {
+                length += Inknote.requiredTimeSignatureSpace(item, 10);
+            }
         }
         return length;
     }
@@ -4853,6 +4900,15 @@ var Inknote;
                                 this.addItem(drawClefItem);
                                 itemX += Inknote.requiredClefSpace(item, 10);
                             }
+                            if (item instanceof Inknote.Model.TimeSignature) {
+                                var timeSignatureItem = item;
+                                var drawTimeSignatureItem = new Inknote.Drawing.TimeSignature(timeSignatureItem.top, timeSignatureItem.bottom);
+                                drawTimeSignatureItem.ID = timeSignatureItem.ID;
+                                drawTimeSignatureItem.x = marginLeft + barX + itemX;
+                                drawTimeSignatureItem.y = topLineHeight + 20;
+                                this.addItem(drawTimeSignatureItem);
+                                itemX += Inknote.requiredTimeSignatureSpace(item, 10);
+                            }
                             if (item instanceof Inknote.Model.Note) {
                                 var isBlack = Inknote.Model.IsBlackKey(item.value);
                                 var intervalDistance = Inknote.getIntervalDistance(new Inknote.Model.Note(8 /* F */, 5, 3 /* Crotchet */), item);
@@ -4896,7 +4952,7 @@ var Inknote;
                         barX += tempBarLength;
                     }
                     // iterate height between instruments;
-                    topLineHeight += 80;
+                    topLineHeight += 100;
                     barX = 0;
                 }
                 // next group of staves quite a bit lower.
@@ -5058,6 +5114,14 @@ var Inknote;
                     var compressedChord = compressChord(bar.items[i]);
                     result.items.push(compressedChord);
                 }
+                if (bar.items[i] instanceof Inknote.Model.Clef) {
+                    var compressedClef = compressClef(bar.items[i]);
+                    result.items.push(compressedClef);
+                }
+                if (bar.items[i] instanceof Inknote.Model.TimeSignature) {
+                    var compressedTimeSignature = compressTimeSignature(bar.items[i]);
+                    result.items.push(compressedTimeSignature);
+                }
             }
             return result;
         }
@@ -5078,6 +5142,42 @@ var Inknote;
         function compressRest(rest) {
             var result = new Inknote.Compressed.CompressedRest(rest.length);
             return result;
+        }
+        function compressClef(clef) {
+            var resultType;
+            var result;
+            if (clef instanceof Inknote.Model.FrenchViolinClef) {
+                resultType = 0 /* FRENCH_VIOLIN */;
+            }
+            if (clef instanceof Inknote.Model.TrebleClef) {
+                resultType = 1 /* TREBLE */;
+            }
+            if (clef instanceof Inknote.Model.SopranoClef) {
+                resultType = 2 /* SOPRANO */;
+            }
+            if (clef instanceof Inknote.Model.MezzoSopranoClef) {
+                resultType = 3 /* MEZZ_SOPRANO */;
+            }
+            if (clef instanceof Inknote.Model.AltoClef) {
+                resultType = 4 /* ALTO */;
+            }
+            if (clef instanceof Inknote.Model.TenorClef) {
+                resultType = 5 /* TENOR */;
+            }
+            if (clef instanceof Inknote.Model.BaritoneClef) {
+                resultType = 6 /* BARITONE */;
+            }
+            if (clef instanceof Inknote.Model.BassClef) {
+                resultType = 7 /* BASS */;
+            }
+            if (clef instanceof Inknote.Model.SubbassClef) {
+                resultType = 8 /* SUBBASS */;
+            }
+            result = new Inknote.Compressed.CompressedClef(resultType);
+            return result;
+        }
+        function compressTimeSignature(timeSignature) {
+            return new Inknote.Compressed.CompressedTimeSignature(timeSignature.top, timeSignature.bottom);
         }
         function compressAll(projects) {
             var result = [];
@@ -5131,6 +5231,14 @@ var Inknote;
                     var decompressedChord = decompressChord(bar.items[i]);
                     result.items.push(decompressedChord);
                 }
+                else if (bar.items[i].i == 3 /* CLEF */) {
+                    var decompressedClef = decompressClef(bar.items[i]);
+                    result.items.push(decompressedClef);
+                }
+                else if (bar.items[i].i == 4 /* TIMESIGNATURE */) {
+                    var decompressedTimeSignature = decompressTimeSignature(bar.items[i]);
+                    result.items.push(decompressedTimeSignature);
+                }
                 else {
                     Inknote.log("object in bar unidentified", 2 /* Warning */);
                     console.log(bar.items[i]);
@@ -5155,6 +5263,40 @@ var Inknote;
         function decompressRest(rest) {
             var result = new Inknote.Model.Rest(rest.l);
             return result;
+        }
+        function decompressClef(clef) {
+            var result;
+            if (clef.v == 0 /* FRENCH_VIOLIN */) {
+                result = new Inknote.Model.FrenchViolinClef();
+            }
+            if (clef.v == 1 /* TREBLE */) {
+                result = new Inknote.Model.TrebleClef();
+            }
+            if (clef.v == 2 /* SOPRANO */) {
+                result = new Inknote.Model.SopranoClef();
+            }
+            if (clef.v == 3 /* MEZZ_SOPRANO */) {
+                result = new Inknote.Model.MezzoSopranoClef();
+            }
+            if (clef.v == 4 /* ALTO */) {
+                result = new Inknote.Model.AltoClef();
+            }
+            if (clef.v == 5 /* TENOR */) {
+                result = new Inknote.Model.TenorClef();
+            }
+            if (clef.v == 6 /* BARITONE */) {
+                result = new Inknote.Model.BaritoneClef();
+            }
+            if (clef.v == 7 /* BASS */) {
+                result = new Inknote.Model.BassClef();
+            }
+            if (clef.v == 8 /* SUBBASS */) {
+                result = new Inknote.Model.SubbassClef();
+            }
+            return result;
+        }
+        function decompressTimeSignature(timeSignature) {
+            return new Inknote.Model.TimeSignature(timeSignature.t, timeSignature.b);
         }
         function decompressAll(projects) {
             var result = [];
@@ -5468,6 +5610,13 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    function requiredTimeSignatureSpace(item, lineHeight) {
+        return 30;
+    }
+    Inknote.requiredTimeSignatureSpace = requiredTimeSignatureSpace;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     // note: actually only checks pitches, not note length.
     function noteIsInChord(note, chord) {
         for (var i = 0; i < chord.notes.length; i++) {
@@ -5629,7 +5778,8 @@ var Inknote;
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
+                instrument.bars[0].items.push(new Inknote.Model.TrebleClef());
+                instrument.bars[0].items.push(new Inknote.Model.TimeSignature(4, 4));
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (bar.items.length > 3) {
@@ -7432,6 +7582,8 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/compressed/compressednote.ts" />
 /// <reference path="scripts/model/compressed/compressedchord.ts" />
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
+/// <reference path="scripts/model/compressed/compressedclef.ts" />
+/// <reference path="scripts/model/compressed/compressedtimesignature.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />
@@ -7513,6 +7665,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/restservice.ts" />
 /// <reference path="scripts/services/noteservice.ts" />
 /// <reference path="scripts/services/clefservice.ts" />
+/// <reference path="scripts/services/timesignatureservice.ts" />
 /// <reference path="scripts/services/chordservice.ts" />
 /// <reference path="scripts/services/chordnotationservice.ts" />
 /// <reference path="scripts/services/chordidentifier.ts" />

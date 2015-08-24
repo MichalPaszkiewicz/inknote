@@ -5,7 +5,8 @@
         NOTE,
         REST,
         CHORD,
-        CLEF
+        CLEF,
+        TIMESIGNATURE
 
     }
 

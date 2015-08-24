@@ -645,6 +645,7 @@ var Inknote;
             ItemIdentifier[ItemIdentifier["REST"] = 1] = "REST";
             ItemIdentifier[ItemIdentifier["CHORD"] = 2] = "CHORD";
             ItemIdentifier[ItemIdentifier["CLEF"] = 3] = "CLEF";
+            ItemIdentifier[ItemIdentifier["TIMESIGNATURE"] = 4] = "TIMESIGNATURE";
         })(Compressed.ItemIdentifier || (Compressed.ItemIdentifier = {}));
         var ItemIdentifier = Compressed.ItemIdentifier;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
@@ -717,6 +718,21 @@ var Inknote;
             return CompressedClef;
         })();
         Compressed.CompressedClef = CompressedClef;
+    })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Compressed;
+    (function (Compressed) {
+        var CompressedTimeSignature = (function () {
+            function CompressedTimeSignature(t, b) {
+                this.t = t;
+                this.b = b;
+                this.i = 4 /* TIMESIGNATURE */;
+            }
+            return CompressedTimeSignature;
+        })();
+        Compressed.CompressedTimeSignature = CompressedTimeSignature;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5102,6 +5118,10 @@ var Inknote;
                     var compressedClef = compressClef(bar.items[i]);
                     result.items.push(compressedClef);
                 }
+                if (bar.items[i] instanceof Inknote.Model.TimeSignature) {
+                    var compressedTimeSignature = compressTimeSignature(bar.items[i]);
+                    result.items.push(compressedTimeSignature);
+                }
             }
             return result;
         }
@@ -5155,6 +5175,9 @@ var Inknote;
             }
             result = new Inknote.Compressed.CompressedClef(resultType);
             return result;
+        }
+        function compressTimeSignature(timeSignature) {
+            return new Inknote.Compressed.CompressedTimeSignature(timeSignature.top, timeSignature.bottom);
         }
         function compressAll(projects) {
             var result = [];
@@ -5212,6 +5235,10 @@ var Inknote;
                     var decompressedClef = decompressClef(bar.items[i]);
                     result.items.push(decompressedClef);
                 }
+                else if (bar.items[i].i == 4 /* TIMESIGNATURE */) {
+                    var decompressedTimeSignature = decompressTimeSignature(bar.items[i]);
+                    result.items.push(decompressedTimeSignature);
+                }
                 else {
                     Inknote.log("object in bar unidentified", 2 /* Warning */);
                     console.log(bar.items[i]);
@@ -5267,6 +5294,9 @@ var Inknote;
                 result = new Inknote.Model.SubbassClef();
             }
             return result;
+        }
+        function decompressTimeSignature(timeSignature) {
+            return new Inknote.Model.TimeSignature(timeSignature.t, timeSignature.b);
         }
         function decompressAll(projects) {
             var result = [];
@@ -7553,6 +7583,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/compressed/compressedchord.ts" />
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
 /// <reference path="scripts/model/compressed/compressedclef.ts" />
+/// <reference path="scripts/model/compressed/compressedtimesignature.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />

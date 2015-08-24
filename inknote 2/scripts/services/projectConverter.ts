@@ -113,6 +113,11 @@
 
                 result.items.push(compressedClef);
             }
+            if (bar.items[i] instanceof Model.TimeSignature) {
+                var compressedTimeSignature = compressTimeSignature(<Model.TimeSignature>bar.items[i]);
+
+                result.items.push(compressedTimeSignature);
+            }
         }
 
         return result;
@@ -178,6 +183,12 @@
 
         result = new Compressed.CompressedClef(resultType);
         return result;
+    }
+
+    function compressTimeSignature(timeSignature: Model.TimeSignature): Compressed.CompressedTimeSignature {
+        
+        return new Compressed.CompressedTimeSignature(timeSignature.top, timeSignature.bottom);
+
     }
 
     export function compressAll(projects: Project[]): Compressed.CompressedProject[] {
@@ -251,6 +262,11 @@
 
                 result.items.push(decompressedClef);
             }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.TIMESIGNATURE) {
+                var decompressedTimeSignature = decompressTimeSignature(<Compressed.CompressedTimeSignature>bar.items[i]);
+
+                result.items.push(decompressedTimeSignature);
+            }
             else {
                 log("object in bar unidentified", MessageType.Warning);
                 console.log(bar.items[i]);
@@ -318,6 +334,12 @@
         }
 
         return result;
+    }
+
+    function decompressTimeSignature(timeSignature: Compressed.CompressedTimeSignature): Model.TimeSignature {
+
+        return new Model.TimeSignature(timeSignature.t, timeSignature.b);
+
     }
 
     export function decompressAll(projects: Compressed.CompressedProject[]): Project[] {
