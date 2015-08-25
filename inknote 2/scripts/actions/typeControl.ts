@@ -6,6 +6,10 @@
                 return;
             }
 
+            if (Modal.isModalOpen === true) {
+                return;
+            }
+
             if (e.keyCode == 8) {
                 e.preventDefault();
             }
@@ -13,6 +17,10 @@
 
         window.onkeyup = function (ev: KeyboardEvent) {
             if (CONFIRM_IS_OPEN) {
+                return;
+            }
+
+            if (Modal.isModalOpen === true){
                 return;
             }
 

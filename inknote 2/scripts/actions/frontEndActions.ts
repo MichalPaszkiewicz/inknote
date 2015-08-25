@@ -59,8 +59,12 @@
 
 module Modal {
 
+    export var isModalOpen = false;
+
     export function toggle(ID: string) {
         var item = document.getElementById(ID);
+
+        isModalOpen = !isModalOpen;
 
         FrontEnd.toggleElement(item);
         FrontEnd.toggleElement(document.getElementById("modal-cover"));
@@ -75,11 +79,15 @@ module Modal {
             }
         }
 
+        isModalOpen = false;
+
         FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
 
     export function hide(ID: string) {
         var item = document.getElementById(ID);
+
+        isModalOpen = false;
 
         FrontEnd.hideElement(item);
         FrontEnd.hideElement(document.getElementById("modal-cover"));
@@ -87,6 +95,8 @@ module Modal {
 
     export function show(ID: string) {
         var item = document.getElementById(ID);
+
+        isModalOpen = true;
 
         FrontEnd.showElement(item);
 

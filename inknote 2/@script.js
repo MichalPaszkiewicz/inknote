@@ -757,6 +757,7 @@ var Inknote;
         var Instrument = (function () {
             function Instrument(name) {
                 this.name = name;
+                this.v = true;
                 this.bars = [];
             }
             return Instrument;
@@ -3127,6 +3128,48 @@ var Inknote;
                         Inknote.NoteControlService.Instance.addBar();
                         Inknote.ScoringService.Instance.refresh();
                     }));
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("edit instruments", function () {
+                        Modal.toggle("instruments");
+                        var instrumentList = document.getElementById("instrument-list");
+                        instrumentList.innerHTML = "";
+                        var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+                        for (var i = 0; i < instruments.length; i++) {
+                            var formRow = document.createElement("div");
+                            formRow.className = "form-row";
+                            var instrumentHolder = document.createElement("input");
+                            instrumentHolder.value = instruments[i].name;
+                            instrumentHolder.setAttribute("data-id", instruments[i].ID);
+                            instrumentHolder.onkeyup = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                for (var j = 0; j < proj.instruments.length; j++) {
+                                    if (proj.instruments[j].ID == id) {
+                                        proj.instruments[j].name = ele.value;
+                                    }
+                                }
+                                Inknote.ScoringService.Instance.refresh();
+                            };
+                            var isVisible = document.createElement("input");
+                            isVisible.type = "checkbox";
+                            isVisible.checked = instruments[i].visible;
+                            isVisible.setAttribute("data-id", instruments[i].ID);
+                            isVisible.onclick = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                for (var j = 0; j < proj.instruments.length; j++) {
+                                    if (proj.instruments[j].ID == id) {
+                                        proj.instruments[j].visible = ele.checked;
+                                    }
+                                }
+                                Inknote.ScoringService.Instance.refresh();
+                            };
+                            formRow.appendChild(instrumentHolder);
+                            formRow.appendChild(isVisible);
+                            instrumentList.appendChild(formRow);
+                        }
+                    }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
                         var name = prompt("What is the name of the new instrument?");
                         if (name != "" && name != null) {
@@ -4864,6 +4907,9 @@ var Inknote;
             var visibleInstruments = Inknote.getItemsWhere(currentProject.instruments, function (instrument) {
                 return instrument.visible;
             });
+            if (visibleInstruments.length === 0) {
+                return;
+            }
             var barMinLengths = getMinBarLengths(visibleInstruments);
             var topLineHeight = 180;
             var marginLeft = 50;
@@ -4935,7 +4981,7 @@ var Inknote;
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
-                                drawNoteItem.stemUp = intervalDistance <= -4;
+                                drawNoteItem.stemUp = -5 * intervalDistance + clefAdditionalPosition >= 20;
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
                                 }
@@ -4963,11 +5009,11 @@ var Inknote;
                         barX += tempBarLength;
                     }
                     // iterate height between instruments;
-                    topLineHeight += 100;
+                    topLineHeight += 120;
                     barX = 0;
                 }
                 // next group of staves quite a bit lower.
-                topLineHeight += 40;
+                topLineHeight += 60;
             }
             this.maxScrollPosition = topLineHeight - 200;
         };
@@ -5105,6 +5151,7 @@ var Inknote;
         ProjectConverter.compress = compress;
         function compressInstrument(instrument) {
             var result = new Inknote.Compressed.Instrument(instrument.name);
+            result.v = instrument.visible;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(compressBar(instrument.bars[i]));
             }
@@ -5221,7 +5268,7 @@ var Inknote;
         ProjectConverter.decompress = decompress;
         function decompressInstrument(instrument) {
             var result = new Inknote.Model.Instrument(instrument.name);
-            result.visible = true;
+            result.visible = instrument.v;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(decompressBar(instrument.bars[i]));
             }
@@ -6001,7 +6048,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.deleteSelected = function () {
-            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
@@ -7376,12 +7423,18 @@ var Inknote;
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
+            if (Modal.isModalOpen === true) {
+                return;
+            }
             if (e.keyCode == 8) {
                 e.preventDefault();
             }
         };
         window.onkeyup = function (ev) {
             if (Inknote.CONFIRM_IS_OPEN) {
+                return;
+            }
+            if (Modal.isModalOpen === true) {
                 return;
             }
             switch (Inknote.Managers.PageManager.Current.page) {
@@ -7574,8 +7627,10 @@ var FrontEnd;
 })(FrontEnd || (FrontEnd = {}));
 var Modal;
 (function (Modal) {
+    Modal.isModalOpen = false;
     function toggle(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = !Modal.isModalOpen;
         FrontEnd.toggleElement(item);
         FrontEnd.toggleElement(document.getElementById("modal-cover"));
     }
@@ -7587,17 +7642,20 @@ var Modal;
                 FrontEnd.hideElement(modals[i]);
             }
         }
+        Modal.isModalOpen = false;
         FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hideAllModals = hideAllModals;
     function hide(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = false;
         FrontEnd.hideElement(item);
         FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hide = hide;
     function show(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = true;
         FrontEnd.showElement(item);
         FrontEnd.showElement(document.getElementById("modal-cover"));
     }

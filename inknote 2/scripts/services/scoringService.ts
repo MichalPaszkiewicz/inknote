@@ -122,7 +122,7 @@ module Inknote {
             this._refresh = true;
         }
 
-        updateItems() {
+        updateItems(): void {
             if (!DrawService.Instance) {
                 // depends on drawservice.
                 log("draw service not instantiated", MessageType.Error);
@@ -142,6 +142,10 @@ module Inknote {
                 function (instrument: Model.Instrument) {
                     return instrument.visible;
                 });
+
+            if (visibleInstruments.length === 0) {
+                return;
+            }
 
             var barMinLengths = getMinBarLengths(visibleInstruments);
 
@@ -254,7 +258,7 @@ module Inknote {
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
 
-                                drawNoteItem.stemUp = intervalDistance <= -4;
+                                drawNoteItem.stemUp = - 5 * intervalDistance + clefAdditionalPosition >= 20;
 
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
@@ -299,13 +303,13 @@ module Inknote {
                     }
 
                     // iterate height between instruments;
-                    topLineHeight += 100;
+                    topLineHeight += 120;
                     barX = 0;
 
                 }
 
                 // next group of staves quite a bit lower.
-                topLineHeight += 40;
+                topLineHeight += 60;
 
             }
 

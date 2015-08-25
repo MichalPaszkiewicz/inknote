@@ -44,6 +44,11 @@
 .modal .form-row input {
   padding: 10px;
   min-width: 50%;
+  box-sizing: border-box;
+  margin: 0;
+}
+.modal .form-row input[type*=color] {
+  box-sizing: content-box;
 }
 .modal .overflower {
   overflow: auto;

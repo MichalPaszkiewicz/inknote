@@ -4,6 +4,8 @@
 
         bars: Bar[];
 
+        v: boolean = true;
+
         constructor(public name: string) {
             this.bars = [];
         }

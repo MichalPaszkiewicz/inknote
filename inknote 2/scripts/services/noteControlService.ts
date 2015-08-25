@@ -136,7 +136,7 @@
 
             }
 
-        }
+        }    
 
         addNote(note: Model.Note): void {
             var project = Managers.ProjectManager.Instance.currentProject;
@@ -300,7 +300,8 @@
         }
 
         deleteSelected() {
-            if (ScoringService.Instance.SelectedItem instanceof Drawing.Note) {
+            if (ScoringService.Instance.SelectedItem instanceof Drawing.Note
+                || ScoringService.Instance.SelectedItem instanceof Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
