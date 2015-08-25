@@ -110,7 +110,7 @@
         }
 
         if (noteVal != null) {
-            if (ScoringService.Instance.selectID == null) {
+            if (ScoringService.Instance.selectID == null || ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
                 NoteControlService.Instance.addNote(
                     new Model.Note(
                         noteVal,

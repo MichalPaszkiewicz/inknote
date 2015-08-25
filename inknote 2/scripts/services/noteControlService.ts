@@ -104,7 +104,9 @@
             var newInstrument = new Model.Instrument(name);
 
             for (var i = 0; i < barsCount; i++) {
-                newInstrument.bars.push(new Model.Bar());
+
+                this.addBarToInstrument(newInstrument);
+
             }
 
             project.instruments.push(newInstrument);
@@ -112,12 +114,25 @@
             ScoringService.Instance.refresh();
         }
 
+        addBarToInstrument(instrument: Model.Instrument): void {
+
+            var newBar = new Model.Bar();
+
+            if (instrument.bars.length == 0) {
+                newBar.items.push(new Model.TrebleClef());
+                newBar.items.push(new Model.TimeSignature(4, 4));
+            }
+
+            instrument.bars.push(newBar);
+
+        }
+
         addBar(): void {
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
 
-                project.instruments[i].bars.push(new Model.Bar());
+                this.addBarToInstrument(project.instruments[i]);
 
             }
 
@@ -126,12 +141,43 @@
         addNote(note: Model.Note): void {
             var project = Managers.ProjectManager.Instance.currentProject;
 
+            if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+
+                        var currentBar = project.instruments[i].bars[j];
+
+                        if (currentBar.ID == ScoringService.Instance.selectID) {
+                            if (TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+
+                            currentBar.items.push(note);
+                            ScoringService.Instance.selectID = currentBar.ID;
+
+                            ScoringService.Instance.refresh();
+
+                            return;
+                        }
+                    }
+                }
+            }
+
             var instrument = project.instruments[0];
 
             if (instrument.bars.length == 0) { 
                 this.addBar();
-                instrument.bars[0].items.push(new Model.TrebleClef());
-                instrument.bars[0].items.push(new Model.TimeSignature(4, 4));
             }
 
             var bar = instrument.bars[instrument.bars.length - 1];
@@ -149,11 +195,45 @@
         addRest(): void {
             var project = Managers.ProjectManager.Instance.currentProject;
 
+            var rest = new Model.Rest(this.lengthControl.selectedLength);
+
+            if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+
+                        var currentBar = project.instruments[i].bars[j];
+
+                        if (currentBar.ID == ScoringService.Instance.selectID) {
+                            if (TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+
+                            currentBar.items.push(rest);
+                            ScoringService.Instance.selectID = currentBar.ID;
+
+                            ScoringService.Instance.refresh();
+
+                            return;
+                        }
+                    }
+                }
+            }
+
             var instrument = project.instruments[0];
 
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Model.TrebleClef());
             }
 
             var bar = instrument.bars[instrument.bars.length - 1];
@@ -162,8 +242,6 @@
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
-
-            var rest = new Model.Rest(this.lengthControl.selectedLength);
 
             bar.items.push(rest);
 

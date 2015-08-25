@@ -189,7 +189,7 @@
                 for (var i = 0; i < this.allKeys.length; i++) {
                     if (this.allKeys[i].hover == true) {
                         
-                        if (ScoringService.Instance.selectID == null) {
+                        if (ScoringService.Instance.selectID == null || ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
                             NoteControlService.Instance.addNote(
                                 new Model.Note(
                                     this.allKeys[i].noteValue,

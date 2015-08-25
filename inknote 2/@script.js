@@ -3997,7 +3997,7 @@ var Inknote;
                 else {
                     for (var i = 0; i < this.allKeys.length; i++) {
                         if (this.allKeys[i].hover == true) {
-                            if (Inknote.ScoringService.Instance.selectID == null) {
+                            if (Inknote.ScoringService.Instance.selectID == null || Inknote.ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
                                 Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(this.allKeys[i].noteValue, this.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
                             }
                             else {
@@ -5856,24 +5856,57 @@ var Inknote;
             var barsCount = project.instruments[0].bars.length;
             var newInstrument = new Inknote.Model.Instrument(name);
             for (var i = 0; i < barsCount; i++) {
-                newInstrument.bars.push(new Inknote.Model.Bar());
+                this.addBarToInstrument(newInstrument);
             }
             project.instruments.push(newInstrument);
             Inknote.ScoringService.Instance.refresh();
         };
+        NoteControlService.prototype.addBarToInstrument = function (instrument) {
+            var newBar = new Inknote.Model.Bar();
+            if (instrument.bars.length == 0) {
+                newBar.items.push(new Inknote.Model.TrebleClef());
+                newBar.items.push(new Inknote.Model.TimeSignature(4, 4));
+            }
+            instrument.bars.push(newBar);
+        };
         NoteControlService.prototype.addBar = function () {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
-                project.instruments[i].bars.push(new Inknote.Model.Bar());
+                this.addBarToInstrument(project.instruments[i]);
             }
         };
         NoteControlService.prototype.addNote = function (note) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                        var currentBar = project.instruments[i].bars[j];
+                        if (currentBar.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (Inknote.TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+                            currentBar.items.push(note);
+                            Inknote.ScoringService.Instance.selectID = currentBar.ID;
+                            Inknote.ScoringService.Instance.refresh();
+                            return;
+                        }
+                    }
+                }
+            }
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[0].items.push(new Inknote.Model.TrebleClef());
-                instrument.bars[0].items.push(new Inknote.Model.TimeSignature(4, 4));
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
@@ -5885,17 +5918,43 @@ var Inknote;
         };
         NoteControlService.prototype.addRest = function () {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                        var currentBar = project.instruments[i].bars[j];
+                        if (currentBar.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (Inknote.TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+                            currentBar.items.push(rest);
+                            Inknote.ScoringService.Instance.selectID = currentBar.ID;
+                            Inknote.ScoringService.Instance.refresh();
+                            return;
+                        }
+                    }
+                }
+            }
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
-            var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
             bar.items.push(rest);
             Inknote.ScoringService.Instance.refresh();
         };
@@ -7397,7 +7456,7 @@ var Inknote;
             }
         }
         if (noteVal != null) {
-            if (Inknote.ScoringService.Instance.selectID == null) {
+            if (Inknote.ScoringService.Instance.selectID == null || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
                 Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(noteVal, Inknote.NoteControlService.Instance.piano.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
             }
             else {
