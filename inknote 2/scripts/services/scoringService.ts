@@ -186,6 +186,11 @@ module Inknote {
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
+
+                        if (TimeSignatureService.Instance.barHasError(bar, tempInstrument)) {
+                            drawBar.hasError = true;
+                        }
+
                         this.addItem(drawBar);
 
                         // for getting note position.

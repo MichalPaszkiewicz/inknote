@@ -2106,6 +2106,7 @@ var Inknote;
                 _super.apply(this, arguments);
                 this.ID = Inknote.getID();
                 this.order = 20;
+                this.hasError = false;
             }
             Bar.prototype.isOver = function (x, y) {
                 var isLeft = x < this.x + this.width;
@@ -2137,6 +2138,13 @@ var Inknote;
                     ctx.stroke();
                 }
                 ctx.lineWidth = 1;
+                if (this.hasError) {
+                    ctx.beginPath();
+                    ctx.globalAlpha = 0.2;
+                    ctx.fillStyle = Drawing.Colours.negativeRed;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    ctx.globalAlpha = 1;
+                }
                 return true;
             };
             return Bar;
@@ -4886,6 +4894,9 @@ var Inknote;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
+                        if (Inknote.TimeSignatureService.Instance.barHasError(bar, tempInstrument)) {
+                            drawBar.hasError = true;
+                        }
                         this.addItem(drawBar);
                         // for getting note position.
                         var itemX = 20;
@@ -5670,6 +5681,29 @@ var Inknote;
                 return getCrotchetsFromNoteLength(item.length);
             });
             return count >= timeSignature.top;
+        };
+        TimeSignatureService.prototype.barHasError = function (bar, instrument) {
+            var timeSignature = new Inknote.Model.TimeSignature(4, 4);
+            for (var i = 0; i < instrument.bars.length; i++) {
+                for (var j = 0; j < instrument.bars[i].items.length; j++) {
+                    if (instrument.bars[i].items[j] instanceof Inknote.Model.TimeSignature) {
+                        timeSignature = instrument.bars[i].items[j];
+                    }
+                }
+                if (instrument.bars[i].ID === bar.ID) {
+                    break;
+                }
+            }
+            var countables = Inknote.getItemsWhere(bar.items, function (item) {
+                var isRest = item instanceof Inknote.Model.Rest;
+                var isNote = item instanceof Inknote.Model.Note;
+                var isChord = item instanceof Inknote.Model.Chord;
+                return isRest || isNote;
+            });
+            var count = Inknote.sum(countables, function (item) {
+                return getCrotchetsFromNoteLength(item.length);
+            });
+            return count != timeSignature.top;
         };
         return TimeSignatureService;
     })();

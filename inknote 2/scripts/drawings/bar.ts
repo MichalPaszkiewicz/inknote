@@ -12,6 +12,7 @@
 
         hover: boolean;
         select: boolean;
+        hasError: boolean = false;
 
         isOver(x, y) {
 
@@ -50,6 +51,18 @@
             }
 
             ctx.lineWidth = 1;
+
+            if (this.hasError) {
+                ctx.beginPath();
+
+                ctx.globalAlpha = 0.2;
+
+                ctx.fillStyle = Colours.negativeRed;
+
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+
+                ctx.globalAlpha = 1;
+            }
 
             return true;
         }

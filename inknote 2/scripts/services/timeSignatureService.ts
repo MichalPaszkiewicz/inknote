@@ -75,6 +75,39 @@
 
         }
 
+        barHasError(bar: Model.Bar, instrument: Model.Instrument): boolean {
+
+            var timeSignature = new Model.TimeSignature(4, 4);
+
+            for (var i = 0; i < instrument.bars.length; i++) {
+                for (var j = 0; j < instrument.bars[i].items.length; j++) {
+                    if (instrument.bars[i].items[j] instanceof Model.TimeSignature) {
+                        timeSignature = <Model.TimeSignature>instrument.bars[i].items[j];
+                    }
+                }
+                if (instrument.bars[i].ID === bar.ID) {
+                    break;
+                }
+            }
+
+            var countables: (Model.Rest | Model.Chord)[] = getItemsWhere(bar.items, function (item) {
+                var isRest = item instanceof Model.Rest;
+                var isNote = item instanceof Model.Note;
+                var isChord = item instanceof Model.Chord;
+
+                return isRest || isNote;
+            });
+
+            var count = sum(countables, function (item: Model.Rest | Model.Note) {
+
+                return getCrotchetsFromNoteLength(item.length);
+
+            });
+
+            return count != timeSignature.top;
+
+        }
+
     }
 
 } 
