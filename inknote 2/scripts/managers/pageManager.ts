@@ -42,6 +42,14 @@
                 ScrollService.Instance.y = 0;
             }
 
+            if (item == Page.Score) {
+                FrontEnd.showElement(document.getElementById("play"));
+            }
+            else {
+                FrontEnd.hideElement(document.getElementById("play"));
+                console.log("what")
+            }
+
             switch (item) {
                 case Page.File:
                     break;

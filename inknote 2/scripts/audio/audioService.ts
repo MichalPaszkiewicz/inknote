@@ -12,7 +12,7 @@
             return AudioService._instance;
         }
 
-        context: AudioContext;
+        context: AudioContext = new AudioContext();
         destination: AudioDestinationNode;
         timeStarted: Date;
         sounds: Sound[];
@@ -24,7 +24,6 @@
         indexChanged: Date;
 
         init() {
-            this.context = new AudioContext();
             this.destination = this.context.destination;
             this.sounds = [];
             // bpm has to be given from crotchet.

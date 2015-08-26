@@ -81,7 +81,7 @@ canvas {
   background: darkgray;
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 #modal-cover,
 #confirm-cover {

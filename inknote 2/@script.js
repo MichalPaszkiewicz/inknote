@@ -6432,6 +6432,7 @@ var Inknote;
     (function (Audio) {
         var AudioService = (function () {
             function AudioService() {
+                this.context = new AudioContext();
                 this.playing = false;
                 this.init();
             }
@@ -6446,7 +6447,6 @@ var Inknote;
                 configurable: true
             });
             AudioService.prototype.init = function () {
-                this.context = new AudioContext();
                 this.destination = this.context.destination;
                 this.sounds = [];
                 // bpm has to be given from crotchet.
@@ -6675,6 +6675,13 @@ var Inknote;
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
+                    }
+                    if (item == 0 /* Score */) {
+                        FrontEnd.showElement(document.getElementById("play"));
+                    }
+                    else {
+                        FrontEnd.hideElement(document.getElementById("play"));
+                        console.log("what");
                     }
                     switch (item) {
                         case 2 /* File */:
