@@ -1,5 +1,19 @@
 ﻿module Inknote.Audio {
 
+    function makeDistortionCurve(amount) {
+        var k = typeof amount === 'number' ? amount : 50,
+            n_samples = 44100,
+            curve = new Float32Array(n_samples),
+            deg = Math.PI / 180,
+            i = 0,
+            x;
+        for (; i < n_samples; ++i) {
+            x = i * 2 / n_samples - 1;
+            curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+        }
+        return curve;
+    };
+
     export class AudioService {
 
         private static _instance: AudioService;
@@ -14,6 +28,7 @@
 
         context: AudioContext = new AudioContext();
         masterGain: GainNode;
+        waveShaper: WaveShaperNode;
         destination: AudioDestinationNode;
         timeStarted: Date;
         sounds: Sound[];
@@ -28,7 +43,12 @@
             this.destination = this.context.destination;
             this.masterGain = this.context.createGain();
             this.masterGain.gain.value = 0.3;
-            this.masterGain.connect(this.destination);
+
+            this.waveShaper = this.context.createWaveShaper();
+            // this.waveShaper.curve = makeDistortionCurve(100);
+
+            this.masterGain.connect(this.waveShaper);
+            this.waveShaper.connect(this.destination);
             this.sounds = [];
             // bpm has to be given from crotchet.
             this.bpm = 120;
@@ -95,7 +115,6 @@
 
                 var tempItem = tempItems[this.beatIndex];
 
-                console.log(tempItems);
                 if (tempItem instanceof Model.Note) {
                     
                     notesToPlay.push(tempItem);

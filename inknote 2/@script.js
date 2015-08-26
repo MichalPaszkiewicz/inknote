@@ -6333,14 +6333,18 @@ var Inknote;
             }
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
-                this.destination = ctx.destination;
-                this.oscillator.connect(connectTo);
+                this.gain = ctx.createGain();
+                this.gain.gain.value = 0.5;
+                this.oscillator.connect(this.gain);
+                this.gain.connect(connectTo);
                 this.oscillator.frequency.value = this.frequency;
                 this.oscillator.start(0);
                 this.startTime = new Date();
             };
             Sound.prototype.stop = function () {
-                this.oscillator.disconnect();
+                this.gain.gain.value = 0;
+                // by only decreasing gain, removes popping.
+                // this.oscillator.disconnect();
                 this.finished = true;
             };
             Sound.prototype.update = function () {
@@ -6348,6 +6352,9 @@ var Inknote;
                 var start = this.startTime.getTime();
                 if (currentTime - start > this.playTime) {
                     this.stop();
+                }
+                else {
+                    this.gain.gain.value *= 0.9;
                 }
             };
             return Sound;
@@ -6430,6 +6437,15 @@ var Inknote;
 (function (Inknote) {
     var Audio;
     (function (Audio) {
+        function makeDistortionCurve(amount) {
+            var k = typeof amount === 'number' ? amount : 50, n_samples = 44100, curve = new Float32Array(n_samples), deg = Math.PI / 180, i = 0, x;
+            for (; i < n_samples; ++i) {
+                x = i * 2 / n_samples - 1;
+                curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+            }
+            return curve;
+        }
+        ;
         var AudioService = (function () {
             function AudioService() {
                 this.context = new AudioContext();
@@ -6450,7 +6466,10 @@ var Inknote;
                 this.destination = this.context.destination;
                 this.masterGain = this.context.createGain();
                 this.masterGain.gain.value = 0.3;
-                this.masterGain.connect(this.destination);
+                this.waveShaper = this.context.createWaveShaper();
+                // this.waveShaper.curve = makeDistortionCurve(100);
+                this.masterGain.connect(this.waveShaper);
+                this.waveShaper.connect(this.destination);
                 this.sounds = [];
                 // bpm has to be given from crotchet.
                 this.bpm = 120;
@@ -6494,7 +6513,6 @@ var Inknote;
                         return item instanceof Inknote.Model.Note || item instanceof Inknote.Model.Rest;
                     });
                     var tempItem = tempItems[this.beatIndex];
-                    console.log(tempItems);
                     if (tempItem instanceof Inknote.Model.Note) {
                         notesToPlay.push(tempItem);
                     }

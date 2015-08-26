@@ -12,14 +12,17 @@
 
         oscillator: OscillatorNode;
 
-        destination: AudioDestinationNode;
+        gain: GainNode;
 
         play(ctx: AudioContext, connectTo: GainNode) {
 
             this.oscillator = ctx.createOscillator();
-            this.destination = ctx.destination;
 
-            this.oscillator.connect(connectTo);
+            this.gain = ctx.createGain();
+            this.gain.gain.value = 0.5;
+
+            this.oscillator.connect(this.gain);
+            this.gain.connect(connectTo);
 
             this.oscillator.frequency.value = this.frequency;
 
@@ -31,7 +34,10 @@
 
         stop() {
 
-            this.oscillator.disconnect();
+            this.gain.gain.value = 0;
+
+            // by only decreasing gain, removes popping.
+            // this.oscillator.disconnect();
 
             this.finished = true;
 
@@ -45,6 +51,9 @@
 
             if (currentTime - start > this.playTime) {
                 this.stop();
+            }
+            else {
+                this.gain.gain.value *= 0.9;
             }
 
         }
