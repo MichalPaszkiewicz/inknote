@@ -91,6 +91,10 @@
                     }
                 }
 
+                if (Audio.AudioService) {
+                    Audio.AudioService.Instance.update();
+                }
+
                 requestAnimationFrame(self.draw);
             };
 

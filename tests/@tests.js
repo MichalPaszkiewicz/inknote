@@ -757,6 +757,7 @@ var Inknote;
         var Instrument = (function () {
             function Instrument(name) {
                 this.name = name;
+                this.v = true;
                 this.bars = [];
             }
             return Instrument;
@@ -2106,6 +2107,7 @@ var Inknote;
                 _super.apply(this, arguments);
                 this.ID = Inknote.getID();
                 this.order = 20;
+                this.hasError = false;
             }
             Bar.prototype.isOver = function (x, y) {
                 var isLeft = x < this.x + this.width;
@@ -2137,6 +2139,13 @@ var Inknote;
                     ctx.stroke();
                 }
                 ctx.lineWidth = 1;
+                if (this.hasError) {
+                    ctx.beginPath();
+                    ctx.globalAlpha = 0.2;
+                    ctx.fillStyle = Drawing.Colours.negativeRed;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    ctx.globalAlpha = 1;
+                }
                 return true;
             };
             return Bar;
@@ -3119,6 +3128,48 @@ var Inknote;
                         Inknote.NoteControlService.Instance.addBar();
                         Inknote.ScoringService.Instance.refresh();
                     }));
+                    this.items.unshift(new RightClickMenus.ClickableMenuItem("edit instruments", function () {
+                        Modal.toggle("instruments");
+                        var instrumentList = document.getElementById("instrument-list");
+                        instrumentList.innerHTML = "";
+                        var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+                        for (var i = 0; i < instruments.length; i++) {
+                            var formRow = document.createElement("div");
+                            formRow.className = "form-row";
+                            var instrumentHolder = document.createElement("input");
+                            instrumentHolder.value = instruments[i].name;
+                            instrumentHolder.setAttribute("data-id", instruments[i].ID);
+                            instrumentHolder.onkeyup = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                for (var j = 0; j < proj.instruments.length; j++) {
+                                    if (proj.instruments[j].ID == id) {
+                                        proj.instruments[j].name = ele.value;
+                                    }
+                                }
+                                Inknote.ScoringService.Instance.refresh();
+                            };
+                            var isVisible = document.createElement("input");
+                            isVisible.type = "checkbox";
+                            isVisible.checked = instruments[i].visible;
+                            isVisible.setAttribute("data-id", instruments[i].ID);
+                            isVisible.onclick = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                for (var j = 0; j < proj.instruments.length; j++) {
+                                    if (proj.instruments[j].ID == id) {
+                                        proj.instruments[j].visible = ele.checked;
+                                    }
+                                }
+                                Inknote.ScoringService.Instance.refresh();
+                            };
+                            formRow.appendChild(instrumentHolder);
+                            formRow.appendChild(isVisible);
+                            instrumentList.appendChild(formRow);
+                        }
+                    }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
                         var name = prompt("What is the name of the new instrument?");
                         if (name != "" && name != null) {
@@ -3989,7 +4040,7 @@ var Inknote;
                 else {
                     for (var i = 0; i < this.allKeys.length; i++) {
                         if (this.allKeys[i].hover == true) {
-                            if (Inknote.ScoringService.Instance.selectID == null) {
+                            if (Inknote.ScoringService.Instance.selectID == null || Inknote.ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
                                 Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(this.allKeys[i].noteValue, this.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
                             }
                             else {
@@ -4856,6 +4907,9 @@ var Inknote;
             var visibleInstruments = Inknote.getItemsWhere(currentProject.instruments, function (instrument) {
                 return instrument.visible;
             });
+            if (visibleInstruments.length === 0) {
+                return;
+            }
             var barMinLengths = getMinBarLengths(visibleInstruments);
             var topLineHeight = 180;
             var marginLeft = 50;
@@ -4886,6 +4940,9 @@ var Inknote;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
+                        if (Inknote.TimeSignatureService.Instance.barHasError(bar, tempInstrument)) {
+                            drawBar.hasError = true;
+                        }
                         this.addItem(drawBar);
                         // for getting note position.
                         var itemX = 20;
@@ -4924,7 +4981,7 @@ var Inknote;
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
-                                drawNoteItem.stemUp = intervalDistance <= -4;
+                                drawNoteItem.stemUp = -5 * intervalDistance + clefAdditionalPosition >= 20;
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
                                 }
@@ -4952,11 +5009,11 @@ var Inknote;
                         barX += tempBarLength;
                     }
                     // iterate height between instruments;
-                    topLineHeight += 100;
+                    topLineHeight += 120;
                     barX = 0;
                 }
                 // next group of staves quite a bit lower.
-                topLineHeight += 40;
+                topLineHeight += 60;
             }
             this.maxScrollPosition = topLineHeight - 200;
         };
@@ -5094,6 +5151,7 @@ var Inknote;
         ProjectConverter.compress = compress;
         function compressInstrument(instrument) {
             var result = new Inknote.Compressed.Instrument(instrument.name);
+            result.v = instrument.visible;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(compressBar(instrument.bars[i]));
             }
@@ -5210,7 +5268,7 @@ var Inknote;
         ProjectConverter.decompress = decompress;
         function decompressInstrument(instrument) {
             var result = new Inknote.Model.Instrument(instrument.name);
-            result.visible = true;
+            result.visible = instrument.v;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(decompressBar(instrument.bars[i]));
             }
@@ -5671,6 +5729,29 @@ var Inknote;
             });
             return count >= timeSignature.top;
         };
+        TimeSignatureService.prototype.barHasError = function (bar, instrument) {
+            var timeSignature = new Inknote.Model.TimeSignature(4, 4);
+            for (var i = 0; i < instrument.bars.length; i++) {
+                for (var j = 0; j < instrument.bars[i].items.length; j++) {
+                    if (instrument.bars[i].items[j] instanceof Inknote.Model.TimeSignature) {
+                        timeSignature = instrument.bars[i].items[j];
+                    }
+                }
+                if (instrument.bars[i].ID === bar.ID) {
+                    break;
+                }
+            }
+            var countables = Inknote.getItemsWhere(bar.items, function (item) {
+                var isRest = item instanceof Inknote.Model.Rest;
+                var isNote = item instanceof Inknote.Model.Note;
+                var isChord = item instanceof Inknote.Model.Chord;
+                return isRest || isNote;
+            });
+            var count = Inknote.sum(countables, function (item) {
+                return getCrotchetsFromNoteLength(item.length);
+            });
+            return count != timeSignature.top;
+        };
         return TimeSignatureService;
     })();
     Inknote.TimeSignatureService = TimeSignatureService;
@@ -5822,24 +5903,57 @@ var Inknote;
             var barsCount = project.instruments[0].bars.length;
             var newInstrument = new Inknote.Model.Instrument(name);
             for (var i = 0; i < barsCount; i++) {
-                newInstrument.bars.push(new Inknote.Model.Bar());
+                this.addBarToInstrument(newInstrument);
             }
             project.instruments.push(newInstrument);
             Inknote.ScoringService.Instance.refresh();
         };
+        NoteControlService.prototype.addBarToInstrument = function (instrument) {
+            var newBar = new Inknote.Model.Bar();
+            if (instrument.bars.length == 0) {
+                newBar.items.push(new Inknote.Model.TrebleClef());
+                newBar.items.push(new Inknote.Model.TimeSignature(4, 4));
+            }
+            instrument.bars.push(newBar);
+        };
         NoteControlService.prototype.addBar = function () {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
-                project.instruments[i].bars.push(new Inknote.Model.Bar());
+                this.addBarToInstrument(project.instruments[i]);
             }
         };
         NoteControlService.prototype.addNote = function (note) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                        var currentBar = project.instruments[i].bars[j];
+                        if (currentBar.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (Inknote.TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+                            currentBar.items.push(note);
+                            Inknote.ScoringService.Instance.selectID = currentBar.ID;
+                            Inknote.ScoringService.Instance.refresh();
+                            return;
+                        }
+                    }
+                }
+            }
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[0].items.push(new Inknote.Model.TrebleClef());
-                instrument.bars[0].items.push(new Inknote.Model.TimeSignature(4, 4));
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
@@ -5851,17 +5965,43 @@ var Inknote;
         };
         NoteControlService.prototype.addRest = function () {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                for (var i = 0; i < project.instruments.length; i++) {
+                    for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                        var currentBar = project.instruments[i].bars[j];
+                        if (currentBar.ID == Inknote.ScoringService.Instance.selectID) {
+                            if (Inknote.TimeSignatureService.Instance.barIsFull(currentBar, project.instruments[i])) {
+                                if (project.instruments[i].bars[j + 1]) {
+                                    if (project.instruments[i].bars[j + 1].items.length == 0) {
+                                        currentBar = project.instruments[i].bars[j + 1];
+                                    }
+                                    else {
+                                        return;
+                                    }
+                                }
+                                else {
+                                    this.addBar();
+                                    currentBar = project.instruments[i].bars[j + 1];
+                                }
+                            }
+                            currentBar.items.push(rest);
+                            Inknote.ScoringService.Instance.selectID = currentBar.ID;
+                            Inknote.ScoringService.Instance.refresh();
+                            return;
+                        }
+                    }
+                }
+            }
             var instrument = project.instruments[0];
             if (instrument.bars.length == 0) {
                 this.addBar();
-                instrument.bars[instrument.bars.length - 1].items.push(new Inknote.Model.TrebleClef());
             }
             var bar = instrument.bars[instrument.bars.length - 1];
             if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
-            var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
             bar.items.push(rest);
             Inknote.ScoringService.Instance.refresh();
         };
@@ -5908,7 +6048,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.deleteSelected = function () {
-            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note) {
+            if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
@@ -7283,12 +7423,18 @@ var Inknote;
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
+            if (Modal.isModalOpen === true) {
+                return;
+            }
             if (e.keyCode == 8) {
                 e.preventDefault();
             }
         };
         window.onkeyup = function (ev) {
             if (Inknote.CONFIRM_IS_OPEN) {
+                return;
+            }
+            if (Modal.isModalOpen === true) {
                 return;
             }
             switch (Inknote.Managers.PageManager.Current.page) {
@@ -7363,7 +7509,7 @@ var Inknote;
             }
         }
         if (noteVal != null) {
-            if (Inknote.ScoringService.Instance.selectID == null) {
+            if (Inknote.ScoringService.Instance.selectID == null || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
                 Inknote.NoteControlService.Instance.addNote(new Inknote.Model.Note(noteVal, Inknote.NoteControlService.Instance.piano.octave, Inknote.NoteControlService.Instance.lengthControl.selectedLength));
             }
             else {
@@ -7481,8 +7627,10 @@ var FrontEnd;
 })(FrontEnd || (FrontEnd = {}));
 var Modal;
 (function (Modal) {
+    Modal.isModalOpen = false;
     function toggle(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = !Modal.isModalOpen;
         FrontEnd.toggleElement(item);
         FrontEnd.toggleElement(document.getElementById("modal-cover"));
     }
@@ -7494,17 +7642,20 @@ var Modal;
                 FrontEnd.hideElement(modals[i]);
             }
         }
+        Modal.isModalOpen = false;
         FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hideAllModals = hideAllModals;
     function hide(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = false;
         FrontEnd.hideElement(item);
         FrontEnd.hideElement(document.getElementById("modal-cover"));
     }
     Modal.hide = hide;
     function show(ID) {
         var item = document.getElementById(ID);
+        Modal.isModalOpen = true;
         FrontEnd.showElement(item);
         FrontEnd.showElement(document.getElementById("modal-cover"));
     }

@@ -138,6 +138,13 @@
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
 
+// audio
+/// <reference path="scripts/audio/webaudiodefinitions.ts" />
+/// <reference path="scripts/audio/sound.ts" />
+/// <reference path="scripts/audio/frequencies.ts" />
+/// <reference path="scripts/audio/playtime.ts" />
+/// <reference path="scripts/audio/audioservice.ts" />
+
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 

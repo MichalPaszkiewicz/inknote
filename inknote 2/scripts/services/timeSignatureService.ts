@@ -6,7 +6,7 @@
 
     }
 
-    function getCrotchetsFromNoteLength(nl: Model.NoteLength) {
+    export function getCrotchetsFromNoteLength(nl: Model.NoteLength) {
 
         switch (nl) {
             case Model.NoteLength.Breve:

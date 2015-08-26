@@ -545,7 +545,11 @@ var Inknote;
             function Note(value, octave, length) {
                 this.ID = Inknote.getID();
                 this.value = value;
-                this.octave = octave, this.length = length;
+                this.octave = octave;
+                if (length === null || length === undefined) {
+                    length = 3 /* Crotchet */;
+                }
+                this.length = length;
             }
             return Note;
         })();
@@ -4758,6 +4762,9 @@ var Inknote;
                         plugins[i].onDraw(self._ctx, self._canvas);
                     }
                 }
+                if (Inknote.Audio.AudioService) {
+                    Inknote.Audio.AudioService.Instance.update();
+                }
                 requestAnimationFrame(self.draw);
             };
             self.draw();
@@ -5693,6 +5700,7 @@ var Inknote;
         }
         return 0;
     }
+    Inknote.getCrotchetsFromNoteLength = getCrotchetsFromNoteLength;
     var TimeSignatureService = (function () {
         function TimeSignatureService() {
         }
@@ -6281,6 +6289,263 @@ var Inknote;
         return ProjectOptionsService;
     })();
     Inknote.ProjectOptionsService = ProjectOptionsService;
+})(Inknote || (Inknote = {}));
+var PanningModelType;
+(function (PanningModelType) {
+    PanningModelType[PanningModelType["equalpower"] = 0] = "equalpower";
+    PanningModelType[PanningModelType["HRTF"] = 1] = "HRTF";
+    PanningModelType[PanningModelType["soundfield"] = 2] = "soundfield";
+})(PanningModelType || (PanningModelType = {}));
+var DistanceModelType;
+(function (DistanceModelType) {
+    DistanceModelType[DistanceModelType["linear"] = 0] = "linear";
+    DistanceModelType[DistanceModelType["inverse"] = 1] = "inverse";
+    DistanceModelType[DistanceModelType["exponential"] = 2] = "exponential";
+})(DistanceModelType || (DistanceModelType = {}));
+var BiquadFilterType;
+(function (BiquadFilterType) {
+    BiquadFilterType[BiquadFilterType["lowpass"] = 0] = "lowpass";
+    BiquadFilterType[BiquadFilterType["highpass"] = 1] = "highpass";
+    BiquadFilterType[BiquadFilterType["bandpass"] = 2] = "bandpass";
+    BiquadFilterType[BiquadFilterType["lowshelf"] = 3] = "lowshelf";
+    BiquadFilterType[BiquadFilterType["highshelf"] = 4] = "highshelf";
+    BiquadFilterType[BiquadFilterType["peaking"] = 5] = "peaking";
+    BiquadFilterType[BiquadFilterType["notch"] = 6] = "notch";
+    BiquadFilterType[BiquadFilterType["allpass"] = 7] = "allpass";
+})(BiquadFilterType || (BiquadFilterType = {}));
+var OscillatorType;
+(function (OscillatorType) {
+    OscillatorType[OscillatorType["sine"] = 0] = "sine";
+    OscillatorType[OscillatorType["square"] = 1] = "square";
+    OscillatorType[OscillatorType["sawtooth"] = 2] = "sawtooth";
+    OscillatorType[OscillatorType["triangle"] = 3] = "triangle";
+    OscillatorType[OscillatorType["custom"] = 4] = "custom";
+})(OscillatorType || (OscillatorType = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var Sound = (function () {
+            function Sound(freq, time) {
+                this.finished = false;
+                this.frequency = freq;
+                this.playTime = time;
+            }
+            Sound.prototype.play = function (ctx) {
+                this.oscillator = ctx.createOscillator();
+                this.destination = ctx.destination;
+                this.oscillator.connect(this.destination);
+                this.oscillator.frequency.value = this.frequency;
+                this.oscillator.start(0);
+                this.startTime = new Date();
+            };
+            Sound.prototype.stop = function () {
+                this.oscillator.disconnect();
+                this.finished = true;
+            };
+            Sound.prototype.update = function () {
+                var currentTime = (new Date()).getTime();
+                var start = this.startTime.getTime();
+                if (currentTime - start > this.playTime) {
+                    this.stop();
+                }
+            };
+            return Sound;
+        })();
+        Audio.Sound = Sound;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        function getFrequencyFromNote(note) {
+            var result;
+            var noteVal = note.value;
+            switch (noteVal) {
+                case 3 /* C */:
+                    result = 261.63;
+                    break;
+                case 4 /* Db */:
+                    result = 277.18;
+                    break;
+                case 5 /* D */:
+                    result = 293.66;
+                    break;
+                case 6 /* Eb */:
+                    result = 311.13;
+                    break;
+                case 7 /* E */:
+                    result = 329.63;
+                    break;
+                case 8 /* F */:
+                    result = 349.23;
+                    break;
+                case 9 /* Gb */:
+                    result = 369.99;
+                    break;
+                case 10 /* G */:
+                    result = 392.00;
+                    break;
+                case 11 /* Ab */:
+                    result = 415.30;
+                    break;
+                case 0 /* A */:
+                    result = 440.00;
+                    break;
+                case 1 /* Bb */:
+                    result = 466.16;
+                    break;
+                case 2 /* B */:
+                    result = 493.88;
+                    break;
+            }
+            var octave = note.octave;
+            result *= Math.pow(2, octave - 4);
+            return result;
+        }
+        Audio.getFrequencyFromNote = getFrequencyFromNote;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        function getPlayingTimeFromNoteLength(val, bpm) {
+            var second = 1000;
+            var minute = second * 60;
+            var beatLength = minute / bpm;
+            // bpm has to be given from crotchet!
+            var crotchets = Inknote.getCrotchetsFromNoteLength(val);
+            return crotchets * beatLength;
+        }
+        Audio.getPlayingTimeFromNoteLength = getPlayingTimeFromNoteLength;
+        function getPlayingTime(note, bpm) {
+            return getPlayingTimeFromNoteLength(note.length, bpm);
+        }
+        Audio.getPlayingTime = getPlayingTime;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var AudioService = (function () {
+            function AudioService() {
+                this.playing = false;
+                this.init();
+            }
+            Object.defineProperty(AudioService, "Instance", {
+                get: function () {
+                    if (!AudioService._instance) {
+                        AudioService._instance = new AudioService();
+                    }
+                    return AudioService._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            AudioService.prototype.init = function () {
+                this.context = new AudioContext();
+                this.destination = this.context.destination;
+                this.sounds = [];
+                // bpm has to be given from crotchet.
+                this.bpm = 120;
+                this.timeSignature = new Inknote.Model.TimeSignature(4, 4);
+                this.playing = false;
+                this.barIndex = 0;
+                this.beatIndex = 0;
+                this.indexChanged = null;
+            };
+            AudioService.prototype.play = function () {
+                if (Inknote.Managers.PageManager.Current.page != 0 /* Score */) {
+                    return;
+                }
+                this.playing = true;
+            };
+            AudioService.prototype.playSound = function (sound) {
+                this.sounds.push(sound);
+                sound.play(this.context);
+            };
+            AudioService.prototype.playNote = function (note) {
+                var frequency = Audio.getFrequencyFromNote(note);
+                var playTime = Audio.getPlayingTime(note, this.bpm);
+                var newSound = new Audio.Sound(frequency, playTime);
+                this.playSound(newSound);
+            };
+            AudioService.prototype.playNotes = function () {
+                var minDifferenceTime = Audio.getPlayingTimeFromNoteLength(3 /* Crotchet */, this.bpm);
+                var currentTime = new Date();
+                if (this.indexChanged && (currentTime.getTime() - this.indexChanged.getTime() < minDifferenceTime)) {
+                    return;
+                }
+                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var notesToPlay = [];
+                if (this.barIndex >= proj.instruments[0].bars.length) {
+                    this.stop();
+                    return;
+                }
+                for (var i = 0; i < proj.instruments.length; i++) {
+                    var tempBar = proj.instruments[i].bars[this.barIndex];
+                    var tempItems = Inknote.getItemsWhere(tempBar.items, function (item) {
+                        return item instanceof Inknote.Model.Note || item instanceof Inknote.Model.Rest;
+                    });
+                    var tempItem = tempItems[this.beatIndex];
+                    console.log(tempItems);
+                    if (tempItem instanceof Inknote.Model.Note) {
+                        notesToPlay.push(tempItem);
+                    }
+                }
+                for (var i = 0; i < notesToPlay.length; i++) {
+                    this.playNote(notesToPlay[i]);
+                }
+                if (this.beatIndex + 1 >= this.timeSignature.top) {
+                    this.barIndex++;
+                }
+                this.beatIndex = (this.beatIndex + 1) % this.timeSignature.top;
+                this.indexChanged = new Date();
+            };
+            AudioService.prototype.updateSounds = function () {
+                for (var i = 0; i < this.sounds.length; i++) {
+                    this.sounds[i].update();
+                }
+            };
+            AudioService.prototype.removeFinishedSounds = function () {
+                var newSounds = [];
+                for (var i = 0; i < this.sounds.length; i++) {
+                    if (!this.sounds[i].finished) {
+                        newSounds.push(this.sounds[i]);
+                    }
+                }
+                this.sounds = newSounds;
+            };
+            AudioService.prototype.pause = function () {
+                this.playing = false;
+            };
+            AudioService.prototype.clearSounds = function () {
+                for (var i = 0; i < this.sounds.length; i++) {
+                    this.sounds[i].stop();
+                }
+            };
+            AudioService.prototype.stop = function () {
+                this.playing = false;
+                this.clearSounds();
+                this.init();
+            };
+            AudioService.prototype.update = function () {
+                if (Inknote.Managers.PageManager.Current.page != 0 /* Score */) {
+                    this.stop();
+                }
+                if (this.playing === true) {
+                    this.playNotes();
+                    this.updateSounds();
+                    this.removeFinishedSounds();
+                }
+            };
+            return AudioService;
+        })();
+        Audio.AudioService = AudioService;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -7883,6 +8148,12 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+// audio
+/// <reference path="scripts/audio/webaudiodefinitions.ts" />
+/// <reference path="scripts/audio/sound.ts" />
+/// <reference path="scripts/audio/frequencies.ts" />
+/// <reference path="scripts/audio/playtime.ts" />
+/// <reference path="scripts/audio/audioservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers

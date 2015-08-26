@@ -22,7 +22,12 @@
 
         constructor(value: NoteValue, octave: number, length: NoteLength) {
             this.value = value;
-            this.octave = octave,
+            this.octave = octave;
+
+            if(length === null || length === undefined) {
+                length = NoteLength.Crotchet;
+            }
+
             this.length = length;
         }
     }
