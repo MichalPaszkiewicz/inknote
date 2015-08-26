@@ -14,12 +14,12 @@
 
         destination: AudioDestinationNode;
 
-        play(ctx: AudioContext) {
+        play(ctx: AudioContext, connectTo: GainNode) {
 
             this.oscillator = ctx.createOscillator();
             this.destination = ctx.destination;
 
-            this.oscillator.connect(this.destination);
+            this.oscillator.connect(connectTo);
 
             this.oscillator.frequency.value = this.frequency;
 

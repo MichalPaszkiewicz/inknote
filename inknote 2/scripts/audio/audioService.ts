@@ -13,6 +13,7 @@
         }
 
         context: AudioContext = new AudioContext();
+        masterGain: GainNode;
         destination: AudioDestinationNode;
         timeStarted: Date;
         sounds: Sound[];
@@ -25,6 +26,9 @@
 
         init() {
             this.destination = this.context.destination;
+            this.masterGain = this.context.createGain();
+            this.masterGain.gain.value = 0.3;
+            this.masterGain.connect(this.destination);
             this.sounds = [];
             // bpm has to be given from crotchet.
             this.bpm = 120;
@@ -50,7 +54,7 @@
         playSound(sound: Sound) {
 
             this.sounds.push(sound);
-            sound.play(this.context);
+            sound.play(this.context, this.masterGain);
 
         }
 
