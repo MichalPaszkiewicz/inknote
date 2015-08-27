@@ -5932,6 +5932,9 @@ var Inknote;
         };
         NoteControlService.prototype.addNote = function (note) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            if (Inknote.Audio.AudioService) {
+                Inknote.Audio.AudioService.Instance.playNote(note);
+            }
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
                 for (var i = 0; i < project.instruments.length; i++) {
                     for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6093,6 +6096,7 @@ var Inknote;
         };
         NoteControlService.prototype.editNoteValueAndOctave = function (value, octave) {
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var playedNotes = [];
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];
@@ -6103,13 +6107,22 @@ var Inknote;
                                 item.value = value;
                                 item.octave = octave;
                                 item.length = this.lengthControl.selectedLength;
+                                playedNotes.push(item);
                             }
                             else if (item instanceof Inknote.Model.Rest) {
                             }
                             else if (item instanceof Inknote.Model.Chord) {
+                                for (var ci = 0; ci < item.notes.length; ci++) {
+                                    playedNotes.push(item.notes[ci]);
+                                }
                             }
                         }
                     }
+                }
+            }
+            if (Inknote.Audio.AudioService) {
+                for (var i = 0; i < playedNotes.length; i++) {
+                    Inknote.Audio.AudioService.Instance.playNote(playedNotes[i]);
                 }
             }
             Inknote.ScoringService.Instance.refresh();
@@ -6334,7 +6347,7 @@ var Inknote;
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
                 this.gain = ctx.createGain();
-                this.gain.gain.value = 0.5;
+                this.gain.gain.value = 0.3;
                 this.oscillator.connect(this.gain);
                 this.gain.connect(connectTo);
                 this.oscillator.frequency.value = this.frequency;
@@ -6554,14 +6567,14 @@ var Inknote;
                 this.init();
             };
             AudioService.prototype.update = function () {
-                if (Inknote.Managers.PageManager.Current.page != 0 /* Score */) {
+                if (Inknote.Managers.PageManager.Current.page != 0 /* Score */ && this.playing === true) {
                     this.stop();
                 }
                 if (this.playing === true) {
                     this.playNotes();
-                    this.updateSounds();
-                    this.removeFinishedSounds();
                 }
+                this.updateSounds();
+                this.removeFinishedSounds();
             };
             return AudioService;
         })();

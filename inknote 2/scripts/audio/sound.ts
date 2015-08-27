@@ -19,7 +19,7 @@
             this.oscillator = ctx.createOscillator();
 
             this.gain = ctx.createGain();
-            this.gain.gain.value = 0.5;
+            this.gain.gain.value = 0.3;
 
             this.oscillator.connect(this.gain);
             this.gain.connect(connectTo);

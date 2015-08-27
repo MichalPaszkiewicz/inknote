@@ -136,10 +136,14 @@
 
             }
 
-        }    
+        }
 
         addNote(note: Model.Note): void {
             var project = Managers.ProjectManager.Instance.currentProject;
+
+            if (Audio.AudioService) {
+                Audio.AudioService.Instance.playNote(note);
+            }
 
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
                 for (var i = 0; i < project.instruments.length; i++) {
@@ -176,7 +180,7 @@
 
             var instrument = project.instruments[0];
 
-            if (instrument.bars.length == 0) { 
+            if (instrument.bars.length == 0) {
                 this.addBar();
             }
 
@@ -286,7 +290,7 @@
 
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        
+
                         if (item.ID == ScoringService.Instance.selectID) {
                             if (item instanceof Model.Clef) {
                                 bar.items[k] = getNextClef(<Model.Clef>item, goUp);
@@ -350,6 +354,8 @@
 
             var project = Managers.ProjectManager.Instance.currentProject;
 
+            var playedNotes: Model.Note[] = [];
+
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];
@@ -361,15 +367,28 @@
                                 item.value = value;
                                 item.octave = octave;
                                 item.length = this.lengthControl.selectedLength;
+
+                                playedNotes.push(item);
                             }
                             else if (item instanceof Model.Rest) {
+
 
                             }
                             else if (item instanceof Model.Chord) {
 
+                                for (var ci = 0; ci < item.notes.length; ci++) {
+                                    playedNotes.push(item.notes[ci]);
+                                }
+
                             }
                         }
                     }
+                }
+            }
+
+            if (Audio.AudioService) {
+                for (var i = 0; i < playedNotes.length; i++) {
+                    Audio.AudioService.Instance.playNote(playedNotes[i]);
                 }
             }
 

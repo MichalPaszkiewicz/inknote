@@ -170,15 +170,16 @@
         }
 
         update() {
-            if (Managers.PageManager.Current.page != Managers.Page.Score) {
+            if (Managers.PageManager.Current.page != Managers.Page.Score && this.playing === true) {
                 this.stop();
             }
 
             if (this.playing === true) {
                 this.playNotes();
-                this.updateSounds();
-                this.removeFinishedSounds();
             }
+
+            this.updateSounds();
+            this.removeFinishedSounds();
 
         }
 
