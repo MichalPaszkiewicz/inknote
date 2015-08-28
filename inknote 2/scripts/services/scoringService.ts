@@ -257,6 +257,7 @@ module Inknote {
 
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
+                                drawNoteItem.isPlaying = item.isPlaying;
 
                                 drawNoteItem.stemUp = - 5 * intervalDistance + clefAdditionalPosition >= 20;
 

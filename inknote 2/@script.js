@@ -544,6 +544,7 @@ var Inknote;
         var Note = (function () {
             function Note(value, octave, length) {
                 this.ID = Inknote.getID();
+                this.isPlaying = false;
                 this.value = value;
                 this.octave = octave;
                 if (length === null || length === undefined) {
@@ -1164,7 +1165,8 @@ var Inknote;
             midBlue: "rgb(100,130,240)",
             brightRed: "rgb(255,0,0)",
             negativeRed: "rgb(255, 129, 129)",
-            negativeHoverRed: "rgb(255,150,150)"
+            negativeHoverRed: "rgb(255,150,150)",
+            green: "rgb(50,200,50)"
         };
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1625,6 +1627,10 @@ var Inknote;
                 ctx.fillStyle = Drawing.Colours.midBlue;
                 ctx.strokeStyle = Drawing.Colours.midBlue;
             }
+            if (note.isPlaying) {
+                ctx.strokeStyle = Drawing.Colours.green;
+                ctx.fillStyle = Drawing.Colours.green;
+            }
             if (note.select) {
                 ctx.beginPath();
                 ctx.arc(x, y, lineHeight, 0, 2 * Math.PI);
@@ -1727,6 +1733,7 @@ var Inknote;
                 _super.call(this);
                 this.stemUp = stemUp;
                 this.isPotential = false;
+                this.isPlaying = false;
             }
             return Note;
         })(Inknote.Notation);
@@ -1741,6 +1748,9 @@ var Inknote;
                 ctx.beginPath();
                 ctx.fillStyle = Drawing.Colours.white;
                 ctx.strokeStyle = Drawing.Colours.black;
+                if (this.isPlaying) {
+                    ctx.strokeStyle = Drawing.Colours.green;
+                }
                 if (this.hover || this.select) {
                     ctx.strokeStyle = Drawing.Colours.orange;
                 }
@@ -4988,6 +4998,7 @@ var Inknote;
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
+                                drawNoteItem.isPlaying = item.isPlaying;
                                 drawNoteItem.stemUp = -5 * intervalDistance + clefAdditionalPosition >= 20;
                                 if (isBlack) {
                                     drawNoteItem.attach(drawBlack);
@@ -6341,6 +6352,7 @@ var Inknote;
         var Sound = (function () {
             function Sound(freq, time) {
                 this.finished = false;
+                this.note = null;
                 this.frequency = freq;
                 this.playTime = time;
             }
@@ -6353,12 +6365,16 @@ var Inknote;
                 this.oscillator.frequency.value = this.frequency;
                 this.oscillator.start(0);
                 this.startTime = new Date();
+                this.note.isPlaying = true;
+                Inknote.ScoringService.Instance.refresh();
             };
             Sound.prototype.stop = function () {
+                this.note.isPlaying = false;
                 this.gain.gain.value = 0;
                 // by only decreasing gain, removes popping.
                 // this.oscillator.disconnect();
                 this.finished = true;
+                Inknote.ScoringService.Instance.refresh();
             };
             Sound.prototype.update = function () {
                 var currentTime = (new Date()).getTime();
@@ -6506,6 +6522,7 @@ var Inknote;
                 var frequency = Audio.getFrequencyFromNote(note);
                 var playTime = Audio.getPlayingTime(note, this.bpm);
                 var newSound = new Audio.Sound(frequency, playTime);
+                newSound.note = note;
                 this.playSound(newSound);
             };
             AudioService.prototype.playNotes = function () {

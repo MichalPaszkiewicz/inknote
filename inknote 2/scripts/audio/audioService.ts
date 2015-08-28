@@ -83,6 +83,7 @@
             var frequency = getFrequencyFromNote(note);
             var playTime = getPlayingTime(note, this.bpm);
             var newSound = new Sound(frequency, playTime);
+            newSound.note = note;
             this.playSound(newSound);
 
         }
@@ -132,7 +133,6 @@
             this.beatIndex = (this.beatIndex + 1) % this.timeSignature.top;
 
             this.indexChanged = new Date();
-            
         }
 
         updateSounds() {
@@ -180,7 +180,6 @@
 
             this.updateSounds();
             this.removeFinishedSounds();
-
         }
 
     }

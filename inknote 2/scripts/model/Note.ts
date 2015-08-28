@@ -20,6 +20,8 @@
 
         accidentalType: AccidentalType;
 
+        isPlaying: boolean = false;
+
         constructor(value: NoteValue, octave: number, length: NoteLength) {
             this.value = value;
             this.octave = octave;

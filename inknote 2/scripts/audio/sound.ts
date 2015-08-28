@@ -14,6 +14,8 @@
 
         gain: GainNode;
 
+        note: Model.Note = null;
+
         play(ctx: AudioContext, connectTo: GainNode) {
 
             this.oscillator = ctx.createOscillator();
@@ -30,9 +32,14 @@
 
             this.startTime = new Date();
 
+            this.note.isPlaying = true;
+
+            ScoringService.Instance.refresh();
         }
 
         stop() {
+
+            this.note.isPlaying = false;
 
             this.gain.gain.value = 0;
 
@@ -41,6 +48,7 @@
 
             this.finished = true;
 
+            ScoringService.Instance.refresh();
         }
 
         update() {

@@ -23,7 +23,8 @@
         midBlue: "rgb(100,130,240)",
         brightRed: "rgb(255,0,0)",
         negativeRed: "rgb(255, 129, 129)",
-        negativeHoverRed: "rgb(255,150,150)"
+        negativeHoverRed: "rgb(255,150,150)",
+        green: "rgb(50,200,50)"
     };
 
 } 

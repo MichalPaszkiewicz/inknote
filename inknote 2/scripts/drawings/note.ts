@@ -10,6 +10,11 @@
             ctx.strokeStyle = Colours.midBlue;
         }
 
+        if (note.isPlaying) {
+            ctx.strokeStyle = Colours.green;
+            ctx.fillStyle = Colours.green;
+        }
+
         if (note.select) {
             ctx.beginPath();
             ctx.arc(x, y, lineHeight, 0, 2 * Math.PI);
@@ -106,6 +111,7 @@
 
         noteLength: Model.NoteLength;
         isPotential: boolean = false;
+        isPlaying: boolean = false;
 
         constructor(public stemUp: boolean) {
 
@@ -121,6 +127,10 @@
             ctx.beginPath();
             ctx.fillStyle = Colours.white;
             ctx.strokeStyle = Colours.black;
+
+            if (this.isPlaying) {
+                ctx.strokeStyle = Colours.green;
+            }
 
             if (this.hover || this.select) {
                 ctx.strokeStyle = Colours.orange;
