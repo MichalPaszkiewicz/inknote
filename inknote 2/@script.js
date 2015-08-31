@@ -3168,6 +3168,7 @@ var Inknote;
                             isVisible.type = "checkbox";
                             isVisible.checked = instruments[i].visible;
                             isVisible.setAttribute("data-id", instruments[i].ID);
+                            isVisible.className += " small-width";
                             isVisible.onclick = function (e) {
                                 var ele = e.target;
                                 var id = ele.getAttribute("data-id");

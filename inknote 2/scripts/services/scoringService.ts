@@ -95,7 +95,7 @@ module Inknote {
             return ScoringService._instance;
         }
 
-        private _refresh: boolean = false; 
+        private _refresh: boolean = false;
         private _projectID: string;
         private _items: IDrawable[] = [];
 

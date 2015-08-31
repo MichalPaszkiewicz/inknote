@@ -47,6 +47,10 @@
   box-sizing: border-box;
   margin: 0;
 }
+.modal .form-row input.small-width {
+  min-width: 0;
+  margin: 10px;
+}
 .modal .form-row input[type*=color] {
   box-sizing: content-box;
 }

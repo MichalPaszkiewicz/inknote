@@ -54,8 +54,13 @@
         input {
             padding: 10px;
             min-width: 50%;
-            box-sizing:border-box;
+            box-sizing: border-box;
             margin: 0;
+
+            &.small-width {
+                min-width: 0;
+                margin: 10px;
+            }
 
             &[type*=color] {
                 box-sizing: content-box;
