@@ -7571,6 +7571,16 @@ var Inknote;
             };
             this.drawService.canvas.addEventListener("touchstart", function (e) {
                 self.touchStart(e, self.drawService);
+                var me = new MouseEvent();
+                // todo: get correct touch object.
+                var touch = e.touches[0];
+                me.clientX = touch.clientX;
+                me.clientY = touch.clientY;
+                me.x = touch.clientX;
+                me.y = touch.clientY;
+                me.screenX = touch.screenX;
+                me.screenY = touch.screenY;
+                self.click(me);
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {
@@ -7645,27 +7655,27 @@ var Inknote;
                         return;
                     }
                     // if keyboard clicked, do keyboard action.
-                    if (selectedID == Inknote.Drawing.Keyboard.Instance.ID) {
+                    if (selectedID === Inknote.Drawing.Keyboard.Instance.ID) {
                         Inknote.Drawing.Keyboard.Instance.click(e);
                         return;
                     }
                     // " " bottom menu
-                    if (selectedID == Inknote.Drawing.BottomMenu.Instance.ID) {
+                    if (selectedID === Inknote.Drawing.BottomMenu.Instance.ID) {
                         Inknote.Drawing.BottomMenu.Instance.click(e);
                         return;
                     }
                     // scroll bar
-                    if (selectedID == Inknote.ScrollService.ScrollBar.ID) {
+                    if (selectedID === Inknote.ScrollService.ScrollBar.ID) {
                         Inknote.ScrollService.ScrollBar.click(e);
                         return;
                     }
                     // scroll thumbnail
-                    if (selectedID == Inknote.ScrollService.ScrollBar.scrollThumbnail.ID) {
+                    if (selectedID === Inknote.ScrollService.ScrollBar.scrollThumbnail.ID) {
                         Inknote.ScrollService.ScrollBar.scrollThumbnail.click(e);
                         return;
                     }
                     // licence
-                    if (selectedID == Inknote.LicenceService.Instance.drawing.ID) {
+                    if (selectedID === Inknote.LicenceService.Instance.drawing.ID) {
                         Inknote.LicenceService.Instance.drawing.click(e);
                         return;
                     }

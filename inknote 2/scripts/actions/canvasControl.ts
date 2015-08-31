@@ -126,31 +126,31 @@
                     }
 
                     // if keyboard clicked, do keyboard action.
-                    if (selectedID == Drawing.Keyboard.Instance.ID) {
+                    if (selectedID === Drawing.Keyboard.Instance.ID) {
                         Drawing.Keyboard.Instance.click(e);
                         return;
                     }
 
                     // " " bottom menu
-                    if (selectedID == Drawing.BottomMenu.Instance.ID) {
+                    if (selectedID === Drawing.BottomMenu.Instance.ID) {
                         Drawing.BottomMenu.Instance.click(e);
                         return;
                     }
 
                     // scroll bar
-                    if (selectedID == ScrollService.ScrollBar.ID) {
+                    if (selectedID === ScrollService.ScrollBar.ID) {
                         ScrollService.ScrollBar.click(e);
                         return;
                     }
 
                     // scroll thumbnail
-                    if (selectedID == ScrollService.ScrollBar.scrollThumbnail.ID) {
+                    if (selectedID === ScrollService.ScrollBar.scrollThumbnail.ID) {
                         ScrollService.ScrollBar.scrollThumbnail.click(e);
                         return;
                     }
 
                     // licence
-                    if (selectedID == LicenceService.Instance.drawing.ID) {
+                    if (selectedID === LicenceService.Instance.drawing.ID) {
                         LicenceService.Instance.drawing.click(e);
                         return;
                     }
@@ -199,17 +199,17 @@
                     ScrollService.Instance.y -= e.movementY;
                 }
                 drawService.canvas.style.cursor = "-webkit-grabbing";
-            }
+            };
 
             drawService.canvas.addEventListener("mousemove", onMove, false);
 
             drawService.canvas.onmouseup = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
-            }
+            };
 
             drawService.canvas.onmouseout = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
-            }
+            };
         }
 
         touchCopies: TouchCopy[] = [];
@@ -252,7 +252,7 @@
                     lastTouch.pageX = touch.pageX;
                     lastTouch.pageY = touch.pageY;
                 }
-            }
+            };
 
             drawService.canvas.addEventListener("touchmove", onMove, false);
 
@@ -280,32 +280,46 @@
             this.drawService.canvas.onmouseover = function (e: MouseEvent) {
                 self.drawService.canvas.onmousemove = function (me: MouseEvent) {
                     self.hover(me);
-                }
-            }
+                };
+            };
 
             this.drawService.canvas.onmouseout = function (e: MouseEvent) {
                 self.drawService.canvas.onmousemove = null;
-            }
+            };
 
             this.drawService.canvas.onclick = function (e: MouseEvent) {
                 self.click(e);
-            }
+            };
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
                 self.dblClick(e);
-            }
+            };
 
             this.drawService.canvas.onmousedown = function (e: MouseEvent) {
                 self.mouseDown(e, drawService);
-            }
+            };
 
             // right click
             this.drawService.canvas.oncontextmenu = function (e: MouseEvent) {
                 self.rightClick(e);
-            }
+            };
 
             this.drawService.canvas.addEventListener("touchstart", function (e: TouchEvent) {
                 self.touchStart(e, self.drawService);
+
+                var me = new MouseEvent();
+
+                // todo: get correct touch object.
+                var touch = e.touches[0];
+
+                me.clientX = touch.clientX;
+                me.clientY = touch.clientY;
+                me.x = touch.clientX;
+                me.y = touch.clientY;
+                me.screenX = touch.screenX;
+                me.screenY = touch.screenY;
+
+                self.click(me);
             }, false);
 
         }
