@@ -14,6 +14,43 @@
         return curve;
     };
 
+    function toMinimumSizeIndex(items: (Model.Note | Model.Rest | Model.Chord)[]): (Model.Note | Model.Rest | Model.Chord)[] {
+        var result = [];
+
+        for (var i = 0; i < items.length; i++) {
+
+            var item = items[i];
+
+            var num: number = 0;
+
+            if (item instanceof Model.Note) {
+                num = getCrotchetsFromNoteLength(item.length) * 16;
+
+                result.push(item);
+                num--;
+
+            }
+            else if (item instanceof Model.Rest) {
+                num = getCrotchetsFromNoteLength(item.length) * 16;
+
+            }
+            else if (item instanceof Model.Chord) {
+                num = getCrotchetsFromNoteLength(item.notes[0].length) * 16;
+
+                result.push(item);
+                num--;
+
+            }
+
+            for (var j = 0; j < num; j++) {
+                result.push(null);
+            }
+            
+        }
+
+        return result;
+    }
+
     export class AudioService {
 
         private static _instance: AudioService;
@@ -41,9 +78,15 @@
 
         init() {
             this.destination = this.context.destination;
+            if (this.masterGain) {
+                this.masterGain.disconnect();
+            }
             this.masterGain = this.context.createGain();
             this.masterGain.gain.value = 0.3;
 
+            if (this.waveShaper) {
+                this.waveShaper.disconnect();
+            }
             this.waveShaper = this.context.createWaveShaper();
             // this.waveShaper.curve = makeDistortionCurve(100);
 
@@ -90,7 +133,7 @@
 
         playNotes() {
 
-            var minDifferenceTime = getPlayingTimeFromNoteLength(Model.NoteLength.Crotchet, this.bpm);
+            var minDifferenceTime = getPlayingTimeFromNoteLength(Model.NoteLength.HemiDemiSemiQuaver, this.bpm);
 
             var currentTime = new Date();
 
@@ -114,7 +157,9 @@
                     return item instanceof Model.Note || item instanceof Model.Rest;
                 });
 
-                var tempItem = tempItems[this.beatIndex];
+                var minimumSizeTempItems = toMinimumSizeIndex(tempItems);
+
+                var tempItem = minimumSizeTempItems[this.beatIndex];
 
                 if (tempItem instanceof Model.Note) {
                     
@@ -127,10 +172,10 @@
                 this.playNote(notesToPlay[i]);
             }
 
-            if (this.beatIndex + 1 >= this.timeSignature.top) {
+            if (this.beatIndex + 1 >= this.timeSignature.top * 16) {
                 this.barIndex++;
             }
-            this.beatIndex = (this.beatIndex + 1) % this.timeSignature.top;
+            this.beatIndex = (this.beatIndex + 1) % (this.timeSignature.top * 16);
 
             this.indexChanged = new Date();
         }

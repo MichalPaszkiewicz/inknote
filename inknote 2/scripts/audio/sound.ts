@@ -48,6 +48,9 @@
 
             this.finished = true;
 
+            this.oscillator.disconnect();
+            this.gain.disconnect();
+
             ScoringService.Instance.refresh();
         }
 

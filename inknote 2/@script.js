@@ -4942,6 +4942,12 @@ var Inknote;
                 var tempLine = lines[i];
                 for (var j = 0; j < visibleInstruments.length; j++) {
                     var tempInstrument = visibleInstruments[j];
+                    if (tempInstrument["clefAdditionalPosition"]) {
+                        clefAdditionalPosition = tempInstrument["clefAdditionalPosition"];
+                    }
+                    else {
+                        clefAdditionalPosition = 0;
+                    }
                     // add stave
                     var drawStave = new Inknote.Drawing.Stave(topLineHeight, tempInstrument.name);
                     drawStave.x = marginLeft;
@@ -4971,6 +4977,7 @@ var Inknote;
                                 drawClefItem.x = marginLeft + barX + itemX;
                                 drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
                                 clefAdditionalPosition = 5 * item.positionFromTreble;
+                                tempInstrument["clefAdditionalPosition"] = clefAdditionalPosition;
                                 this.addItem(drawClefItem);
                                 itemX += Inknote.requiredClefSpace(item, 10);
                             }
@@ -6374,6 +6381,8 @@ var Inknote;
                 // by only decreasing gain, removes popping.
                 // this.oscillator.disconnect();
                 this.finished = true;
+                this.oscillator.disconnect();
+                this.gain.disconnect();
                 Inknote.ScoringService.Instance.refresh();
             };
             Sound.prototype.update = function () {
@@ -6475,6 +6484,30 @@ var Inknote;
             return curve;
         }
         ;
+        function toMinimumSizeIndex(items) {
+            var result = [];
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var num = 0;
+                if (item instanceof Inknote.Model.Note) {
+                    num = Inknote.getCrotchetsFromNoteLength(item.length) * 16;
+                    result.push(item);
+                    num--;
+                }
+                else if (item instanceof Inknote.Model.Rest) {
+                    num = Inknote.getCrotchetsFromNoteLength(item.length) * 16;
+                }
+                else if (item instanceof Inknote.Model.Chord) {
+                    num = Inknote.getCrotchetsFromNoteLength(item.notes[0].length) * 16;
+                    result.push(item);
+                    num--;
+                }
+                for (var j = 0; j < num; j++) {
+                    result.push(null);
+                }
+            }
+            return result;
+        }
         var AudioService = (function () {
             function AudioService() {
                 this.context = new AudioContext();
@@ -6493,8 +6526,14 @@ var Inknote;
             });
             AudioService.prototype.init = function () {
                 this.destination = this.context.destination;
+                if (this.masterGain) {
+                    this.masterGain.disconnect();
+                }
                 this.masterGain = this.context.createGain();
                 this.masterGain.gain.value = 0.3;
+                if (this.waveShaper) {
+                    this.waveShaper.disconnect();
+                }
                 this.waveShaper = this.context.createWaveShaper();
                 // this.waveShaper.curve = makeDistortionCurve(100);
                 this.masterGain.connect(this.waveShaper);
@@ -6526,7 +6565,7 @@ var Inknote;
                 this.playSound(newSound);
             };
             AudioService.prototype.playNotes = function () {
-                var minDifferenceTime = Audio.getPlayingTimeFromNoteLength(3 /* Crotchet */, this.bpm);
+                var minDifferenceTime = Audio.getPlayingTimeFromNoteLength(7 /* HemiDemiSemiQuaver */, this.bpm);
                 var currentTime = new Date();
                 if (this.indexChanged && (currentTime.getTime() - this.indexChanged.getTime() < minDifferenceTime)) {
                     return;
@@ -6542,7 +6581,8 @@ var Inknote;
                     var tempItems = Inknote.getItemsWhere(tempBar.items, function (item) {
                         return item instanceof Inknote.Model.Note || item instanceof Inknote.Model.Rest;
                     });
-                    var tempItem = tempItems[this.beatIndex];
+                    var minimumSizeTempItems = toMinimumSizeIndex(tempItems);
+                    var tempItem = minimumSizeTempItems[this.beatIndex];
                     if (tempItem instanceof Inknote.Model.Note) {
                         notesToPlay.push(tempItem);
                     }
@@ -6550,10 +6590,10 @@ var Inknote;
                 for (var i = 0; i < notesToPlay.length; i++) {
                     this.playNote(notesToPlay[i]);
                 }
-                if (this.beatIndex + 1 >= this.timeSignature.top) {
+                if (this.beatIndex + 1 >= this.timeSignature.top * 16) {
                     this.barIndex++;
                 }
-                this.beatIndex = (this.beatIndex + 1) % this.timeSignature.top;
+                this.beatIndex = (this.beatIndex + 1) % (this.timeSignature.top * 16);
                 this.indexChanged = new Date();
             };
             AudioService.prototype.updateSounds = function () {

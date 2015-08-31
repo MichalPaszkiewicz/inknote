@@ -171,6 +171,13 @@ module Inknote {
                 for (var j = 0; j < visibleInstruments.length; j++) {
                     var tempInstrument = visibleInstruments[j];
 
+                    if (tempInstrument["clefAdditionalPosition"]) {
+                        clefAdditionalPosition = tempInstrument["clefAdditionalPosition"];
+                    }
+                    else {
+                        clefAdditionalPosition = 0;
+                    }
+
                     // add stave
                     var drawStave = new Drawing.Stave(topLineHeight, tempInstrument.name);
                     drawStave.x = marginLeft;
@@ -213,6 +220,7 @@ module Inknote {
                                 drawClefItem.y = topLineHeight + 5 * drawClefItem.drawPosition;
 
                                 clefAdditionalPosition = 5 * item.positionFromTreble;
+                                tempInstrument["clefAdditionalPosition"] = clefAdditionalPosition;
 
                                 this.addItem(drawClefItem);
 
