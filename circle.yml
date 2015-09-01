@@ -1,11 +1,8 @@
 general:
   build_dir: tests
 
-dependencies:
-  pre:
-    - cd tests
-    - npm install
-
 test:
   override:
+	- cd tests
+    - npm install
     - npm test
