@@ -1,6 +1,6 @@
 general:
-  build_dir: tests-old
+  build_dir: tests
 
 test:
   override:
-    - npm test
+    - jasmine tests/@tests.js
