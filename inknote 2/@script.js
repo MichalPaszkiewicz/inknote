@@ -4677,6 +4677,101 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var ClipboardService = (function () {
+        function ClipboardService() {
+        }
+        Object.defineProperty(ClipboardService, "Instance", {
+            get: function () {
+                if (!ClipboardService._instance) {
+                    ClipboardService._instance = new ClipboardService();
+                }
+                return ClipboardService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ClipboardService.prototype.copyItem = function (item) {
+            var result = null;
+            if (item instanceof Inknote.Model.Note) {
+                return Inknote.getNoteOfDistance(item, 0);
+            }
+            return result;
+        };
+        ClipboardService.prototype.copyDrawItem = function (selectedItem) {
+            var result = null;
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    var tempBar = project.instruments[i].bars[j];
+                    for (var k = 0; k < tempBar.items.length; k++) {
+                        var tempItem = project.instruments[i].bars[j].items[k];
+                        if (tempItem.ID == selectedItem.ID) {
+                            return this.copyItem(tempItem);
+                        }
+                    }
+                }
+            }
+            return result;
+        };
+        ClipboardService.prototype.copy = function () {
+            this.clipboard = [];
+            var selectedItem = Inknote.ScoringService.Instance.SelectedItem;
+            if (selectedItem instanceof Inknote.Drawing.Bar) {
+                var bar = new Inknote.Model.Bar();
+                var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var selectedBar = null;
+                for (var i = 0; i < project.instruments.length; i++) {
+                    selectedBar = Inknote.getItemFromID(project.instruments[i].bars, selectedItem.ID);
+                    if (selectedBar != null) {
+                        break;
+                    }
+                }
+                for (var i = 0; i < selectedBar.items.length; i++) {
+                    var tempItem = this.copyItem(selectedBar.items[i]);
+                    bar.items.push(tempItem);
+                }
+                this.clipboard.push(bar);
+                return;
+            }
+            else {
+                this.clipboard.push(this.copyDrawItem(selectedItem));
+                return;
+            }
+        };
+        ClipboardService.prototype.cut = function () {
+            this.copy();
+            Inknote.NoteControlService.Instance.deleteSelected();
+        };
+        ClipboardService.prototype.pasteItem = function (item) {
+            var selectedItem = Inknote.ScoringService.Instance.SelectedItem;
+            if (item instanceof Inknote.Model.Bar && Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var selectedBar = null;
+                for (var i = 0; i < project.instruments.length; i++) {
+                    selectedBar = Inknote.getItemFromID(project.instruments[i].bars, selectedItem.ID);
+                    if (selectedBar != null) {
+                        break;
+                    }
+                }
+                selectedBar.items = [];
+                for (var i = 0; i < item.items.length; i++) {
+                    selectedBar.items.push(this.copyItem(item.items[i]));
+                }
+            }
+        };
+        ClipboardService.prototype.paste = function () {
+            Inknote.UndoService.Instance.store();
+            for (var i = 0; i < this.clipboard.length; i++) {
+                this.pasteItem(this.clipboard[i]);
+            }
+            Inknote.ScoringService.Instance.refresh();
+        };
+        return ClipboardService;
+    })();
+    Inknote.ClipboardService = ClipboardService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var RightClickMenuService = (function () {
         function RightClickMenuService() {
         }
@@ -6322,6 +6417,41 @@ var Inknote;
     })();
     Inknote.ProjectOptionsService = ProjectOptionsService;
 })(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var UndoService = (function () {
+        function UndoService() {
+            this._storage = [];
+        }
+        Object.defineProperty(UndoService, "Instance", {
+            get: function () {
+                if (!UndoService._instance) {
+                    UndoService._instance = new UndoService();
+                }
+                return UndoService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        UndoService.prototype.store = function () {
+            var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var compressedCurrentProject = Inknote.ProjectConverter.compress(currentProject);
+            this._storage.push(compressedCurrentProject);
+            while (this._storage.length >= 5) {
+                this._storage.shift();
+            }
+        };
+        UndoService.prototype.undo = function () {
+            if (this._storage.length > 0) {
+                var decompressedStoredProject = Inknote.ProjectConverter.decompress(this._storage.pop());
+                Inknote.Managers.ProjectManager.Instance.currentProjectOverride = decompressedStoredProject;
+                Inknote.ScoringService.Instance.refresh();
+            }
+        };
+        return UndoService;
+    })();
+    Inknote.UndoService = UndoService;
+})(Inknote || (Inknote = {}));
 var PanningModelType;
 (function (PanningModelType) {
     PanningModelType[PanningModelType["equalpower"] = 0] = "equalpower";
@@ -6954,6 +7084,14 @@ var Inknote;
                         this._currentProject = new Inknote.Project();
                     }
                     return this._currentProject;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ProjectManager.prototype, "currentProjectOverride", {
+                set: function (project) {
+                    Inknote.log("current project overriden", 2 /* Warning */);
+                    this._currentProject = project;
                 },
                 enumerable: true,
                 configurable: true
@@ -7792,19 +7930,49 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var keysDown = [];
     if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
+            keysDown.push(e.keyCode);
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
             if (Modal.isModalOpen === true) {
                 return;
             }
+            // ctrl
+            if (Inknote.anyItemIs(keysDown, function (item) {
+                return item == 17;
+            })) {
+                // c
+                // copy
+                if (e.keyCode == 67) {
+                    Inknote.ClipboardService.Instance.copy();
+                }
+                // v
+                // paste
+                if (e.keyCode == 86) {
+                    Inknote.ClipboardService.Instance.paste();
+                }
+                // x
+                // cut
+                if (e.keyCode == 88) {
+                    Inknote.ClipboardService.Instance.cut();
+                }
+                // z
+                // undo
+                if (e.keyCode == 90) {
+                    Inknote.UndoService.Instance.undo();
+                }
+            }
             if (e.keyCode == 8) {
                 e.preventDefault();
             }
         };
         window.onkeyup = function (ev) {
+            keysDown = Inknote.getItemsWhere(keysDown, function (item) {
+                return item != ev.keyCode;
+            });
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
@@ -8240,6 +8408,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />
 /// <reference path="scripts/services/idrawableservice.ts" />
+/// <reference path="scripts/services/clipboardservice.ts" />
 /// <reference path="scripts/services/rightclickmenuservice.ts" /> 
 /// <reference path="scripts/services/drawservice.ts" />
 /// <reference path="scripts/services/scoringservice.ts" />
@@ -8257,6 +8426,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+/// <reference path="scripts/services/undoservice.ts" />
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />
 /// <reference path="scripts/audio/sound.ts" />

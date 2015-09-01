@@ -120,6 +120,7 @@
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />
 /// <reference path="scripts/services/idrawableservice.ts" />
+/// <reference path="scripts/services/clipboardservice.ts" />
 /// <reference path="scripts/services/rightclickmenuservice.ts" /> 
 /// <reference path="scripts/services/drawservice.ts" />
 /// <reference path="scripts/services/scoringservice.ts" />
@@ -137,6 +138,7 @@
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+/// <reference path="scripts/services/undoservice.ts" />
 
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />

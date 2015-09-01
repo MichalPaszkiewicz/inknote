@@ -75,6 +75,11 @@
             return this._currentProject;
         }
 
+        set currentProjectOverride(project: Project) {
+            log("current project overriden", MessageType.Warning);
+            this._currentProject = project;
+        }
+
         save() {
             if (this._projects.indexOf(this._currentProject) == -1) {
                 this._projects.push(this._currentProject);

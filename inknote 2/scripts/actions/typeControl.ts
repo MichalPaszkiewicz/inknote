@@ -1,7 +1,12 @@
 ﻿module Inknote {
 
+    var keysDown: number[] = [];
+
     if (typeof document != "undefined" && typeof window != "undefined"){
         document.onkeydown = function (e) {
+
+            keysDown.push(e.keyCode);
+
             if (CONFIRM_IS_OPEN) {
                 return;
             }
@@ -10,12 +15,48 @@
                 return;
             }
 
+            // ctrl
+            if (anyItemIs(keysDown, function (item: number) {
+                return item == 17;
+            })){
+
+                // c
+                // copy
+                if (e.keyCode == 67) {
+                    ClipboardService.Instance.copy();
+                }
+
+                // v
+                // paste
+                if (e.keyCode == 86) {
+                    ClipboardService.Instance.paste();
+                }
+
+                // x
+                // cut
+                if (e.keyCode == 88) {
+                    ClipboardService.Instance.cut();
+                }
+
+                // z
+                // undo
+                if (e.keyCode == 90) {
+                    UndoService.Instance.undo();
+                }
+
+            }
+
             if (e.keyCode == 8) {
                 e.preventDefault();
             }
         }
 
         window.onkeyup = function (ev: KeyboardEvent) {
+
+            keysDown = getItemsWhere(keysDown, function (item: number) {
+                return item != ev.keyCode;
+            });
+
             if (CONFIRM_IS_OPEN) {
                 return;
             }
