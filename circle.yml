@@ -3,4 +3,4 @@ general:
 
 test:
   override:
-    - jasmine tests/@tests.js
+    - npm test
