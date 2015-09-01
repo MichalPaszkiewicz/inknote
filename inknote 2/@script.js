@@ -6447,6 +6447,9 @@ var Inknote;
                 Inknote.Managers.ProjectManager.Instance.currentProjectOverride = decompressedStoredProject;
                 Inknote.ScoringService.Instance.refresh();
             }
+            else {
+                Inknote.log("You have reached the maximum number of undos", 2 /* Warning */);
+            }
         };
         return UndoService;
     })();

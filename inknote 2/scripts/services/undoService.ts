@@ -35,6 +35,11 @@
                 ScoringService.Instance.refresh();
 
             }
+            else {
+
+                log("You have reached the maximum number of undos", MessageType.Warning);
+
+            }
 
         }
 
