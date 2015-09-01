@@ -3,9 +3,9 @@ general:
 
 dependencies:
   pre:
+    - cd tests
     - npm install
 
 test:
   override:
-    - npm install
     - npm test
