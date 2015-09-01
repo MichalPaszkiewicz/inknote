@@ -3,6 +3,6 @@ general:
 
 test:
   override:
-	- cd tests
+    - cd tests
     - npm install
     - npm test
