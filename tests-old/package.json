@@ -1,0 +1,15 @@
+{
+    "name": "async-testing-tutorial"
+  , "version": "0.0.1"
+  , "description": "A tutorial for Mocha"
+  , "keywords": ["test", "tutorial"]
+  , "author": "Alex R. Young <info@dailyjs.com>"
+  , "main": "index"
+  , "engines": { "node": ">= 0.4.x < 0.7.0" }
+  , "scripts": {
+    "test": "mocha -u tdd"
+  }
+  , "devDependencies": {
+    "mocha": "0.3.x"
+  }
+}

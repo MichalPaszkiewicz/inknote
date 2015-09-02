@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>inknote</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/fontfaces.css" type="text/css" />
+    <link rel="stylesheet" href="styles/base.css" type="text/css" />
+    <link href="styles/modal.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/cover.css" type="text/css" />
+    <meta name="viewport" content="width=420, user-scalable=no">
+    <link rel="icon" href="favicon.ico" />
+</head>
+<body>
+    <div class="header">
+        <h1 style="cursor: pointer" onclick="Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.Score)">inknote</h1>
+        <div class="button" onclick="Inknote.Action(Inknote.ActionType.OpenProject)">Projects</div>
+        <div class="button" onclick="Inknote.Action(Inknote.ActionType.NewProject)">New</div>
+        <div class="button" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">Save</div>
+        <div class="button" id="play" onclick="Inknote.Audio.AudioService.Instance.play()">Play</div>
+    </div>
+    <div id="main" class="main-container">
+        <div id="confirm-box" class="hidden">
+            <div id="confirm-text">Are you sure?</div>
+            <button id="confirm-ok" class="button">ok</button>
+            <button id="confirm-cancel" class="button">cancel</button>
+        </div>
+        <div class="header-push"></div>
+
+        <canvas id="my-canvas"></canvas>
+
+        <!--<div class="footer-push"></div>-->
+    </div>
+    <!--<div class="footer"></div>-->
+
+    <div id="modal-cover" class="hidden" onclick="Modal.hideAllModals()"></div>
+    <div id="confirm-cover" class="hidden"></div>
+
+    <div id="report" class="hidden modal">
+        <div class="x" onclick="Modal.cancelReport()">x</div>
+
+        <div class="overflower">
+            <h2>Bug report</h2>
+            <textarea id="report-text" placeholder="Please describe your issue here"></textarea>
+            <div class="line"><input id="report-checkbox" type="checkbox" />I am a human</div>
+            <div class="button" onclick="Modal.cancelReport()">Cancel</div>
+            <div class="button" onclick="Modal.submitReport()">Send</div>
+        </div>
+    </div>
+
+    <div id="instruments" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('instruments')">x</div>
+
+        <div class="overflower">
+            <h2>Instruments</h2>
+            <div id="instrument-list">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="plugins" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('plugins')">x</div>
+
+        <div class="overflower">
+            <h2>Plugins</h2>
+            <div class="modal-menu">
+                <div class="modal-menu-item plugin-menu-item select" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-list')">Plugin list</div>
+                <div class="modal-menu-item plugin-menu-item" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-event-list')">Event list</div>
+                <div class="modal-menu-item plugin-menu-item" onclick="Actions.Plugins.PluginMenuClick(this, 'plugin-advanced')">Advanced</div>
+            </div>
+            <div id="plugin-list">
+                <h3>List</h3>
+                <!-- List of plugin names goes in here. -->
+                <div id="plugin-list-items"></div>
+                <div class="button">Add external plugin</div>
+            </div>
+            <div id="plugin-event-list" class="hidden">
+                <h3>Events</h3>
+                <!-- List of events in plugin manager and plugins affecting them goes here -->
+            </div>
+            <div id="plugin-advanced" class="hidden">
+                <h3>Advanced</h3>
+                <!-- List of plugins with advanced options goes here -->
+            </div>
+            <div class="button" onclick="Modal.toggle('plugins')">Close</div>
+        </div>
+    </div>
+
+    <div id="project-options" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('project-options')">x</div>
+
+        <div class="overflower">
+            <div id="project-options-details">
+
+            </div>
+            <div class="button" onclick="Modal.toggle('project-options')">Close</div>
+        </div>
+    </div>
+
+    <div id="landing" class="cover" onclick="Inknote.Landing.Landing.Instance.hide()">
+        <canvas id="landing-canvas"></canvas>
+        <div class="central">
+            <div class="cover-text">
+                <h1>inknote</h1>
+                <p>click anywhere to start</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="drag-drop" class="hidden cover">
+        <canvas id="drag-drop-canvas"></canvas>
+        <div class="dashed-border">
+            <div id="drag-drop-text" class="cover-text">
+                drop your file(s) here!
+            </div>
+        </div>
+    </div>
+
+    <script src="@script.js"></script>
+</body>
+</html>

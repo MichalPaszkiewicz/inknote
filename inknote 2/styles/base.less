@@ -1,0 +1,196 @@
+﻿html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+input[type*=checkbox] {
+    width: 25px;
+    height: 25px;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+.header, .footer, .header-push, .footer-push {
+    height: 50px;
+}
+
+.header, .footer {
+    background: black;
+    color: white;
+
+    h1 {
+        margin: 0;
+        line-height: 50px;
+    }
+
+    h1, .button {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.footer, .footer-push {
+    clear: both;
+}
+
+.header {
+    position: fixed;
+    width: 100%;
+}
+
+.footer {
+    margin-top: -50px;
+}
+
+.main-container {
+    min-height: 100%;
+    max-height: 100%;
+}
+
+/*IE9*/
+canvas::selection {
+    background-color: transparent;
+}
+
+canvas::-moz-selection {
+    background-color: transparent;
+}
+
+canvas {
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    /*IE10*/
+    -ms-user-select: none;
+    user-select: none;
+    display: block;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.button {
+    background: gray;
+    cursor: pointer;
+    padding: 5px;
+    display: inline-block;
+    color: white;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    /*IE10*/
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.button:hover {
+    background: darkgray;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#modal-cover, #confirm-cover {
+    background: rgba(25,25,25,0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    top: 0;
+    left: 0;
+}
+
+.modal {
+    background: rgb(241, 241, 236);
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50%;
+    min-height: 200px;
+    max-height: 80%;
+    z-index: 1000;
+    box-sizing: border-box;
+    padding: 0 10px;
+    box-shadow: 5px 4px 9px 0px rgb(25,25,25);
+
+    h2 {
+        display: block;
+        text-align: center;
+    }
+
+    textarea {
+        display: block;
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 10px 0;
+        min-height: 100px;
+    }
+
+    .x {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 25px;
+        display: block;
+        color: red;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+
+        &:hover {
+            color: darkred;
+        }
+    }
+}
+
+@media(max-width: 1200px) {
+    .modal {
+        width: 70%;
+    }
+}
+
+@media(max-width: 900px) {
+    .modal {
+        width: 90%;
+        max-height: 90%;
+    }
+}
+
+.line {
+    margin: 10px 0;
+}
+
+#confirm-box {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    z-index: 5000;
+    padding: 30px;
+    font-size: 25px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    box-shadow: black 5px 5px 5px 0;
+
+    .button {
+        margin: 10px;
+        text-align: center;
+        min-width: 80px;
+        border: none;
+        font-size: 25px;
+
+        &:focus {
+            background: orange;
+        }
+    }
+}
+
+#confirm-cover {
+    z-index: 4999;
+    background: rgba(0,0,0,0.5);
+}

@@ -1,0 +1,75 @@
+﻿body .cover {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 2000;
+  background: rgba(255, 255, 255, 0.9);
+  top: 0;
+  left: 0;
+}
+body .cover canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+body .cover .dashed-border,
+body .cover .central {
+  border: 5px dashed gray;
+  height: 90%;
+  margin: 2%;
+  box-sizing: border-box;
+  vertical-align: middle;
+  text-align: center;
+  z-index: 3000;
+  position: relative;
+}
+body .cover .dashed-border .cover-text,
+body .cover .central .cover-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 20px;
+  width: 145px;
+}
+body #drag-drop-bad {
+  background: red;
+  color: white;
+}
+#landing {
+  background: #FFA500;
+  color: white;
+  cursor: pointer;
+  opacity: 1;
+}
+#landing .central {
+  border: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+@media (min-width: 500px) {
+  #landing .central {
+    background: url(../assets/landing.png);
+  }
+}
+#landing .central .cover-text h1 {
+  font-size: 34px;
+  margin-top: 0;
+}
+#landing.faded {
+  transition: ease-in all 2s;
+  /*-webkit-transition: ease-in all 3s;
+        -moz-transition: ease-in all 3s;
+        top:0;
+        opacity: 0;*/
+}
+#landing.hidden {
+  transition: ease-in all 0.5s;
+  background: #000000;
+  margin-top: -400%;
+  display: block;
+}
+/*# sourceMappingURL=cover.css.map */

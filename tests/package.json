@@ -1,15 +1,13 @@
 {
-    "name": "async-testing-tutorial"
-  , "version": "0.0.1"
-  , "description": "A tutorial for Mocha"
-  , "keywords": ["test", "tutorial"]
-  , "author": "Alex R. Young <info@dailyjs.com>"
-  , "main": "index"
+    "name": "inknote"
+  , "version": "0.5.0"
+  , "description": "inknote app"
+  , "author": "Michal Paszkiewicz"
   , "engines": { "node": ">= 0.4.x < 0.7.0" }
   , "scripts": {
-    "test": "mocha -u tdd"
+    "test": "jasmine @tests.js"
   }
   , "devDependencies": {
-    "mocha": "0.3.x"
+    "jasmine": "~2.3.2"
   }
 }
