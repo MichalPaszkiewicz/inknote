@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{8790919E-7659-463C-A2C6-7D45CC2BC921}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="%40script.js" />
+    <Content Include="%40script.min.js">
+      <DependentUpon>%40script.js</DependentUpon>
+    </Content>
+    <Content Include="assets\landing.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="index.html" />
+    <Content Include="licence\index.html" />
+    <Content Include="styles\base.css">
+      <DependentUpon>base.less</DependentUpon>
+    </Content>
+    <Content Include="styles\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="styles\cover.css">
+      <DependentUpon>cover.less</DependentUpon>
+    </Content>
+    <Content Include="styles\cover.min.css">
+      <DependentUpon>cover.css</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.css">
+      <DependentUpon>fontfaces.less</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.min.css">
+      <DependentUpon>fontfaces.css</DependentUpon>
+    </Content>
+    <Content Include="styles\modal.css">
+      <DependentUpon>modal.less</DependentUpon>
+    </Content>
+    <Content Include="styles\modal.min.css">
+      <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="scripts\actions\baseAction.ts" />
+    <TypeScriptCompile Include="scripts\actions\canvasControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
+    <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
+    <TypeScriptCompile Include="scripts\actions\windowResize.ts" />
+    <TypeScriptCompile Include="scripts\app.ts" />
+    <TypeScriptCompile Include="scripts\audio\audioService.ts" />
+    <TypeScriptCompile Include="scripts\audio\frequencies.ts" />
+    <TypeScriptCompile Include="scripts\audio\playTime.ts" />
+    <TypeScriptCompile Include="scripts\audio\sound.ts" />
+    <TypeScriptCompile Include="scripts\audio\webaudioDefinitions.ts" />
+    <TypeScriptCompile Include="scripts\drawings\background.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\bottomMenuButton.ts" />
+    <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
+    <TypeScriptCompile Include="scripts\drawings\clef.ts" />
+    <TypeScriptCompile Include="scripts\drawings\colours.ts" />
+    <TypeScriptCompile Include="scripts\drawings\file.ts" />
+    <TypeScriptCompile Include="scripts\drawings\flat.ts" />
+    <TypeScriptCompile Include="scripts\drawings\fonts.ts" />
+    <TypeScriptCompile Include="scripts\drawings\keyboard.ts" />
+    <TypeScriptCompile Include="scripts\drawings\keyboardKey.ts" />
+    <TypeScriptCompile Include="scripts\drawings\licence.ts" />
+    <TypeScriptCompile Include="scripts\drawings\loading.ts" />
+    <TypeScriptCompile Include="scripts\drawings\name.ts" />
+    <TypeScriptCompile Include="scripts\drawings\natural.ts" />
+    <TypeScriptCompile Include="scripts\drawings\note.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\deleteNoteControl.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\lengthControl.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\minimise.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\noteControlBackground.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\piano.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\pianoKey.ts" />
+    <TypeScriptCompile Include="scripts\drawings\noteControls\restControl.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rest.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickFile.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\rightClickMenus\rightClickScore.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scoreMenu.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\fileScrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\projectScrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollBar.ts" />
+    <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollThumbnail.ts" />
+    <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
+    <TypeScriptCompile Include="scripts\drawings\stave.ts" />
+    <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\dropCanvas.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\dropFile.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\droplet.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\environment.ts" />
+    <TypeScriptCompile Include="scripts\dropCanvas\springs.ts" />
+    <TypeScriptCompile Include="scripts\helpers\2d.ts" />
+    <TypeScriptCompile Include="scripts\helpers\array.ts" />
+    <TypeScriptCompile Include="scripts\helpers\canvas.ts" />
+    <TypeScriptCompile Include="scripts\helpers\maths.ts" />
+    <TypeScriptCompile Include="scripts\helpers\string.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\ichordable.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\idrawable.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\iidentifiable.ts" />
+    <TypeScriptCompile Include="scripts\interfaces\inameable.ts" />
+    <TypeScriptCompile Include="scripts\landing\landing.ts" />
+    <TypeScriptCompile Include="scripts\landing\metaball.ts" />
+    <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\settingsManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\versionManager.ts" />
+    <TypeScriptCompile Include="scripts\model\bar.ts" />
+    <TypeScriptCompile Include="scripts\model\chord.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\doReMiChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\notationType.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\standardChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\chordNotation\upper_lowerChordNotation.ts" />
+    <TypeScriptCompile Include="scripts\model\clef.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedBar.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedChord.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedClef.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedInstrument.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedItemIdentifier.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedRest.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedTimeSignature.ts" />
+    <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
+    <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
+    <TypeScriptCompile Include="scripts\model\instrument.ts" />
+    <TypeScriptCompile Include="scripts\model\key\key.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyDefinitions.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyExtensions.ts" />
+    <TypeScriptCompile Include="scripts\model\key\keyTypes.ts" />
+    <TypeScriptCompile Include="scripts\model\notation.ts" />
+    <TypeScriptCompile Include="scripts\model\note.ts" />
+    <TypeScriptCompile Include="scripts\model\noteLength.ts" />
+    <TypeScriptCompile Include="scripts\model\noteValue.ts" />
+    <TypeScriptCompile Include="scripts\model\project.ts" />
+    <TypeScriptCompile Include="scripts\model\rest.ts" />
+    <TypeScriptCompile Include="scripts\model\settings.ts" />
+    <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
+    <Content Include="build-plugins.bat" />
+    <None Include="scripts\plugins\instances\snow-back.ts" />
+    <None Include="scripts\plugins\instances\plugin2.ts" />
+    <None Include="scripts\plugins\instances\data-storage.ts" />
+    <TypeScriptCompile Include="scripts\plugins\compressedPlugin.ts" />
+    <None Include="scripts\plugins\instances\defs.ts" />
+    <TypeScriptCompile Include="scripts\plugins\plugin.ts" />
+    <TypeScriptCompile Include="scripts\plugins\pluginList.ts" />
+    <TypeScriptCompile Include="scripts\rights.ts" />
+    <TypeScriptCompile Include="scripts\security-warning.ts" />
+    <TypeScriptCompile Include="scripts\services\barService.ts" />
+    <TypeScriptCompile Include="scripts\services\chordIdentifier.ts" />
+    <TypeScriptCompile Include="scripts\services\chordNotationService.ts" />
+    <TypeScriptCompile Include="scripts\services\chordService.ts" />
+    <TypeScriptCompile Include="scripts\services\clefService.ts" />
+    <TypeScriptCompile Include="scripts\services\clipboardService.ts" />
+    <TypeScriptCompile Include="scripts\services\confirmService.ts" />
+    <TypeScriptCompile Include="scripts\services\drawService.ts" />
+    <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
+    <TypeScriptCompile Include="scripts\services\identifyService.ts" />
+    <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
+    <TypeScriptCompile Include="scripts\services\intervalService.ts" />
+    <TypeScriptCompile Include="scripts\services\licenceService.ts" />
+    <TypeScriptCompile Include="scripts\services\noteControlService.ts" />
+    <TypeScriptCompile Include="scripts\services\noteService.ts" />
+    <TypeScriptCompile Include="scripts\services\projectOptionsService.ts" />
+    <TypeScriptCompile Include="scripts\services\restService.ts" />
+    <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
+    <TypeScriptCompile Include="scripts\services\scoringService.ts" />
+    <TypeScriptCompile Include="scripts\services\scrollService.ts" />
+    <TypeScriptCompile Include="scripts\services\timeSignatureService.ts" />
+    <TypeScriptCompile Include="scripts\services\transposeService.ts" />
+    <TypeScriptCompile Include="scripts\services\undoService.ts" />
+    <TypeScriptCompile Include="scripts\storage\driveStorage.ts" />
+    <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
+    <TypeScriptCompile Include="scripts\services\logger.ts" />
+    <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
+    <TypeScriptCompile Include="scripts\testData\compressedProject.ts" />
+    <TypeScriptCompile Include="_references.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="styles\base.less" />
+    <Content Include="styles\base.css.map">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="%40script.min.js.map">
+      <DependentUpon>%40script.min.js</DependentUpon>
+    </Content>
+    <Content Include="styles\fontfaces.less" />
+    <Content Include="styles\fontfaces.css.map">
+      <DependentUpon>fontfaces.css</DependentUpon>
+    </Content>
+    <Content Include="styles\modal.less" />
+    <Content Include="styles\modal.css.map">
+      <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="styles\cover.less" />
+    <Content Include="styles\cover.css.map">
+      <DependentUpon>cover.css</DependentUpon>
+    </Content>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Inknote_2</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56538</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56538/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptOutFile>@script.js</TypeScriptOutFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

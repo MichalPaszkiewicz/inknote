@@ -1,6 +1,8 @@
 inknote
 =======
 
+[![Join the chat at https://gitter.im/MichalPaszkiewicz/inknote](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MichalPaszkiewicz/inknote?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](https://circleci.com/gh/MichalPaszkiewicz/inknote.png?circle-token=:circle-token)](https://circleci.com/gh/MichalPaszkiewicz/inknote)
 
 Compose music easily in your browser!

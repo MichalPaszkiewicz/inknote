@@ -3,4 +3,5 @@ general:
 
 test:
   override:
+    - npm install
     - npm test
