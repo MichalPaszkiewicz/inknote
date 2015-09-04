@@ -9,8 +9,9 @@
         var appSetting = new Setting("Default");
 
         // ***********************************************
-        // ** comment out the following line when live. **
+        // ** comment out the following lines when live. **
         // appSetting.testMode = true;
+        // appSetting.displayID = true;
         // ***********************************************
     
         // ***********************************************

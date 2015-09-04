@@ -45,6 +45,12 @@
                 self._canvas.width = self._canvas.parentElement.clientWidth;
                 self._canvas.height = self._canvas.parentElement.clientHeight - 50;
 
+                if (Managers.SettingsManager.Current.displayID === true) {
+                    if (Managers.PageManager.Current.page == Managers.Page.Score) {
+                        self._ctx.fillText(ScoringService.Instance.selectID, 10, 10);
+                    }
+                }
+
                 self.arrange();
 
                 self._items.push(LicenceService.Instance.drawing);

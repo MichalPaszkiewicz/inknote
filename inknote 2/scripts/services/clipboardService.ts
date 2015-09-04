@@ -22,6 +22,10 @@
                 return getNoteOfDistance(item, 0);
             }
 
+            if (item instanceof Model.Rest) {
+                return new Model.Rest(item.length);
+            }
+
             return result;
         }
 
@@ -72,7 +76,9 @@
                 for (var i = 0; i < selectedBar.items.length; i++) {
                     var tempItem = this.copyItem(selectedBar.items[i]);
 
-                    bar.items.push(tempItem);
+                    if (tempItem) {
+                        bar.items.push(tempItem);
+                    }
                 }
 
                 this.clipboard.push(bar);
@@ -97,7 +103,7 @@
 
             var selectedItem = ScoringService.Instance.SelectedItem;
 
-            if (item instanceof Model.Bar && ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+            if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
 
                 var project = Managers.ProjectManager.Instance.currentProject;
 
@@ -113,11 +119,17 @@
 
                 selectedBar.items = [];
 
-                for (var i = 0; i < item.items.length; i++) {
-                    selectedBar.items.push(this.copyItem(item.items[i]));
+                if (item instanceof Model.Bar) {
+
+                    for (var i = 0; i < item.items.length; i++) {
+                        selectedBar.items.push(this.copyItem(item.items[i]));
+                    }
+
                 }
 
             }
+
+
 
         }
 

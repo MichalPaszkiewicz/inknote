@@ -4,6 +4,7 @@
         name: string;
         ID: string;
         testMode: boolean;
+        displayID: boolean = false;
 
         notationType: NotationType;
 
