@@ -155,6 +155,10 @@
                 // delete
                 case 46:
                     NoteControlService.Instance.deleteSelected();
+                    break;
+                // SPACE
+                case 32:
+                    Audio.AudioService.Instance.toggle();
             }
         }
 
@@ -206,6 +210,7 @@
                 proj.name = pascalCase(proj.name + String.fromCharCode(e.keyCode));
             }
         }
+
         e.preventDefault();
     }
 

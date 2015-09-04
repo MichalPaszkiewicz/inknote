@@ -5,6 +5,21 @@ module Inknote.Tests {
 
     describe("getNoteOfDistance", function () {
 
+        it("gets a different note", function () {
+            var newNote = new Model.Note(Model.NoteValue.A, 4, Model.NoteLength.Crotchet);
+            expect(getNoteOfDistance(newNote, 0) == newNote).toBe(false);
+        });
+
+        it("gets a note with a different ID", function () {
+            var newNote = new Model.Note(Model.NoteValue.A, 4, Model.NoteLength.Crotchet);
+            expect(getNoteOfDistance(newNote, 0).ID == newNote.ID).toBe(false);
+        });
+
+        it("gets the correct type of object", function () {
+            var newNote = new Model.Note(Model.NoteValue.A, 4, Model.NoteLength.Crotchet);
+            expect(getNoteOfDistance(newNote, 0) instanceof Model.Note).toBe(true);
+        });
+
         it("gets a note", function () {
             var newNote = new Model.Note(Model.NoteValue.A, 4, Model.NoteLength.Crotchet);
             expect(getNoteOfDistance(newNote, 0)).toBeTruthy();
