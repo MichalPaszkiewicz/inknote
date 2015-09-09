@@ -3181,8 +3181,20 @@ var Inknote;
                                 }
                                 Inknote.ScoringService.Instance.refresh();
                             };
+                            var up = document.createElement("span");
+                            var down = document.createElement("span");
+                            up.textContent = "/\\";
+                            down.textContent = "\\/";
+                            up.className += " button";
+                            down.className += " button";
+                            up.onclick = function (e) {
+                            };
+                            down.onclick = function (e) {
+                            };
                             formRow.appendChild(instrumentHolder);
                             formRow.appendChild(isVisible);
+                            formRow.appendChild(up);
+                            formRow.appendChild(down);
                             instrumentList.appendChild(formRow);
                         }
                     }));
