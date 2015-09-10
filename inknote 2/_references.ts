@@ -138,6 +138,7 @@
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+/// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
 
 // audio

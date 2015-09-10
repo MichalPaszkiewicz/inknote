@@ -22,80 +22,110 @@
 
                 Modal.toggle("instruments");
                 
-                var instrumentList = document.getElementById("instrument-list");
+                function drawInstrumentEditModal() {
+                    var instrumentList = document.getElementById("instrument-list");
 
-                instrumentList.innerHTML = "";
+                    instrumentList.innerHTML = "";
 
-                var instruments = Managers.ProjectManager.Instance.currentProject.instruments;
+                    var instruments = Managers.ProjectManager.Instance.currentProject.instruments;
 
-                for (var i = 0; i < instruments.length; i++) {
+                    for (var i = 0; i < instruments.length; i++) {
 
-                    var formRow = document.createElement("div");
-                    formRow.className = "form-row";
+                        var formRow = document.createElement("div");
+                        formRow.className = "form-row";
 
-                    var instrumentHolder = document.createElement("input");
-                    instrumentHolder.value = instruments[i].name;
-                    instrumentHolder.setAttribute("data-id", instruments[i].ID);
-                    
-                    instrumentHolder.onkeyup = function (e) {
-                        var ele = <HTMLInputElement>e.target;
+                        var instrumentHolder = document.createElement("input");
+                        instrumentHolder.value = instruments[i].name;
+                        instrumentHolder.setAttribute("data-id", instruments[i].ID);
 
-                        var id = ele.getAttribute("data-id");
-                        var proj = Managers.ProjectManager.Instance.currentProject;
+                        instrumentHolder.onkeyup = function (e) {
+                            var ele = <HTMLInputElement>e.target;
 
-                        for (var j = 0; j < proj.instruments.length; j++) {
-                            if (proj.instruments[j].ID == id) {
-                                proj.instruments[j].name = ele.value;
+                            var id = ele.getAttribute("data-id");
+                            var proj = Managers.ProjectManager.Instance.currentProject;
+
+                            for (var j = 0; j < proj.instruments.length; j++) {
+                                if (proj.instruments[j].ID == id) {
+                                    proj.instruments[j].name = ele.value;
+                                }
                             }
+
+                            ScoringService.Instance.refresh();
                         }
 
-                        ScoringService.Instance.refresh();
-                    }   
-                    
-                    var isVisible = document.createElement("input");
-                    isVisible.type = "checkbox";    
-                    isVisible.checked = instruments[i].visible;
-                    isVisible.setAttribute("data-id", instruments[i].ID);
+                        var isVisible = document.createElement("input");
+                        isVisible.type = "checkbox";
+                        isVisible.checked = instruments[i].visible;
+                        isVisible.setAttribute("data-id", instruments[i].ID);
 
-                    isVisible.className += " small-width";
-                    
-                    isVisible.onclick = function (e) {
-                        var ele = <HTMLInputElement>e.target;
-                        var id = ele.getAttribute("data-id");
-                        var proj = Managers.ProjectManager.Instance.currentProject;
+                        isVisible.className += " small-width";
 
-                        for (var j = 0; j < proj.instruments.length; j++) {
-                            if (proj.instruments[j].ID == id) {
-                                proj.instruments[j].visible = ele.checked;
+                        isVisible.onclick = function (e) {
+                            var ele = <HTMLInputElement>e.target;
+                            var id = ele.getAttribute("data-id");
+                            var proj = Managers.ProjectManager.Instance.currentProject;
+
+                            for (var j = 0; j < proj.instruments.length; j++) {
+                                if (proj.instruments[j].ID == id) {
+                                    proj.instruments[j].visible = ele.checked;
+                                }
                             }
+
+                            ScoringService.Instance.refresh();
                         }
 
-                        ScoringService.Instance.refresh();
-                    }    
-                    
-                    var up = document.createElement("span");
-                    var down = document.createElement("span");         
+                        var up = document.createElement("span");
+                        var down = document.createElement("span");
 
-                    up.textContent = "/\\";
-                    down.textContent = "\\/";
-                    up.className += " button";
-                    down.className += " button";
+                        up.textContent = "/\\";
+                        down.textContent = "\\/";
+                        up.className += " button";
+                        down.className += " button";
+                        up.setAttribute("data-id", instruments[i].ID);
+                        down.setAttribute("data-id", instruments[i].ID);
 
-                    up.onclick = function (e) {
+                        up.onclick = function (e) {
+                            var ele = <HTMLInputElement>e.target;
+                            var id = ele.getAttribute("data-id");
+
+                            InstrumentService.Instance.moveUpFromID(id);
+                            drawInstrumentEditModal();
+                        }
+
+                        down.onclick = function (e) {
+                            var ele = <HTMLInputElement>e.target;
+                            var id = ele.getAttribute("data-id");
+
+                            InstrumentService.Instance.moveDownFromID(id);
+                            drawInstrumentEditModal();
+                        }
+
+                        var deleteBtn = document.createElement("span");
+
+                        deleteBtn.textContent = "x";
+                        deleteBtn.className += " button negative";
+                        deleteBtn.setAttribute("data-id", instruments[i].ID);
+
+                        deleteBtn.onclick = function (e) {
+                            var ele = <HTMLInputElement>e.target;
+                            var id = ele.getAttribute("data-id");
+
+                            InstrumentService.Instance.deleteFromID(id, function () {
+                                drawInstrumentEditModal();
+                            });
+                        }
+
+                        formRow.appendChild(instrumentHolder);
+                        formRow.appendChild(isVisible);
+                        formRow.appendChild(up);
+                        formRow.appendChild(down);
+                        formRow.appendChild(deleteBtn);
+                        instrumentList.appendChild(formRow);
 
                     }
-
-                    down.onclick = function (e) {
-
-                    }
-
-                    formRow.appendChild(instrumentHolder);
-                    formRow.appendChild(isVisible);
-                    formRow.appendChild(up);
-                    formRow.appendChild(down);
-                    instrumentList.appendChild(formRow);
-
                 }
+
+                drawInstrumentEditModal();
 
             }));
             this.items.unshift(new ClickableMenuItem("add instrument", function () {

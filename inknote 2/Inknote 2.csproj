@@ -175,6 +175,7 @@
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
     <TypeScriptCompile Include="scripts\services\identifyService.ts" />
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
+    <TypeScriptCompile Include="scripts\services\instrumentService.ts" />
     <TypeScriptCompile Include="scripts\services\intervalService.ts" />
     <TypeScriptCompile Include="scripts\services\licenceService.ts" />
     <TypeScriptCompile Include="scripts\services\noteControlService.ts" />

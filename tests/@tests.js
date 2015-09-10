@@ -3181,8 +3181,44 @@ var Inknote;
                                 }
                                 Inknote.ScoringService.Instance.refresh();
                             };
+                            var up = document.createElement("span");
+                            var down = document.createElement("span");
+                            up.textContent = "/\\";
+                            down.textContent = "\\/";
+                            up.className += " button";
+                            down.className += " button";
+                            up.onclick = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                var newInstruments = [];
+                                for (var j = 0; j < proj.instruments.length; j++) {
+                                    if (proj.instruments[j + 1] && proj.instruments[j + 1].ID == id) {
+                                        newInstruments.push(proj.instruments[j + 1]);
+                                        newInstruments.push(proj.instruments[j]);
+                                        j++;
+                                    }
+                                    else {
+                                        newInstruments.push(proj.instruments[j]);
+                                    }
+                                }
+                                proj.instruments = newInstruments;
+                                Inknote.ScoringService.Instance.refresh();
+                            };
+                            down.onclick = function (e) {
+                                var ele = e.target;
+                                var id = ele.getAttribute("data-id");
+                            };
+                            var deleteBtn = document.createElement("span");
+                            deleteBtn.textContent = "x";
+                            deleteBtn.className += " button negative";
+                            deleteBtn.onclick = function (e) {
+                            };
                             formRow.appendChild(instrumentHolder);
                             formRow.appendChild(isVisible);
+                            formRow.appendChild(up);
+                            formRow.appendChild(down);
+                            formRow.appendChild(deleteBtn);
                             instrumentList.appendChild(formRow);
                         }
                     }));
@@ -4732,7 +4768,9 @@ var Inknote;
                 }
                 for (var i = 0; i < selectedBar.items.length; i++) {
                     var tempItem = this.copyItem(selectedBar.items[i]);
-                    bar.items.push(tempItem);
+                    if (tempItem) {
+                        bar.items.push(tempItem);
+                    }
                 }
                 this.clipboard.push(bar);
                 return;
@@ -8316,7 +8354,7 @@ var Inknote;
             // ***********************************************
             // ** comment out the following lines when live. **
             // appSetting.testMode = true;
-            appSetting.displayID = true;
+            // appSetting.displayID = true;
             // ***********************************************
             // ***********************************************
             // *** uncomment the following to test mobile  ***

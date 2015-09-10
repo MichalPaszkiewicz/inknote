@@ -3145,58 +3145,83 @@ var Inknote;
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("edit instruments", function () {
                         Modal.toggle("instruments");
-                        var instrumentList = document.getElementById("instrument-list");
-                        instrumentList.innerHTML = "";
-                        var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
-                        for (var i = 0; i < instruments.length; i++) {
-                            var formRow = document.createElement("div");
-                            formRow.className = "form-row";
-                            var instrumentHolder = document.createElement("input");
-                            instrumentHolder.value = instruments[i].name;
-                            instrumentHolder.setAttribute("data-id", instruments[i].ID);
-                            instrumentHolder.onkeyup = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                for (var j = 0; j < proj.instruments.length; j++) {
-                                    if (proj.instruments[j].ID == id) {
-                                        proj.instruments[j].name = ele.value;
+                        function drawInstrumentEditModal() {
+                            var instrumentList = document.getElementById("instrument-list");
+                            instrumentList.innerHTML = "";
+                            var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+                            for (var i = 0; i < instruments.length; i++) {
+                                var formRow = document.createElement("div");
+                                formRow.className = "form-row";
+                                var instrumentHolder = document.createElement("input");
+                                instrumentHolder.value = instruments[i].name;
+                                instrumentHolder.setAttribute("data-id", instruments[i].ID);
+                                instrumentHolder.onkeyup = function (e) {
+                                    var ele = e.target;
+                                    var id = ele.getAttribute("data-id");
+                                    var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                    for (var j = 0; j < proj.instruments.length; j++) {
+                                        if (proj.instruments[j].ID == id) {
+                                            proj.instruments[j].name = ele.value;
+                                        }
                                     }
-                                }
-                                Inknote.ScoringService.Instance.refresh();
-                            };
-                            var isVisible = document.createElement("input");
-                            isVisible.type = "checkbox";
-                            isVisible.checked = instruments[i].visible;
-                            isVisible.setAttribute("data-id", instruments[i].ID);
-                            isVisible.className += " small-width";
-                            isVisible.onclick = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                for (var j = 0; j < proj.instruments.length; j++) {
-                                    if (proj.instruments[j].ID == id) {
-                                        proj.instruments[j].visible = ele.checked;
+                                    Inknote.ScoringService.Instance.refresh();
+                                };
+                                var isVisible = document.createElement("input");
+                                isVisible.type = "checkbox";
+                                isVisible.checked = instruments[i].visible;
+                                isVisible.setAttribute("data-id", instruments[i].ID);
+                                isVisible.className += " small-width";
+                                isVisible.onclick = function (e) {
+                                    var ele = e.target;
+                                    var id = ele.getAttribute("data-id");
+                                    var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                                    for (var j = 0; j < proj.instruments.length; j++) {
+                                        if (proj.instruments[j].ID == id) {
+                                            proj.instruments[j].visible = ele.checked;
+                                        }
                                     }
-                                }
-                                Inknote.ScoringService.Instance.refresh();
-                            };
-                            var up = document.createElement("span");
-                            var down = document.createElement("span");
-                            up.textContent = "/\\";
-                            down.textContent = "\\/";
-                            up.className += " button";
-                            down.className += " button";
-                            up.onclick = function (e) {
-                            };
-                            down.onclick = function (e) {
-                            };
-                            formRow.appendChild(instrumentHolder);
-                            formRow.appendChild(isVisible);
-                            formRow.appendChild(up);
-                            formRow.appendChild(down);
-                            instrumentList.appendChild(formRow);
+                                    Inknote.ScoringService.Instance.refresh();
+                                };
+                                var up = document.createElement("span");
+                                var down = document.createElement("span");
+                                up.textContent = "/\\";
+                                down.textContent = "\\/";
+                                up.className += " button";
+                                down.className += " button";
+                                up.setAttribute("data-id", instruments[i].ID);
+                                down.setAttribute("data-id", instruments[i].ID);
+                                up.onclick = function (e) {
+                                    var ele = e.target;
+                                    var id = ele.getAttribute("data-id");
+                                    Inknote.InstrumentService.Instance.moveUpFromID(id);
+                                    drawInstrumentEditModal();
+                                };
+                                down.onclick = function (e) {
+                                    var ele = e.target;
+                                    var id = ele.getAttribute("data-id");
+                                    Inknote.InstrumentService.Instance.moveDownFromID(id);
+                                    drawInstrumentEditModal();
+                                };
+                                var deleteBtn = document.createElement("span");
+                                deleteBtn.textContent = "x";
+                                deleteBtn.className += " button negative";
+                                deleteBtn.setAttribute("data-id", instruments[i].ID);
+                                deleteBtn.onclick = function (e) {
+                                    var ele = e.target;
+                                    var id = ele.getAttribute("data-id");
+                                    Inknote.InstrumentService.Instance.deleteFromID(id, function () {
+                                        drawInstrumentEditModal();
+                                    });
+                                };
+                                formRow.appendChild(instrumentHolder);
+                                formRow.appendChild(isVisible);
+                                formRow.appendChild(up);
+                                formRow.appendChild(down);
+                                formRow.appendChild(deleteBtn);
+                                instrumentList.appendChild(formRow);
+                            }
                         }
+                        drawInstrumentEditModal();
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
                         var name = prompt("What is the name of the new instrument?");
@@ -6444,6 +6469,71 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var InstrumentService = (function () {
+        function InstrumentService() {
+        }
+        Object.defineProperty(InstrumentService, "Instance", {
+            get: function () {
+                if (!InstrumentService._instance) {
+                    InstrumentService._instance = new InstrumentService();
+                }
+                return InstrumentService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        InstrumentService.prototype.moveUpFromID = function (id) {
+            var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var newInstruments = [];
+            for (var j = 0; j < proj.instruments.length; j++) {
+                if (proj.instruments[j + 1] && proj.instruments[j + 1].ID == id) {
+                    newInstruments.push(proj.instruments[j + 1]);
+                    newInstruments.push(proj.instruments[j]);
+                    j++;
+                }
+                else {
+                    newInstruments.push(proj.instruments[j]);
+                }
+            }
+            proj.instruments = newInstruments;
+            Inknote.ScoringService.Instance.refresh();
+        };
+        InstrumentService.prototype.moveDownFromID = function (id) {
+            var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var newInstruments = [];
+            for (var j = 0; j < proj.instruments.length; j++) {
+                if (proj.instruments[j].ID == id && proj.instruments[j + 1]) {
+                    newInstruments.push(proj.instruments[j + 1]);
+                    newInstruments.push(proj.instruments[j]);
+                    j++;
+                }
+                else {
+                    newInstruments.push(proj.instruments[j]);
+                }
+            }
+            proj.instruments = newInstruments;
+            Inknote.ScoringService.Instance.refresh();
+        };
+        InstrumentService.prototype.deleteFromID = function (id, then) {
+            Inknote.check("Are you sure you want to delete this instrument?", function () {
+                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var newInstruments = [];
+                for (var j = 0; j < proj.instruments.length; j++) {
+                    if (proj.instruments[j].ID != id) {
+                        newInstruments.push(proj.instruments[j]);
+                    }
+                }
+                proj.instruments = newInstruments;
+                then();
+                Inknote.ScoringService.Instance.refresh();
+            });
+        };
+        return InstrumentService;
+    })();
+    Inknote.InstrumentService = InstrumentService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var UndoService = (function () {
         function UndoService() {
             this._storage = [];
@@ -8487,6 +8577,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+/// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />
