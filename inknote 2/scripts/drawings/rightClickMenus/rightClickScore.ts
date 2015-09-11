@@ -77,8 +77,8 @@
                         var up = document.createElement("span");
                         var down = document.createElement("span");
 
-                        up.textContent = "/\\";
-                        down.textContent = "\\/";
+                        up.textContent = "▲";
+                        down.textContent = "▼";
                         up.className += " button";
                         down.className += " button";
                         up.setAttribute("data-id", instruments[i].ID);
