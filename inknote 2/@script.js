@@ -6607,10 +6607,12 @@ var Inknote;
     (function (Audio) {
         var Sound = (function () {
             function Sound(freq, time) {
+                this.isSilent = false;
                 this.finished = false;
                 this.note = null;
                 this.frequency = freq;
                 this.playTime = time;
+                this.lifeTime = time + 1000;
             }
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
@@ -6624,20 +6626,27 @@ var Inknote;
                 this.note.isPlaying = true;
                 Inknote.ScoringService.Instance.refresh();
             };
-            Sound.prototype.stop = function () {
-                this.note.isPlaying = false;
+            Sound.prototype.mute = function () {
+                // seperated from stop && disconnecting functions to reduce clipping.
+                this.isSilent = true;
                 this.gain.gain.value = 0;
+                this.note.isPlaying = false;
+                Inknote.ScoringService.Instance.refresh();
+            };
+            Sound.prototype.stop = function () {
                 // by only decreasing gain, removes popping.
                 // this.oscillator.disconnect();
                 this.finished = true;
                 this.oscillator.disconnect();
                 this.gain.disconnect();
-                Inknote.ScoringService.Instance.refresh();
             };
             Sound.prototype.update = function () {
                 var currentTime = (new Date()).getTime();
                 var start = this.startTime.getTime();
                 if (currentTime - start > this.playTime) {
+                    this.mute();
+                }
+                else if (currentTime - start > this.lifeTime) {
                     this.stop();
                 }
                 else {

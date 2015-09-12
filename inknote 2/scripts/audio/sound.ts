@@ -6,7 +6,11 @@
         
         playTime: number;
         
+        lifeTime: number;
+
         frequency: number;
+
+        isSilent: boolean = false;
 
         finished: boolean = false;
 
@@ -37,12 +41,18 @@
             ScoringService.Instance.refresh();
         }
 
-        stop() {
-
-            this.note.isPlaying = false;
+        mute() {
+            // seperated from stop && disconnecting functions to reduce clipping.
+            this.isSilent = true;
 
             this.gain.gain.value = 0;
 
+            this.note.isPlaying = false;
+
+            ScoringService.Instance.refresh();
+        }
+
+        stop() {
             // by only decreasing gain, removes popping.
             // this.oscillator.disconnect();
 
@@ -51,7 +61,6 @@
             this.oscillator.disconnect();
             this.gain.disconnect();
 
-            ScoringService.Instance.refresh();
         }
 
         update() {
@@ -61,7 +70,10 @@
             var start = this.startTime.getTime();
 
             if (currentTime - start > this.playTime) {
-                this.stop();
+                this.mute();
+            }
+            else if (currentTime - start > this.lifeTime) {
+                this.stop(); 
             }
             else {
                 this.gain.gain.value *= 0.9;
@@ -72,6 +84,7 @@
         constructor(freq, time) {
             this.frequency = freq;
             this.playTime = time;
+            this.lifeTime = time + 1000;
         }      
 
     }
