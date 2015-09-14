@@ -100,6 +100,7 @@
     <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollThumbnail.ts" />
     <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
     <TypeScriptCompile Include="scripts\drawings\stave.ts" />
+    <TypeScriptCompile Include="scripts\drawings\tempoMark.ts" />
     <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropCanvas.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropFile.ts" />

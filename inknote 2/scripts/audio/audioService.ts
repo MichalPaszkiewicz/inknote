@@ -45,7 +45,7 @@
             for (var j = 0; j < num; j++) {
                 result.push(null);
             }
-            
+
         }
 
         return result;
@@ -69,7 +69,10 @@
         destination: AudioDestinationNode;
         timeStarted: Date;
         sounds: Sound[];
-        bpm: number;
+        get bpm(): number {
+            var currentProject = Managers.ProjectManager.Instance.currentProject;
+            return currentProject ? currentProject.bpm : 120;
+        }
         timeSignature: Model.TimeSignature;
         playing: boolean = false;
         barIndex: number;
@@ -94,7 +97,6 @@
             this.waveShaper.connect(this.destination);
             this.sounds = [];
             // bpm has to be given from crotchet.
-            this.bpm = 120;
             this.timeSignature = new Model.TimeSignature(4, 4);
             this.playing = false;
             this.barIndex = 0;
@@ -125,7 +127,7 @@
             // run from selected item.
             var selectedID = ScoringService.Instance.selectID;
             var proj = Managers.ProjectManager.Instance.currentProject;
-            
+
             for (var i = 0; i < proj.instruments.length; i++) {
                 if (proj.instruments[i].visible === true) {
                     for (var j = 0; j < proj.instruments[i].bars.length; j++) {
@@ -133,7 +135,7 @@
                             this.barIndex = j;
                             return
                         }
-                        
+
                         for (var k = 0; k < proj.instruments[i].bars[j].items.length; k++) {
 
                             if (proj.instruments[i].bars[j].items[k].ID === selectedID) {
@@ -147,8 +149,8 @@
                     }
                 }
             }
-            
-            
+
+
         }
 
         playSound(sound: Sound) {
@@ -199,7 +201,7 @@
                 var tempItem = minimumSizeTempItems[this.beatIndex];
 
                 if (tempItem instanceof Model.Note) {
-                    
+
                     notesToPlay.push(tempItem);
                 }
 

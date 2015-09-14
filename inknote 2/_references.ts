@@ -79,6 +79,7 @@
 /// <reference path="scripts/drawings/bottommenu.ts" />
 /// <reference path="scripts/drawings/scoremenu.ts" />
 /// <reference path="scripts/drawings/chordsymbol.ts" />
+/// <reference path="scripts/drawings/tempomark.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />

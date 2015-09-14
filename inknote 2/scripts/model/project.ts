@@ -10,6 +10,7 @@
         composer: string;
         arrangedBy: string;
         notes: string;
+        bpm: number = 120;
 
         constructor(name?: string) {
             this.pause = false;

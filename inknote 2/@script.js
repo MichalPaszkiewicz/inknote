@@ -607,6 +607,7 @@ var Inknote;
     var Project = (function () {
         function Project(name) {
             this.colour = "#FFFFFF";
+            this.bpm = 120;
             this.pause = false;
             this.ID = Inknote.getID();
             this.name = name;
@@ -2766,6 +2767,39 @@ var Inknote;
             return ChordSymbol;
         })(Inknote.Notation);
         Drawing.ChordSymbol = ChordSymbol;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var TempoMark = (function () {
+            function TempoMark() {
+                this.ID = Inknote.getID();
+                this.x = 0;
+                this.order = 90;
+                this.hover = false;
+                this.select = false;
+            }
+            Object.defineProperty(TempoMark.prototype, "y", {
+                get: function () {
+                    return -Inknote.ScrollService.Instance.y;
+                },
+                set: function (val) {
+                    return;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            TempoMark.prototype.isOver = function (x, y) {
+                return false;
+            };
+            TempoMark.prototype.draw = function () {
+                return true;
+            };
+            return TempoMark;
+        })();
+        Drawing.TempoMark = TempoMark;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5314,6 +5348,7 @@ var Inknote;
             compressed.composer = project.composer;
             compressed.arrangedBy = project.arrangedBy;
             compressed.notes = project.notes;
+            compressed.bpm = project.bpm;
             for (var i = 0; i < project.instruments.length; i++) {
                 compressed.instruments.push(compressInstrument(project.instruments[i]));
             }
@@ -5429,6 +5464,9 @@ var Inknote;
             result.composer = project.composer;
             result.arrangedBy = project.arrangedBy;
             result.notes = project.notes;
+            if (project.bpm) {
+                result.bpm = project.bpm;
+            }
             if (project.instruments) {
                 for (var i = 0; i < project.instruments.length; i++) {
                     result.instruments.push(decompressInstrument(project.instruments[i]));
@@ -6419,7 +6457,7 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
-        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange) {
+        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange, isNumber) {
             var formRow = document.createElement("div");
             formRow.className = "form-row";
             var rowLabel = document.createElement("span");
@@ -6429,6 +6467,9 @@ var Inknote;
             var rowInput = document.createElement("input");
             rowInput.value = startValue;
             rowInput.onchange = onChange;
+            if (isNumber == true) {
+                rowInput.type = "number";
+            }
             formRow.appendChild(rowInput);
             this.container.appendChild(formRow);
         };
@@ -6461,6 +6502,9 @@ var Inknote;
             this.addRowWithData("notes:", project.notes, function (e) {
                 ProjectOptionsService.Instance.currentProject.notes = e.target.value;
             });
+            this.addRowWithData("tempo:", project.bpm, function (e) {
+                ProjectOptionsService.Instance.currentProject.bpm = parseInt(e.target.value);
+            }, true);
             Modal.toggle("project-options");
         };
         return ProjectOptionsService;
@@ -6773,6 +6817,14 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(AudioService.prototype, "bpm", {
+                get: function () {
+                    var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+                    return currentProject ? currentProject.bpm : 120;
+                },
+                enumerable: true,
+                configurable: true
+            });
             AudioService.prototype.init = function () {
                 this.destination = this.context.destination;
                 if (this.masterGain) {
@@ -6789,7 +6841,6 @@ var Inknote;
                 this.waveShaper.connect(this.destination);
                 this.sounds = [];
                 // bpm has to be given from crotchet.
-                this.bpm = 120;
                 this.timeSignature = new Inknote.Model.TimeSignature(4, 4);
                 this.playing = false;
                 this.barIndex = 0;
@@ -8524,6 +8575,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/bottommenu.ts" />
 /// <reference path="scripts/drawings/scoremenu.ts" />
 /// <reference path="scripts/drawings/chordsymbol.ts" />
+/// <reference path="scripts/drawings/tempomark.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
