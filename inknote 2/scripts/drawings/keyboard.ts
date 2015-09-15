@@ -16,7 +16,7 @@
         draw: (ctx: CanvasRenderingContext2D, canvas?: HTMLCanvasElement, scale?: number) => boolean;
         x: number;
         y: number;
-        order = 200;
+        order = 210;
 
         isOver(x: number, y: number, canvas: HTMLCanvasElement) {
 

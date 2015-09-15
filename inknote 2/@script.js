@@ -2454,7 +2454,7 @@ var Inknote;
         var Keyboard = (function () {
             function Keyboard() {
                 this.ID = Inknote.getID();
-                this.order = 200;
+                this.order = 210;
                 this.cSize = { x: 0, y: 0 };
                 var self = this;
                 self.draw = function (ctx, canvas, scale) {
