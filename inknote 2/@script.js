@@ -5247,7 +5247,7 @@ var Inknote;
             var visibleItems = [];
             for (var i = 0; i < this._items.length; i++) {
                 this._items[i].y = this._items[i].y + this.oldScrollY - Inknote.ScrollService.Instance.y;
-                if (this._items[i].y > 0 && this._items[i].y < Inknote.DrawService.Instance.canvas.height) {
+                if (this._items[i].y > -50 && this._items[i].y < Inknote.DrawService.Instance.canvas.height + 50) {
                     visibleItems.push(this._items[i]);
                 }
             }
