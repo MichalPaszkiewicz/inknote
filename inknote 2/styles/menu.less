@@ -49,7 +49,7 @@
     }
 
     .menu-button.open {
-        border-radius: 15px 15px 15px 0;
+        border-radius: 15px 30px 15px 0;
 
         .menu-line {
             background: red;
@@ -79,25 +79,29 @@
         .menu-item {
             display: inline-block;
             background: black;
-            min-width: 80px;
-            min-height: 80px;
-            border-radius: 40px;
+            min-width: 120px;
+            min-height: 120px;
+            border-radius: 60px;
             margin: 10px;
             color: white;
-            cursor:pointer;
+            cursor: pointer;
+            vertical-align: top;
+            text-align: center;
+            padding: 48px 0;
+            box-sizing: border-box;
 
             &:hover {
                 box-shadow: 0 0 5px 2px gray;
-                background: #1E1D1D;
+                background: #3c3838;
             }
         }
 
-        svg{
+        svg {
             cursor: pointer;
         }
 
-        svg:hover path{
-            fill: #1E1D1D;
+        svg:hover path {
+            fill: #3c3838;
         }
     }
 

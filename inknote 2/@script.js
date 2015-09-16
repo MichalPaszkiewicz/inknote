@@ -3188,93 +3188,10 @@ var Inknote;
                         Inknote.ScoringService.Instance.refresh();
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("edit instruments", function () {
-                        Modal.toggle("instruments");
-                        function drawInstrumentEditModal() {
-                            var instrumentList = document.getElementById("instrument-list");
-                            instrumentList.innerHTML = "";
-                            var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
-                            for (var i = 0; i < instruments.length; i++) {
-                                var formRow = document.createElement("div");
-                                formRow.className = "form-row";
-                                var instrumentHolder = document.createElement("input");
-                                instrumentHolder.value = instruments[i].name;
-                                instrumentHolder.setAttribute("data-id", instruments[i].ID);
-                                instrumentHolder.onkeyup = function (e) {
-                                    var ele = e.target;
-                                    var id = ele.getAttribute("data-id");
-                                    var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                    for (var j = 0; j < proj.instruments.length; j++) {
-                                        if (proj.instruments[j].ID == id) {
-                                            proj.instruments[j].name = ele.value;
-                                        }
-                                    }
-                                    Inknote.ScoringService.Instance.refresh();
-                                };
-                                var isVisible = document.createElement("input");
-                                isVisible.type = "checkbox";
-                                isVisible.checked = instruments[i].visible;
-                                isVisible.setAttribute("data-id", instruments[i].ID);
-                                isVisible.className += " small-width";
-                                isVisible.onclick = function (e) {
-                                    var ele = e.target;
-                                    var id = ele.getAttribute("data-id");
-                                    var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                    for (var j = 0; j < proj.instruments.length; j++) {
-                                        if (proj.instruments[j].ID == id) {
-                                            proj.instruments[j].visible = ele.checked;
-                                        }
-                                    }
-                                    Inknote.ScoringService.Instance.refresh();
-                                };
-                                var up = document.createElement("span");
-                                var down = document.createElement("span");
-                                up.textContent = "▲";
-                                down.textContent = "▼";
-                                up.className += " button";
-                                down.className += " button";
-                                up.setAttribute("data-id", instruments[i].ID);
-                                down.setAttribute("data-id", instruments[i].ID);
-                                up.onclick = function (e) {
-                                    var ele = e.target;
-                                    var id = ele.getAttribute("data-id");
-                                    Inknote.InstrumentService.Instance.moveUpFromID(id);
-                                    drawInstrumentEditModal();
-                                };
-                                down.onclick = function (e) {
-                                    var ele = e.target;
-                                    var id = ele.getAttribute("data-id");
-                                    Inknote.InstrumentService.Instance.moveDownFromID(id);
-                                    drawInstrumentEditModal();
-                                };
-                                var deleteBtn = document.createElement("span");
-                                deleteBtn.textContent = "x";
-                                deleteBtn.className += " button negative";
-                                deleteBtn.setAttribute("data-id", instruments[i].ID);
-                                deleteBtn.onclick = function (e) {
-                                    var ele = e.target;
-                                    var id = ele.getAttribute("data-id");
-                                    Inknote.InstrumentService.Instance.deleteFromID(id, function () {
-                                        drawInstrumentEditModal();
-                                    });
-                                };
-                                formRow.appendChild(instrumentHolder);
-                                formRow.appendChild(isVisible);
-                                formRow.appendChild(up);
-                                formRow.appendChild(down);
-                                formRow.appendChild(deleteBtn);
-                                instrumentList.appendChild(formRow);
-                            }
-                        }
-                        drawInstrumentEditModal();
+                        Inknote.InstrumentService.Instance.openInstrumentEditor();
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
-                        var name = prompt("What is the name of the new instrument?");
-                        if (name != "" && name != null) {
-                            Inknote.NoteControlService.Instance.addInstrument(name);
-                        }
-                        if (name == "") {
-                            Inknote.check("Your instrument name cannot be empty", null, null);
-                        }
+                        Inknote.InstrumentService.Instance.addInstrument();
                     }));
                 }
                 return RightClickScore;
@@ -6536,6 +6453,95 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        InstrumentService.prototype.addInstrument = function () {
+            var name = prompt("What is the name of the new instrument?");
+            if (name != "" && name != null) {
+                Inknote.NoteControlService.Instance.addInstrument(name);
+            }
+            if (name == "") {
+                Inknote.check("Your instrument name cannot be empty", null, null);
+            }
+        };
+        InstrumentService.prototype.openInstrumentEditor = function () {
+            Modal.toggle("instruments");
+            function drawInstrumentEditModal() {
+                var instrumentList = document.getElementById("instrument-list");
+                instrumentList.innerHTML = "";
+                var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+                for (var i = 0; i < instruments.length; i++) {
+                    var formRow = document.createElement("div");
+                    formRow.className = "form-row";
+                    var instrumentHolder = document.createElement("input");
+                    instrumentHolder.value = instruments[i].name;
+                    instrumentHolder.setAttribute("data-id", instruments[i].ID);
+                    instrumentHolder.onkeyup = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                proj.instruments[j].name = ele.value;
+                            }
+                        }
+                        Inknote.ScoringService.Instance.refresh();
+                    };
+                    var isVisible = document.createElement("input");
+                    isVisible.type = "checkbox";
+                    isVisible.checked = instruments[i].visible;
+                    isVisible.setAttribute("data-id", instruments[i].ID);
+                    isVisible.className += " small-width";
+                    isVisible.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                proj.instruments[j].visible = ele.checked;
+                            }
+                        }
+                        Inknote.ScoringService.Instance.refresh();
+                    };
+                    var up = document.createElement("span");
+                    var down = document.createElement("span");
+                    up.textContent = "▲";
+                    down.textContent = "▼";
+                    up.className += " button";
+                    down.className += " button";
+                    up.setAttribute("data-id", instruments[i].ID);
+                    down.setAttribute("data-id", instruments[i].ID);
+                    up.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.moveUpFromID(id);
+                        drawInstrumentEditModal();
+                    };
+                    down.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.moveDownFromID(id);
+                        drawInstrumentEditModal();
+                    };
+                    var deleteBtn = document.createElement("span");
+                    deleteBtn.textContent = "x";
+                    deleteBtn.className += " button negative";
+                    deleteBtn.setAttribute("data-id", instruments[i].ID);
+                    deleteBtn.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.deleteFromID(id, function () {
+                            drawInstrumentEditModal();
+                        });
+                    };
+                    formRow.appendChild(instrumentHolder);
+                    formRow.appendChild(isVisible);
+                    formRow.appendChild(up);
+                    formRow.appendChild(down);
+                    formRow.appendChild(deleteBtn);
+                    instrumentList.appendChild(formRow);
+                }
+            }
+            drawInstrumentEditModal();
+        };
         InstrumentService.prototype.moveUpFromID = function (id) {
             var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
             var newInstruments = [];
@@ -7102,6 +7108,9 @@ var Inknote;
                 },
                 set: function (item) {
                     var pageURL = "?" + pageName(item);
+                    if (Menu.isMenuOpen) {
+                        Menu.toggle();
+                    }
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
@@ -8187,6 +8196,14 @@ var Inknote;
             if (Modal.isModalOpen === true) {
                 return;
             }
+            switch (ev.keyCode) {
+                case 77:
+                    Menu.toggle();
+                    return;
+                case 78:
+                    Inknote.Action(0 /* NewProject */, 0 /* Score */);
+                    return;
+            }
             switch (Inknote.Managers.PageManager.Current.page) {
                 case 2 /* File */:
                     fileType(ev);
@@ -8392,9 +8409,23 @@ var FrontEnd;
 var Menu;
 (function (Menu) {
     Menu.isMenuOpen = false;
+    Menu.scoreItems = document.getElementsByClassName("score-item");
     var menuButton = document.getElementsByClassName("menu-button")[0];
     var menu = document.getElementsByClassName("menu")[0];
+    function updateMenuItems() {
+        for (var i = 0; i < Menu.scoreItems.length; i++) {
+            if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
+                FrontEnd.showElement(Menu.scoreItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(Menu.scoreItems[i]);
+            }
+        }
+    }
+    Menu.updateMenuItems = updateMenuItems;
     function toggle() {
+        Menu.isMenuOpen = !Menu.isMenuOpen;
+        updateMenuItems();
         FrontEnd.toggleClass(menuButton, "open");
         FrontEnd.toggleClass(menu, "open");
     }

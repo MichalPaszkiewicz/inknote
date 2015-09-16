@@ -73,11 +73,28 @@
 module Menu {
 
     export var isMenuOpen = false;
+    export var scoreItems = document.getElementsByClassName("score-item");
 
     var menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
     var menu = <HTMLDivElement>document.getElementsByClassName("menu")[0];
 
+    export function updateMenuItems() {
+        for (var i = 0; i < scoreItems.length; i++) {
+
+            if (Inknote.Managers.PageManager.Current.page == Inknote.Managers.Page.Score) {
+                FrontEnd.showElement(<HTMLElement>scoreItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(<HTMLElement>scoreItems[i]);
+            }
+        }
+    }
+
     export function toggle() {
+        isMenuOpen = !isMenuOpen;
+
+        updateMenuItems();
+
         FrontEnd.toggleClass(menuButton, "open");
         FrontEnd.toggleClass(menu, "open");
     }
@@ -157,7 +174,7 @@ module Modal {
 
 module Actions.Plugins {
 
-    export function PluginMenuClick(ev: HTMLElement ,ID: string) {
+    export function PluginMenuClick(ev: HTMLElement, ID: string) {
 
         var target = <HTMLDivElement>ev;
 

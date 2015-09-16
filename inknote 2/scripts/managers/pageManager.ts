@@ -37,6 +37,10 @@
         set page(item: Page) {
             var pageURL = "?" + pageName(item);
 
+            if (Menu.isMenuOpen) {
+                Menu.toggle();
+            }
+
             if (ScrollService && ScrollService.Instance) {
                 ScrollService.Instance.x = 0;
                 ScrollService.Instance.y = 0;
