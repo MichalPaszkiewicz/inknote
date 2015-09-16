@@ -2781,6 +2781,16 @@ var Inknote;
                 this.hover = false;
                 this.select = false;
             }
+            Object.defineProperty(TempoMark, "Instance", {
+                get: function () {
+                    if (!TempoMark._instance) {
+                        TempoMark._instance = new TempoMark();
+                    }
+                    return TempoMark._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Object.defineProperty(TempoMark.prototype, "y", {
                 get: function () {
                     return -Inknote.ScrollService.Instance.y;
@@ -8367,7 +8377,29 @@ var FrontEnd;
         }
     }
     FrontEnd.select = select;
+    function toggleClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+        else {
+            item.className = item.className + " " + className;
+        }
+    }
+    FrontEnd.toggleClass = toggleClass;
 })(FrontEnd || (FrontEnd = {}));
+var Menu;
+(function (Menu) {
+    Menu.isMenuOpen = false;
+    var menuButton = document.getElementsByClassName("menu-button")[0];
+    var menu = document.getElementsByClassName("menu")[0];
+    function toggle() {
+        FrontEnd.toggleClass(menuButton, "open");
+        FrontEnd.toggleClass(menu, "open");
+    }
+    Menu.toggle = toggle;
+})(Menu || (Menu = {}));
 var Modal;
 (function (Modal) {
     Modal.isModalOpen = false;

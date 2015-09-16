@@ -2,6 +2,15 @@
 
     export class TempoMark implements IDrawable {
 
+        private static _instance: TempoMark;
+
+        static get Instance() {
+            if (!TempoMark._instance) {
+                TempoMark._instance = new TempoMark();
+            }
+            return TempoMark._instance;
+        }
+
         ID = getID();
         name: string;
         x = 0;

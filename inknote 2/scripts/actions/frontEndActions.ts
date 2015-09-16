@@ -55,6 +55,33 @@
         }
     }
 
+    export function toggleClass(item: HTMLElement, className: string) {
+        var classes = item.className;
+
+        var isClass = classes.indexOf(className) != -1;
+
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+        else {
+            item.className = item.className + " " + className;
+        }
+    }
+
+}
+
+module Menu {
+
+    export var isMenuOpen = false;
+
+    var menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
+    var menu = <HTMLDivElement>document.getElementsByClassName("menu")[0];
+
+    export function toggle() {
+        FrontEnd.toggleClass(menuButton, "open");
+        FrontEnd.toggleClass(menu, "open");
+    }
+
 }
 
 module Modal {

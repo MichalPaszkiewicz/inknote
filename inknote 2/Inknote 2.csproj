@@ -44,11 +44,23 @@
     <Content Include="styles\fontfaces.min.css">
       <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
+    <Content Include="styles\menu.css">
+      <DependentUpon>menu.less</DependentUpon>
+    </Content>
+    <Content Include="styles\menu.min.css">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
     <Content Include="styles\modal.css">
       <DependentUpon>modal.less</DependentUpon>
     </Content>
     <Content Include="styles\modal.min.css">
       <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.css">
+      <DependentUpon>styles.less</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.min.css">
+      <DependentUpon>styles.css</DependentUpon>
     </Content>
     <Content Include="web.config" />
   </ItemGroup>
@@ -215,6 +227,14 @@
     <Content Include="styles\cover.less" />
     <Content Include="styles\cover.css.map">
       <DependentUpon>cover.css</DependentUpon>
+    </Content>
+    <Content Include="styles\menu.less" />
+    <Content Include="styles\menu.css.map">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.less" />
+    <Content Include="styles\styles.css.map">
+      <DependentUpon>styles.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
