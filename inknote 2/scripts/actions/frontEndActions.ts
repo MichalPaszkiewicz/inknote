@@ -181,13 +181,16 @@ module Modal {
             threadID: relevantThreadID,
             message: text,
             time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
-        };        
+        };      
+        
+        var stringThread = JSON.stringify(threadObject);
+        var stringPost = JSON.stringify(postObject);
 
-        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", JSON.stringify(threadObject),
+        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", stringThread,
             function (e) {
                 Inknote.log("bug report thread created", Inknote.MessageType.Text);
 
-                Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", JSON.stringify(postObject),
+                Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", stringPost,
                     function (e) {
                         Inknote.log("bug report submitted", Inknote.MessageType.Text);
                     }, function (e) {

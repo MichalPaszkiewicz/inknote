@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>inknote</title>
     <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
-	<link href="inknote 2/styles/styles.min.css" rel="stylesheet" />
+    <link href="inknote 2/styles/styles.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=420, user-scalable=no">
     <link rel="icon" href="inknote 2/favicon.ico" />
 </head>
@@ -16,7 +16,29 @@
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.NewProject)">New</div>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">Save</div>
         <div class="button" id="play" onclick="Inknote.Audio.AudioService.Instance.play()">Play</div>
+
+        <div class="menu-button" onclick="Menu.toggle()">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+
     </div>
+
+    <div class="menu" onclick="Menu.toggle();">
+        <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">save</div>
+        <span class="score-item">
+            <div class="menu-item" onclick="Inknote.InstrumentService.Instance.addInstrument()">add instrument</div>
+            <div class="menu-item" onclick="Inknote.InstrumentService.Instance.openInstrumentEditor()">edit instruments</div>
+            <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
+        </span>
+        <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
+        <div class="menu-item" onclick="Modal.toggle('report')">report bug</div>
+        <!--<svg width="100px" viewbox="0 0 30 42">
+            <path fill="black" stroke="transparent" stroke-width="1" d="M15 3 Q16.5 6.8 25 18 A12.8 12.8 0 1 1 5 18 Q13.5 6.8 15 3z" />
+        </svg>-->
+    </div>
+
     <div id="main" class="main-container">
         <div id="confirm-box" class="hidden">
             <div id="confirm-text">Are you sure?</div>

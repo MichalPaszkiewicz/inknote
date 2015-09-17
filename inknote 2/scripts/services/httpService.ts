@@ -24,6 +24,8 @@
         post(url: string, data: string, callback: (ev: Event) => any, onerror: (ev: ErrorEvent) => any) {
             var request = new XMLHttpRequest();
             request.open("POST", url, true);
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.setRequestHeader("content-type", "application/json");
 
             request.onload = callback;
             request.onerror = onerror;

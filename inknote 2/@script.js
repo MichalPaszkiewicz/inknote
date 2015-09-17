@@ -6656,6 +6656,8 @@ var Inknote;
         HttpService.prototype.post = function (url, data, callback, onerror) {
             var request = new XMLHttpRequest();
             request.open("POST", url, true);
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.setRequestHeader("content-type", "application/json");
             request.onload = callback;
             request.onerror = onerror;
             request.send(data);
@@ -8531,9 +8533,11 @@ var Modal;
             message: text,
             time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
         };
-        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", JSON.stringify(threadObject), function (e) {
+        var stringThread = JSON.stringify(threadObject);
+        var stringPost = JSON.stringify(postObject);
+        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", stringThread, function (e) {
             Inknote.log("bug report thread created", 1 /* Text */);
-            Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", JSON.stringify(postObject), function (e) {
+            Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", stringPost, function (e) {
                 Inknote.log("bug report submitted", 1 /* Text */);
             }, function (e) {
                 Inknote.log("sending bug report failed", 0 /* Error */);
