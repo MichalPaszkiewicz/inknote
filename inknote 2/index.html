@@ -30,6 +30,7 @@
         <span class="score-item">
             <div class="menu-item" onclick="Inknote.InstrumentService.Instance.addInstrument()">add instrument</div>
             <div class="menu-item" onclick="Inknote.InstrumentService.Instance.openInstrumentEditor()">edit instruments</div>
+            <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
         </span>
         <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
         <div class="menu-item" onclick="Modal.toggle('report')">report bug</div>

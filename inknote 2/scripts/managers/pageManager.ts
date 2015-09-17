@@ -51,7 +51,6 @@
             }
             else {
                 FrontEnd.hideElement(document.getElementById("play"));
-                console.log("what")
             }
 
             switch (item) {

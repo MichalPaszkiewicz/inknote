@@ -7120,7 +7120,6 @@ var Inknote;
                     }
                     else {
                         FrontEnd.hideElement(document.getElementById("play"));
-                        console.log("what");
                     }
                     switch (item) {
                         case 2 /* File */:
@@ -8132,6 +8131,9 @@ var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {
         window.onmousewheel = function (ev) {
+            if (Modal.isModalOpen === true) {
+                return;
+            }
             var isUp = false;
             if (ev.wheelDelta > 0) {
                 isUp = true;
