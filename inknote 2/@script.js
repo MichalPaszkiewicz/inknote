@@ -244,6 +244,7 @@ var Inknote;
             this.staveColour = "black";
             this.noteColour = "red";
             this.textColour = "green";
+            this.serverURL = "https://lit-basin-6551.herokuapp.com";
             this.ID = Inknote.getID();
             this.name = name;
             this.testMode = false;
@@ -6630,6 +6631,39 @@ var Inknote;
     })();
     Inknote.UndoService = UndoService;
 })(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var HttpService = (function () {
+        function HttpService() {
+        }
+        Object.defineProperty(HttpService, "Instance", {
+            get: function () {
+                if (!HttpService._instance) {
+                    HttpService._instance = new HttpService();
+                }
+                return HttpService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        HttpService.prototype.$get = function (url, callback, onerror) {
+            var request = new XMLHttpRequest();
+            request.open("GET", url, true);
+            request.onload = callback;
+            request.onerror = onerror;
+            request.send();
+        };
+        HttpService.prototype.post = function (url, data, callback, onerror) {
+            var request = new XMLHttpRequest();
+            request.open("POST", url, true);
+            request.onload = callback;
+            request.onerror = onerror;
+            request.send(data);
+        };
+        return HttpService;
+    })();
+    Inknote.HttpService = HttpService;
+})(Inknote || (Inknote = {}));
 var PanningModelType;
 (function (PanningModelType) {
     PanningModelType[PanningModelType["equalpower"] = 0] = "equalpower";
@@ -8481,6 +8515,32 @@ var Modal;
         var checkElement = document.getElementById("report-checkbox");
         var text = textElement.value;
         var check = checkElement.checked;
+        if (!check) {
+            Inknote.log("a robot is trying to submit a bug report", 2 /* Warning */);
+            return;
+        }
+        var relevantThreadID = Inknote.getID();
+        var threadObject = {
+            id: relevantThreadID,
+            subject: "Bug: #" + relevantThreadID,
+            posts: []
+        };
+        var postObject = {
+            user: "Anonymous",
+            threadID: relevantThreadID,
+            message: text,
+            time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        };
+        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", JSON.stringify(threadObject), function (e) {
+            Inknote.log("bug report thread created", 1 /* Text */);
+            Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", JSON.stringify(postObject), function (e) {
+                Inknote.log("bug report submitted", 1 /* Text */);
+            }, function (e) {
+                Inknote.log("sending bug report failed", 0 /* Error */);
+            });
+        }, function (e) {
+            Inknote.log("failed to create thread", 0 /* Error */);
+        });
         textElement.value = "";
         checkElement.checked = false;
         hide("report");
@@ -8696,6 +8756,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/projectoptionsservice.ts" />
 /// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
+/// <reference path="scripts/services/httpservice.ts" />
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />
 /// <reference path="scripts/audio/sound.ts" />

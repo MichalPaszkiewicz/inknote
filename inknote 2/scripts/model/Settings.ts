@@ -12,6 +12,8 @@
         noteColour = "red";
         textColour = "green";
 
+        serverURL = "https://lit-basin-6551.herokuapp.com";
+
         constructor(name?: string) {
             this.ID = getID();
             this.name = name;

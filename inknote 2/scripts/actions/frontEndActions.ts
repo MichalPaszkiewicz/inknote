@@ -164,6 +164,39 @@ module Modal {
         var text = textElement.value;
         var check = checkElement.checked;
 
+        if (!check) {
+            Inknote.log("a robot is trying to submit a bug report", Inknote.MessageType.Warning);
+            return;
+        }
+
+        var relevantThreadID = Inknote.getID();
+
+        var threadObject = {
+            id: relevantThreadID,
+            subject: "Bug: #" + relevantThreadID,
+            posts: []
+        };
+        var postObject = {
+            user: "Anonymous",
+            threadID: relevantThreadID,
+            message: text,
+            time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        };        
+
+        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", JSON.stringify(threadObject),
+            function (e) {
+                Inknote.log("bug report thread created", Inknote.MessageType.Text);
+
+                Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", JSON.stringify(postObject),
+                    function (e) {
+                        Inknote.log("bug report submitted", Inknote.MessageType.Text);
+                    }, function (e) {
+                        Inknote.log("sending bug report failed", Inknote.MessageType.Error);
+                    });
+            }, function (e) {
+                Inknote.log("failed to create thread", Inknote.MessageType.Error);
+            });
+
         textElement.value = "";
         checkElement.checked = false;
 
