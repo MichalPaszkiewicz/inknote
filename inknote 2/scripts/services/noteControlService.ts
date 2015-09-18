@@ -58,6 +58,12 @@
             this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
 
+            //if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+            //    this.y = drawer.canvas.height - 220; + this.hiddenY;
+            //    this.width = 360;
+            //    this.height = 220;
+            //}
+
             var noteControls = [];
 
             this.background.width = this.width;

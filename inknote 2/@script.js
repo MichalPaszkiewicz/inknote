@@ -6007,6 +6007,11 @@ var Inknote;
             this.y = drawer.canvas.height / 2 + this.hiddenY;
             this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
+            //if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+            //    this.y = drawer.canvas.height - 220; + this.hiddenY;
+            //    this.width = 360;
+            //    this.height = 220;
+            //}
             var noteControls = [];
             this.background.width = this.width;
             this.background.height = this.height;
@@ -7147,6 +7152,7 @@ var Inknote;
                     if (Menu.isMenuOpen) {
                         Menu.toggle();
                     }
+                    Menu.closeAllSubMenus();
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
@@ -8432,6 +8438,22 @@ var FrontEnd;
         }
     }
     FrontEnd.select = select;
+    function addClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (!isClass) {
+            item.className = item.className + " " + className;
+        }
+    }
+    FrontEnd.addClass = addClass;
+    function removeClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+    }
+    FrontEnd.removeClass = removeClass;
     function toggleClass(item, className) {
         var classes = item.className;
         var isClass = classes.indexOf(className) != -1;
@@ -8449,7 +8471,7 @@ var Menu;
     Menu.isMenuOpen = false;
     Menu.scoreItems = document.getElementsByClassName("score-item");
     var menuButton = document.getElementsByClassName("menu-button")[0];
-    var menu = document.getElementsByClassName("menu")[0];
+    var menu = document.getElementById("main-menu");
     function updateMenuItems() {
         for (var i = 0; i < Menu.scoreItems.length; i++) {
             if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
@@ -8462,12 +8484,32 @@ var Menu;
     }
     Menu.updateMenuItems = updateMenuItems;
     function toggle() {
+        if (!Menu.isMenuOpen) {
+            closeAllSubMenus();
+        }
         Menu.isMenuOpen = !Menu.isMenuOpen;
         updateMenuItems();
         FrontEnd.toggleClass(menuButton, "open");
         FrontEnd.toggleClass(menu, "open");
     }
     Menu.toggle = toggle;
+    function closeAllSubMenus() {
+        var subs = document.getElementsByClassName("sub-menu");
+        for (var i = 0; i < subs.length; i++) {
+            FrontEnd.removeClass(subs[i], "open");
+        }
+    }
+    Menu.closeAllSubMenus = closeAllSubMenus;
+    function openSubMenu(id) {
+        FrontEnd.addClass(document.getElementById(id), "open");
+    }
+    Menu.openSubMenu = openSubMenu;
+    function closeSubMenu(id) {
+        FrontEnd.removeClass(menu, "open");
+        FrontEnd.removeClass(menuButton, "open");
+        FrontEnd.removeClass(document.getElementById(id), "open");
+    }
+    Menu.closeSubMenu = closeSubMenu;
 })(Menu || (Menu = {}));
 var Modal;
 (function (Modal) {

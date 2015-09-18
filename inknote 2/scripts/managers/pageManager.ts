@@ -40,6 +40,7 @@
             if (Menu.isMenuOpen) {
                 Menu.toggle();
             }
+            Menu.closeAllSubMenus();
 
             if (ScrollService && ScrollService.Instance) {
                 ScrollService.Instance.x = 0;

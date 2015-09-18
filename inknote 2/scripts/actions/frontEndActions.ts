@@ -55,6 +55,26 @@
         }
     }
 
+    export function addClass(item: HTMLElement, className: string) {
+        var classes = item.className;
+
+        var isClass = classes.indexOf(className) != -1;
+
+        if (!isClass) {
+            item.className = item.className + " " + className;
+        }
+    }
+
+    export function removeClass(item: HTMLElement, className: string) {
+        var classes = item.className;
+
+        var isClass = classes.indexOf(className) != -1;
+
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+    }
+
     export function toggleClass(item: HTMLElement, className: string) {
         var classes = item.className;
 
@@ -76,7 +96,7 @@ module Menu {
     export var scoreItems = document.getElementsByClassName("score-item");
 
     var menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
-    var menu = <HTMLDivElement>document.getElementsByClassName("menu")[0];
+    var menu = <HTMLDivElement>document.getElementById("main-menu");
 
     export function updateMenuItems() {
         for (var i = 0; i < scoreItems.length; i++) {
@@ -91,6 +111,10 @@ module Menu {
     }
 
     export function toggle() {
+        if (!isMenuOpen) {
+            closeAllSubMenus();
+        }
+
         isMenuOpen = !isMenuOpen;
 
         updateMenuItems();
@@ -99,6 +123,25 @@ module Menu {
         FrontEnd.toggleClass(menu, "open");
     }
 
+    export function closeAllSubMenus() {
+        var subs = document.getElementsByClassName("sub-menu");
+
+        for (var i = 0; i < subs.length; i++) {
+            FrontEnd.removeClass(<HTMLElement>subs[i], "open");
+        }
+    }
+
+    export function openSubMenu(id: string) {
+
+        FrontEnd.addClass(document.getElementById(id), "open");
+    }
+
+    export function closeSubMenu(id: string) {
+        FrontEnd.removeClass(menu, "open");
+        FrontEnd.removeClass(menuButton, "open");
+
+        FrontEnd.removeClass(document.getElementById(id), "open");
+    }
 }
 
 module Modal {
