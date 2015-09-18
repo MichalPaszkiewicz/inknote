@@ -38,29 +38,31 @@
         </svg>-->
     </div>
 
-    <div class="sub-menu menu" id="project-menu" onclick="Menu.toggle()">
+    <div class="sub-menu menu" id="project-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.NewProject)">new project</div>
         <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">save</div>
         <span class="score-item">
             <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
         </span>
     </div>
 
-    <div class="sub-menu menu" id="instrument-menu" onclick="Menu.toggle()">
+    <div class="sub-menu menu" id="instrument-menu" onclick="Menu.closeAllSubMenus()">
         <div class="menu-item" onclick="Inknote.InstrumentService.Instance.addInstrument()">add instrument</div>
         <div class="menu-item" onclick="Inknote.InstrumentService.Instance.openInstrumentEditor()">edit instruments</div>
     </div>
 
-    <div class="sub-menu menu" id="bar-menu" onclick="Menu.toggle()">
-        <div class="menu-item" onclick="Inknote.NoteControlService.Instance.addBar()">add bar</div>
+    <div class="sub-menu menu" id="bar-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="{ Inknote.NoteControlService.Instance.addBar(); Inknote.ScoringService.Instance.refresh(); }">add bar</div>
     </div>
 
-    <div class="sub-menu menu" id="tools-menu" onclick="Menu.toggle()">
+    <div class="sub-menu menu" id="tools-menu" onclick="Menu.closeAllSubMenus()">
         <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
     </div>
 
-    <div class="sub-menu menu" id="help-menu" onclick="Menu.toggle()">
+    <div class="sub-menu menu" id="help-menu" onclick="Menu.closeAllSubMenus()">
         <div class="menu-item" onclick="window.open('http://www.michalpaszkiewicz.co.uk/inknote/developer/')">developer forum</div>
         <div class="menu-item" onclick="Modal.toggle('report')">report bug</div>
+        <div class="menu-item" onclick="Modal.toggle('about')">about</div>
     </div>
 
     <div id="main" class="main-container">
@@ -101,6 +103,20 @@
 
             </div>
         </div>
+    </div>
+
+    <div id="about" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('about')">x</div>
+
+        <div class="overflower">
+            <h2>About</h2>
+            <div>
+                This is an <a href="https://github.com/MichalPaszkiewicz/inknote" target="_blank">open source music scoring program</a> made with loving care by
+
+                <a href="http://www.michalpaszkiewicz.co.uk" target="_blank">Michal Paszkiewicz</a>
+            </div>
+        </div>
+
     </div>
 
     <div id="plugins" class="hidden modal">
