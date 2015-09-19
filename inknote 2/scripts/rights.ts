@@ -17,4 +17,4 @@
 // |__|_|  \___|__| \__\|  \___|_____| |/|______|
 //                                              
 // All rights reserved.                          
-// Copyright @ Michal Paszkiewicz 2015;         
+// Copyright @ Michal Paszkiewicz 2015; 

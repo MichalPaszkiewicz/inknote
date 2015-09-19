@@ -28,6 +28,7 @@
     <div class="menu" onclick="Menu.toggle();" id="main-menu">
         <div class="menu-item" onclick="Menu.openSubMenu('project-menu')">project</div>
         <span class="score-item">
+            <div class="menu-item" onclick="Menu.openSubMenu('edit-menu')">edit</div>
             <div class="menu-item" onclick="Menu.openSubMenu('instrument-menu')">instrument</div>
             <div class="menu-item" onclick="Menu.openSubMenu('bar-menu')">bar</div>
         </span>
@@ -44,6 +45,10 @@
         <span class="score-item">
             <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
         </span>
+    </div>
+
+    <div class="sub-menu menu" id="edit-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Inknote.UndoService.Instance.undo()">undo</div>
     </div>
 
     <div class="sub-menu menu" id="instrument-menu" onclick="Menu.closeAllSubMenus()">

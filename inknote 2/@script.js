@@ -17,7 +17,7 @@
 // |__|_|  \___|__| \__\|  \___|_____| |/|______|
 //                                              
 // All rights reserved.                          
-// Copyright @ Michal Paszkiewicz 2015;          
+// Copyright @ Michal Paszkiewicz 2015;  
 var Inknote;
 (function (Inknote) {
     function allItemsAre(items, xAndY) {
@@ -6751,7 +6751,7 @@ var Inknote;
                     this.stop();
                 }
                 else {
-                    this.gain.gain.value *= 0.9;
+                    this.gain.gain.value *= 0.95;
                 }
             };
             return Sound;

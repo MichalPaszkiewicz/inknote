@@ -76,7 +76,7 @@
                 this.stop(); 
             }
             else {
-                this.gain.gain.value *= 0.9;
+                this.gain.gain.value *= 0.95;
             }
 
         }
