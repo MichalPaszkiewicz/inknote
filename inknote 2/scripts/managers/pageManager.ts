@@ -37,6 +37,11 @@
         set page(item: Page) {
             var pageURL = "?" + pageName(item);
 
+            if (Menu.isMenuOpen) {
+                Menu.toggle();
+            }
+            Menu.closeAllSubMenus();
+
             if (ScrollService && ScrollService.Instance) {
                 ScrollService.Instance.x = 0;
                 ScrollService.Instance.y = 0;
@@ -47,7 +52,6 @@
             }
             else {
                 FrontEnd.hideElement(document.getElementById("play"));
-                console.log("what")
             }
 
             switch (item) {

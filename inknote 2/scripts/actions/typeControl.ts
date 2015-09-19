@@ -65,6 +65,17 @@
                 return;
             }
 
+            // all shared keys
+            switch (ev.keyCode) {
+                // m
+                case 77:
+                    Menu.toggle();
+                    return;
+                case 78:
+                    Inknote.Action(ActionType.NewProject, Managers.Page.Score);
+                    return;
+            }
+
             switch (Managers.PageManager.Current.page) {
                 case Managers.Page.File:
                     fileType(ev);
@@ -80,6 +91,7 @@
     }
 
     function scoreType(e: KeyboardEvent) {
+
         var inst = Managers.ProjectManager.Instance;
         var proj = inst.currentProject;
         // name is selected

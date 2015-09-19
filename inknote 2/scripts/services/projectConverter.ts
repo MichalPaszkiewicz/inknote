@@ -72,6 +72,8 @@
         compressed.arrangedBy = project.arrangedBy;
         compressed.notes = project.notes;
 
+        compressed.bpm = project.bpm;
+
         for (var i = 0; i < project.instruments.length; i++) {
             compressed.instruments.push(compressInstrument(project.instruments[i]));
         }
@@ -217,6 +219,10 @@
         result.composer = project.composer;
         result.arrangedBy = project.arrangedBy;
         result.notes = project.notes;
+
+        if (project.bpm) {
+            result.bpm = project.bpm;
+        }
 
         if (project.instruments) {
             for (var i = 0; i < project.instruments.length; i++) {

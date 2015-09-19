@@ -79,6 +79,7 @@
 /// <reference path="scripts/drawings/bottommenu.ts" />
 /// <reference path="scripts/drawings/scoremenu.ts" />
 /// <reference path="scripts/drawings/chordsymbol.ts" />
+/// <reference path="scripts/drawings/tempomark.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
@@ -140,6 +141,7 @@
 /// <reference path="scripts/services/projectoptionsservice.ts" />
 /// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
+/// <reference path="scripts/services/httpservice.ts" />
 
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />

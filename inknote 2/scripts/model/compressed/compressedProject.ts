@@ -13,6 +13,7 @@
         composer: string;
         arrangedBy: string;
         notes: string;
+        bpm: number;
 
         constructor(public name?: string) {
 

@@ -44,11 +44,23 @@
     <Content Include="styles\fontfaces.min.css">
       <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
+    <Content Include="styles\menu.css">
+      <DependentUpon>menu.less</DependentUpon>
+    </Content>
+    <Content Include="styles\menu.min.css">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
     <Content Include="styles\modal.css">
       <DependentUpon>modal.less</DependentUpon>
     </Content>
     <Content Include="styles\modal.min.css">
       <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.css">
+      <DependentUpon>styles.less</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.min.css">
+      <DependentUpon>styles.css</DependentUpon>
     </Content>
     <Content Include="web.config" />
   </ItemGroup>
@@ -100,6 +112,7 @@
     <TypeScriptCompile Include="scripts\drawings\scrollbars\scrollThumbnail.ts" />
     <TypeScriptCompile Include="scripts\drawings\sharp.ts" />
     <TypeScriptCompile Include="scripts\drawings\stave.ts" />
+    <TypeScriptCompile Include="scripts\drawings\tempoMark.ts" />
     <TypeScriptCompile Include="scripts\drawings\timeSignature.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropCanvas.ts" />
     <TypeScriptCompile Include="scripts\dropCanvas\dropFile.ts" />
@@ -173,6 +186,7 @@
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
+    <TypeScriptCompile Include="scripts\services\httpService.ts" />
     <TypeScriptCompile Include="scripts\services\identifyService.ts" />
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
     <TypeScriptCompile Include="scripts\services\instrumentService.ts" />
@@ -214,6 +228,14 @@
     <Content Include="styles\cover.less" />
     <Content Include="styles\cover.css.map">
       <DependentUpon>cover.css</DependentUpon>
+    </Content>
+    <Content Include="styles\menu.less" />
+    <Content Include="styles\menu.css.map">
+      <DependentUpon>menu.css</DependentUpon>
+    </Content>
+    <Content Include="styles\styles.less" />
+    <Content Include="styles\styles.css.map">
+      <DependentUpon>styles.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

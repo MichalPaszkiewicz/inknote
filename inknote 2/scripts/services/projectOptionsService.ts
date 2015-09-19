@@ -14,7 +14,7 @@
         currentProject: Project = null;
         container: HTMLDivElement = <HTMLDivElement>document.getElementById("project-options-details");
 
-        addRowWithData(label: string, startValue: any, onChange: (e: MouseEvent) => void): void {
+        addRowWithData(label: string, startValue: any, onChange: (e: MouseEvent) => void, isNumber?: boolean): void {
 
             var formRow = document.createElement("div");
             formRow.className = "form-row";
@@ -28,6 +28,10 @@
             var rowInput = document.createElement("input");
             rowInput.value = startValue;
             rowInput.onchange = onChange;
+
+            if (isNumber == true) {
+                rowInput.type = "number";
+            }
 
             formRow.appendChild(rowInput);
 
@@ -71,6 +75,10 @@
             this.addRowWithData("notes:", project.notes, function (e) {
                 ProjectOptionsService.Instance.currentProject.notes = (<HTMLInputElement>e.target).value;
             });
+
+            this.addRowWithData("tempo:", project.bpm, function (e) {
+                ProjectOptionsService.Instance.currentProject.bpm = parseInt((<HTMLInputElement>e.target).value);
+            }, true);
 
             Modal.toggle("project-options");
         }

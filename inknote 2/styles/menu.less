@@ -1,0 +1,112 @@
+﻿body {
+
+    .menu-button {
+        position: fixed;
+        top: 5px;
+        right: 5px;
+        width: 40px;
+        height: 40px;
+        border-radius: 0 15px 0 15px;
+        box-shadow: 0 0 3px 1px gray;
+        cursor: pointer;
+        transition: border-radius 0.25s;
+        -webkit-transition: border-radius 0.25s;
+        -moz-transition: border-radius 0.25s;
+        -o-transition: border-radius 0.25s;
+
+        &:hover {
+            box-shadow: 0 0 3px 1px white;
+
+            .menu-line {
+                background: white;
+            }
+        }
+
+        .menu-line {
+            position: fixed;
+            background: gray;
+            box-shadow: 0 0 10px 1px gray;
+            height: 2px;
+            width: 20px;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+            -moz-transition: all 0.25s;
+            -o-transition: all 0.25s;
+            right: 15px;
+
+            &:first-child {
+                top: 20px;
+            }
+
+            &:nth-child(2) {
+                top: 25px;
+            }
+
+            &:nth-child(3) {
+                top: 30px;
+            }
+        }
+    }
+
+    .menu-button.open {
+        border-radius: 15px 30px 15px 0;
+
+        .menu-line {
+            background: red;
+            box-shadow: red 0 0 15px 2px;
+
+            &:first-child {
+                transform: translate(-10px,5px) rotate(-90deg);
+            }
+
+            &:nth-child(2) {
+                transform: rotate(-45deg);
+            }
+
+            &:nth-child(3) {
+                transform: translate(0,5px) rotate(180deg);
+            }
+        }
+    }
+
+    .menu {
+        display: none;
+        position: fixed;
+        top: 50px;
+        width: 100%;
+        background: rgba(0,0,0,0.7);
+        text-align:center;
+
+        .menu-item {
+            display: inline-block;
+            background: black;
+            min-width: 120px;
+            min-height: 120px;
+            border-radius: 60px;
+            margin: 10px;
+            color: white;
+            cursor: pointer;
+            vertical-align: top;
+            text-align: center;
+            padding: 48px 0;
+            box-sizing: border-box;
+
+            &:hover {
+                box-shadow: 0 0 5px 2px gray;
+                background: #3c3838;
+            }
+        }
+
+        svg {
+            cursor: pointer;
+        }
+
+        svg:hover path {
+            fill: #3c3838;
+        }
+    }
+
+    .menu.open {
+        display: block;
+    }
+}
