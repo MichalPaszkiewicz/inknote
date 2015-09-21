@@ -48,6 +48,9 @@
     </div>
 
     <div class="sub-menu menu" id="edit-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Inknote.ClipboardService.Instance.copy()">copy</div>
+        <div class="menu-item" onclick="Inknote.ClipboardService.Instance.cut()">cut</div>
+        <div class="menu-item" onclick="Inknote.ClipboardService.Instance.paste()">paste</div>
         <div class="menu-item" onclick="Inknote.UndoService.Instance.undo()">undo</div>
     </div>
 

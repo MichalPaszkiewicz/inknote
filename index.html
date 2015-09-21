@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <title>inknote</title>
     <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
-    <link href="inknote 2/styles/styles.min.css" rel="stylesheet" />
+    <link href="./Inknote 2/styles/styles.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=420, user-scalable=no">
-    <link rel="icon" href="inknote 2/favicon.ico" />
+    <link rel="icon" href="./Inknote 2/favicon.ico" />
 </head>
 <body>
     <div class="header">
@@ -25,18 +25,52 @@
 
     </div>
 
-    <div class="menu" onclick="Menu.toggle();">
-        <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">save</div>
+    <div class="menu" onclick="Menu.toggle();" id="main-menu">
+        <div class="menu-item" onclick="Menu.openSubMenu('project-menu')">project</div>
         <span class="score-item">
-            <div class="menu-item" onclick="Inknote.InstrumentService.Instance.addInstrument()">add instrument</div>
-            <div class="menu-item" onclick="Inknote.InstrumentService.Instance.openInstrumentEditor()">edit instruments</div>
-            <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
+            <div class="menu-item" onclick="Menu.openSubMenu('edit-menu')">edit</div>
+            <div class="menu-item" onclick="Menu.openSubMenu('instrument-menu')">instrument</div>
+            <div class="menu-item" onclick="Menu.openSubMenu('bar-menu')">bar</div>
         </span>
-        <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
-        <div class="menu-item" onclick="Modal.toggle('report')">report bug</div>
+        <div class="menu-item" onclick="Menu.openSubMenu('tools-menu')">tools</div>
+        <div class="menu-item" onclick="Menu.openSubMenu('help-menu')">help</div>
         <!--<svg width="100px" viewbox="0 0 30 42">
             <path fill="black" stroke="transparent" stroke-width="1" d="M15 3 Q16.5 6.8 25 18 A12.8 12.8 0 1 1 5 18 Q13.5 6.8 15 3z" />
         </svg>-->
+    </div>
+
+    <div class="sub-menu menu" id="project-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.NewProject)">new project</div>
+        <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">save</div>
+        <span class="score-item">
+            <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
+        </span>
+    </div>
+
+    <div class="sub-menu menu" id="edit-menu" onclick="Menu.closeAllSubMenus()">
+	    <div class="menu-item" onclick="Inknote.ClipboardService.Instance.copy()">copy</div>
+        <div class="menu-item" onclick="Inknote.ClipboardService.Instance.cut()">cut</div>
+        <div class="menu-item" onclick="Inknote.ClipboardService.Instance.paste()">paste</div>
+        <div class="menu-item" onclick="Inknote.UndoService.Instance.undo()">undo</div>
+    </div>
+
+    <div class="sub-menu menu" id="instrument-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Inknote.InstrumentService.Instance.addInstrument()">add instrument</div>
+        <div class="menu-item" onclick="Inknote.InstrumentService.Instance.openInstrumentEditor()">edit instruments</div>
+    </div>
+
+    <div class="sub-menu menu" id="bar-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="{ Inknote.NoteControlService.Instance.addBar(); Inknote.ScoringService.Instance.refresh(); }">add bar</div>
+    </div>
+
+    <div class="sub-menu menu" id="tools-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
+    </div>
+
+    <div class="sub-menu menu" id="help-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="window.open('http://www.michalpaszkiewicz.co.uk/inknote/developer/')">developer forum</div>
+        <div class="menu-item" onclick="Modal.toggle('report')">report bug</div>
+        <div class="menu-item" onclick="Modal.toggle('about')">about</div>
     </div>
 
     <div id="main" class="main-container">
@@ -77,6 +111,22 @@
 
             </div>
         </div>
+    </div>
+
+    <div id="about" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('about')">x</div>
+
+        <div class="overflower">
+            <h2>About</h2>
+            <div>
+                This is an <a href="https://github.com/MichalPaszkiewicz/inknote" target="_blank">open source music scoring program</a> made with loving care by
+
+                <a href="http://www.michalpaszkiewicz.co.uk" target="_blank">Michal Paszkiewicz</a>
+
+                <table><tr><td><iframe src="http://ghbtns.com/github-btn.html?user=MichalPaszkiewicz&repo=inknote&type=watch&count=true" height="30" width="80" frameborder="0" scrolling="0" style="width:80px; height: 30px;" allowtransparency="true"></iframe></td><td><iframe src="http://ghbtns.com/github-btn.html?user=MichalPaszkiewicz&repo=inknote&type=fork&count=true" height="30" width="80" frameborder="0" scrolling="0" style="width:80px; height: 30px;" allowtransparency="true"></iframe></td><td><iframe src="http://ghbtns.com/github-btn.html?user=MichalPaszkiewicz&type=follow&count=true" height="30" width="220" frameborder="0" scrolling="0" style="width:220px; height: 30px;" allowtransparency="true"></iframe></td></tr></table>
+            </div>
+        </div>
+
     </div>
 
     <div id="plugins" class="hidden modal">
@@ -137,6 +187,6 @@
         </div>
     </div>
 
-    <script src="inknote 2/@script.js"></script>
+    <script src="./Inknote 2/@script.js"></script>
 </body>
 </html>
