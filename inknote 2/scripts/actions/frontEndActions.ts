@@ -212,6 +212,11 @@ module Modal {
             return;
         }
 
+        if (!text) {
+            Inknote.check("You cannot send a bug report without a description. Please try again.", function () { }, function () { cancelReport(); });
+            return;
+        }
+
         var relevantThreadID = Inknote.getID();
 
         var threadObject = {
