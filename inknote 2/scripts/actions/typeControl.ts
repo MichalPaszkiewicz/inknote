@@ -77,17 +77,6 @@
                 return;
             }
 
-            // all shared keys
-            switch (ev.keyCode) {
-                // m
-                case 77:
-                    Menu.toggle();
-                    return;
-                case 78:
-                    Inknote.Action(ActionType.NewProject, Managers.Page.Score);
-                    return;
-            }
-
             switch (Managers.PageManager.Current.page) {
                 case Managers.Page.File:
                     fileType(ev);
@@ -233,9 +222,23 @@
             else {
                 proj.name = pascalCase(proj.name + String.fromCharCode(e.keyCode));
             }
+
+            e.preventDefault();
+            return;
         }
 
         e.preventDefault();
+
+        switch (e.keyCode) {
+            // m
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(ActionType.NewProject, Managers.Page.Score);
+                return;
+        }
+
     }
 
     function fileType(e: KeyboardEvent) {
@@ -265,6 +268,16 @@
         else if (e.keyCode == 46) {
             // delete
             inst.deleteSelectedProject();
+        }
+
+        switch (e.keyCode) {
+            // m
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(ActionType.NewProject, Managers.Page.Score);
+                return;
         }
 
     }

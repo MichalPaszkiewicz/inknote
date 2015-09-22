@@ -42,6 +42,8 @@
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
             
+            ctx.globalAlpha = 1;
+
             ctx.beginPath();
             ctx.fillStyle = Colours.shadowGray;
             ctx.rect(this.x + 4, this.y + 3, this.width, this.height);

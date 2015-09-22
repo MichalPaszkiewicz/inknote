@@ -3067,6 +3067,7 @@ var Inknote;
                     configurable: true
                 });
                 RightClickMenu.prototype.draw = function (ctx, canvas) {
+                    ctx.globalAlpha = 1;
                     ctx.beginPath();
                     ctx.fillStyle = Drawing.Colours.shadowGray;
                     ctx.rect(this.x + 4, this.y + 3, this.width, this.height);
@@ -8260,14 +8261,6 @@ var Inknote;
             if (Modal.isModalOpen === true) {
                 return;
             }
-            switch (ev.keyCode) {
-                case 77:
-                    Menu.toggle();
-                    return;
-                case 78:
-                    Inknote.Action(0 /* NewProject */, 0 /* Score */);
-                    return;
-            }
             switch (Inknote.Managers.PageManager.Current.page) {
                 case 2 /* File */:
                     fileType(ev);
@@ -8380,8 +8373,18 @@ var Inknote;
             else {
                 proj.name = Inknote.pascalCase(proj.name + String.fromCharCode(e.keyCode));
             }
+            e.preventDefault();
+            return;
         }
         e.preventDefault();
+        switch (e.keyCode) {
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(0 /* NewProject */, 0 /* Score */);
+                return;
+        }
     }
     function fileType(e) {
         var inst = Inknote.Managers.ProjectManager.Instance;
@@ -8409,6 +8412,14 @@ var Inknote;
         else if (e.keyCode == 46) {
             // delete
             inst.deleteSelectedProject();
+        }
+        switch (e.keyCode) {
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(0 /* NewProject */, 0 /* Score */);
+                return;
         }
     }
 })(Inknote || (Inknote = {}));
