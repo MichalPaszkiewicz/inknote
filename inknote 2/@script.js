@@ -8234,6 +8234,12 @@ var Inknote;
                 if (e.keyCode == 90) {
                     Inknote.UndoService.Instance.undo();
                 }
+                // s
+                // save
+                if (e.keyCode == 83) {
+                    Inknote.Action(2 /* SaveProject */);
+                    e.preventDefault();
+                }
             }
             if (e.keyCode == 8) {
                 e.preventDefault();
@@ -8243,6 +8249,11 @@ var Inknote;
             keysDown = Inknote.getItemsWhere(keysDown, function (item) {
                 return item != ev.keyCode;
             });
+            if (Inknote.anyItemIs(keysDown, function (item) {
+                return item == 17;
+            })) {
+                return;
+            }
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }

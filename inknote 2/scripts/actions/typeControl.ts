@@ -43,6 +43,12 @@
                 if (e.keyCode == 90) {
                     UndoService.Instance.undo();
                 }
+                // s
+                // save
+                if (e.keyCode == 83) {
+                    Action(ActionType.SaveProject);
+                    e.preventDefault();
+                }
 
             }
 
@@ -56,6 +62,12 @@
             keysDown = getItemsWhere(keysDown, function (item: number) {
                 return item != ev.keyCode;
             });
+
+            if (anyItemIs(keysDown, function (item: number) {
+                return item == 17;
+            })) {
+                return;
+            }
 
             if (CONFIRM_IS_OPEN) {
                 return;
