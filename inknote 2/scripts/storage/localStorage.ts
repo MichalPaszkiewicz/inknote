@@ -3,7 +3,8 @@
     var defaults = {
         settings: "settings",
         projects: "projects",
-        plugins: "plugins"
+        plugins: "plugins",
+        synths: "synths"
     }
 
     function getLocal(key: string): any {
@@ -105,4 +106,24 @@
 
         return result;
     }
+
+    export function saveSynths() {
+
+        saveLocal(defaults.synths, Inknote.Audio.SynthManager.Instance.getSynths());
+
+        log("saved synths");
+
+    }
+
+    export function getSynths() {
+
+        var result = getLocal(defaults.synths);
+
+        if (result == null || result == undefined) {
+            return [];
+        }
+
+        return result;
+    }
+
 } 

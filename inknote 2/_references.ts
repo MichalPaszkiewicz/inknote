@@ -149,6 +149,8 @@
 /// <reference path="scripts/audio/frequencies.ts" />
 /// <reference path="scripts/audio/playtime.ts" />
 /// <reference path="scripts/audio/audioservice.ts" />
+/// <reference path="scripts/audio/synth.ts" />
+/// <reference path="scripts/audio/synthmanager.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />

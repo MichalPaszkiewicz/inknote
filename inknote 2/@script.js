@@ -4307,7 +4307,8 @@ var Inknote;
         var defaults = {
             settings: "settings",
             projects: "projects",
-            plugins: "plugins"
+            plugins: "plugins",
+            synths: "synths"
         };
         function getLocal(key) {
             if (typeof localStorage == "undefined") {
@@ -4380,6 +4381,19 @@ var Inknote;
             return result;
         }
         Storage.getPlugins = getPlugins;
+        function saveSynths() {
+            saveLocal(defaults.synths, Inknote.Audio.SynthManager.Instance.getSynths());
+            Inknote.log("saved synths");
+        }
+        Storage.saveSynths = saveSynths;
+        function getSynths() {
+            var result = getLocal(defaults.synths);
+            if (result == null || result == undefined) {
+                return [];
+            }
+            return result;
+        }
+        Storage.getSynths = getSynths;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -6707,17 +6721,44 @@ var Inknote;
 (function (Inknote) {
     var Audio;
     (function (Audio) {
+        (function (SoundType) {
+            SoundType[SoundType["sine"] = 0] = "sine";
+            SoundType[SoundType["sawtooth"] = 1] = "sawtooth";
+            SoundType[SoundType["triangle"] = 2] = "triangle";
+            SoundType[SoundType["square"] = 3] = "square";
+            SoundType[SoundType["custome"] = 4] = "custome";
+        })(Audio.SoundType || (Audio.SoundType = {}));
+        var SoundType = Audio.SoundType;
+        function getSoundType(soundType) {
+            switch (soundType) {
+                case 0 /* sine */:
+                    return "sine";
+                case 1 /* sawtooth */:
+                    return "sawtooth";
+                case 2 /* triangle */:
+                    return "triangle";
+                case 3 /* square */:
+                    return "square";
+                default:
+                    return "sine";
+            }
+        }
         var Sound = (function () {
-            function Sound(freq, time) {
+            function Sound(freq, time, soundType) {
                 this.isSilent = false;
                 this.finished = false;
                 this.note = null;
+                this.soundType = 0 /* sine */;
                 this.frequency = freq;
                 this.playTime = time;
                 this.lifeTime = time + 1000;
+                if (soundType) {
+                    this.soundType = soundType;
+                }
             }
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
+                this.oscillator.type = getSoundType(this.soundType);
                 this.gain = ctx.createGain();
                 this.gain.gain.value = 0.3;
                 this.oscillator.connect(this.gain);
@@ -7032,6 +7073,78 @@ var Inknote;
             return AudioService;
         })();
         Audio.AudioService = AudioService;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var Synth = (function () {
+            function Synth(name) {
+                this.name = name;
+                this.ID = Inknote.getID();
+                if (!name) {
+                    throw new Error("A synth must have a name!");
+                }
+            }
+            return Synth;
+        })();
+        Audio.Synth = Synth;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var SynthManager = (function () {
+            function SynthManager() {
+                this.synths = Inknote.Storage.getSynths();
+            }
+            Object.defineProperty(SynthManager, "Instance", {
+                get: function () {
+                    if (!SynthManager._instance) {
+                        SynthManager._instance = new SynthManager();
+                    }
+                    return SynthManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            SynthManager.prototype.addSynth = function (synth) {
+                this.synths.push(synth);
+            };
+            SynthManager.prototype.getSynths = function () {
+                return this.synths;
+            };
+            SynthManager.prototype.getSynthFromID = function (id) {
+                return Inknote.getItemFromID(this.synths, id);
+            };
+            SynthManager.prototype.getSynthFromName = function (name) {
+                for (var i = 0; i < this.synths.length; i++) {
+                    if (this.synths[i].name == name) {
+                        return this.synths[i];
+                    }
+                }
+                return null;
+            };
+            SynthManager.prototype.getSynth = function (id, name) {
+                // gets by id
+                var result = this.getSynthFromID(id);
+                // otherwise gets from name
+                if (!result) {
+                    result = this.getSynthFromName(name);
+                }
+                // else creates a new synth with this name
+                if (!result) {
+                    var synth = new Audio.Synth(name);
+                    this.addSynth(synth);
+                    return synth;
+                }
+                return result;
+            };
+            return SynthManager;
+        })();
+        Audio.SynthManager = SynthManager;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -8524,7 +8637,10 @@ var Menu;
         FrontEnd.toggleClass(menu, "open");
     }
     Menu.toggle = toggle;
-    function closeAllSubMenus() {
+    function closeAllSubMenus(e) {
+        if (e && e.currentTarget != e.target) {
+            return;
+        }
         var subs = document.getElementsByClassName("sub-menu");
         for (var i = 0; i < subs.length; i++) {
             FrontEnd.removeClass(subs[i], "open");
@@ -8847,6 +8963,8 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/audio/frequencies.ts" />
 /// <reference path="scripts/audio/playtime.ts" />
 /// <reference path="scripts/audio/audioservice.ts" />
+/// <reference path="scripts/audio/synth.ts" />
+/// <reference path="scripts/audio/synthmanager.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers

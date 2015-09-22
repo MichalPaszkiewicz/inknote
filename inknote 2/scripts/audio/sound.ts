@@ -1,5 +1,28 @@
 ﻿module Inknote.Audio {
 
+    export enum SoundType {
+        "sine",
+        "sawtooth",
+        "triangle",
+        "square",
+        "custome"
+    }
+
+    function getSoundType(soundType: SoundType): any {
+        switch (soundType) {
+            case SoundType.sine:
+                return "sine";
+            case SoundType.sawtooth:
+                return "sawtooth";
+            case SoundType.triangle:
+                return "triangle";
+            case SoundType.square:
+                return "square";
+            default:
+                return "sine";
+        }
+    }
+
     export class Sound {
         
         startTime: Date;
@@ -20,9 +43,13 @@
 
         note: Model.Note = null;
 
+        soundType: SoundType = SoundType.sine;
+
         play(ctx: AudioContext, connectTo: GainNode) {
 
             this.oscillator = ctx.createOscillator();
+
+            this.oscillator.type = getSoundType(this.soundType);
 
             this.gain = ctx.createGain();
             this.gain.gain.value = 0.3;
@@ -81,10 +108,15 @@
 
         }
         
-        constructor(freq, time) {
+        constructor(freq: number, time: number, soundType?: SoundType) {
             this.frequency = freq;
             this.playTime = time;
             this.lifeTime = time + 1000;
+
+            if (soundType) {
+                this.soundType = soundType;
+            }
+
         }      
 
     }

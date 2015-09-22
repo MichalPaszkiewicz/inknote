@@ -123,7 +123,12 @@ module Menu {
         FrontEnd.toggleClass(menu, "open");
     }
 
-    export function closeAllSubMenus() {
+    export function closeAllSubMenus(e?: MouseEvent) {
+
+        if (e && e.currentTarget != e.target) {
+            return;
+        }
+
         var subs = document.getElementsByClassName("sub-menu");
 
         for (var i = 0; i < subs.length; i++) {

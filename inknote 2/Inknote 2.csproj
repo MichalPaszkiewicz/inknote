@@ -76,6 +76,8 @@
     <TypeScriptCompile Include="scripts\audio\frequencies.ts" />
     <TypeScriptCompile Include="scripts\audio\playTime.ts" />
     <TypeScriptCompile Include="scripts\audio\sound.ts" />
+    <TypeScriptCompile Include="scripts\audio\synth.ts" />
+    <TypeScriptCompile Include="scripts\audio\synthManager.ts" />
     <TypeScriptCompile Include="scripts\audio\webaudioDefinitions.ts" />
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
     <TypeScriptCompile Include="scripts\drawings\bar.ts" />

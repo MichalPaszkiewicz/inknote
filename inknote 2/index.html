@@ -29,14 +29,23 @@
         <div class="menu-item" onclick="Menu.openSubMenu('project-menu')">project</div>
         <span class="score-item">
             <div class="menu-item" onclick="Menu.openSubMenu('edit-menu')">edit</div>
-            <div class="menu-item" onclick="Menu.openSubMenu('instrument-menu')">instrument</div>
-            <div class="menu-item" onclick="Menu.openSubMenu('bar-menu')">bar</div>
+            <div class="menu-item" onclick="Menu.openSubMenu('music-menu')">music</div>
+            <div class="menu-item" onclick="Menu.openSubMenu('audio-menu')">audio</div>
         </span>
         <div class="menu-item" onclick="Menu.openSubMenu('tools-menu')">tools</div>
         <div class="menu-item" onclick="Menu.openSubMenu('help-menu')">help</div>
         <!--<svg width="100px" viewbox="0 0 30 42">
             <path fill="black" stroke="transparent" stroke-width="1" d="M15 3 Q16.5 6.8 25 18 A12.8 12.8 0 1 1 5 18 Q13.5 6.8 15 3z" />
         </svg>-->
+    </div>
+
+    <div class="sub-menu menu" id="music-menu" onclick="function a(e){Menu.closeAllSubMenus(e);}">
+        <div class="menu-item" onclick="Menu.closeAllSubMenus();Menu.openSubMenu('instrument-menu');">instrument</div>
+        <div class="menu-item" onclick="Menu.closeAllSubMenus();Menu.openSubMenu('bar-menu');">bar</div>
+    </div>
+
+    <div class="sub-menu menu" id="audio-menu" onclick="Menu.closeAllSubMenus()">
+        <div class="menu-item" onclick="Modal.toggle('synth')">synths</div>
     </div>
 
     <div class="sub-menu menu" id="project-menu" onclick="Menu.closeAllSubMenus()">
@@ -154,6 +163,16 @@
                 <!-- List of plugins with advanced options goes here -->
             </div>
             <div class="button" onclick="Modal.toggle('plugins')">Close</div>
+        </div>
+    </div>
+
+    <div id="synth" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('synth')">x</div>
+
+        <div class="overflower">
+            <h2>Synths</h2>
+
+            <div class="button" onclick="Modal.toggle('synth')">Close</div>
         </div>
     </div>
 
