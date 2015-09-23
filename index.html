@@ -172,7 +172,34 @@
         <div class="overflower">
             <h2>Synths</h2>
 
+            <div class="button" onclick="Modal.toggle('synth'); Modal.toggle('synth-edit');">edit synth</div>
+
             <div class="button" onclick="Modal.toggle('synth')">Close</div>
+        </div>
+
+    </div>
+
+    <div id="synth-edit" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('synth-edit')">x</div>
+
+        <div class="overflower">
+            <h2>Synth edit</h2>
+
+            <div class="form-row">
+                <span class="label">wave shape</span>
+                <select>
+                    <option value="sine">sine</option>
+                    <option value="sawtooth">sawtooth</option>
+                    <option value="triangle">triangular</option>
+                    <option value="square">square</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <span class="label">gain</span>
+                <input type="range" name="gain" min="0" max="1" step="0.01" />
+            </div>
+
+            <div class="button" onclick="Modal.toggle('synth-edit')">Close</div>
         </div>
     </div>
 

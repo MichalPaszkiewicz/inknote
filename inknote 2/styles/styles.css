@@ -312,7 +312,17 @@ body #drag-drop-bad {
   margin: 10px;
 }
 .modal .form-row input[type*=color] {
-  box-sizing: content-box;
+  box-sizing: border-box;
+  padding: 0 2px;
+  height: 40px;
+  vertical-align: middle;
+}
+.modal .form-row input[type*=range] {
+  vertical-align: middle;
+}
+.modal .form-row select {
+  padding: 10px;
+  min-width: 50%;
 }
 .modal .overflower {
   overflow: auto;
@@ -321,8 +331,16 @@ body #drag-drop-bad {
   top: 35px;
 }
 @media (max-width: 540px) {
+  .modal .form-row .label {
+    text-align: center;
+    min-width: 100%;
+    padding: 8px;
+  }
   .modal .form-row input {
-    min-width: 90%;
+    min-width: 100%;
+  }
+  .modal .form-row select {
+    min-width: 100%;
   }
 }
 body .menu-button {

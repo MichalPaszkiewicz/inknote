@@ -55,7 +55,13 @@
             this.gain.gain.value = 0.3;
 
             this.oscillator.connect(this.gain);
-            this.gain.connect(connectTo);
+
+            var synth = new Synth("lol");
+
+            synth.setInput(this.gain);
+            synth.connectTo(connectTo, ctx);
+
+            //this.gain.connect(connectTo);
 
             this.oscillator.frequency.value = this.frequency;
 

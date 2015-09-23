@@ -63,8 +63,20 @@
             }
 
             &[type*=color] {
-                box-sizing: content-box;
+                box-sizing: border-box;
+                padding: 0 2px;
+                height: 40px;
+                vertical-align: middle;
             }
+
+            &[type*=range] {
+                vertical-align: middle;
+            }
+        }
+
+        select {
+            padding: 10px;
+            min-width: 50%;
         }
     }
 
@@ -80,8 +92,19 @@
 
     .modal {
         .form-row {
+
+            .label {
+                text-align: center;
+                min-width: 100%;
+                padding: 8px;
+            }
+
             input {
-                min-width: 90%;
+                min-width: 100%;
+            }
+
+            select {
+                min-width: 100%;
             }
         }
     }

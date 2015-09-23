@@ -171,7 +171,7 @@ interface GainNode extends AudioNode {
     gain: AudioParam; // readonly
 }
 
-interface DelayNode {
+interface DelayNode extends AudioNode{
     delayTime: AudioParam; // readonly
 }
 
