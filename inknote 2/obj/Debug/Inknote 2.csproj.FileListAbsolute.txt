@@ -9,10 +9,9 @@ C:\Users\Me-uth\Documents\Github\inknote\inknote 2\bin\Inknote 2.dll
 C:\Users\Me-uth\Documents\Github\inknote\inknote 2\bin\Inknote 2.pdb
 C:\Users\Me-uth\Documents\Github\inknote\inknote 2\obj\Debug\Inknote 2.dll
 C:\Users\Me-uth\Documents\Github\inknote\inknote 2\obj\Debug\Inknote 2.pdb
+C:\Users\Me-uth\Documents\Github\inknote\inknote 2\obj\Debug\Inknote 2.csprojResolveAssemblyReference.cache
 C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\bin\Inknote 2.dll.config
 C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\bin\Inknote 2.dll
 C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\bin\Inknote 2.pdb
 C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\obj\Debug\Inknote 2.dll
 C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\obj\Debug\Inknote 2.pdb
-C:\Users\Me-uth\Documents\Github\inknote\inknote 2\obj\Debug\Inknote 2.csprojResolveAssemblyReference.cache
-C:\Users\michal.paszkiewicz\Documents\github\inknote\inknote 2\obj\Debug\Inknote 2.csprojResolveAssemblyReference.cache

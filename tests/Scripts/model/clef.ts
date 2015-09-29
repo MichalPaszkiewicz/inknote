@@ -17,7 +17,7 @@ module Inknote.Tests {
             expect((new Model.FrenchViolinClef()).drawLocation).toBe(8);
         });
     });
-
+     
     describe("treble clef", function () {
 
         it("has the correct clef type", function () {

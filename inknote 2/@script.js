@@ -8116,6 +8116,7 @@ var Inknote;
     }
     function saveProject() {
         Inknote.Managers.ProjectManager.Instance.save();
+        Inknote.Storage.saveSynths();
     }
     function moveToPage(page) {
         Inknote.Managers.PageManager.Current.page = page;
@@ -8686,9 +8687,14 @@ var FrontEnd;
 var Menu;
 (function (Menu) {
     Menu.isMenuOpen = false;
-    Menu.scoreItems = document.getElementsByClassName("score-item");
-    var menuButton = document.getElementsByClassName("menu-button")[0];
-    var menu = document.getElementById("main-menu");
+    Menu.scoreItems;
+    var menuButton;
+    var menu;
+    if (typeof (window) != typeof (undefined)) {
+        Menu.scoreItems = document.getElementsByClassName("score-item");
+        menuButton = document.getElementsByClassName("menu-button")[0];
+        menu = document.getElementById("main-menu");
+    }
     function updateMenuItems() {
         for (var i = 0; i < Menu.scoreItems.length; i++) {
             if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
@@ -8848,18 +8854,20 @@ var Actions;
 })(Actions || (Actions = {}));
 var SynthBindings;
 (function (SynthBindings) {
-    var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
-    synthWaveShapeSelect.onchange = function (e) {
-        var select = e.target;
-        var value = select.value;
-        Inknote.Audio.SynthService.Instance.changeWaveShape(value);
-    };
-    var synthGainInput = document.getElementById("synth-gain");
-    synthGainInput.onchange = function (e) {
-        var input = e.target;
-        var value = input.valueAsNumber;
-        Inknote.Audio.SynthService.Instance.changeGain(value);
-    };
+    if (typeof (window) != typeof (undefined)) {
+        var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
+        synthWaveShapeSelect.onchange = function (e) {
+            var select = e.target;
+            var value = select.value;
+            Inknote.Audio.SynthService.Instance.changeWaveShape(value);
+        };
+        var synthGainInput = document.getElementById("synth-gain");
+        synthGainInput.onchange = function (e) {
+            var input = e.target;
+            var value = input.valueAsNumber;
+            Inknote.Audio.SynthService.Instance.changeGain(value);
+        };
+    }
 })(SynthBindings || (SynthBindings = {}));
 var Inknote;
 (function (Inknote) {

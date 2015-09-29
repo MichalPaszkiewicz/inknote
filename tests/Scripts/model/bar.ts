@@ -8,15 +8,15 @@ module Inknote.Tests {
 
         it("has an ID field", function () {
             expect(newBar.ID).toBeDefined();
-        });
+        }); 
 
         it("has its ID field set", function () {
             expect(newBar.ID).toBeTruthy();
-        });
+        });  
 
         it("has an items field", function () {
             expect(newBar.items.length).toBe(0);
         });
     });
 
-}
+}  

@@ -93,10 +93,19 @@
 module Menu {
 
     export var isMenuOpen = false;
-    export var scoreItems = document.getElementsByClassName("score-item");
 
-    var menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
-    var menu = <HTMLDivElement>document.getElementById("main-menu");
+    export var scoreItems: NodeList; 
+
+    var menuButton: HTMLDivElement;
+    var menu: HTMLDivElement;
+
+    if (typeof (window) != typeof (undefined)) {
+        scoreItems = document.getElementsByClassName("score-item");
+
+        menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
+        menu = <HTMLDivElement>document.getElementById("main-menu");
+
+    }
 
     export function updateMenuItems() {
         for (var i = 0; i < scoreItems.length; i++) {
@@ -298,22 +307,24 @@ module Actions.Plugins {
 
 module SynthBindings {
 
-    var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
-    synthWaveShapeSelect.onchange = function (e) {
-        var select = <HTMLSelectElement>e.target;
+    if (typeof(window) != typeof(undefined)) {
+        var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
+        synthWaveShapeSelect.onchange = function (e) {
+            var select = <HTMLSelectElement>e.target;
 
-        var value = select.value;
+            var value = select.value;
 
-        Inknote.Audio.SynthService.Instance.changeWaveShape(value);
-    }
+            Inknote.Audio.SynthService.Instance.changeWaveShape(value);
+        }
 
-    var synthGainInput = document.getElementById("synth-gain");
-    synthGainInput.onchange = function (e) {
-        var input = <HTMLInputElement>e.target;
+        var synthGainInput = document.getElementById("synth-gain");
+        synthGainInput.onchange = function (e) {
+            var input = <HTMLInputElement>e.target;
 
-        var value = input.valueAsNumber;
+            var value = input.valueAsNumber;
 
-        Inknote.Audio.SynthService.Instance.changeGain(value);
+            Inknote.Audio.SynthService.Instance.changeGain(value);
+        }
     }
 
 }

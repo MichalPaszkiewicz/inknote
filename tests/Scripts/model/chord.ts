@@ -17,8 +17,8 @@ module Inknote.Tests {
 
         it("has a notes field", function () {
             expect(newChord.notes).toBeDefined();
-        });
-
+        }); 
+         
         it("has notes correctly set", function () {
             expect(newChord.notes.length).toBe(0);
         });
