@@ -5,9 +5,17 @@ inknote
 
 [![Build status](https://circleci.com/gh/MichalPaszkiewicz/inknote.png?circle-token=:circle-token)](https://circleci.com/gh/MichalPaszkiewicz/inknote)
 
+[![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](http://forthebadge.com)
+
 Compose music easily in your browser!
 
 http://www.michalpaszkiewicz.co.uk/inknote/
+
+[![Score page](./images/score-page.png)](http://www.michalpaszkiewicz.co.uk/inknote/)
+
+Store multiple files, tag them with colours.
+
+[![File page](./images/file-page.png)](http://www.michalpaszkiewicz.co.uk/inknote/?File)
 
 Uses AngularJS, Html5 Canvas, PeerJS
 
@@ -20,7 +28,6 @@ http://www.michalpaszkiewicz.co.uk/inknote/developer/
 Upcoming updates
 ------------------
 - Score chords.
-- Draw clefs and key signatures.
 - Change instance time/key signatures.
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
@@ -30,60 +37,19 @@ Upcoming updates
 - About/faq information.
 - Composer forums.
 - Enable push notifications in forums.
-- AUDIO.
+- AUDIO samples
 - Copy, cut and paste.
 - Undo & Redo.
 - Sharps and flats.
+- Cloud storage for open source projects.
+- Music dif tool.
+- Scoring intellisense.
 
-Update 21/01/2015
+Update 29/09/2015
 ------------------
-- Draw rests
-- Selecting / deleting rests.
-
-Update 19/01/2015
-------------------
-- Print view complete.
-- Displays project title.
-
-Update 18/12/2014
-------------------
-- Displays bar numbers.
-- Can change mouse scroll sensitivity.
-- Added custom drawn scroll bar.
-- Scroll bar preview shows bar number you are going to.
-- Donate button added.
-- Allows bar selection and navigation left/right.
-- Allows change of value of all notes in bar on up/down key.
-
-Update 11/12/2014
-------------------
-- Change note duration of notes to be added.
-- Delete notes
-- Corrected calculation of allowed bar length
-- Displays red warning corner on bars that have wrong amount of notes.
-
-Update 4/12/2014
-------------------
-- Displays time signature correctly.
-- Change default time signature.
-- Implemented CI (circleci).
-
-Update 2/12/2014
-------------------
-- Note duration change possible.
-- Added user defined functions/script load options in plugin manager.
-
-Update 26/11/2014
-------------------
-- Developer guide and forum set up.
-
-Update 17/11/2014
-------------------
-- Draw score in canvas.
-- Functioning scroll ability.
-- Add notes, bars, instruments.
-- Display instruments in any combination.
-- Change note values.
-- Save files in local storage.
-- Change themes/layout + add custom themes/layout.
-- Pretty logging using alertify.
+- Complete revamp of project.
+- Audio/playback added.
+- Mobile friendly.
+- File download/upload
+- Copy, cut and paste on bars.
+- Undo and redo on copy, cut and paste.
