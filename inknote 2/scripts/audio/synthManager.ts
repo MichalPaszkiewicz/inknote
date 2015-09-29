@@ -4,7 +4,7 @@
 
         private static _instance: SynthManager;
 
-        static get Instance(){
+        static get Instance() {
             if (!SynthManager._instance) {
                 SynthManager._instance = new SynthManager();
             }
@@ -12,7 +12,7 @@
         }
 
         private synths: Synth[] = Storage.getSynths();
-
+        
         addSynth(synth: Synth) {
             this.synths.push(synth);
         }

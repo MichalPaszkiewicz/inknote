@@ -7,7 +7,6 @@
         bars: Bar[];
         synthID: string;
         synthName: string;
-        oscillatorType: Audio.SoundType = Audio.SoundType.sine;
        
         constructor(public name: string) {
             this.bars = [];

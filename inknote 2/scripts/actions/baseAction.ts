@@ -63,6 +63,7 @@
 
     function saveProject() {
         Managers.ProjectManager.Instance.save();
+        Storage.saveSynths();
     }
 
     function moveToPage(page: Managers.Page) {

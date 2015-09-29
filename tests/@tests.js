@@ -17,7 +17,7 @@
 // |__|_|  \___|__| \__\|  \___|_____| |/|______|
 //                                              
 // All rights reserved.                          
-// Copyright @ Michal Paszkiewicz 2015;          
+// Copyright @ Michal Paszkiewicz 2015;  
 var Inknote;
 (function (Inknote) {
     function allItemsAre(items, xAndY) {
@@ -244,6 +244,7 @@ var Inknote;
             this.staveColour = "black";
             this.noteColour = "red";
             this.textColour = "green";
+            this.serverURL = "https://lit-basin-6551.herokuapp.com";
             this.ID = Inknote.getID();
             this.name = name;
             this.testMode = false;
@@ -594,6 +595,7 @@ var Inknote;
             function Instrument(name) {
                 this.name = name;
                 this.ID = Inknote.getID();
+                this.oscillatorType = 0 /* sine */;
                 this.bars = [];
                 this.visible = true;
             }
@@ -607,6 +609,7 @@ var Inknote;
     var Project = (function () {
         function Project(name) {
             this.colour = "#FFFFFF";
+            this.bpm = 120;
             this.pause = false;
             this.ID = Inknote.getID();
             this.name = name;
@@ -2453,7 +2456,7 @@ var Inknote;
         var Keyboard = (function () {
             function Keyboard() {
                 this.ID = Inknote.getID();
-                this.order = 200;
+                this.order = 210;
                 this.cSize = { x: 0, y: 0 };
                 var self = this;
                 self.draw = function (ctx, canvas, scale) {
@@ -2772,6 +2775,49 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        var TempoMark = (function () {
+            function TempoMark() {
+                this.ID = Inknote.getID();
+                this.x = 0;
+                this.order = 90;
+                this.hover = false;
+                this.select = false;
+            }
+            Object.defineProperty(TempoMark, "Instance", {
+                get: function () {
+                    if (!TempoMark._instance) {
+                        TempoMark._instance = new TempoMark();
+                    }
+                    return TempoMark._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(TempoMark.prototype, "y", {
+                get: function () {
+                    return -Inknote.ScrollService.Instance.y;
+                },
+                set: function (val) {
+                    return;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            TempoMark.prototype.isOver = function (x, y) {
+                return false;
+            };
+            TempoMark.prototype.draw = function () {
+                return true;
+            };
+            return TempoMark;
+        })();
+        Drawing.TempoMark = TempoMark;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
         var ScrollBar;
         (function (_ScrollBar) {
             var ScrollBar = (function () {
@@ -3022,6 +3068,7 @@ var Inknote;
                     configurable: true
                 });
                 RightClickMenu.prototype.draw = function (ctx, canvas) {
+                    ctx.globalAlpha = 1;
                     ctx.beginPath();
                     ctx.fillStyle = Drawing.Colours.shadowGray;
                     ctx.rect(this.x + 4, this.y + 3, this.width, this.height);
@@ -3144,92 +3191,10 @@ var Inknote;
                         Inknote.ScoringService.Instance.refresh();
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("edit instruments", function () {
-                        Modal.toggle("instruments");
-                        var instrumentList = document.getElementById("instrument-list");
-                        instrumentList.innerHTML = "";
-                        var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
-                        for (var i = 0; i < instruments.length; i++) {
-                            var formRow = document.createElement("div");
-                            formRow.className = "form-row";
-                            var instrumentHolder = document.createElement("input");
-                            instrumentHolder.value = instruments[i].name;
-                            instrumentHolder.setAttribute("data-id", instruments[i].ID);
-                            instrumentHolder.onkeyup = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                for (var j = 0; j < proj.instruments.length; j++) {
-                                    if (proj.instruments[j].ID == id) {
-                                        proj.instruments[j].name = ele.value;
-                                    }
-                                }
-                                Inknote.ScoringService.Instance.refresh();
-                            };
-                            var isVisible = document.createElement("input");
-                            isVisible.type = "checkbox";
-                            isVisible.checked = instruments[i].visible;
-                            isVisible.setAttribute("data-id", instruments[i].ID);
-                            isVisible.className += " small-width";
-                            isVisible.onclick = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                for (var j = 0; j < proj.instruments.length; j++) {
-                                    if (proj.instruments[j].ID == id) {
-                                        proj.instruments[j].visible = ele.checked;
-                                    }
-                                }
-                                Inknote.ScoringService.Instance.refresh();
-                            };
-                            var up = document.createElement("span");
-                            var down = document.createElement("span");
-                            up.textContent = "/\\";
-                            down.textContent = "\\/";
-                            up.className += " button";
-                            down.className += " button";
-                            up.onclick = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                                var newInstruments = [];
-                                for (var j = 0; j < proj.instruments.length; j++) {
-                                    if (proj.instruments[j + 1] && proj.instruments[j + 1].ID == id) {
-                                        newInstruments.push(proj.instruments[j + 1]);
-                                        newInstruments.push(proj.instruments[j]);
-                                        j++;
-                                    }
-                                    else {
-                                        newInstruments.push(proj.instruments[j]);
-                                    }
-                                }
-                                proj.instruments = newInstruments;
-                                Inknote.ScoringService.Instance.refresh();
-                            };
-                            down.onclick = function (e) {
-                                var ele = e.target;
-                                var id = ele.getAttribute("data-id");
-                            };
-                            var deleteBtn = document.createElement("span");
-                            deleteBtn.textContent = "x";
-                            deleteBtn.className += " button negative";
-                            deleteBtn.onclick = function (e) {
-                            };
-                            formRow.appendChild(instrumentHolder);
-                            formRow.appendChild(isVisible);
-                            formRow.appendChild(up);
-                            formRow.appendChild(down);
-                            formRow.appendChild(deleteBtn);
-                            instrumentList.appendChild(formRow);
-                        }
+                        Inknote.InstrumentService.Instance.openInstrumentEditor();
                     }));
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
-                        var name = prompt("What is the name of the new instrument?");
-                        if (name != "" && name != null) {
-                            Inknote.NoteControlService.Instance.addInstrument(name);
-                        }
-                        if (name == "") {
-                            Inknote.check("Your instrument name cannot be empty", null, null);
-                        }
+                        Inknote.InstrumentService.Instance.addInstrument();
                     }));
                 }
                 return RightClickScore;
@@ -4343,7 +4308,8 @@ var Inknote;
         var defaults = {
             settings: "settings",
             projects: "projects",
-            plugins: "plugins"
+            plugins: "plugins",
+            synths: "synths"
         };
         function getLocal(key) {
             if (typeof localStorage == "undefined") {
@@ -4416,6 +4382,19 @@ var Inknote;
             return result;
         }
         Storage.getPlugins = getPlugins;
+        function saveSynths() {
+            saveLocal(defaults.synths, Inknote.Audio.SynthManager.Instance.getSynths());
+            Inknote.log("saved synths");
+        }
+        Storage.saveSynths = saveSynths;
+        function getSynths() {
+            var result = getLocal(defaults.synths);
+            if (result == null || result == undefined) {
+                return [];
+            }
+            return result;
+        }
+        Storage.getSynths = getSynths;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5212,7 +5191,7 @@ var Inknote;
             var visibleItems = [];
             for (var i = 0; i < this._items.length; i++) {
                 this._items[i].y = this._items[i].y + this.oldScrollY - Inknote.ScrollService.Instance.y;
-                if (this._items[i].y > 0 && this._items[i].y < Inknote.DrawService.Instance.canvas.height) {
+                if (this._items[i].y > -50 && this._items[i].y < Inknote.DrawService.Instance.canvas.height + 50) {
                     visibleItems.push(this._items[i]);
                 }
             }
@@ -5313,6 +5292,7 @@ var Inknote;
             compressed.composer = project.composer;
             compressed.arrangedBy = project.arrangedBy;
             compressed.notes = project.notes;
+            compressed.bpm = project.bpm;
             for (var i = 0; i < project.instruments.length; i++) {
                 compressed.instruments.push(compressInstrument(project.instruments[i]));
             }
@@ -5428,6 +5408,9 @@ var Inknote;
             result.composer = project.composer;
             result.arrangedBy = project.arrangedBy;
             result.notes = project.notes;
+            if (project.bpm) {
+                result.bpm = project.bpm;
+            }
             if (project.instruments) {
                 for (var i = 0; i < project.instruments.length; i++) {
                     result.instruments.push(decompressInstrument(project.instruments[i]));
@@ -6040,6 +6023,11 @@ var Inknote;
             this.y = drawer.canvas.height / 2 + this.hiddenY;
             this.width = Math.min(drawer.canvas.width, 800);
             this.height = drawer.canvas.height / 2;
+            //if (Managers.MachineManager.Instance.machineType == Managers.MachineType.Desktop) {
+            //    this.y = drawer.canvas.height - 220; + this.hiddenY;
+            //    this.width = 360;
+            //    this.height = 220;
+            //}
             var noteControls = [];
             this.background.width = this.width;
             this.background.height = this.height;
@@ -6418,7 +6406,7 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
-        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange) {
+        ProjectOptionsService.prototype.addRowWithData = function (label, startValue, onChange, isNumber) {
             var formRow = document.createElement("div");
             formRow.className = "form-row";
             var rowLabel = document.createElement("span");
@@ -6428,6 +6416,9 @@ var Inknote;
             var rowInput = document.createElement("input");
             rowInput.value = startValue;
             rowInput.onchange = onChange;
+            if (isNumber == true) {
+                rowInput.type = "number";
+            }
             formRow.appendChild(rowInput);
             this.container.appendChild(formRow);
         };
@@ -6460,11 +6451,168 @@ var Inknote;
             this.addRowWithData("notes:", project.notes, function (e) {
                 ProjectOptionsService.Instance.currentProject.notes = e.target.value;
             });
+            this.addRowWithData("tempo:", project.bpm, function (e) {
+                ProjectOptionsService.Instance.currentProject.bpm = parseInt(e.target.value);
+            }, true);
             Modal.toggle("project-options");
         };
         return ProjectOptionsService;
     })();
     Inknote.ProjectOptionsService = ProjectOptionsService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var InstrumentService = (function () {
+        function InstrumentService() {
+        }
+        Object.defineProperty(InstrumentService, "Instance", {
+            get: function () {
+                if (!InstrumentService._instance) {
+                    InstrumentService._instance = new InstrumentService();
+                }
+                return InstrumentService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        InstrumentService.prototype.addInstrument = function () {
+            var name = prompt("What is the name of the new instrument?");
+            if (name != "" && name != null) {
+                Inknote.NoteControlService.Instance.addInstrument(name);
+            }
+            if (name == "") {
+                Inknote.check("Your instrument name cannot be empty", null, null);
+            }
+        };
+        InstrumentService.prototype.openInstrumentEditor = function () {
+            Modal.toggle("instruments");
+            function drawInstrumentEditModal() {
+                var instrumentList = document.getElementById("instrument-list");
+                instrumentList.innerHTML = "";
+                var instruments = Inknote.Managers.ProjectManager.Instance.currentProject.instruments;
+                for (var i = 0; i < instruments.length; i++) {
+                    var formRow = document.createElement("div");
+                    formRow.className = "form-row";
+                    var instrumentHolder = document.createElement("input");
+                    instrumentHolder.value = instruments[i].name;
+                    instrumentHolder.setAttribute("data-id", instruments[i].ID);
+                    instrumentHolder.onkeyup = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                proj.instruments[j].name = ele.value;
+                            }
+                        }
+                        Inknote.ScoringService.Instance.refresh();
+                    };
+                    var isVisible = document.createElement("input");
+                    isVisible.type = "checkbox";
+                    isVisible.checked = instruments[i].visible;
+                    isVisible.setAttribute("data-id", instruments[i].ID);
+                    isVisible.className += " small-width";
+                    isVisible.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                proj.instruments[j].visible = ele.checked;
+                            }
+                        }
+                        Inknote.ScoringService.Instance.refresh();
+                    };
+                    var up = document.createElement("span");
+                    var down = document.createElement("span");
+                    up.textContent = "▲";
+                    down.textContent = "▼";
+                    up.className += " button";
+                    down.className += " button";
+                    up.setAttribute("data-id", instruments[i].ID);
+                    down.setAttribute("data-id", instruments[i].ID);
+                    up.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.moveUpFromID(id);
+                        drawInstrumentEditModal();
+                    };
+                    down.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.moveDownFromID(id);
+                        drawInstrumentEditModal();
+                    };
+                    var deleteBtn = document.createElement("span");
+                    deleteBtn.textContent = "x";
+                    deleteBtn.className += " button negative";
+                    deleteBtn.setAttribute("data-id", instruments[i].ID);
+                    deleteBtn.onclick = function (e) {
+                        var ele = e.target;
+                        var id = ele.getAttribute("data-id");
+                        InstrumentService.Instance.deleteFromID(id, function () {
+                            drawInstrumentEditModal();
+                        });
+                    };
+                    formRow.appendChild(instrumentHolder);
+                    formRow.appendChild(isVisible);
+                    formRow.appendChild(up);
+                    formRow.appendChild(down);
+                    formRow.appendChild(deleteBtn);
+                    instrumentList.appendChild(formRow);
+                }
+            }
+            drawInstrumentEditModal();
+        };
+        InstrumentService.prototype.moveUpFromID = function (id) {
+            var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var newInstruments = [];
+            for (var j = 0; j < proj.instruments.length; j++) {
+                if (proj.instruments[j + 1] && proj.instruments[j + 1].ID == id) {
+                    newInstruments.push(proj.instruments[j + 1]);
+                    newInstruments.push(proj.instruments[j]);
+                    j++;
+                }
+                else {
+                    newInstruments.push(proj.instruments[j]);
+                }
+            }
+            proj.instruments = newInstruments;
+            Inknote.ScoringService.Instance.refresh();
+        };
+        InstrumentService.prototype.moveDownFromID = function (id) {
+            var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var newInstruments = [];
+            for (var j = 0; j < proj.instruments.length; j++) {
+                if (proj.instruments[j].ID == id && proj.instruments[j + 1]) {
+                    newInstruments.push(proj.instruments[j + 1]);
+                    newInstruments.push(proj.instruments[j]);
+                    j++;
+                }
+                else {
+                    newInstruments.push(proj.instruments[j]);
+                }
+            }
+            proj.instruments = newInstruments;
+            Inknote.ScoringService.Instance.refresh();
+        };
+        InstrumentService.prototype.deleteFromID = function (id, then) {
+            Inknote.check("Are you sure you want to delete this instrument?", function () {
+                var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var newInstruments = [];
+                for (var j = 0; j < proj.instruments.length; j++) {
+                    if (proj.instruments[j].ID != id) {
+                        newInstruments.push(proj.instruments[j]);
+                    }
+                }
+                proj.instruments = newInstruments;
+                then();
+                Inknote.ScoringService.Instance.refresh();
+            });
+        };
+        return InstrumentService;
+    })();
+    Inknote.InstrumentService = InstrumentService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6504,6 +6652,41 @@ var Inknote;
     })();
     Inknote.UndoService = UndoService;
 })(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var HttpService = (function () {
+        function HttpService() {
+        }
+        Object.defineProperty(HttpService, "Instance", {
+            get: function () {
+                if (!HttpService._instance) {
+                    HttpService._instance = new HttpService();
+                }
+                return HttpService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        HttpService.prototype.$get = function (url, callback, onerror) {
+            var request = new XMLHttpRequest();
+            request.open("GET", url, true);
+            request.onload = callback;
+            request.onerror = onerror;
+            request.send();
+        };
+        HttpService.prototype.post = function (url, data, callback, onerror) {
+            var request = new XMLHttpRequest();
+            request.open("POST", url, true);
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.setRequestHeader("content-type", "application/json");
+            request.onload = callback;
+            request.onerror = onerror;
+            request.send(data);
+        };
+        return HttpService;
+    })();
+    Inknote.HttpService = HttpService;
+})(Inknote || (Inknote = {}));
 var PanningModelType;
 (function (PanningModelType) {
     PanningModelType[PanningModelType["equalpower"] = 0] = "equalpower";
@@ -6539,43 +6722,82 @@ var Inknote;
 (function (Inknote) {
     var Audio;
     (function (Audio) {
+        (function (SoundType) {
+            SoundType[SoundType["sine"] = 0] = "sine";
+            SoundType[SoundType["sawtooth"] = 1] = "sawtooth";
+            SoundType[SoundType["triangle"] = 2] = "triangle";
+            SoundType[SoundType["square"] = 3] = "square";
+            SoundType[SoundType["custome"] = 4] = "custome";
+        })(Audio.SoundType || (Audio.SoundType = {}));
+        var SoundType = Audio.SoundType;
+        function getSoundType(soundType) {
+            switch (soundType) {
+                case 0 /* sine */:
+                    return "sine";
+                case 1 /* sawtooth */:
+                    return "sawtooth";
+                case 2 /* triangle */:
+                    return "triangle";
+                case 3 /* square */:
+                    return "square";
+                default:
+                    return "sine";
+            }
+        }
         var Sound = (function () {
-            function Sound(freq, time) {
+            function Sound(freq, time, soundType) {
+                this.isSilent = false;
                 this.finished = false;
                 this.note = null;
+                this.soundType = 0 /* sine */;
                 this.frequency = freq;
                 this.playTime = time;
+                this.lifeTime = time + 1000;
+                if (soundType) {
+                    this.soundType = soundType;
+                }
             }
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
+                this.oscillator.type = getSoundType(this.soundType);
                 this.gain = ctx.createGain();
                 this.gain.gain.value = 0.3;
                 this.oscillator.connect(this.gain);
-                this.gain.connect(connectTo);
+                var synth = new Audio.Synth("lol");
+                synth.setInput(this.gain);
+                synth.connectTo(connectTo, ctx);
+                //this.gain.connect(connectTo);
                 this.oscillator.frequency.value = this.frequency;
                 this.oscillator.start(0);
                 this.startTime = new Date();
                 this.note.isPlaying = true;
                 Inknote.ScoringService.Instance.refresh();
             };
-            Sound.prototype.stop = function () {
-                this.note.isPlaying = false;
+            Sound.prototype.mute = function () {
+                // seperated from stop && disconnecting functions to reduce clipping.
+                this.isSilent = true;
                 this.gain.gain.value = 0;
+                this.note.isPlaying = false;
+                Inknote.ScoringService.Instance.refresh();
+            };
+            Sound.prototype.stop = function () {
                 // by only decreasing gain, removes popping.
                 // this.oscillator.disconnect();
                 this.finished = true;
                 this.oscillator.disconnect();
                 this.gain.disconnect();
-                Inknote.ScoringService.Instance.refresh();
             };
             Sound.prototype.update = function () {
                 var currentTime = (new Date()).getTime();
                 var start = this.startTime.getTime();
                 if (currentTime - start > this.playTime) {
+                    this.mute();
+                }
+                else if (currentTime - start > this.lifeTime) {
                     this.stop();
                 }
                 else {
-                    this.gain.gain.value *= 0.9;
+                    this.gain.gain.value *= 0.95;
                 }
             };
             return Sound;
@@ -6707,6 +6929,14 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(AudioService.prototype, "bpm", {
+                get: function () {
+                    var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+                    return currentProject ? currentProject.bpm : 120;
+                },
+                enumerable: true,
+                configurable: true
+            });
             AudioService.prototype.init = function () {
                 this.destination = this.context.destination;
                 if (this.masterGain) {
@@ -6723,7 +6953,6 @@ var Inknote;
                 this.waveShaper.connect(this.destination);
                 this.sounds = [];
                 // bpm has to be given from crotchet.
-                this.bpm = 120;
                 this.timeSignature = new Inknote.Model.TimeSignature(4, 4);
                 this.playing = false;
                 this.barIndex = 0;
@@ -6852,6 +7081,115 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var Synth = (function () {
+            function Synth(name) {
+                this.name = name;
+                this.ID = Inknote.getID();
+                if (!name) {
+                    throw new Error("A synth must have a name!");
+                }
+            }
+            Synth.prototype.setInput = function (node) {
+                this.input = node;
+            };
+            Synth.prototype.connectTo = function (node, audioContext) {
+                if (!node) {
+                    throw Error("must specify node when connecting synth");
+                }
+                if (!audioContext) {
+                    throw Error("must specify audioContext when connecting synth");
+                }
+                if (!this.input) {
+                    throw Error("the input must be set first, before connecting the synth to further items");
+                }
+                var wetGain = audioContext.createGain();
+                wetGain.gain.value = 0.5;
+                var dryGain = audioContext.createGain();
+                var delay = audioContext.createDelay(1);
+                delay.delayTime.value = 0.2;
+                var mixGain = audioContext.createGain();
+                if (this.gain) {
+                    mixGain.gain.value = this.gain;
+                }
+                var bq = audioContext.createBiquadFilter();
+                var comp = audioContext.createDynamicsCompressor();
+                /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                 * input ----> dryGain ----------------|
+                 *    |------> delay --> wetGain --> mixGain --> output
+                 *                |---<----|
+                 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+                this.input.connect(dryGain);
+                this.input.connect(delay);
+                delay.connect(wetGain);
+                wetGain.connect(delay);
+                dryGain.connect(mixGain);
+                wetGain.connect(mixGain);
+                mixGain.connect(node);
+            };
+            return Synth;
+        })();
+        Audio.Synth = Synth;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var SynthManager = (function () {
+            function SynthManager() {
+                this.synths = Inknote.Storage.getSynths();
+            }
+            Object.defineProperty(SynthManager, "Instance", {
+                get: function () {
+                    if (!SynthManager._instance) {
+                        SynthManager._instance = new SynthManager();
+                    }
+                    return SynthManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            SynthManager.prototype.addSynth = function (synth) {
+                this.synths.push(synth);
+            };
+            SynthManager.prototype.getSynths = function () {
+                return this.synths;
+            };
+            SynthManager.prototype.getSynthFromID = function (id) {
+                return Inknote.getItemFromID(this.synths, id);
+            };
+            SynthManager.prototype.getSynthFromName = function (name) {
+                for (var i = 0; i < this.synths.length; i++) {
+                    if (this.synths[i].name == name) {
+                        return this.synths[i];
+                    }
+                }
+                return null;
+            };
+            SynthManager.prototype.getSynth = function (id, name) {
+                // gets by id
+                var result = this.getSynthFromID(id);
+                // otherwise gets from name
+                if (!result) {
+                    result = this.getSynthFromName(name);
+                }
+                // else creates a new synth with this name
+                if (!result) {
+                    var synth = new Audio.Synth(name);
+                    this.addSynth(synth);
+                    return synth;
+                }
+                return result;
+            };
+            return SynthManager;
+        })();
+        Audio.SynthManager = SynthManager;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Testing;
     (function (Testing) {
         var _compressedProject = new Inknote.Compressed.CompressedProject("TestCompressed");
@@ -6975,6 +7313,10 @@ var Inknote;
                 },
                 set: function (item) {
                     var pageURL = "?" + pageName(item);
+                    if (Menu.isMenuOpen) {
+                        Menu.toggle();
+                    }
+                    Menu.closeAllSubMenus();
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
@@ -6984,7 +7326,6 @@ var Inknote;
                     }
                     else {
                         FrontEnd.hideElement(document.getElementById("play"));
-                        console.log("what");
                     }
                     switch (item) {
                         case 2 /* File */:
@@ -7996,6 +8337,9 @@ var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {
         window.onmousewheel = function (ev) {
+            if (Modal.isModalOpen === true) {
+                return;
+            }
             var isUp = false;
             if (ev.wheelDelta > 0) {
                 isUp = true;
@@ -8045,6 +8389,12 @@ var Inknote;
                 if (e.keyCode == 90) {
                     Inknote.UndoService.Instance.undo();
                 }
+                // s
+                // save
+                if (e.keyCode == 83) {
+                    Inknote.Action(2 /* SaveProject */);
+                    e.preventDefault();
+                }
             }
             if (e.keyCode == 8) {
                 e.preventDefault();
@@ -8054,6 +8404,11 @@ var Inknote;
             keysDown = Inknote.getItemsWhere(keysDown, function (item) {
                 return item != ev.keyCode;
             });
+            if (Inknote.anyItemIs(keysDown, function (item) {
+                return item == 17;
+            })) {
+                return;
+            }
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
@@ -8172,8 +8527,18 @@ var Inknote;
             else {
                 proj.name = Inknote.pascalCase(proj.name + String.fromCharCode(e.keyCode));
             }
+            e.preventDefault();
+            return;
         }
         e.preventDefault();
+        switch (e.keyCode) {
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(0 /* NewProject */, 0 /* Score */);
+                return;
+        }
     }
     function fileType(e) {
         var inst = Inknote.Managers.ProjectManager.Instance;
@@ -8201,6 +8566,14 @@ var Inknote;
         else if (e.keyCode == 46) {
             // delete
             inst.deleteSelectedProject();
+        }
+        switch (e.keyCode) {
+            case 77:
+                Menu.toggle();
+                return;
+            case 78:
+                Inknote.Action(0 /* NewProject */, 0 /* Score */);
+                return;
         }
     }
 })(Inknote || (Inknote = {}));
@@ -8250,7 +8623,82 @@ var FrontEnd;
         }
     }
     FrontEnd.select = select;
+    function addClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (!isClass) {
+            item.className = item.className + " " + className;
+        }
+    }
+    FrontEnd.addClass = addClass;
+    function removeClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+    }
+    FrontEnd.removeClass = removeClass;
+    function toggleClass(item, className) {
+        var classes = item.className;
+        var isClass = classes.indexOf(className) != -1;
+        if (isClass) {
+            item.className = item.className.replace(className, "");
+        }
+        else {
+            item.className = item.className + " " + className;
+        }
+    }
+    FrontEnd.toggleClass = toggleClass;
 })(FrontEnd || (FrontEnd = {}));
+var Menu;
+(function (Menu) {
+    Menu.isMenuOpen = false;
+    Menu.scoreItems = document.getElementsByClassName("score-item");
+    var menuButton = document.getElementsByClassName("menu-button")[0];
+    var menu = document.getElementById("main-menu");
+    function updateMenuItems() {
+        for (var i = 0; i < Menu.scoreItems.length; i++) {
+            if (Inknote.Managers.PageManager.Current.page == 0 /* Score */) {
+                FrontEnd.showElement(Menu.scoreItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(Menu.scoreItems[i]);
+            }
+        }
+    }
+    Menu.updateMenuItems = updateMenuItems;
+    function toggle() {
+        if (!Menu.isMenuOpen) {
+            closeAllSubMenus();
+        }
+        Menu.isMenuOpen = !Menu.isMenuOpen;
+        updateMenuItems();
+        FrontEnd.toggleClass(menuButton, "open");
+        FrontEnd.toggleClass(menu, "open");
+    }
+    Menu.toggle = toggle;
+    function closeAllSubMenus(e) {
+        if (e && e.currentTarget != e.target) {
+            return;
+        }
+        var subs = document.getElementsByClassName("sub-menu");
+        for (var i = 0; i < subs.length; i++) {
+            FrontEnd.removeClass(subs[i], "open");
+        }
+    }
+    Menu.closeAllSubMenus = closeAllSubMenus;
+    function openSubMenu(id) {
+        FrontEnd.addClass(document.getElementById(id), "open");
+    }
+    Menu.openSubMenu = openSubMenu;
+    function closeSubMenu(id) {
+        FrontEnd.removeClass(menu, "open");
+        FrontEnd.removeClass(menuButton, "open");
+        FrontEnd.removeClass(document.getElementById(id), "open");
+    }
+    Menu.closeSubMenu = closeSubMenu;
+})(Menu || (Menu = {}));
 var Modal;
 (function (Modal) {
     Modal.isModalOpen = false;
@@ -8299,6 +8747,41 @@ var Modal;
         var checkElement = document.getElementById("report-checkbox");
         var text = textElement.value;
         var check = checkElement.checked;
+        if (!check) {
+            Inknote.log("a robot is trying to submit a bug report", 2 /* Warning */);
+            return;
+        }
+        if (!text) {
+            Inknote.check("You cannot send a bug report without a description. Please try again.", function () {
+            }, function () {
+                cancelReport();
+            });
+            return;
+        }
+        var relevantThreadID = Inknote.getID();
+        var threadObject = {
+            id: relevantThreadID,
+            subject: "Bug: #" + relevantThreadID,
+            posts: []
+        };
+        var postObject = {
+            user: "Anonymous",
+            threadID: relevantThreadID,
+            message: text,
+            time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        };
+        var stringThread = JSON.stringify(threadObject);
+        var stringPost = JSON.stringify(postObject);
+        Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/threads", stringThread, function (e) {
+            Inknote.log("bug report thread created", 1 /* Text */);
+            Inknote.HttpService.Instance.post(Inknote.Managers.SettingsManager.Current.serverURL + "/posts", stringPost, function (e) {
+                Inknote.log("bug report submitted", 1 /* Text */);
+            }, function (e) {
+                Inknote.log("sending bug report failed", 0 /* Error */);
+            });
+        }, function (e) {
+            Inknote.log("failed to create thread", 0 /* Error */);
+        });
         textElement.value = "";
         checkElement.checked = false;
         hide("report");
@@ -8458,6 +8941,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/bottommenu.ts" />
 /// <reference path="scripts/drawings/scoremenu.ts" />
 /// <reference path="scripts/drawings/chordsymbol.ts" />
+/// <reference path="scripts/drawings/tempomark.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/filescrollbar.ts" />
 /// <reference path="scripts/drawings/scrollbars/scrollthumbnail.ts" />
@@ -8511,13 +8995,17 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/notecontrolservice.ts" />
 /// <reference path="scripts/services/barservice.ts" />
 /// <reference path="scripts/services/projectoptionsservice.ts" />
+/// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
+/// <reference path="scripts/services/httpservice.ts" />
 // audio
 /// <reference path="scripts/audio/webaudiodefinitions.ts" />
 /// <reference path="scripts/audio/sound.ts" />
 /// <reference path="scripts/audio/frequencies.ts" />
 /// <reference path="scripts/audio/playtime.ts" />
 /// <reference path="scripts/audio/audioservice.ts" />
+/// <reference path="scripts/audio/synth.ts" />
+/// <reference path="scripts/audio/synthmanager.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers

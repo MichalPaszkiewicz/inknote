@@ -595,7 +595,6 @@ var Inknote;
             function Instrument(name) {
                 this.name = name;
                 this.ID = Inknote.getID();
-                this.oscillatorType = 0 /* sine */;
                 this.bars = [];
                 this.visible = true;
             }
@@ -7087,6 +7086,7 @@ var Inknote;
             function Synth(name) {
                 this.name = name;
                 this.ID = Inknote.getID();
+                this.oscillatorType = 0 /* sine */;
                 if (!name) {
                     throw new Error("A synth must have a name!");
                 }
@@ -7186,6 +7186,38 @@ var Inknote;
             return SynthManager;
         })();
         Audio.SynthManager = SynthManager;
+    })(Audio = Inknote.Audio || (Inknote.Audio = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Audio;
+    (function (Audio) {
+        var SynthService = (function () {
+            function SynthService() {
+            }
+            Object.defineProperty(SynthService, "Instance", {
+                get: function () {
+                    if (!SynthService._instance) {
+                        SynthService._instance = new SynthService();
+                    }
+                    return SynthService._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            SynthService.setSynth = function (id, name) {
+                SynthService.Instance.synth = Audio.SynthManager.Instance.getSynth(id, name);
+            };
+            SynthService.prototype.changeWaveShape = function (value) {
+                console.log(value);
+                this.synth = Audio.SoundType[value];
+            };
+            SynthService.prototype.changeGain = function (value) {
+                this.synth.gain = value;
+            };
+            return SynthService;
+        })();
+        Audio.SynthService = SynthService;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -8814,6 +8846,21 @@ var Actions;
         Plugins.PluginMenuClick = PluginMenuClick;
     })(Plugins = Actions.Plugins || (Actions.Plugins = {}));
 })(Actions || (Actions = {}));
+var SynthBindings;
+(function (SynthBindings) {
+    var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
+    synthWaveShapeSelect.onchange = function (e) {
+        var select = e.target;
+        var value = select.value;
+        Inknote.Audio.SynthService.Instance.changeWaveShape(value);
+    };
+    var synthGainInput = document.getElementById("synth-gain");
+    synthGainInput.onchange = function (e) {
+        var input = e.target;
+        var value = input.valueAsNumber;
+        Inknote.Audio.SynthService.Instance.changeGain(value);
+    };
+})(SynthBindings || (SynthBindings = {}));
 var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {
@@ -9006,6 +9053,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/audio/audioservice.ts" />
 /// <reference path="scripts/audio/synth.ts" />
 /// <reference path="scripts/audio/synthmanager.ts" />
+/// <reference path="scripts/audio/synthservice.ts" />
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
 // managers

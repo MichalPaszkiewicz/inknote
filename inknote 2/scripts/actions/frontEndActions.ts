@@ -294,3 +294,26 @@ module Actions.Plugins {
     }
 
 }
+
+
+module SynthBindings {
+
+    var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
+    synthWaveShapeSelect.onchange = function (e) {
+        var select = <HTMLSelectElement>e.target;
+
+        var value = select.value;
+
+        Inknote.Audio.SynthService.Instance.changeWaveShape(value);
+    }
+
+    var synthGainInput = document.getElementById("synth-gain");
+    synthGainInput.onchange = function (e) {
+        var input = <HTMLInputElement>e.target;
+
+        var value = input.valueAsNumber;
+
+        Inknote.Audio.SynthService.Instance.changeGain(value);
+    }
+
+}

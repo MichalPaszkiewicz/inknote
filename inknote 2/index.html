@@ -187,7 +187,7 @@
 
             <div class="form-row">
                 <span class="label">wave shape</span>
-                <select>
+                <select id="synth-wave-shape">
                     <option value="sine">sine</option>
                     <option value="sawtooth">sawtooth</option>
                     <option value="triangle">triangular</option>
@@ -196,7 +196,7 @@
             </div>
             <div class="form-row">
                 <span class="label">gain</span>
-                <input type="range" name="gain" min="0" max="1" step="0.01" />
+                <input type="range" name="gain" min="0" max="1" step="0.01" id="synth-gain"/>
             </div>
 
             <div class="button" onclick="Modal.toggle('synth-edit')">Close</div>

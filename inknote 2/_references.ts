@@ -151,6 +151,7 @@
 /// <reference path="scripts/audio/audioservice.ts" />
 /// <reference path="scripts/audio/synth.ts" />
 /// <reference path="scripts/audio/synthmanager.ts" />
+/// <reference path="scripts/audio/synthservice.ts" />
 
 // testData
 /// <reference path="scripts/testdata/compressedproject.ts" />
