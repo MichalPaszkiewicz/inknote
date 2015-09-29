@@ -17,13 +17,15 @@ Store multiple files, tag them with colours.
 
 [![File page](./images/file-page.png)](http://www.michalpaszkiewicz.co.uk/inknote/?File)
 
-Uses AngularJS, Html5 Canvas, PeerJS
+Made using TypeScript, Html5 Canvas and plenty of crazy and amazing browser APIs.
 
-If you would like to contribute, please go ahead and fork, push, pull, etc!
+If you would like to [contribute](#contribute), please go ahead and fork, push, pull, etc!
 
 Please also visit the developer's forum:
 
 http://www.michalpaszkiewicz.co.uk/inknote/developer/
+
+Made with AngularJS, NodeJS and MongoDB.
 
 Upcoming updates
 ------------------
@@ -44,6 +46,7 @@ Upcoming updates
 - Cloud storage for open source projects.
 - Music dif tool.
 - Scoring intellisense.
+- Loading from/Converting to MIDI files.
 
 Update 29/09/2015
 ------------------
@@ -53,3 +56,22 @@ Update 29/09/2015
 - File download/upload
 - Copy, cut and paste on bars.
 - Undo and redo on copy, cut and paste.
+
+Contribute
+-----------------
+This project needs to be loaded using Visual Studio. 
+
+You can get a free version of visual studio [here](https://www.visualstudio.com/products/free-developer-offers-vs.aspx).
+
+Feel free to contribute by sending pull requests, and submitting issues and suggestions.
+
+Contributors of all skills are needed to complete a big project like this one. This project is particularly in need of:
+
+- developers
+- designers
+- sound engineers
+- composers
+- musicians
+- testers
+
+Thank you to all who have donated their time to this project, you are an amazing gift to the music software open source community.
