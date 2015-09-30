@@ -294,6 +294,10 @@ body #drag-drop-bad {
 .modal .form-row {
   margin: 10px 0;
 }
+.modal .form-row .list-column {
+  min-width: 200px;
+  display: inline-block;
+}
 .modal .form-row .label {
   min-width: 40%;
   display: inline-block;

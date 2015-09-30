@@ -7139,7 +7139,14 @@ var Inknote;
     (function (Audio) {
         var SynthManager = (function () {
             function SynthManager() {
+                this.synths = [];
                 this.synths = Inknote.Storage.getSynths();
+                if (this.synths.length == 0) {
+                    var newSynth = new Audio.Synth("Standard synth");
+                    newSynth.oscillatorType = 0 /* sine */;
+                    newSynth.gain = 1;
+                    this.synths.push(newSynth);
+                }
             }
             Object.defineProperty(SynthManager, "Instance", {
                 get: function () {
@@ -7209,7 +7216,6 @@ var Inknote;
                 SynthService.Instance.synth = Audio.SynthManager.Instance.getSynth(id, name);
             };
             SynthService.prototype.changeWaveShape = function (value) {
-                console.log(value);
                 this.synth = Audio.SoundType[value];
             };
             SynthService.prototype.changeGain = function (value) {
@@ -8854,6 +8860,38 @@ var Actions;
 })(Actions || (Actions = {}));
 var SynthBindings;
 (function (SynthBindings) {
+    function loadSynthData() {
+        var synths = Inknote.Audio.SynthManager.Instance.getSynths();
+        var synthDiv = document.getElementById("synth-list");
+        for (var i = 0; i < synths.length; i++) {
+            var formRow = document.createElement("div");
+            formRow.className = "form-row";
+            var synthID = document.createElement("span");
+            synthID.textContent = synths[i].ID;
+            synthID.className = "list-column";
+            formRow.appendChild(synthID);
+            var synthName = document.createElement("span");
+            synthName.textContent = synths[i].name;
+            synthName.className = "list-column";
+            formRow.appendChild(synthName);
+            var editButton = document.createElement("div");
+            editButton.className = "button";
+            editButton.textContent = "edit";
+            editButton.setAttribute("data-id", synths[i].ID);
+            editButton.setAttribute("data-name", synths[i].name);
+            editButton.onclick = function (e) {
+                var target = e.target;
+                var id = target.getAttribute("data-id");
+                var name = target.getAttribute("data-name");
+                Inknote.Audio.SynthService.setSynth(id, name);
+                Modal.toggle('synth');
+                Modal.toggle('synth-edit');
+            };
+            formRow.appendChild(editButton);
+            synthDiv.appendChild(formRow);
+        }
+    }
+    SynthBindings.loadSynthData = loadSynthData;
     if (typeof (window) != typeof (undefined)) {
         var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
         synthWaveShapeSelect.onchange = function (e) {
@@ -8867,6 +8905,7 @@ var SynthBindings;
             var value = input.valueAsNumber;
             Inknote.Audio.SynthService.Instance.changeGain(value);
         };
+        loadSynthData();
     }
 })(SynthBindings || (SynthBindings = {}));
 var Inknote;

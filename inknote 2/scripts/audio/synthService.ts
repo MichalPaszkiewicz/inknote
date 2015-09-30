@@ -18,7 +18,6 @@
         }
 
         changeWaveShape(value: string) {
-            console.log(value);
             this.synth = SoundType[value];  
         }
 
