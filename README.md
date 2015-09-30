@@ -5,6 +5,9 @@ inknote
 
 [![Build status](https://circleci.com/gh/MichalPaszkiewicz/inknote.png?circle-token=:circle-token)](https://circleci.com/gh/MichalPaszkiewicz/inknote)
 
+[![Issue Stats](http://issuestats.com/github/michalpaszkiewicz/inknote/badge/pr)](http://issuestats.com/github/michalpaszkiewicz/inknote)
+[![Issue Stats](http://issuestats.com/github/michalpaszkiewicz/inknote/badge/issue)](http://issuestats.com/github/michalpaszkiewicz/inknote)
+
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](http://forthebadge.com)
 
 Compose music easily in your browser!
