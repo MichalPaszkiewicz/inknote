@@ -11,8 +11,8 @@
             return SynthManager._instance;
         }
 
-        private synths: Synth[] = Storage.getSynths();
-        
+        private synths: Synth[] = [];
+
         addSynth(synth: Synth) {
             this.synths.push(synth);
         }
@@ -30,10 +30,10 @@
                 if (this.synths[i].name == name) {
                     return this.synths[i];
                 }
-            } 
+            }
             return null;
         }
-        
+
         getSynth(id: string, name: string): Synth {
             // gets by id
             var result = this.getSynthFromID(id);
@@ -52,6 +52,18 @@
             }
 
             return result;
+        }
+
+        constructor() {
+            this.synths = Storage.getSynths();
+
+            if (this.synths.length == 0) {
+                var newSynth = new Synth("Standard synth");
+                newSynth.oscillatorType = SoundType.sine;
+                newSynth.gain = 1;
+
+                this.synths.push(newSynth);
+            }
         }
 
     }

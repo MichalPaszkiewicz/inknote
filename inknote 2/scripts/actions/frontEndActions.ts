@@ -307,7 +307,48 @@ module Actions.Plugins {
 
 module SynthBindings {
 
-    if (typeof(window) != typeof(undefined)) {
+    export function loadSynthData() {
+
+        var synths = Inknote.Audio.SynthManager.Instance.getSynths();
+        var synthDiv = <HTMLDivElement>document.getElementById("synth-list");
+
+        for (var i = 0; i < synths.length; i++) {
+            var formRow = document.createElement("div");
+            formRow.className = "form-row";
+
+            var synthID = document.createElement("span");
+            synthID.textContent = synths[i].ID;
+            synthID.className = "list-column";
+            formRow.appendChild(synthID);
+
+            var synthName = document.createElement("span");
+            synthName.textContent = synths[i].name;
+            synthName.className = "list-column";
+            formRow.appendChild(synthName);
+
+            var editButton = document.createElement("div");
+            editButton.className = "button";
+            editButton.textContent = "edit";
+            editButton.setAttribute("data-id", synths[i].ID);
+            editButton.setAttribute("data-name", synths[i].name);
+            editButton.onclick = function (e) {
+                var target = <HTMLDivElement>e.target;
+                var id = target.getAttribute("data-id");
+                var name = target.getAttribute("data-name");
+
+                Inknote.Audio.SynthService.setSynth(id, name);
+
+                Modal.toggle('synth');
+                Modal.toggle('synth-edit');
+            }
+            formRow.appendChild(editButton);
+
+            synthDiv.appendChild(formRow);
+        }
+
+    }
+
+    if (typeof (window) != typeof (undefined)) {
         var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
         synthWaveShapeSelect.onchange = function (e) {
             var select = <HTMLSelectElement>e.target;
@@ -325,6 +366,9 @@ module SynthBindings {
 
             Inknote.Audio.SynthService.Instance.changeGain(value);
         }
+
+        loadSynthData();
     }
+
 
 }
