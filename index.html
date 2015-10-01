@@ -178,7 +178,7 @@
             </div>
             <div id="synth-list"></div>
 
-            <div class="button" onclick="Modal.toggle('synth'); Modal.toggle('synth-edit');">edit synth</div>
+            <div class="button" onclick="SynthBindings.addSynth()">add synth</div>
 
             <div class="button" onclick="Modal.toggle('synth')">Close</div>
         </div>
@@ -205,6 +205,7 @@
                 <input type="range" name="gain" min="0" max="1" step="0.01" id="synth-gain"/>
             </div>
 
+			<div class="button" onclick="Modal.toggle('synth-edit');Modal.toggle('synth')">Back</div>
             <div class="button" onclick="Modal.toggle('synth-edit')">Close</div>
         </div>
     </div>

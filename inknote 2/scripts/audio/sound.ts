@@ -8,7 +8,7 @@
         "custome"
     }
 
-    function getSoundType(soundType: SoundType): any {
+    export function getSoundType(soundType: SoundType): any {
         switch (soundType) {
             case SoundType.sine:
                 return "sine";
@@ -24,11 +24,10 @@
     }
 
     export class Sound {
-        
         startTime: Date;
-        
+
         playTime: number;
-        
+
         lifeTime: number;
 
         frequency: number;
@@ -106,14 +105,14 @@
                 this.mute();
             }
             else if (currentTime - start > this.lifeTime) {
-                this.stop(); 
+                this.stop();
             }
             else {
                 this.gain.gain.value *= 0.95;
             }
 
         }
-        
+
         constructor(freq: number, time: number, soundType?: SoundType) {
             this.frequency = freq;
             this.playTime = time;
@@ -123,8 +122,7 @@
                 this.soundType = soundType;
             }
 
-        }      
-
+        }
     }
 
 }

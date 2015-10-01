@@ -94,7 +94,7 @@ module Menu {
 
     export var isMenuOpen = false;
 
-    export var scoreItems: NodeList; 
+    export var scoreItems: NodeList;
 
     var menuButton: HTMLDivElement;
     var menu: HTMLDivElement;
@@ -243,8 +243,7 @@ module Modal {
             threadID: relevantThreadID,
             message: text,
             time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
-        };      
-        
+        };
         var stringThread = JSON.stringify(threadObject);
         var stringPost = JSON.stringify(postObject);
 
@@ -307,10 +306,23 @@ module Actions.Plugins {
 
 module SynthBindings {
 
+    export function getSynthValues() {
+        var currentSynth = Inknote.Audio.SynthService.Instance.synth;
+
+        var synthWaveShapeSelect = <HTMLSelectElement>document.getElementById("synth-wave-shape");
+        synthWaveShapeSelect.value = Inknote.Audio.getSoundType(currentSynth.oscillatorType);
+
+        var synthGainInput = <HTMLInputElement>document.getElementById("synth-gain");
+        synthGainInput.valueAsNumber = currentSynth.gain;
+
+    }
+
     export function loadSynthData() {
 
         var synths = Inknote.Audio.SynthManager.Instance.getSynths();
         var synthDiv = <HTMLDivElement>document.getElementById("synth-list");
+        
+        synthDiv.innerHTML = "";
 
         for (var i = 0; i < synths.length; i++) {
             var formRow = document.createElement("div");
@@ -337,15 +349,32 @@ module SynthBindings {
                 var name = target.getAttribute("data-name");
 
                 Inknote.Audio.SynthService.setSynth(id, name);
+                SynthBindings.getSynthValues();
 
                 Modal.toggle('synth');
                 Modal.toggle('synth-edit');
-            }
+            };
             formRow.appendChild(editButton);
 
             synthDiv.appendChild(formRow);
         }
 
+    }
+
+    export function addSynth() {
+
+        var synthName = prompt("What is the name of your new synth?");
+
+        var newSynth = new Inknote.Audio.Synth(synthName);
+
+        Inknote.Audio.SynthManager.Instance.addSynth(newSynth);
+        loadSynthData();
+        
+        Inknote.Audio.SynthService.setSynth(newSynth.ID, newSynth.name);
+        SynthBindings.getSynthValues();
+
+        Modal.toggle('synth');
+        Modal.toggle('synth-edit');
     }
 
     if (typeof (window) != typeof (undefined)) {
@@ -356,7 +385,7 @@ module SynthBindings {
             var value = select.value;
 
             Inknote.Audio.SynthService.Instance.changeWaveShape(value);
-        }
+        };
 
         var synthGainInput = document.getElementById("synth-gain");
         synthGainInput.onchange = function (e) {
@@ -365,7 +394,7 @@ module SynthBindings {
             var value = input.valueAsNumber;
 
             Inknote.Audio.SynthService.Instance.changeGain(value);
-        }
+        };
 
         loadSynthData();
     }
