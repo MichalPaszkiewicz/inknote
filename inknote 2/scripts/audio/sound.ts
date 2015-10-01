@@ -8,7 +8,7 @@
         "custome"
     }
 
-    function getSoundType(soundType: SoundType): any {
+    export function getSoundType(soundType: SoundType): any {
         switch (soundType) {
             case SoundType.sine:
                 return "sine";

@@ -14,7 +14,7 @@
 
         oscillatorType: Audio.SoundType = Audio.SoundType.sine;
 
-        gain: number;
+        gain: number = 1;
 
         connectTo(node: AudioNode, audioContext: AudioContext) {
 
