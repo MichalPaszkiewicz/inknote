@@ -27,10 +27,10 @@
 
     <div class="menu" onclick="Menu.toggle();" id="main-menu">
         <div class="menu-item" onclick="Menu.openSubMenu('project-menu')">project</div>
-        <span class="score-item">
-            <div class="menu-item" onclick="Menu.openSubMenu('edit-menu')">edit</div>
-            <div class="menu-item" onclick="Menu.openSubMenu('music-menu')">music</div>
-            <div class="menu-item" onclick="Menu.openSubMenu('audio-menu')">audio</div>
+        <span class="score-item sm-inline">
+            <span class="menu-item" onclick="Menu.openSubMenu('edit-menu')">edit</span>
+            <span class="menu-item" onclick="Menu.openSubMenu('music-menu')">music</span>
+            <span class="menu-item" onclick="Menu.openSubMenu('audio-menu')">audio</span>
         </span>
         <div class="menu-item" onclick="Menu.openSubMenu('tools-menu')">tools</div>
         <div class="menu-item" onclick="Menu.openSubMenu('help-menu')">help</div>
@@ -52,7 +52,7 @@
         <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.NewProject)">new project</div>
         <div class="menu-item" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">save</div>
         <span class="score-item">
-            <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
+            <span class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</span>
         </span>
     </div>
 

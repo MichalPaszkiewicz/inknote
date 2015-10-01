@@ -94,7 +94,7 @@ module Menu {
 
     export var isMenuOpen = false;
 
-    export var scoreItems: NodeList; 
+    export var scoreItems: NodeList;
 
     var menuButton: HTMLDivElement;
     var menu: HTMLDivElement;
@@ -243,8 +243,7 @@ module Modal {
             threadID: relevantThreadID,
             message: text,
             time: (new Date()).toISOString().replace(/T/, ' ').replace(/\..+/, '')
-        };      
-        
+        };
         var stringThread = JSON.stringify(threadObject);
         var stringPost = JSON.stringify(postObject);
 
@@ -340,7 +339,7 @@ module SynthBindings {
 
                 Modal.toggle('synth');
                 Modal.toggle('synth-edit');
-            }
+            };
             formRow.appendChild(editButton);
 
             synthDiv.appendChild(formRow);
@@ -356,7 +355,7 @@ module SynthBindings {
             var value = select.value;
 
             Inknote.Audio.SynthService.Instance.changeWaveShape(value);
-        }
+        };
 
         var synthGainInput = document.getElementById("synth-gain");
         synthGainInput.onchange = function (e) {
@@ -365,7 +364,7 @@ module SynthBindings {
             var value = input.valueAsNumber;
 
             Inknote.Audio.SynthService.Instance.changeGain(value);
-        }
+        };
 
         loadSynthData();
     }

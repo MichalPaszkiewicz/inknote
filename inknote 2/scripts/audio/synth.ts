@@ -3,7 +3,7 @@
     export class Synth implements IIdentifiable {
 
         ID = getID();
-        
+
         setInput(node: AudioNode) {
 
             this.input = node;
