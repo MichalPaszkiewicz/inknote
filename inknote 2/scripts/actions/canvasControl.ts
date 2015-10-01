@@ -307,7 +307,7 @@
             this.drawService.canvas.addEventListener("touchstart", function (e: TouchEvent) {
                 self.touchStart(e, self.drawService);
 
-                var me = new MouseEvent();
+                var me = new MouseEvent("click");
 
                 // todo: get correct touch object.
                 var touch = e.touches[0];

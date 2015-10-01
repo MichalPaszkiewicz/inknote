@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -79,7 +79,6 @@
     <TypeScriptCompile Include="scripts\audio\synth.ts" />
     <TypeScriptCompile Include="scripts\audio\synthManager.ts" />
     <TypeScriptCompile Include="scripts\audio\synthService.ts" />
-    <TypeScriptCompile Include="scripts\audio\webaudioDefinitions.ts" />
     <TypeScriptCompile Include="scripts\drawings\background.ts" />
     <TypeScriptCompile Include="scripts\drawings\bar.ts" />
     <TypeScriptCompile Include="scripts\drawings\bottomMenu.ts" />
@@ -278,6 +277,7 @@
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptOutFile>@script.js</TypeScriptOutFile>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
