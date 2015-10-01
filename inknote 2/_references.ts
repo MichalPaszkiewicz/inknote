@@ -144,7 +144,6 @@
 /// <reference path="scripts/services/httpservice.ts" />
 
 // audio
-/// <reference path="scripts/audio/webaudiodefinitions.ts" />
 /// <reference path="scripts/audio/sound.ts" />
 /// <reference path="scripts/audio/frequencies.ts" />
 /// <reference path="scripts/audio/playtime.ts" />
