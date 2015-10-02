@@ -7135,6 +7135,21 @@ var Inknote;
             SynthManager.prototype.getSynths = function () {
                 return this.synths;
             };
+            SynthManager.prototype.deleteSynth = function (id, name, callback) {
+                var self = this;
+                Inknote.check("are you sure you want to delete this synth?", function () {
+                    var relevantSynth = self.getSynth(id, name);
+                    if (!relevantSynth) {
+                        return;
+                    }
+                    var newSynthList = [];
+                    newSynthList = Inknote.getItemsWhere(self.synths, function (item) {
+                        return item != relevantSynth;
+                    });
+                    self.synths = newSynthList;
+                    callback();
+                });
+            };
             SynthManager.prototype.getSynthFromID = function (id) {
                 return Inknote.getItemFromID(this.synths, id);
             };
@@ -8876,6 +8891,20 @@ var SynthBindings;
                 Modal.toggle('synth-edit');
             };
             formRow.appendChild(editButton);
+            var deleteButton = document.createElement("div");
+            deleteButton.className = "button negative";
+            deleteButton.textContent = "x";
+            deleteButton.setAttribute("data-id", synths[i].ID);
+            deleteButton.setAttribute("data-name", synths[i].name);
+            deleteButton.onclick = function (e) {
+                var target = e.target;
+                var id = target.getAttribute("data-id");
+                var name = target.getAttribute("data-name");
+                Inknote.Audio.SynthManager.Instance.deleteSynth(id, name, function () {
+                    SynthBindings.loadSynthData();
+                });
+            };
+            formRow.appendChild(deleteButton);
             synthDiv.appendChild(formRow);
         }
     }

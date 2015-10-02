@@ -21,6 +21,28 @@
             return this.synths;
         }
 
+        deleteSynth(id: string, name: string, callback: () => void) {
+            var self = this;
+
+            check("are you sure you want to delete this synth?", function () {
+                var relevantSynth = self.getSynth(id, name);
+
+                if (!relevantSynth) {
+                    return;
+                }
+
+                var newSynthList: Synth[] = [];
+
+                newSynthList = Inknote.getItemsWhere(self.synths, function (item: Synth) {
+                    return item != relevantSynth;
+                });
+
+                self.synths = newSynthList;
+
+                callback();
+            });
+        }
+
         private getSynthFromID(id: string): Synth {
             return <Synth>getItemFromID(this.synths, id);
         }

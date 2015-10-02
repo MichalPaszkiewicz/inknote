@@ -84,6 +84,12 @@ canvas {
   -ms-user-select: none;
   user-select: none;
 }
+.button.negative {
+  background: #C92020;
+}
+.button.negative:hover {
+  background: red;
+}
 .button:hover {
   background: darkgray;
 }
