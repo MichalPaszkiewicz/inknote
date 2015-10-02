@@ -109,7 +109,7 @@
             return result;
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             var x = e.clientX;
             var y = e.clientY - 50;
 

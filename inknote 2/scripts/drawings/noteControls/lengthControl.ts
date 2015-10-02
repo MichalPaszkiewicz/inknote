@@ -21,7 +21,7 @@
 
         selectedLength: Model.NoteLength = 3;
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             var x = e.clientX;
 
             var oneEighth = this.width / 8;

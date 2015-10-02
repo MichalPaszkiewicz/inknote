@@ -2685,7 +2685,9 @@ var Inknote;
                 for (var i = 0; i < this.buttons.length; i++) {
                     if (this.buttons[i].isOver(e.clientX, e.clientY - 50)) {
                         this.buttons[i].click();
-                        e.preventDefault();
+                        if (e instanceof MouseEvent) {
+                            e.preventDefault();
+                        }
                     }
                 }
             };
@@ -6709,6 +6711,7 @@ var Inknote;
                     return "sine";
             }
         }
+        Audio.getSoundType = getSoundType;
         var Sound = (function () {
             function Sound(freq, time, soundType) {
                 this.isSilent = false;
@@ -7054,6 +7057,7 @@ var Inknote;
                 this.name = name;
                 this.ID = Inknote.getID();
                 this.oscillatorType = Audio.SoundType.sine;
+                this.gain = 1;
                 if (!name) {
                     throw new Error("A synth must have a name!");
                 }
@@ -8125,7 +8129,9 @@ var Inknote;
                 self.drawService.canvas.onmousemove = null;
             };
             this.drawService.canvas.onclick = function (e) {
-                self.click(e);
+                if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                    self.click(e);
+                }
             };
             this.drawService.canvas.ondblclick = function (e) {
                 self.dblClick(e);
@@ -8139,16 +8145,10 @@ var Inknote;
             };
             this.drawService.canvas.addEventListener("touchstart", function (e) {
                 self.touchStart(e, self.drawService);
-                var me = new MouseEvent("click");
+                //var me = new MouseEvent(null);
                 // todo: get correct touch object.
                 var touch = e.touches[0];
-                me.clientX = touch.clientX;
-                me.clientY = touch.clientY;
-                me.x = touch.clientX;
-                me.y = touch.clientY;
-                me.screenX = touch.screenX;
-                me.screenY = touch.screenY;
-                self.click(me);
+                self.click(touch);
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {
@@ -8838,9 +8838,18 @@ var Actions;
 })(Actions || (Actions = {}));
 var SynthBindings;
 (function (SynthBindings) {
+    function getSynthValues() {
+        var currentSynth = Inknote.Audio.SynthService.Instance.synth;
+        var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
+        synthWaveShapeSelect.value = Inknote.Audio.getSoundType(currentSynth.oscillatorType);
+        var synthGainInput = document.getElementById("synth-gain");
+        synthGainInput.valueAsNumber = currentSynth.gain;
+    }
+    SynthBindings.getSynthValues = getSynthValues;
     function loadSynthData() {
         var synths = Inknote.Audio.SynthManager.Instance.getSynths();
         var synthDiv = document.getElementById("synth-list");
+        synthDiv.innerHTML = "";
         for (var i = 0; i < synths.length; i++) {
             var formRow = document.createElement("div");
             formRow.className = "form-row";
@@ -8862,6 +8871,7 @@ var SynthBindings;
                 var id = target.getAttribute("data-id");
                 var name = target.getAttribute("data-name");
                 Inknote.Audio.SynthService.setSynth(id, name);
+                SynthBindings.getSynthValues();
                 Modal.toggle('synth');
                 Modal.toggle('synth-edit');
             };
@@ -8870,6 +8880,17 @@ var SynthBindings;
         }
     }
     SynthBindings.loadSynthData = loadSynthData;
+    function addSynth() {
+        var synthName = prompt("What is the name of your new synth?");
+        var newSynth = new Inknote.Audio.Synth(synthName);
+        Inknote.Audio.SynthManager.Instance.addSynth(newSynth);
+        loadSynthData();
+        Inknote.Audio.SynthService.setSynth(newSynth.ID, newSynth.name);
+        SynthBindings.getSynthValues();
+        Modal.toggle('synth');
+        Modal.toggle('synth-edit');
+    }
+    SynthBindings.addSynth = addSynth;
     if (typeof (window) != typeof (undefined)) {
         var synthWaveShapeSelect = document.getElementById("synth-wave-shape");
         synthWaveShapeSelect.onchange = function (e) {

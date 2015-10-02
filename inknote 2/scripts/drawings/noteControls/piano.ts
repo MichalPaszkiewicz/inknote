@@ -177,7 +177,7 @@
             return true;
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
 
             if (e.clientX < this.width / 9) {
                 this.octave--;

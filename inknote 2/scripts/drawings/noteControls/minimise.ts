@@ -25,7 +25,7 @@
             return result;
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             if (NoteControlService.Instance.hidden) {
                 NoteControlService.Instance.show();
             }
