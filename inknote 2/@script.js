@@ -7202,7 +7202,7 @@ var Inknote;
                 SynthService.Instance.synth = Audio.SynthManager.Instance.getSynth(id, name);
             };
             SynthService.prototype.changeWaveShape = function (value) {
-                this.synth = Audio.SoundType[value];
+                this.synth.oscillatorType = Audio.SoundType[value];
             };
             SynthService.prototype.changeGain = function (value) {
                 this.synth.gain = value;

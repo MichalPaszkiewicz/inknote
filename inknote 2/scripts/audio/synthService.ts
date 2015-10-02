@@ -18,7 +18,7 @@
         }
 
         changeWaveShape(value: string) {
-            this.synth = SoundType[value];  
+            this.synth.oscillatorType = SoundType[value];  
         }
 
         changeGain(value: number) {
