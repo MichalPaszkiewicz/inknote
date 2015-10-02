@@ -356,6 +356,22 @@ module SynthBindings {
             };
             formRow.appendChild(editButton);
 
+            var deleteButton = document.createElement("div");
+            deleteButton.className = "button negative";
+            deleteButton.textContent = "x";
+            deleteButton.setAttribute("data-id", synths[i].ID);
+            deleteButton.setAttribute("data-name", synths[i].name);
+            deleteButton.onclick = function (e) {
+                var target = <HTMLDivElement>e.target;
+                var id = target.getAttribute("data-id");
+                var name = target.getAttribute("data-name");
+
+                Inknote.Audio.SynthManager.Instance.deleteSynth(id, name, function () {
+                    SynthBindings.loadSynthData();
+                });
+            }
+            formRow.appendChild(deleteButton);
+
             synthDiv.appendChild(formRow);
         }
 
