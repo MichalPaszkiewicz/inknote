@@ -8,7 +8,7 @@
         return items;
     }
 
-    export function mouseIsOver(item: IDrawable, me: MouseEvent, canvas: HTMLCanvasElement) {
+    export function mouseIsOver(item: IDrawable, me: MouseEvent | Touch, canvas: HTMLCanvasElement) {
         var scroll = ScrollService.Instance;
 
         //console.log("item: (" + item.x + "," + item.y + ")");

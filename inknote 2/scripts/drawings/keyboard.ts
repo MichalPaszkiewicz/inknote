@@ -41,7 +41,7 @@
         drawOptions: DrawOptions;
         keys: KeyboardKey[];
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
 
             var inst = Managers.ProjectManager.Instance;
             var proj = inst.currentProject;

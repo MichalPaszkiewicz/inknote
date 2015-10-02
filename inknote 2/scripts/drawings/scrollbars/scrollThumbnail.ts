@@ -15,7 +15,7 @@
 
         order = 201;
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             alert("Scroll thumb");
         }
 

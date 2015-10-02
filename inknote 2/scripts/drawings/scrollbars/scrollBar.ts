@@ -15,7 +15,7 @@
         isOverBottomButton: boolean;
         isOverMiddle: boolean;
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             if (e.clientY < 50 + this.y + this.buttonHeight) {
                 ScrollService.Instance.up();
             }

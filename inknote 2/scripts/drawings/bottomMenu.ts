@@ -32,7 +32,7 @@
             return y > canvas.height - 100;
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
 
             var inst = Managers.ProjectManager.Instance;
             var proj = inst.currentProject;
@@ -40,7 +40,9 @@
             for (var i = 0; i < this.buttons.length; i++) {
                 if (this.buttons[i].isOver(e.clientX, e.clientY - 50)){
                     this.buttons[i].click();
-                    e.preventDefault();
+                    if (e instanceof MouseEvent){
+                        e.preventDefault();
+                    }
                 }
             }
 

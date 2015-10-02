@@ -80,7 +80,7 @@
             }
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             var allItems = this.drawService.items;
             var selected = false;
 
@@ -289,7 +289,7 @@
 
             this.drawService.canvas.onclick = function (e: MouseEvent) {
                 self.click(e);
-            };
+            }; 
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
                 self.dblClick(e);
@@ -307,19 +307,19 @@
             this.drawService.canvas.addEventListener("touchstart", function (e: TouchEvent) {
                 self.touchStart(e, self.drawService);
 
-                var me = new MouseEvent("click");
+                //var me = new MouseEvent(null);
 
                 // todo: get correct touch object.
                 var touch = e.touches[0];
 
-                me.clientX = touch.clientX;
-                me.clientY = touch.clientY;
-                me.x = touch.clientX;
-                me.y = touch.clientY;
-                me.screenX = touch.screenX;
-                me.screenY = touch.screenY;
+                //me.clientX = touch.clientX;
+                //me.clientY = touch.clientY;
+                //me.x = touch.clientX;
+                //me.y = touch.clientY;
+                //me.screenX = touch.screenX;
+                //me.screenY = touch.screenY;
 
-                self.click(me);
+                self.click(touch);
             }, false);
 
         }

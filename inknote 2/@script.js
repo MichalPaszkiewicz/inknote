@@ -2685,7 +2685,9 @@ var Inknote;
                 for (var i = 0; i < this.buttons.length; i++) {
                     if (this.buttons[i].isOver(e.clientX, e.clientY - 50)) {
                         this.buttons[i].click();
-                        e.preventDefault();
+                        if (e instanceof MouseEvent) {
+                            e.preventDefault();
+                        }
                     }
                 }
             };
@@ -8141,16 +8143,16 @@ var Inknote;
             };
             this.drawService.canvas.addEventListener("touchstart", function (e) {
                 self.touchStart(e, self.drawService);
-                var me = new MouseEvent("click");
+                //var me = new MouseEvent(null);
                 // todo: get correct touch object.
                 var touch = e.touches[0];
-                me.clientX = touch.clientX;
-                me.clientY = touch.clientY;
-                me.x = touch.clientX;
-                me.y = touch.clientY;
-                me.screenX = touch.screenX;
-                me.screenY = touch.screenY;
-                self.click(me);
+                //me.clientX = touch.clientX;
+                //me.clientY = touch.clientY;
+                //me.x = touch.clientX;
+                //me.y = touch.clientY;
+                //me.screenX = touch.screenX;
+                //me.screenY = touch.screenY;
+                self.click(touch);
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {

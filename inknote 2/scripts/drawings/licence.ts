@@ -28,7 +28,7 @@
             return result;
         }
 
-        click(e: MouseEvent) {
+        click(e: MouseEvent | Touch) {
             Managers.PageManager.Current.page = Managers.Page.Licence;
         }
 
