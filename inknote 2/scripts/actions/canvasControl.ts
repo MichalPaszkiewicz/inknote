@@ -288,7 +288,9 @@
             };
 
             this.drawService.canvas.onclick = function (e: MouseEvent) {
-                self.click(e);
+                if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                    self.click(e);
+                }
             }; 
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
@@ -311,13 +313,6 @@
 
                 // todo: get correct touch object.
                 var touch = e.touches[0];
-
-                //me.clientX = touch.clientX;
-                //me.clientY = touch.clientY;
-                //me.x = touch.clientX;
-                //me.y = touch.clientY;
-                //me.screenX = touch.screenX;
-                //me.screenY = touch.screenY;
 
                 self.click(touch);
             }, false);
