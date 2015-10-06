@@ -44,21 +44,30 @@
 
         soundType: SoundType = SoundType.sine;
 
+        synth: Synth;
+
         play(ctx: AudioContext, connectTo: GainNode) {
 
             this.oscillator = ctx.createOscillator();
 
             this.oscillator.type = getSoundType(this.soundType);
+            if (this.synth) {
+                this.oscillator.type = getSoundType(this.synth.oscillatorType);
+            }
 
             this.gain = ctx.createGain();
             this.gain.gain.value = 0.3;
 
             this.oscillator.connect(this.gain);
 
-            var synth = new Synth("lol");
-
-            synth.setInput(this.gain);
-            synth.connectTo(connectTo, ctx);
+            if (this.synth) {
+                var synth = this.synth;
+                synth.setInput(this.gain);
+                synth.connectTo(connectTo, ctx);
+            }
+            else {
+                this.gain.connect(connectTo);
+            }
 
             //this.gain.connect(connectTo);
 
@@ -92,9 +101,9 @@
 
             this.oscillator.disconnect();
             this.gain.disconnect();
-
+            this.gain.numberOfOutputs
         }
-
+         
         update() {
 
             var currentTime = (new Date()).getTime();

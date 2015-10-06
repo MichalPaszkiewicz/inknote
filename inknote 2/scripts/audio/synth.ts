@@ -14,7 +14,22 @@
 
         oscillatorType: Audio.SoundType = Audio.SoundType.sine;
 
-        gain: number = 1;
+        get gain(): number {
+            return this.mixGain ? this.mixGain.gain.value : 1;
+        }
+
+        set gain(newGain: number) {
+            if (!this.mixGain) {
+                return;
+            }
+            this.mixGain.gain.value = newGain;
+        }
+
+        private dryGain: GainNode;
+        private delayNode: DelayNode;
+        private mixGain: GainNode;
+
+        private connectedTo: any;
 
         connectTo(node: AudioNode, audioContext: AudioContext) {
 
@@ -28,17 +43,24 @@
                 throw Error("the input must be set first, before connecting the synth to further items");
             }
 
+            if (this.connectedTo == node) {
+                this.input.connect(this.dryGain);
+                this.input.connect(this.delayNode);
+                return; 
+            } 
+            this.connectedTo = node;
+
             var wetGain = audioContext.createGain();
             wetGain.gain.value = 0.5;
 
-            var dryGain = audioContext.createGain();
+            this.dryGain = audioContext.createGain();
 
-            var delay = audioContext.createDelay(1);
-            delay.delayTime.value = 0.2;
+            this.delayNode = audioContext.createDelay(1);
+            this.delayNode.delayTime.value = 0.1;
 
-            var mixGain = audioContext.createGain();
+            this.mixGain = audioContext.createGain();
             if (this.gain) {
-                mixGain.gain.value = this.gain;
+                this.mixGain.gain.value = this.gain;
             }
 
             var bq = audioContext.createBiquadFilter();
@@ -51,17 +73,17 @@
              *                |---<----|
              * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-            this.input.connect(dryGain);
-            this.input.connect(delay);
-            delay.connect(wetGain);
-            wetGain.connect(delay);
+            this.input.connect(this.dryGain);
+            this.input.connect(this.delayNode);
+            this.delayNode.connect(wetGain);
+            wetGain.connect(this.delayNode);
 
-            dryGain.connect(mixGain);
-            wetGain.connect(mixGain);
+            this.dryGain.connect(this.mixGain);
+            wetGain.connect(this.mixGain);
 
-            mixGain.connect(node);
+            this.mixGain.connect(node);
 
-        }
+        } 
 
         constructor(public name: string) {
             if (!name) {

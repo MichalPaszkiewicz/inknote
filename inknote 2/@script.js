@@ -4381,7 +4381,16 @@ var Inknote;
             if (result == null || result == undefined) {
                 return [];
             }
-            return result;
+            var synthResult = [];
+            for (var i = 0; i < result.length; i++) {
+                var item = new Inknote.Audio.Synth(result[i].name);
+                item.gain = result[i].gain;
+                item.ID = result[i].ID;
+                item.name = result[i].name;
+                item.oscillatorType = result[i].oscillatorType;
+                synthResult.push(item);
+            }
+            return synthResult;
         }
         Storage.getSynths = getSynths;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
@@ -6728,12 +6737,20 @@ var Inknote;
             Sound.prototype.play = function (ctx, connectTo) {
                 this.oscillator = ctx.createOscillator();
                 this.oscillator.type = getSoundType(this.soundType);
+                if (this.synth) {
+                    this.oscillator.type = getSoundType(this.synth.oscillatorType);
+                }
                 this.gain = ctx.createGain();
                 this.gain.gain.value = 0.3;
                 this.oscillator.connect(this.gain);
-                var synth = new Audio.Synth("lol");
-                synth.setInput(this.gain);
-                synth.connectTo(connectTo, ctx);
+                if (this.synth) {
+                    var synth = this.synth;
+                    synth.setInput(this.gain);
+                    synth.connectTo(connectTo, ctx);
+                }
+                else {
+                    this.gain.connect(connectTo);
+                }
                 //this.gain.connect(connectTo);
                 this.oscillator.frequency.value = this.frequency;
                 this.oscillator.start(0);
@@ -6754,6 +6771,7 @@ var Inknote;
                 this.finished = true;
                 this.oscillator.disconnect();
                 this.gain.disconnect();
+                this.gain.numberOfOutputs;
             };
             Sound.prototype.update = function () {
                 var currentTime = (new Date()).getTime();
@@ -6967,10 +6985,13 @@ var Inknote;
                 this.sounds.push(sound);
                 sound.play(this.context, this.masterGain);
             };
-            AudioService.prototype.playNote = function (note) {
+            AudioService.prototype.playNote = function (note, synth) {
                 var frequency = Audio.getFrequencyFromNote(note);
                 var playTime = Audio.getPlayingTime(note, this.bpm);
                 var newSound = new Audio.Sound(frequency, playTime);
+                if (synth) {
+                    newSound.synth = synth;
+                }
                 newSound.note = note;
                 this.playSound(newSound);
             };
@@ -6981,24 +7002,22 @@ var Inknote;
                     return;
                 }
                 var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
-                var notesToPlay = [];
                 if (this.barIndex >= proj.instruments[0].bars.length) {
                     this.stop();
                     return;
                 }
                 for (var i = 0; i < proj.instruments.length; i++) {
                     var tempBar = proj.instruments[i].bars[this.barIndex];
+                    var currentInstrument = proj.instruments[i];
+                    var synth = currentInstrument.synthID ? Audio.SynthManager.Instance.getSynth(currentInstrument.synthID, currentInstrument.synthName) : null;
                     var tempItems = Inknote.getItemsWhere(tempBar.items, function (item) {
                         return item instanceof Inknote.Model.Note || item instanceof Inknote.Model.Rest;
                     });
                     var minimumSizeTempItems = toMinimumSizeIndex(tempItems);
                     var tempItem = minimumSizeTempItems[this.beatIndex];
                     if (tempItem instanceof Inknote.Model.Note) {
-                        notesToPlay.push(tempItem);
+                        this.playNote(tempItem, synth);
                     }
-                }
-                for (var i = 0; i < notesToPlay.length; i++) {
-                    this.playNote(notesToPlay[i]);
                 }
                 if (this.beatIndex + 1 >= this.timeSignature.top * 16) {
                     this.barIndex++;
@@ -7057,7 +7076,6 @@ var Inknote;
                 this.name = name;
                 this.ID = Inknote.getID();
                 this.oscillatorType = Audio.SoundType.sine;
-                this.gain = 1;
                 if (!name) {
                     throw new Error("A synth must have a name!");
                 }
@@ -7065,6 +7083,19 @@ var Inknote;
             Synth.prototype.setInput = function (node) {
                 this.input = node;
             };
+            Object.defineProperty(Synth.prototype, "gain", {
+                get: function () {
+                    return this.mixGain ? this.mixGain.gain.value : 1;
+                },
+                set: function (newGain) {
+                    if (!this.mixGain) {
+                        return;
+                    }
+                    this.mixGain.gain.value = newGain;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Synth.prototype.connectTo = function (node, audioContext) {
                 if (!node) {
                     throw Error("must specify node when connecting synth");
@@ -7075,14 +7106,20 @@ var Inknote;
                 if (!this.input) {
                     throw Error("the input must be set first, before connecting the synth to further items");
                 }
+                if (this.connectedTo == node) {
+                    this.input.connect(this.dryGain);
+                    this.input.connect(this.delayNode);
+                    return;
+                }
+                this.connectedTo = node;
                 var wetGain = audioContext.createGain();
                 wetGain.gain.value = 0.5;
-                var dryGain = audioContext.createGain();
-                var delay = audioContext.createDelay(1);
-                delay.delayTime.value = 0.2;
-                var mixGain = audioContext.createGain();
+                this.dryGain = audioContext.createGain();
+                this.delayNode = audioContext.createDelay(1);
+                this.delayNode.delayTime.value = 0.1;
+                this.mixGain = audioContext.createGain();
                 if (this.gain) {
-                    mixGain.gain.value = this.gain;
+                    this.mixGain.gain.value = this.gain;
                 }
                 var bq = audioContext.createBiquadFilter();
                 var comp = audioContext.createDynamicsCompressor();
@@ -7091,13 +7128,13 @@ var Inknote;
                  *    |------> delay --> wetGain --> mixGain --> output
                  *                |---<----|
                  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-                this.input.connect(dryGain);
-                this.input.connect(delay);
-                delay.connect(wetGain);
-                wetGain.connect(delay);
-                dryGain.connect(mixGain);
-                wetGain.connect(mixGain);
-                mixGain.connect(node);
+                this.input.connect(this.dryGain);
+                this.input.connect(this.delayNode);
+                this.delayNode.connect(wetGain);
+                wetGain.connect(this.delayNode);
+                this.dryGain.connect(this.mixGain);
+                wetGain.connect(this.mixGain);
+                this.mixGain.connect(node);
             };
             return Synth;
         })();

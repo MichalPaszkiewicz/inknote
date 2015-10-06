@@ -115,7 +115,7 @@
 
     }
 
-    export function getSynths() {
+    export function getSynths(): Audio.Synth[] {
 
         var result = getLocal(defaults.synths);
 
@@ -123,7 +123,17 @@
             return [];
         }
 
-        return result;
+        var synthResult = [];
+        for (var i = 0; i < result.length; i++) {
+            var item = new Audio.Synth(result[i].name);
+            item.gain = result[i].gain;
+            item.ID = result[i].ID;
+            item.name = result[i].name;
+            item.oscillatorType = result[i].oscillatorType;
+            synthResult.push(item);
+        }
+
+        return synthResult;
     }
 
 } 

@@ -160,11 +160,14 @@
 
         }
 
-        playNote(note: Model.Note) {
-
+        playNote(note: Model.Note, synth?: Synth) {
+             
             var frequency = getFrequencyFromNote(note);
             var playTime = getPlayingTime(note, this.bpm);
             var newSound = new Sound(frequency, playTime);
+            if (synth) {
+                newSound.synth = synth;
+            }
             newSound.note = note;
             this.playSound(newSound);
 
@@ -182,8 +185,6 @@
 
             var proj = Managers.ProjectManager.Instance.currentProject;
 
-            var notesToPlay: Model.Note[] = [];
-
             if (this.barIndex >= proj.instruments[0].bars.length) {
                 this.stop();
                 return;
@@ -191,6 +192,10 @@
 
             for (var i = 0; i < proj.instruments.length; i++) {
                 var tempBar = proj.instruments[i].bars[this.barIndex];
+
+                var currentInstrument = proj.instruments[i];
+
+                var synth = currentInstrument.synthID ? SynthManager.Instance.getSynth(currentInstrument.synthID, currentInstrument.synthName) : null;
 
                 var tempItems: (Model.Note | Model.Rest)[] = getItemsWhere(tempBar.items, function (item) {
                     return item instanceof Model.Note || item instanceof Model.Rest;
@@ -202,13 +207,10 @@
 
                 if (tempItem instanceof Model.Note) {
 
-                    notesToPlay.push(tempItem);
+                    this.playNote(tempItem, synth);
+                    
                 }
 
-            }
-
-            for (var i = 0; i < notesToPlay.length; i++) {
-                this.playNote(notesToPlay[i]);
             }
 
             if (this.beatIndex + 1 >= this.timeSignature.top * 16) {
