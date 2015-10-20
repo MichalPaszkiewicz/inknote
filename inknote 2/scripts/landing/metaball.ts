@@ -152,6 +152,8 @@
             }
 
             ctx.putImageData(imageData, 0, 0);
+             
+            delete imageData.data;
         }
 
         draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {

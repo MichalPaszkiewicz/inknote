@@ -3296,6 +3296,7 @@ var Inknote;
                     imageData.data[i + 3] = a;
                 }
                 ctx.putImageData(imageData, 0, 0);
+                delete imageData.data;
             };
             MetaballList.prototype.draw = function (ctx, canvas) {
                 for (var i = 0; i < this.metaballs.length; i++) {
@@ -6291,7 +6292,7 @@ var Inknote;
                     var bar = project.instruments[i].bars[j];
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                        if (item.ID == Inknote.ScoringService.Instance.selectID || Inknote.ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Inknote.Model.Note) {
                                 var newVal = item.value + 1;
                                 item.value = newVal % 12;
@@ -6314,7 +6315,7 @@ var Inknote;
                     var bar = project.instruments[i].bars[j];
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                        if (item.ID == Inknote.ScoringService.Instance.selectID || Inknote.ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Inknote.Model.Note) {
                                 var newVal = item.value + 11;
                                 item.value = newVal % 12;

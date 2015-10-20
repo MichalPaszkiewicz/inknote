@@ -411,9 +411,9 @@
 
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == ScoringService.Instance.selectID) {
+                        if (item.ID == ScoringService.Instance.selectID || ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Model.Note) {
-                                var newVal = item.value + 1;
+                                var newVal = item.value + 1; 
                                 item.value = newVal % 12;
                                 item.octave = newVal % 12 == Model.NoteValue.C ? item.octave + 1 : item.octave;
                             }
@@ -442,7 +442,7 @@
 
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == ScoringService.Instance.selectID) {
+                        if (item.ID == ScoringService.Instance.selectID || ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Model.Note) {
                                 var newVal = item.value + 11;
                                 item.value = newVal % 12;
