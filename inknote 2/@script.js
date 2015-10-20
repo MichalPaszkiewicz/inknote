@@ -6301,6 +6301,11 @@ var Inknote;
                             else if (item instanceof Inknote.Model.Rest) {
                             }
                             else if (item instanceof Inknote.Model.Chord) {
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 1;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Inknote.Model.NoteValue.C ? item.notes[l].octave + 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }
@@ -6324,6 +6329,11 @@ var Inknote;
                             else if (item instanceof Inknote.Model.Rest) {
                             }
                             else if (item instanceof Inknote.Model.Chord) {
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 11;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Inknote.Model.NoteValue.B ? item.notes[l].octave - 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }
@@ -6515,6 +6525,43 @@ var Inknote;
                         }
                         Inknote.ScoringService.Instance.refresh();
                     };
+                    var synthSelect = document.createElement("select");
+                    synthSelect.setAttribute("data-id", instruments[i].ID);
+                    var synthList = Inknote.Audio.SynthManager.Instance.getSynths();
+                    var emptyOption = document.createElement("option");
+                    emptyOption.value = "";
+                    emptyOption.text = "none";
+                    if (!instruments[i].synthName && !instruments[i].synthID) {
+                        emptyOption.selected = true;
+                    }
+                    synthSelect.appendChild(emptyOption);
+                    synthSelect.onchange = function (ev) {
+                        var ele = ev.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                if (synthSelect.value == "") {
+                                    proj.instruments[j].synthName = null;
+                                    proj.instruments[j].synthID = null;
+                                }
+                                else {
+                                    var breakPoint = synthSelect.value.indexOf("|");
+                                    var synthID = synthSelect.value.substring(0, breakPoint - 1);
+                                    var synthName = synthSelect.value.substring(breakPoint + 1);
+                                    proj.instruments[j].synthName = synthName;
+                                    proj.instruments[j].synthID = synthID;
+                                }
+                            }
+                        }
+                    };
+                    for (var j = 0; j < synthList.length; j++) {
+                        var optionItem = document.createElement("option");
+                        optionItem.value = synthList[j].ID + "|" + synthList[j].name;
+                        optionItem.textContent = synthList[j].name;
+                        optionItem.selected = synthList[j].ID == instruments[i].synthID;
+                        synthSelect.appendChild(optionItem);
+                    }
                     var isVisible = document.createElement("input");
                     isVisible.type = "checkbox";
                     isVisible.checked = instruments[i].visible;
@@ -6563,6 +6610,7 @@ var Inknote;
                         });
                     };
                     formRow.appendChild(instrumentHolder);
+                    formRow.appendChild(synthSelect);
                     formRow.appendChild(isVisible);
                     formRow.appendChild(up);
                     formRow.appendChild(down);

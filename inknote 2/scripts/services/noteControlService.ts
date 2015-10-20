@@ -421,7 +421,11 @@
 
                             }
                             else if (item instanceof Model.Chord) {
-
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 1;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Model.NoteValue.C ? item.notes[l].octave + 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }
@@ -452,7 +456,11 @@
 
                             }
                             else if (item instanceof Model.Chord) {
-
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 11;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Model.NoteValue.B ? item.notes[l].octave - 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }
