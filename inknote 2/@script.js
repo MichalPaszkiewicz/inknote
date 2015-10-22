@@ -5304,6 +5304,8 @@ var Inknote;
         function compressInstrument(instrument) {
             var result = new Inknote.Compressed.Instrument(instrument.name);
             result.v = instrument.visible;
+            result.synthID = instrument.synthID;
+            result.synthName = instrument.synthName;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(compressBar(instrument.bars[i]));
             }
@@ -5424,6 +5426,8 @@ var Inknote;
         function decompressInstrument(instrument) {
             var result = new Inknote.Model.Instrument(instrument.name);
             result.visible = instrument.v;
+            result.synthID = instrument.synthID;
+            result.synthName = instrument.synthName;
             for (var i = 0; i < instrument.bars.length; i++) {
                 result.bars.push(decompressBar(instrument.bars[i]));
             }
@@ -6541,14 +6545,14 @@ var Inknote;
                         var proj = Inknote.Managers.ProjectManager.Instance.currentProject;
                         for (var j = 0; j < proj.instruments.length; j++) {
                             if (proj.instruments[j].ID == id) {
-                                if (synthSelect.value == "") {
+                                if (ele.value == "") {
                                     proj.instruments[j].synthName = null;
                                     proj.instruments[j].synthID = null;
                                 }
                                 else {
-                                    var breakPoint = synthSelect.value.indexOf("|");
-                                    var synthID = synthSelect.value.substring(0, breakPoint - 1);
-                                    var synthName = synthSelect.value.substring(breakPoint + 1);
+                                    var breakPoint = ele.value.indexOf("|");
+                                    var synthID = ele.value.substring(0, breakPoint);
+                                    var synthName = ele.value.substring(breakPoint + 1);
                                     proj.instruments[j].synthName = synthName;
                                     proj.instruments[j].synthID = synthID;
                                 }
@@ -6559,8 +6563,11 @@ var Inknote;
                         var optionItem = document.createElement("option");
                         optionItem.value = synthList[j].ID + "|" + synthList[j].name;
                         optionItem.textContent = synthList[j].name;
-                        optionItem.selected = synthList[j].ID == instruments[i].synthID;
                         synthSelect.appendChild(optionItem);
+                        if (synthList[j].ID == instruments[i].synthID) {
+                            optionItem.selected = true;
+                            synthSelect.value = optionItem.value;
+                        }
                     }
                     var isVisible = document.createElement("input");
                     isVisible.type = "checkbox";

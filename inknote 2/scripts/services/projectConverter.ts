@@ -84,6 +84,8 @@
     function compressInstrument(instrument: Model.Instrument): Compressed.Instrument {
         var result = new Compressed.Instrument(instrument.name);
         result.v = instrument.visible;
+        result.synthID = instrument.synthID;
+        result.synthName = instrument.synthName;
 
         for (var i = 0; i < instrument.bars.length; i++) {
             result.bars.push(compressBar(instrument.bars[i]));
@@ -236,6 +238,8 @@
     function decompressInstrument(instrument: Compressed.Instrument): Model.Instrument {
         var result = new Model.Instrument(instrument.name);
         result.visible = instrument.v;
+        result.synthID = instrument.synthID;
+        result.synthName = instrument.synthName;
 
         for (var i = 0; i < instrument.bars.length; i++) {
             result.bars.push(decompressBar(instrument.bars[i]));
