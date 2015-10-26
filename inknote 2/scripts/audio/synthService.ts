@@ -24,6 +24,10 @@
         changeGain(value: number) {
             this.synth.gain = value;
         }
+
+        changeDelay(value: number) {
+            this.synth.delay = value;
+        }
     }
 
 }

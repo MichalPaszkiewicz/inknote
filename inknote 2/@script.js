@@ -7152,6 +7152,19 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(Synth.prototype, "delay", {
+                get: function () {
+                    return this.delayNode ? this.delayNode.delayTime.value : 0.1;
+                },
+                set: function (delayTime) {
+                    if (!this.delayNode) {
+                        return;
+                    }
+                    this.delayNode.delayTime.value = delayTime;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Synth.prototype.connectTo = function (node, audioContext) {
                 if (!node) {
                     throw Error("must specify node when connecting synth");
@@ -7299,6 +7312,9 @@ var Inknote;
             };
             SynthService.prototype.changeGain = function (value) {
                 this.synth.gain = value;
+            };
+            SynthService.prototype.changeDelay = function (value) {
+                this.synth.delay = value;
             };
             return SynthService;
         })();
@@ -8952,6 +8968,8 @@ var SynthBindings;
         synthWaveShapeSelect.value = Inknote.Audio.getSoundType(currentSynth.oscillatorType);
         var synthGainInput = document.getElementById("synth-gain");
         synthGainInput.valueAsNumber = currentSynth.gain;
+        var synthDelayInput = document.getElementById("synth-delay");
+        synthDelayInput.valueAsNumber = currentSynth.delay;
     }
     SynthBindings.getSynthValues = getSynthValues;
     function loadSynthData() {
@@ -9025,6 +9043,12 @@ var SynthBindings;
             var input = e.target;
             var value = input.valueAsNumber;
             Inknote.Audio.SynthService.Instance.changeGain(value);
+        };
+        var synthDelayInput = document.getElementById("synth-delay");
+        synthDelayInput.onchange = function (e) {
+            var input = e.target;
+            var value = input.valueAsNumber;
+            Inknote.Audio.SynthService.Instance.changeDelay(value);
         };
         loadSynthData();
     }

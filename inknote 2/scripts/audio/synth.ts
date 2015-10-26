@@ -25,6 +25,17 @@
             this.mixGain.gain.value = newGain;
         }
 
+        get delay(): number {
+            return this.delayNode ? this.delayNode.delayTime.value : 0.1;
+        }
+
+        set delay(delayTime: number) {
+            if (!this.delayNode) {
+                return;
+            }
+            this.delayNode.delayTime.value = delayTime;
+        }
+
         private dryGain: GainNode;
         private delayNode: DelayNode;
         private mixGain: GainNode;

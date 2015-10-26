@@ -314,7 +314,9 @@ module SynthBindings {
 
         var synthGainInput = <HTMLInputElement>document.getElementById("synth-gain");
         synthGainInput.valueAsNumber = currentSynth.gain;
-
+        
+        var synthDelayInput = <HTMLInputElement>document.getElementById("synth-delay");
+        synthDelayInput.valueAsNumber = currentSynth.delay;
     }
 
     export function loadSynthData() {
@@ -410,6 +412,15 @@ module SynthBindings {
             var value = input.valueAsNumber;
 
             Inknote.Audio.SynthService.Instance.changeGain(value);
+        };
+
+        var synthDelayInput = document.getElementById("synth-delay");
+        synthDelayInput.onchange = function (e) {
+            var input = <HTMLInputElement>e.target;
+
+            var value = input.valueAsNumber;
+
+            Inknote.Audio.SynthService.Instance.changeDelay(value);
         };
 
         loadSynthData();
