@@ -2160,6 +2160,10 @@ var Inknote;
                     ctx.fillRect(this.x, this.y, this.width, this.height);
                     ctx.globalAlpha = 1;
                 }
+                if (this.barNumber) {
+                    ctx.beginPath();
+                    ctx.fillText(this.barNumber + "", this.x, this.y - 5);
+                }
                 return true;
             };
             return Bar;
@@ -5088,6 +5092,9 @@ var Inknote;
                         drawBar.y = topLineHeight;
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
+                        if (j == 0 && tempLine.barIndices[k] % 5 == 4) {
+                            drawBar.barNumber = tempLine.barIndices[k] + 1;
+                        }
                         if (Inknote.TimeSignatureService.Instance.barHasError(bar, tempInstrument)) {
                             drawBar.hasError = true;
                         }

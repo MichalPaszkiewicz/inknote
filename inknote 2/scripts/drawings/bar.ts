@@ -14,6 +14,8 @@
         select: boolean;
         hasError: boolean = false;
 
+        barNumber: number;
+
         isOver(x, y) {
 
             var isLeft = x < this.x + this.width;
@@ -62,6 +64,12 @@
                 ctx.fillRect(this.x, this.y, this.width, this.height);
 
                 ctx.globalAlpha = 1;
+            }
+
+            if (this.barNumber) {
+                ctx.beginPath();
+
+                ctx.fillText(this.barNumber + "", this.x, this.y - 5);
             }
 
             return true;

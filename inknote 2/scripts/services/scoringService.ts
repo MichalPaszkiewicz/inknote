@@ -198,6 +198,10 @@ module Inknote {
                         drawBar.x = marginLeft + barX;
                         drawBar.width = tempBarLength;
 
+                        if (j == 0 && tempLine.barIndices[k] % 5 == 4) {
+                            drawBar.barNumber = tempLine.barIndices[k] + 1;
+                        }
+
                         if (TimeSignatureService.Instance.barHasError(bar, tempInstrument)) {
                             drawBar.hasError = true;
                         }
