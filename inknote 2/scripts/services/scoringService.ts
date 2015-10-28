@@ -101,7 +101,7 @@ module Inknote {
 
         // use this instead of normal push.
         addItem(item: IDrawable) {
-                this._items.push(item);
+            this._items.push(item);
         }
 
         hoverID: string;
@@ -338,6 +338,10 @@ module Inknote {
                 }
             }
             return null;
+        }
+
+        getPrintItems(): IDrawable[] {
+            return this._items;
         }
 
         getItems(): IDrawable[] {

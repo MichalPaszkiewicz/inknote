@@ -49,6 +49,12 @@
                     Action(ActionType.SaveProject);
                     e.preventDefault();
                 }
+                // p
+                // print
+                if (e.keyCode == 80) {
+                    PrintService.Instance.print();
+                    e.preventDefault();
+                }
 
             }
 
@@ -172,6 +178,9 @@
                 // SPACE
                 case 32:
                     Audio.AudioService.Instance.toggle();
+                    break;
+                default:
+                    log("key pressed: " + e.keyCode);
             }
         }
 

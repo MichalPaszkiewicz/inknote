@@ -142,6 +142,8 @@
 /// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
 /// <reference path="scripts/services/httpservice.ts" />
+/// <reference path="scripts/services/printservice.ts" />
+
 
 // audio
 /// <reference path="scripts/audio/sound.ts" />

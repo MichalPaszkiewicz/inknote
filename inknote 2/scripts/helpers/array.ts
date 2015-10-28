@@ -37,6 +37,34 @@
         return count;
     }
 
+    export function maxOutOf(items: any[], xAndY: (item: any) => number) {
+        if (items === null || items === undefined) {
+            return -Infinity;
+        }
+        var max = -Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val > max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+
+    export function minOutOf(items: any[], xAndY: (item: any) => number) {
+        if (items === null || items === undefined) {
+            return Infinity;
+        }
+        var max = Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val < max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+
     export function getItemsWhere(items: any[], xAndY: (item: any) => boolean): any[] {
         if (items === null || items === undefined) {
             return [];

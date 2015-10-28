@@ -6,7 +6,8 @@
         Form,
         File,
         List,
-        Licence
+        Licence,
+        Print
 
     }
 
@@ -23,6 +24,8 @@
                 return "List";
             case Page.Licence:
                 return "Licence";
+            case Page.Print:
+                return "Print";
         }
     }
 
@@ -61,6 +64,7 @@
                     break;
                 case Page.List:
                     break;
+                case Page.Print:
                 case Page.Score:
                     pageURL += "=" + ProjectManager.Instance.currentProject.ID;
                     break;
@@ -84,7 +88,7 @@
             return PageManager._current;
         }
 
-        openNewPage(page: Page, ID: string) {
+        openNewPage(page: Page, ID: string): any {
             var newURL = "?"; 
             console.log(newURL);
             
@@ -92,7 +96,7 @@
             newURL += "=";
             newURL += ID;
 
-            window.open(newURL);
+            return window.open(newURL);
         }
 
         openPageFromURL() {

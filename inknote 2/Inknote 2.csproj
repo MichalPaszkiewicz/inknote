@@ -196,6 +196,7 @@
     <TypeScriptCompile Include="scripts\services\licenceService.ts" />
     <TypeScriptCompile Include="scripts\services\noteControlService.ts" />
     <TypeScriptCompile Include="scripts\services\noteService.ts" />
+    <TypeScriptCompile Include="scripts\services\printService.ts" />
     <TypeScriptCompile Include="scripts\services\projectOptionsService.ts" />
     <TypeScriptCompile Include="scripts\services\restService.ts" />
     <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />

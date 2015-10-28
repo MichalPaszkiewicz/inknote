@@ -57,6 +57,34 @@ var Inknote;
         return count;
     }
     Inknote.countWhere = countWhere;
+    function maxOutOf(items, xAndY) {
+        if (items === null || items === undefined) {
+            return -Infinity;
+        }
+        var max = -Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val > max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+    Inknote.maxOutOf = maxOutOf;
+    function minOutOf(items, xAndY) {
+        if (items === null || items === undefined) {
+            return Infinity;
+        }
+        var max = Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val < max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+    Inknote.minOutOf = minOutOf;
     function getItemsWhere(items, xAndY) {
         if (items === null || items === undefined) {
             return [];
@@ -3191,6 +3219,9 @@ var Inknote;
                     this.items.unshift(new RightClickMenus.ClickableMenuItem("add instrument", function () {
                         Inknote.InstrumentService.Instance.addInstrument();
                     }));
+                    this.items.push(new RightClickMenus.ClickableMenuItem("print", function () {
+                        Inknote.PrintService.Instance.print();
+                    }));
                 }
                 return RightClickScore;
             })(RightClickMenus.RightClickMenu);
@@ -5188,6 +5219,9 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
+        ScoringService.prototype.getPrintItems = function () {
+            return this._items;
+        };
         ScoringService.prototype.getItems = function () {
             if (this._projectID != Inknote.Managers.ProjectManager.Instance.currentProject.ID) {
                 this.refresh();
@@ -6759,6 +6793,56 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var PrintService = (function () {
+        function PrintService() {
+        }
+        Object.defineProperty(PrintService, "Instance", {
+            get: function () {
+                if (!PrintService._instance) {
+                    PrintService._instance = new PrintService();
+                }
+                return PrintService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        PrintService.prototype.print = function () {
+            Inknote.check("open printable version?", function () {
+                var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+                var newPage = Inknote.Managers.PageManager.Current.openNewPage(Inknote.Managers.Page.Print, currentProject.ID);
+                var htmlPage = document.createElement("html");
+                var body = document.createElement("body");
+                htmlPage.appendChild(body);
+                var container = document.createElement("div");
+                container.id = "main";
+                body.appendChild(container);
+                var title = document.createElement("h1");
+                title.textContent = currentProject.name;
+                container.appendChild(title);
+                newPage.document.write(htmlPage.outerHTML);
+                newPage.document.title = "print " + currentProject.name;
+                var main = newPage.document.getElementById("main");
+                var canvas = document.createElement("canvas");
+                main.appendChild(canvas);
+                var context = canvas.getContext("2d");
+                canvas.width = Inknote.DrawService.Instance.canvas.width;
+                var items = Inknote.ScoringService.Instance.getPrintItems();
+                canvas.height = Inknote.maxOutOf(items, function (item) {
+                    return item.y;
+                }) + 100;
+                for (var i = 0; i < items.length; i++) {
+                    items[i].draw(context, canvas, 1);
+                }
+            }, function () {
+                Inknote.log("print cancelled");
+            });
+        };
+        return PrintService;
+    })();
+    Inknote.PrintService = PrintService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Audio;
     (function (Audio) {
         (function (SoundType) {
@@ -7428,6 +7512,7 @@ var Inknote;
             Page[Page["File"] = 2] = "File";
             Page[Page["List"] = 3] = "List";
             Page[Page["Licence"] = 4] = "Licence";
+            Page[Page["Print"] = 5] = "Print";
         })(Managers.Page || (Managers.Page = {}));
         var Page = Managers.Page;
         function pageName(page) {
@@ -7442,6 +7527,8 @@ var Inknote;
                     return "List";
                 case Page.Licence:
                     return "Licence";
+                case Page.Print:
+                    return "Print";
             }
         }
         var PageManager = (function () {
@@ -7475,6 +7562,7 @@ var Inknote;
                             break;
                         case Page.List:
                             break;
+                        case Page.Print:
                         case Page.Score:
                             pageURL += "=" + Managers.ProjectManager.Instance.currentProject.ID;
                             break;
@@ -7504,7 +7592,7 @@ var Inknote;
                 newURL += pageName(page);
                 newURL += "=";
                 newURL += ID;
-                window.open(newURL);
+                return window.open(newURL);
             };
             PageManager.prototype.openPageFromURL = function () {
                 var search = window.location.search.replace("?", "");
@@ -8527,6 +8615,12 @@ var Inknote;
                     Inknote.Action(Inknote.ActionType.SaveProject);
                     e.preventDefault();
                 }
+                // p
+                // print
+                if (e.keyCode == 80) {
+                    Inknote.PrintService.Instance.print();
+                    e.preventDefault();
+                }
             }
             if (e.keyCode == 8) {
                 e.preventDefault();
@@ -8637,6 +8731,9 @@ var Inknote;
                 // SPACE
                 case 32:
                     Inknote.Audio.AudioService.Instance.toggle();
+                    break;
+                default:
+                    Inknote.log("key pressed: " + e.keyCode);
             }
         }
         if (noteVal != null) {
@@ -9243,6 +9340,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
 /// <reference path="scripts/services/httpservice.ts" />
+/// <reference path="scripts/services/printservice.ts" />
 // audio
 /// <reference path="scripts/audio/sound.ts" />
 /// <reference path="scripts/audio/frequencies.ts" />
