@@ -1914,6 +1914,35 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        var LedgerLine = (function (_super) {
+            __extends(LedgerLine, _super);
+            function LedgerLine(x, y) {
+                _super.call(this);
+                this.order = 45;
+                this.x = x;
+                this.y = y;
+            }
+            LedgerLine.prototype.draw = function (ctx) {
+                ctx.beginPath;
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = Drawing.Colours.black;
+                if (this.hover || this.select) {
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                ctx.moveTo(this.x - 10, this.y);
+                ctx.lineTo(this.x + 10, this.y);
+                ctx.stroke();
+                return true;
+            };
+            return LedgerLine;
+        })(Inknote.Notation);
+        Drawing.LedgerLine = LedgerLine;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
         function restCommon(ctx, rest) {
             if (rest.select) {
                 ctx.beginPath();
@@ -5224,6 +5253,20 @@ var Inknote;
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace <= -50; lineSpace += 5) {
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Inknote.Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace >= 10; lineSpace -= 5) {
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Inknote.Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
                                 drawNoteItem.isPlaying = item.isPlaying;
                                 drawNoteItem.stemUp = -5 * intervalDistance + clefAdditionalPosition >= 20;
                                 if (isBlack) {
@@ -9344,6 +9387,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/flat.ts" />
 /// <reference path="scripts/drawings/natural.ts" />
 /// <reference path="scripts/drawings/note.ts" />
+/// <reference path="scripts/drawings/ledgerline.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
 /// <reference path="scripts/drawings/bar.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 

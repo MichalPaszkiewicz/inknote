@@ -269,6 +269,25 @@ module Inknote {
 
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
+
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace <= -50; lineSpace += 5) {
+
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
+
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace >= 10; lineSpace -= 5){
+
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
+
                                 drawNoteItem.isPlaying = item.isPlaying;
 
                                 drawNoteItem.stemUp = - 5 * intervalDistance + clefAdditionalPosition >= 20;
@@ -361,7 +380,7 @@ module Inknote {
                 this._items[i].y = this._items[i].y + this.oldScrollY - ScrollService.Instance.y;
                 if (this._items[i].y > -50 && this._items[i].y < DrawService.Instance.canvas.height + 50) {
                     visibleItems.push(this._items[i]);
-                } 
+                }
             }
 
             this.oldScrollY = ScrollService.Instance.y;
