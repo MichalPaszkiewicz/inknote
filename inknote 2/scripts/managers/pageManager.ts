@@ -45,6 +45,8 @@
             }
             Menu.closeAllSubMenus();
 
+            RightClickMenuService.Instance.visible = false;
+
             if (ScrollService && ScrollService.Instance) {
                 ScrollService.Instance.x = 0;
                 ScrollService.Instance.y = 0;

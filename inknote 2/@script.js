@@ -7653,6 +7653,7 @@ var Inknote;
                         Menu.toggle();
                     }
                     Menu.closeAllSubMenus();
+                    Inknote.RightClickMenuService.Instance.visible = false;
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
