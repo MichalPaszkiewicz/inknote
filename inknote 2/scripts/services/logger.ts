@@ -6,6 +6,8 @@
         Warning
     }
 
+    var logLevel = TempDataService.Instance.currentData.loggingLevel;
+
     function logLive(message: string, className: string) {
         if (window != null && document != null) {
             var logContainer = document.getElementById("log");
@@ -36,15 +38,21 @@
     export function log(message: string, msgType?: MessageType) {
         if (msgType == MessageType.Error) {
             console.log("%c" + message, "color:red");
-            logLive(message, "error");
+            if (logLevel >= 1) {
+                logLive(message, "error");
+            }
         }
         else if (msgType == MessageType.Warning){
             console.log("%c" + message, "color: orange");
-            logLive(message, "warning");
+            if (logLevel >= 2) {
+                logLive(message, "warning");
+            }
         }
         else {
             console.log(message);
-            logLive(message, "entry");
+            if (logLevel >= 3) {
+                logLive(message, "entry");
+            }
         }
     }
 

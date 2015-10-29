@@ -677,6 +677,7 @@ var Inknote;
     var TempData = (function () {
         function TempData() {
             this.noteControlsHidden = false;
+            this.loggingLevel = 2;
         }
         return TempData;
     })();
@@ -4663,6 +4664,7 @@ var Inknote;
         MessageType[MessageType["Warning"] = 2] = "Warning";
     })(Inknote.MessageType || (Inknote.MessageType = {}));
     var MessageType = Inknote.MessageType;
+    var logLevel = Inknote.TempDataService.Instance.currentData.loggingLevel;
     function logLive(message, className) {
         if (window != null && document != null) {
             var logContainer = document.getElementById("log");
@@ -4685,15 +4687,21 @@ var Inknote;
     function log(message, msgType) {
         if (msgType == MessageType.Error) {
             console.log("%c" + message, "color:red");
-            logLive(message, "error");
+            if (logLevel >= 1) {
+                logLive(message, "error");
+            }
         }
         else if (msgType == MessageType.Warning) {
             console.log("%c" + message, "color: orange");
-            logLive(message, "warning");
+            if (logLevel >= 2) {
+                logLive(message, "warning");
+            }
         }
         else {
             console.log(message);
-            logLive(message, "entry");
+            if (logLevel >= 3) {
+                logLive(message, "entry");
+            }
         }
     }
     Inknote.log = log;
