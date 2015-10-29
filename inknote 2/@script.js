@@ -3261,6 +3261,9 @@ var Inknote;
                     this.items.push(new RightClickMenus.ClickableMenuItem("print", function () {
                         Inknote.PrintService.Instance.print();
                     }));
+                    this.items.push(new RightClickMenus.ClickableMenuItem("note count", function () {
+                        Modal.generateProjectReport();
+                    }));
                 }
                 return RightClickScore;
             })(RightClickMenus.RightClickMenu);
@@ -9151,6 +9154,38 @@ var Modal;
         hide("report");
     }
     Modal.submitReport = submitReport;
+    function generateProjectReport() {
+        var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+        var reportDetails = document.getElementById("project-report-details");
+        reportDetails.innerHTML = "";
+        var header = document.createElement("h2");
+        header.textContent = currentProject.name + " report";
+        reportDetails.appendChild(header);
+        var barCount = document.createElement("div");
+        barCount.className = "form-row";
+        barCount.textContent = "bars: " + currentProject.instruments[0].bars.length;
+        reportDetails.appendChild(barCount);
+        var numberOfNotes = 0;
+        for (var i = 0; i < currentProject.instruments.length; i++) {
+            for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                    var item = currentProject.instruments[i].bars[j].items[k];
+                    if (item instanceof Inknote.Model.Note) {
+                        numberOfNotes++;
+                    }
+                    else if (item instanceof Inknote.Model.Chord) {
+                        numberOfNotes += item.notes.length;
+                    }
+                }
+            }
+        }
+        var noteCount = document.createElement("div");
+        noteCount.className = "form-row";
+        noteCount.textContent = "notes: " + numberOfNotes;
+        reportDetails.appendChild(noteCount);
+        Modal.show("project-report");
+    }
+    Modal.generateProjectReport = generateProjectReport;
 })(Modal || (Modal = {}));
 var Actions;
 (function (Actions) {
