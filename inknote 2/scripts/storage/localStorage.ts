@@ -7,9 +7,9 @@
         synths: "synths",
         temp: "temp"
     }
-
+    
     function getLocal(key: string): any {
-
+        
         if (typeof localStorage == "undefined") {
             log("Local storage is undefined", MessageType.Error);
             return null;

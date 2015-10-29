@@ -445,4 +445,26 @@ body .menu svg:hover path {
 body .menu.open {
   display: block;
 }
+body #log {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+body #log .entry,
+body #log .warning,
+body #log .error {
+  margin: 10px;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+}
+body #log .entry {
+  background: black;
+}
+body #log .warning {
+  background: #ff6a00;
+}
+body #log .error {
+  background: red;
+}
 /*# sourceMappingURL=styles.css.map */
