@@ -23,23 +23,28 @@
         width: number;
         height: number;
 
-        hidden: boolean = false;
+        hidden: boolean = TempDataService.Instance.currentData.noteControlsHidden;
 
         hiddenY: number = 0;
+        firstOpen: boolean = true;
 
         hide() {
             this.hidden = true;
+            TempDataService.Instance.currentData.noteControlsHidden = true;
+            TempDataService.Instance.update();
         }
 
         show() {
             this.hidden = false;
+            TempDataService.Instance.currentData.noteControlsHidden = false;
+            TempDataService.Instance.update();
         }
 
         ID: string = "note_control";
 
         getItems(drawer: DrawService): IDrawable[] {
             if (this.hidden) {
-                if (this.hiddenY > drawer.canvas.height / 2) {
+                if (this.hiddenY > drawer.canvas.height / 2 || this.firstOpen) {
                     this.hiddenY = drawer.canvas.height / 2;
                 }
                 else if (this.hiddenY < drawer.canvas.height / 2) {
@@ -98,6 +103,7 @@
             this.minimise.y = this.y - this.minimise.height;
             noteControls.push(this.minimise);
 
+            this.firstOpen = false;
 
             return noteControls;
         }

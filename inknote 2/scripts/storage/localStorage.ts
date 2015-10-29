@@ -4,7 +4,8 @@
         settings: "settings",
         projects: "projects",
         plugins: "plugins",
-        synths: "synths"
+        synths: "synths",
+        temp: "temp"
     }
 
     function getLocal(key: string): any {
@@ -134,6 +135,26 @@
         }
 
         return synthResult;
+    }
+
+    export function saveTemp() {
+
+        saveLocal(defaults.temp, Inknote.TempDataService.Instance.currentData);
+
+        log("saved temp data");
+
+    }
+
+    export function getTemp(): TempData {
+
+        var result = getLocal(defaults.temp);
+
+        if (result == null || result == undefined) {
+            return new TempData();
+        }
+
+        return result;
+
     }
 
 } 

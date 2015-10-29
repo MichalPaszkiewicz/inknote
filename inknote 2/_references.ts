@@ -32,6 +32,7 @@
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
 /// <reference path="scripts/model/drawingsettings.ts" />
+/// <reference path="scripts/model/tempdata.ts" />
 
 // compressed
 /// <reference path="scripts/model/compressed/compresseditemidentifier.ts" />
@@ -115,6 +116,7 @@
 /// <reference path="scripts/storage/drivestorage.ts" />
 
 // services
+/// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
 /// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />

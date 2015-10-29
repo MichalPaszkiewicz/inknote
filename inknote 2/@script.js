@@ -674,6 +674,16 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var TempData = (function () {
+        function TempData() {
+            this.noteControlsHidden = false;
+        }
+        return TempData;
+    })();
+    Inknote.TempData = TempData;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Compressed;
     (function (Compressed) {
         (function (ItemIdentifier) {
@@ -4334,7 +4344,8 @@ var Inknote;
             settings: "settings",
             projects: "projects",
             plugins: "plugins",
-            synths: "synths"
+            synths: "synths",
+            temp: "temp"
         };
         function getLocal(key) {
             if (typeof localStorage == "undefined") {
@@ -4429,6 +4440,19 @@ var Inknote;
             return synthResult;
         }
         Storage.getSynths = getSynths;
+        function saveTemp() {
+            saveLocal(defaults.temp, Inknote.TempDataService.Instance.currentData);
+            Inknote.log("saved temp data");
+        }
+        Storage.saveTemp = saveTemp;
+        function getTemp() {
+            var result = getLocal(defaults.temp);
+            if (result == null || result == undefined) {
+                return new Inknote.TempData();
+            }
+            return result;
+        }
+        Storage.getTemp = getTemp;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -4510,6 +4534,38 @@ var Inknote;
         }
         Storage.download = download;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var TempDataService = (function () {
+        function TempDataService() {
+        }
+        Object.defineProperty(TempDataService, "Instance", {
+            get: function () {
+                if (!TempDataService._instance) {
+                    TempDataService._instance = new TempDataService();
+                }
+                return TempDataService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(TempDataService.prototype, "currentData", {
+            get: function () {
+                if (!this._currentData) {
+                    this._currentData = Inknote.Storage.getTemp();
+                }
+                return this._currentData;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        TempDataService.prototype.update = function () {
+            Inknote.Storage.saveTemp();
+        };
+        return TempDataService;
+    })();
+    Inknote.TempDataService = TempDataService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6030,8 +6086,9 @@ var Inknote;
             this.restControl = new Inknote.Drawing.RestControl();
             this.deleteNoteControl = new Inknote.Drawing.DeleteNoteControl();
             this.x = 0;
-            this.hidden = false;
+            this.hidden = Inknote.TempDataService.Instance.currentData.noteControlsHidden;
             this.hiddenY = 0;
+            this.firstOpen = true;
             this.ID = "note_control";
             this.piano.ID = this.ID;
             this.background.ID = this.ID;
@@ -6050,13 +6107,17 @@ var Inknote;
         });
         NoteControlService.prototype.hide = function () {
             this.hidden = true;
+            Inknote.TempDataService.Instance.currentData.noteControlsHidden = true;
+            Inknote.TempDataService.Instance.update();
         };
         NoteControlService.prototype.show = function () {
             this.hidden = false;
+            Inknote.TempDataService.Instance.currentData.noteControlsHidden = false;
+            Inknote.TempDataService.Instance.update();
         };
         NoteControlService.prototype.getItems = function (drawer) {
             if (this.hidden) {
-                if (this.hiddenY > drawer.canvas.height / 2) {
+                if (this.hiddenY > drawer.canvas.height / 2 || this.firstOpen) {
                     this.hiddenY = drawer.canvas.height / 2;
                 }
                 else if (this.hiddenY < drawer.canvas.height / 2) {
@@ -6106,6 +6167,7 @@ var Inknote;
             this.minimise.x = this.x;
             this.minimise.y = this.y - this.minimise.height;
             noteControls.push(this.minimise);
+            this.firstOpen = false;
             return noteControls;
         };
         NoteControlService.prototype.addInstrument = function (name) {
@@ -9249,6 +9311,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
 /// <reference path="scripts/model/drawingsettings.ts" />
+/// <reference path="scripts/model/tempdata.ts" />
 // compressed
 /// <reference path="scripts/model/compressed/compresseditemidentifier.ts" />
 /// <reference path="scripts/model/compressed/compressednote.ts" />
@@ -9322,6 +9385,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 // services
+/// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
 /// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
