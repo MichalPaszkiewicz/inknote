@@ -316,6 +316,9 @@
         }
 
         deleteSelected() {
+
+            UndoService.Instance.store();
+
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Note
                 || ScoringService.Instance.SelectedItem instanceof Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();

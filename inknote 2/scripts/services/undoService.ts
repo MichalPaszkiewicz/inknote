@@ -19,7 +19,7 @@
 
             this._storage.push(compressedCurrentProject);
             
-            while (this._storage.length >= 5) {
+            while (this._storage.length > 5) {
                 this._storage.shift();
             }
         }

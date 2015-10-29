@@ -6401,6 +6401,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.deleteSelected = function () {
+            Inknote.UndoService.Instance.store();
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note
                 || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();
@@ -6878,7 +6879,7 @@ var Inknote;
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             var compressedCurrentProject = Inknote.ProjectConverter.compress(currentProject);
             this._storage.push(compressedCurrentProject);
-            while (this._storage.length >= 5) {
+            while (this._storage.length > 5) {
                 this._storage.shift();
             }
         };
