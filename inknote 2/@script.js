@@ -8907,6 +8907,7 @@ var Menu;
     var menu;
     if (typeof (window) != typeof (undefined)) {
         Menu.scoreItems = document.getElementsByClassName("score-item");
+        Menu.desktopItems = document.getElementsByClassName("desktop-item");
         menuButton = document.getElementsByClassName("menu-button")[0];
         menu = document.getElementById("main-menu");
     }
@@ -8917,6 +8918,14 @@ var Menu;
             }
             else {
                 FrontEnd.hideElement(Menu.scoreItems[i]);
+            }
+        }
+        for (var i = 0; i < Menu.desktopItems.length; i++) {
+            if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                FrontEnd.showElement(Menu.desktopItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(Menu.desktopItems[i]);
             }
         }
     }

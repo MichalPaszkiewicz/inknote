@@ -96,11 +96,15 @@ module Menu {
 
     export var scoreItems: NodeList;
 
+    export var desktopItems: NodeList;
+
     var menuButton: HTMLDivElement;
     var menu: HTMLDivElement;
 
     if (typeof (window) != typeof (undefined)) {
         scoreItems = document.getElementsByClassName("score-item");
+
+        desktopItems = document.getElementsByClassName("desktop-item");
 
         menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
         menu = <HTMLDivElement>document.getElementById("main-menu");
@@ -116,6 +120,17 @@ module Menu {
             else {
                 FrontEnd.hideElement(<HTMLElement>scoreItems[i]);
             }
+        }
+
+        for (var i = 0; i < desktopItems.length; i++) {
+
+            if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                FrontEnd.showElement(<HTMLElement>desktopItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(<HTMLElement>desktopItems[i]);
+            }
+
         }
     }
 

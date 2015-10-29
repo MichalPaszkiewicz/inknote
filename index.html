@@ -54,6 +54,9 @@
         <span class="score-item">
             <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
         </span>
+		<span class="desktop-item">
+            <span class="menu-item" onclick="Inknote.PrintService.Instance.print()">print</span>
+        </span>
     </div>
 
     <div class="sub-menu menu" id="edit-menu" onclick="Menu.closeAllSubMenus()">
