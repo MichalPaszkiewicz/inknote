@@ -44,6 +44,12 @@
     <Content Include="styles\fontfaces.min.css">
       <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
+    <Content Include="styles\log.css">
+      <DependentUpon>log.less</DependentUpon>
+    </Content>
+    <Content Include="styles\log.min.css">
+      <DependentUpon>log.css</DependentUpon>
+    </Content>
     <Content Include="styles\menu.css">
       <DependentUpon>menu.less</DependentUpon>
     </Content>
@@ -242,6 +248,10 @@
     <Content Include="styles\styles.less" />
     <Content Include="styles\styles.css.map">
       <DependentUpon>styles.css</DependentUpon>
+    </Content>
+    <Content Include="styles\log.less" />
+    <Content Include="styles\log.css.map">
+      <DependentUpon>log.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
