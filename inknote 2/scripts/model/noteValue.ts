@@ -1,5 +1,37 @@
 ﻿module Inknote.Model {
 
+    export function GetNoteNameFromNoteValue(value: NoteValue): string {
+
+        switch (value) {
+            case NoteValue.A:
+                return "A";
+            case NoteValue.Bb:
+                return "Bb";
+            case NoteValue.B:
+                return "B";
+            case NoteValue.C:
+                return "C";
+            case NoteValue.Db:
+                return "Db";
+            case NoteValue.D:
+                return "D";
+            case NoteValue.Eb:
+                return "Eb";
+            case NoteValue.E:
+                return "E";
+            case NoteValue.F:
+                return "F";
+            case NoteValue.Gb:
+                return "Gb";
+            case NoteValue.G:
+                return "G";
+            case NoteValue.Ab:
+                return "Ab";
+
+        }
+
+    }
+
     export enum NoteValue {
         A,
         Bb,

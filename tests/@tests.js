@@ -488,6 +488,35 @@ var Inknote;
 (function (Inknote) {
     var Model;
     (function (Model) {
+        function GetNoteNameFromNoteValue(value) {
+            switch (value) {
+                case NoteValue.A:
+                    return "A";
+                case NoteValue.Bb:
+                    return "Bb";
+                case NoteValue.B:
+                    return "B";
+                case NoteValue.C:
+                    return "C";
+                case NoteValue.Db:
+                    return "Db";
+                case NoteValue.D:
+                    return "D";
+                case NoteValue.Eb:
+                    return "Eb";
+                case NoteValue.E:
+                    return "E";
+                case NoteValue.F:
+                    return "F";
+                case NoteValue.Gb:
+                    return "Gb";
+                case NoteValue.G:
+                    return "G";
+                case NoteValue.Ab:
+                    return "Ab";
+            }
+        }
+        Model.GetNoteNameFromNoteValue = GetNoteNameFromNoteValue;
         (function (NoteValue) {
             NoteValue[NoteValue["A"] = 0] = "A";
             NoteValue[NoteValue["Bb"] = 1] = "Bb";
@@ -671,6 +700,17 @@ var Inknote;
         return DrawingSettings;
     })();
     Inknote.DrawingSettings = DrawingSettings;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var TempData = (function () {
+        function TempData() {
+            this.noteControlsHidden = false;
+            this.loggingLevel = 2;
+        }
+        return TempData;
+    })();
+    Inknote.TempData = TempData;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -1904,6 +1944,35 @@ var Inknote;
 (function (Inknote) {
     var Drawing;
     (function (Drawing) {
+        var LedgerLine = (function (_super) {
+            __extends(LedgerLine, _super);
+            function LedgerLine(x, y) {
+                _super.call(this);
+                this.order = 45;
+                this.x = x;
+                this.y = y;
+            }
+            LedgerLine.prototype.draw = function (ctx) {
+                ctx.beginPath;
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = Drawing.Colours.black;
+                if (this.hover || this.select) {
+                    ctx.strokeStyle = Drawing.Colours.orange;
+                }
+                ctx.moveTo(this.x - 10, this.y);
+                ctx.lineTo(this.x + 10, this.y);
+                ctx.stroke();
+                return true;
+            };
+            return LedgerLine;
+        })(Inknote.Notation);
+        Drawing.LedgerLine = LedgerLine;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
         function restCommon(ctx, rest) {
             if (rest.select) {
                 ctx.beginPath();
@@ -2190,6 +2259,7 @@ var Inknote;
                 }
                 if (this.barNumber) {
                     ctx.beginPath();
+                    ctx.fillStyle = Drawing.Colours.black;
                     ctx.fillText(this.barNumber + "", this.x, this.y - 5);
                 }
                 return true;
@@ -3221,6 +3291,9 @@ var Inknote;
                     }));
                     this.items.push(new RightClickMenus.ClickableMenuItem("print", function () {
                         Inknote.PrintService.Instance.print();
+                    }));
+                    this.items.push(new RightClickMenus.ClickableMenuItem("note count", function () {
+                        Modal.generateProjectReport();
                     }));
                 }
                 return RightClickScore;
@@ -4328,13 +4401,63 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    (function (MessageType) {
+        MessageType[MessageType["Error"] = 0] = "Error";
+        MessageType[MessageType["Text"] = 1] = "Text";
+        MessageType[MessageType["Warning"] = 2] = "Warning";
+    })(Inknote.MessageType || (Inknote.MessageType = {}));
+    var MessageType = Inknote.MessageType;
+    function logLive(message, className) {
+        if (typeof (window) != typeof (undefined)) {
+            var logContainer = document.getElementById("log");
+            var entry = document.createElement("div");
+            entry.className = className;
+            entry.textContent = message;
+            entry.onclick = function (e) {
+                var target = e.target;
+                target.remove();
+            };
+            logContainer.appendChild(entry);
+            setTimeout(function () {
+                if (logContainer.hasChildNodes()) {
+                    var firstChild = logContainer.childNodes[0];
+                    logContainer.removeChild(firstChild);
+                }
+            }, 1000);
+        }
+    }
+    function log(message, msgType) {
+        if (msgType == MessageType.Error) {
+            console.log("%c" + message, "color:red");
+            logLive(message, "error");
+            return;
+        }
+        var logLevel = Inknote.TempDataService ? Inknote.TempDataService.Instance.currentData.loggingLevel : 3;
+        if (msgType == MessageType.Warning) {
+            console.log("%c" + message, "color: orange");
+            if (logLevel >= 2) {
+                logLive(message, "warning");
+            }
+        }
+        else {
+            console.log(message);
+            if (logLevel >= 3) {
+                logLive(message, "entry");
+            }
+        }
+    }
+    Inknote.log = log;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Storage;
     (function (Storage) {
         var defaults = {
             settings: "settings",
             projects: "projects",
             plugins: "plugins",
-            synths: "synths"
+            synths: "synths",
+            temp: "temp"
         };
         function getLocal(key) {
             if (typeof localStorage == "undefined") {
@@ -4429,6 +4552,19 @@ var Inknote;
             return synthResult;
         }
         Storage.getSynths = getSynths;
+        function saveTemp() {
+            saveLocal(defaults.temp, Inknote.TempDataService.Instance.currentData);
+            Inknote.log("saved temp data");
+        }
+        Storage.saveTemp = saveTemp;
+        function getTemp() {
+            var result = getLocal(defaults.temp);
+            if (result == null || result == undefined) {
+                return new Inknote.TempData();
+            }
+            return result;
+        }
+        Storage.getTemp = getTemp;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -4513,6 +4649,38 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var TempDataService = (function () {
+        function TempDataService() {
+        }
+        Object.defineProperty(TempDataService, "Instance", {
+            get: function () {
+                if (!TempDataService._instance) {
+                    TempDataService._instance = new TempDataService();
+                }
+                return TempDataService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(TempDataService.prototype, "currentData", {
+            get: function () {
+                if (!this._currentData) {
+                    this._currentData = Inknote.Storage.getTemp();
+                }
+                return this._currentData;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        TempDataService.prototype.update = function () {
+            Inknote.Storage.saveTemp();
+        };
+        return TempDataService;
+    })();
+    Inknote.TempDataService = TempDataService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     Inknote.CONFIRM_IS_OPEN = false;
     function check(text, onTrue, onFalse) {
         Inknote.CONFIRM_IS_OPEN = true;
@@ -4526,7 +4694,9 @@ var Inknote;
         var listener = function () {
             FrontEnd.hideElement(confirmBox);
             FrontEnd.hideElement(confirmCover);
-            onTrue();
+            if (onTrue) {
+                onTrue();
+            }
             setTimeout(function () {
                 Inknote.CONFIRM_IS_OPEN = false;
             }, 300);
@@ -4564,27 +4734,6 @@ var Inknote;
         //onFalse();
     }
     Inknote.check = check;
-})(Inknote || (Inknote = {}));
-var Inknote;
-(function (Inknote) {
-    (function (MessageType) {
-        MessageType[MessageType["Error"] = 0] = "Error";
-        MessageType[MessageType["Text"] = 1] = "Text";
-        MessageType[MessageType["Warning"] = 2] = "Warning";
-    })(Inknote.MessageType || (Inknote.MessageType = {}));
-    var MessageType = Inknote.MessageType;
-    function log(message, msgType) {
-        if (msgType == MessageType.Error) {
-            console.log("%c" + message, "color:red");
-        }
-        else if (msgType == MessageType.Warning) {
-            console.log("%c" + message, "color: orange");
-        }
-        else {
-            console.log(message);
-        }
-    }
-    Inknote.log = log;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -5168,6 +5317,20 @@ var Inknote;
                                 var drawNoteItem = Inknote.getDrawingItemFromNote(item);
                                 drawNoteItem.x = marginLeft + barX + itemX;
                                 drawNoteItem.y = topLineHeight - 5 * intervalDistance + clefAdditionalPosition;
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace <= -50; lineSpace += 5) {
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Inknote.Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
+                                for (var lineSpace = 5 * intervalDistance - clefAdditionalPosition; lineSpace >= 10; lineSpace -= 5) {
+                                    if (lineSpace / 10 === Math.round(lineSpace / 10)) {
+                                        var ledgerLine = new Inknote.Drawing.LedgerLine(drawNoteItem.x, topLineHeight - lineSpace);
+                                        this.addItem(ledgerLine);
+                                        drawNoteItem.attach(ledgerLine);
+                                    }
+                                }
                                 drawNoteItem.isPlaying = item.isPlaying;
                                 drawNoteItem.stemUp = -5 * intervalDistance + clefAdditionalPosition >= 20;
                                 if (isBlack) {
@@ -6030,8 +6193,9 @@ var Inknote;
             this.restControl = new Inknote.Drawing.RestControl();
             this.deleteNoteControl = new Inknote.Drawing.DeleteNoteControl();
             this.x = 0;
-            this.hidden = false;
+            this.hidden = Inknote.TempDataService.Instance.currentData.noteControlsHidden;
             this.hiddenY = 0;
+            this.firstOpen = true;
             this.ID = "note_control";
             this.piano.ID = this.ID;
             this.background.ID = this.ID;
@@ -6050,13 +6214,17 @@ var Inknote;
         });
         NoteControlService.prototype.hide = function () {
             this.hidden = true;
+            Inknote.TempDataService.Instance.currentData.noteControlsHidden = true;
+            Inknote.TempDataService.Instance.update();
         };
         NoteControlService.prototype.show = function () {
             this.hidden = false;
+            Inknote.TempDataService.Instance.currentData.noteControlsHidden = false;
+            Inknote.TempDataService.Instance.update();
         };
         NoteControlService.prototype.getItems = function (drawer) {
             if (this.hidden) {
-                if (this.hiddenY > drawer.canvas.height / 2) {
+                if (this.hiddenY > drawer.canvas.height / 2 || this.firstOpen) {
                     this.hiddenY = drawer.canvas.height / 2;
                 }
                 else if (this.hiddenY < drawer.canvas.height / 2) {
@@ -6106,9 +6274,11 @@ var Inknote;
             this.minimise.x = this.x;
             this.minimise.y = this.y - this.minimise.height;
             noteControls.push(this.minimise);
+            this.firstOpen = false;
             return noteControls;
         };
         NoteControlService.prototype.addInstrument = function (name) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var barsCount = project.instruments[0].bars.length;
             var newInstrument = new Inknote.Model.Instrument(name);
@@ -6133,6 +6303,7 @@ var Inknote;
             }
         };
         NoteControlService.prototype.addNote = function (note) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             if (Inknote.Audio.AudioService) {
                 Inknote.Audio.AudioService.Instance.playNote(note);
@@ -6177,6 +6348,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.addRest = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
@@ -6219,6 +6391,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteLength = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6244,6 +6417,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editCurrentClef = function (goUp) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6261,6 +6435,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.deleteSelected = function () {
+            Inknote.UndoService.Instance.store();
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note
                 || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest) {
                 NoteControlService.Instance.deleteItem();
@@ -6298,6 +6473,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteValueAndOctave = function (value, octave) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var playedNotes = [];
             for (var i = 0; i < project.instruments.length; i++) {
@@ -6331,6 +6507,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.noteValueUp = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6359,6 +6536,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.noteValueDown = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6738,7 +6916,8 @@ var Inknote;
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             var compressedCurrentProject = Inknote.ProjectConverter.compress(currentProject);
             this._storage.push(compressedCurrentProject);
-            while (this._storage.length >= 5) {
+            // maximum of 10 undos - more undos means more storage space is needed.
+            while (this._storage.length > 10) {
                 this._storage.shift();
             }
         };
@@ -7545,6 +7724,7 @@ var Inknote;
                         Menu.toggle();
                     }
                     Menu.closeAllSubMenus();
+                    Inknote.RightClickMenuService.Instance.visible = false;
                     if (Inknote.ScrollService && Inknote.ScrollService.Instance) {
                         Inknote.ScrollService.Instance.x = 0;
                         Inknote.ScrollService.Instance.y = 0;
@@ -8907,6 +9087,7 @@ var Menu;
     var menu;
     if (typeof (window) != typeof (undefined)) {
         Menu.scoreItems = document.getElementsByClassName("score-item");
+        Menu.desktopItems = document.getElementsByClassName("desktop-item");
         menuButton = document.getElementsByClassName("menu-button")[0];
         menu = document.getElementById("main-menu");
     }
@@ -8917,6 +9098,14 @@ var Menu;
             }
             else {
                 FrontEnd.hideElement(Menu.scoreItems[i]);
+            }
+        }
+        for (var i = 0; i < Menu.desktopItems.length; i++) {
+            if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                FrontEnd.showElement(Menu.desktopItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(Menu.desktopItems[i]);
             }
         }
     }
@@ -9037,6 +9226,70 @@ var Modal;
         hide("report");
     }
     Modal.submitReport = submitReport;
+    function generateProjectReport() {
+        var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+        var reportDetails = document.getElementById("project-report-details");
+        reportDetails.innerHTML = "";
+        var header = document.createElement("h2");
+        header.textContent = currentProject.name + " report";
+        reportDetails.appendChild(header);
+        var barCount = document.createElement("div");
+        barCount.className = "form-row";
+        barCount.textContent = "bars: " + currentProject.instruments[0].bars.length;
+        reportDetails.appendChild(barCount);
+        var numberOfNotes = 0;
+        var noteTypeCount = [];
+        for (var i = 0; i < 12; i++) {
+            noteTypeCount.push({ count: 0 });
+        }
+        for (var i = 0; i < currentProject.instruments.length; i++) {
+            for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                    var item = currentProject.instruments[i].bars[j].items[k];
+                    if (item instanceof Inknote.Model.Note) {
+                        numberOfNotes++;
+                        noteTypeCount[item.value].count++;
+                    }
+                    else if (item instanceof Inknote.Model.Chord) {
+                        numberOfNotes += item.notes.length;
+                        for (var l = 0; l < item.notes.length; l++) {
+                            noteTypeCount[item.notes[l].value].count++;
+                        }
+                    }
+                }
+            }
+        }
+        var noteCount = document.createElement("div");
+        noteCount.className = "form-row";
+        noteCount.textContent = "notes: " + numberOfNotes;
+        reportDetails.appendChild(noteCount);
+        var maxValue = Inknote.maxOutOf(noteTypeCount, function (x) {
+            return x.count;
+        });
+        for (var i = 0; i < 12; i++) {
+            var text = Inknote.Model.GetNoteNameFromNoteValue(i) + ": " + noteTypeCount[i].count;
+            var divBlock = document.createElement("div");
+            divBlock.className = "form-row";
+            divBlock.style.clear = "both";
+            divBlock.style.background = "rgba(190,190,190,0.1)";
+            reportDetails.appendChild(divBlock);
+            var labelBlock = document.createElement("span");
+            labelBlock.style.display = "inline-block";
+            labelBlock.textContent = text;
+            divBlock.appendChild(labelBlock);
+            var graphBlock = document.createElement("span");
+            graphBlock.style.display = "inline-block";
+            graphBlock.style.height = "18px";
+            graphBlock.style.width = Math.round(200 * noteTypeCount[i].count / maxValue) + "px";
+            ;
+            graphBlock.style.background = "red";
+            graphBlock.style.position = "absolute";
+            graphBlock.style.right = "0";
+            divBlock.appendChild(graphBlock);
+        }
+        Modal.show("project-report");
+    }
+    Modal.generateProjectReport = generateProjectReport;
 })(Modal || (Modal = {}));
 var Actions;
 (function (Actions) {
@@ -9240,6 +9493,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
 /// <reference path="scripts/model/drawingsettings.ts" />
+/// <reference path="scripts/model/tempdata.ts" />
 // compressed
 /// <reference path="scripts/model/compressed/compresseditemidentifier.ts" />
 /// <reference path="scripts/model/compressed/compressednote.ts" />
@@ -9272,6 +9526,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/flat.ts" />
 /// <reference path="scripts/drawings/natural.ts" />
 /// <reference path="scripts/drawings/note.ts" />
+/// <reference path="scripts/drawings/ledgerline.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
 /// <reference path="scripts/drawings/bar.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
@@ -9309,12 +9564,14 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/notecontrols/restcontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
+// logging service
+/// <reference path="scripts/services/logger.ts" />
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 // services
+/// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
-/// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />

@@ -112,6 +112,9 @@
 /// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 
+// logging service
+/// <reference path="scripts/services/logger.ts" />
+
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
@@ -119,7 +122,6 @@
 // services
 /// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
-/// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />

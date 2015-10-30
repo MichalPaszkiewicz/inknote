@@ -69,6 +69,8 @@
             if (this.barNumber) {
                 ctx.beginPath();
 
+                ctx.fillStyle = Colours.black;
+
                 ctx.fillText(this.barNumber + "", this.x, this.y - 5);
             }
 

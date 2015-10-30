@@ -6,14 +6,14 @@ module Inknote.Tests {
     describe("getNextClef", function () {
 
         it("gets the correct clef going down from French violin clef", function () {
-            var result = getNextClef(new Model.FrenchViolinClef(), false) instanceof Model.TrebleClef;
-
-            expect(result).toBe(true);
-        });
-
+            var result =  getNextClef(new Model.FrenchViolinClef(), false) instanceof Model.TrebleClef;
+            
+            expect(result).toBe(true); 
+        }); 
+        
         it("gets the right clef going down from Treble", function () {
             var result = getNextClef(new Model.TrebleClef(), false) instanceof Model.SopranoClef;
-
+             
             expect(result).toBe(true);
         });
 

@@ -292,13 +292,19 @@ module Modal {
         var header = document.createElement("h2");
         header.textContent = currentProject.name + " report";
         reportDetails.appendChild(header);
-        
+
         var barCount = document.createElement("div");
         barCount.className = "form-row";
         barCount.textContent = "bars: " + currentProject.instruments[0].bars.length;
         reportDetails.appendChild(barCount);
 
         var numberOfNotes = 0;
+
+        var noteTypeCount = [];
+
+        for (var i = 0; i < 12; i++) {
+            noteTypeCount.push({ count: 0 });
+        }
 
         for (var i = 0; i < currentProject.instruments.length; i++) {
             for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
@@ -307,9 +313,13 @@ module Modal {
 
                     if (item instanceof Inknote.Model.Note) {
                         numberOfNotes++;
+                        noteTypeCount[item.value].count++;
                     }
                     else if (item instanceof Inknote.Model.Chord) {
                         numberOfNotes += item.notes.length;
+                        for (var l = 0; l < item.notes.length; l++) {
+                            noteTypeCount[item.notes[l].value].count++;
+                        }
                     }
                 }
             }
@@ -319,6 +329,35 @@ module Modal {
         noteCount.className = "form-row";
         noteCount.textContent = "notes: " + numberOfNotes;
         reportDetails.appendChild(noteCount);
+
+        var maxValue = Inknote.maxOutOf(noteTypeCount, function (x) {
+            return x.count;
+        });
+
+        for (var i = 0; i < 12; i++) {
+            var text = Inknote.Model.GetNoteNameFromNoteValue(i) + ": " + noteTypeCount[i].count;
+
+            var divBlock = document.createElement("div");
+            divBlock.className = "form-row";
+            divBlock.style.clear = "both";
+            divBlock.style.background = "rgba(190,190,190,0.1)";
+            reportDetails.appendChild(divBlock);
+
+            var labelBlock = document.createElement("span");
+            labelBlock.style.display = "inline-block";
+            labelBlock.textContent = text;
+            divBlock.appendChild(labelBlock);
+
+            var graphBlock = document.createElement("span");
+            graphBlock.style.display = "inline-block";
+            graphBlock.style.height = "18px";
+            graphBlock.style.width = Math.round(200 * noteTypeCount[i].count / maxValue) + "px";;
+            graphBlock.style.background = "red";
+            graphBlock.style.position = "absolute";
+            graphBlock.style.right = "0";
+
+            divBlock.appendChild(graphBlock);
+        }
 
         Modal.show("project-report");
     }
@@ -369,7 +408,7 @@ module SynthBindings {
 
         var synthGainInput = <HTMLInputElement>document.getElementById("synth-gain");
         synthGainInput.valueAsNumber = currentSynth.gain;
-        
+
         var synthDelayInput = <HTMLInputElement>document.getElementById("synth-delay");
         synthDelayInput.valueAsNumber = currentSynth.delay;
     }
@@ -378,7 +417,7 @@ module SynthBindings {
 
         var synths = Inknote.Audio.SynthManager.Instance.getSynths();
         var synthDiv = <HTMLDivElement>document.getElementById("synth-list");
-        
+
         synthDiv.innerHTML = "";
 
         for (var i = 0; i < synths.length; i++) {
@@ -442,7 +481,7 @@ module SynthBindings {
 
         Inknote.Audio.SynthManager.Instance.addSynth(newSynth);
         loadSynthData();
-        
+
         Inknote.Audio.SynthService.setSynth(newSynth.ID, newSynth.name);
         SynthBindings.getSynthValues();
 

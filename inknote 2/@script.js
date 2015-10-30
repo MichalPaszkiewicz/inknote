@@ -488,6 +488,35 @@ var Inknote;
 (function (Inknote) {
     var Model;
     (function (Model) {
+        function GetNoteNameFromNoteValue(value) {
+            switch (value) {
+                case NoteValue.A:
+                    return "A";
+                case NoteValue.Bb:
+                    return "Bb";
+                case NoteValue.B:
+                    return "B";
+                case NoteValue.C:
+                    return "C";
+                case NoteValue.Db:
+                    return "Db";
+                case NoteValue.D:
+                    return "D";
+                case NoteValue.Eb:
+                    return "Eb";
+                case NoteValue.E:
+                    return "E";
+                case NoteValue.F:
+                    return "F";
+                case NoteValue.Gb:
+                    return "Gb";
+                case NoteValue.G:
+                    return "G";
+                case NoteValue.Ab:
+                    return "Ab";
+            }
+        }
+        Model.GetNoteNameFromNoteValue = GetNoteNameFromNoteValue;
         (function (NoteValue) {
             NoteValue[NoteValue["A"] = 0] = "A";
             NoteValue[NoteValue["Bb"] = 1] = "Bb";
@@ -2230,6 +2259,7 @@ var Inknote;
                 }
                 if (this.barNumber) {
                     ctx.beginPath();
+                    ctx.fillStyle = Drawing.Colours.black;
                     ctx.fillText(this.barNumber + "", this.x, this.y - 5);
                 }
                 return true;
@@ -4371,6 +4401,55 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    (function (MessageType) {
+        MessageType[MessageType["Error"] = 0] = "Error";
+        MessageType[MessageType["Text"] = 1] = "Text";
+        MessageType[MessageType["Warning"] = 2] = "Warning";
+    })(Inknote.MessageType || (Inknote.MessageType = {}));
+    var MessageType = Inknote.MessageType;
+    function logLive(message, className) {
+        if (typeof (window) != typeof (undefined)) {
+            var logContainer = document.getElementById("log");
+            var entry = document.createElement("div");
+            entry.className = className;
+            entry.textContent = message;
+            entry.onclick = function (e) {
+                var target = e.target;
+                target.remove();
+            };
+            logContainer.appendChild(entry);
+            setTimeout(function () {
+                if (logContainer.hasChildNodes()) {
+                    var firstChild = logContainer.childNodes[0];
+                    logContainer.removeChild(firstChild);
+                }
+            }, 1000);
+        }
+    }
+    function log(message, msgType) {
+        if (msgType == MessageType.Error) {
+            console.log("%c" + message, "color:red");
+            logLive(message, "error");
+            return;
+        }
+        var logLevel = Inknote.TempDataService ? Inknote.TempDataService.Instance.currentData.loggingLevel : 3;
+        if (msgType == MessageType.Warning) {
+            console.log("%c" + message, "color: orange");
+            if (logLevel >= 2) {
+                logLive(message, "warning");
+            }
+        }
+        else {
+            console.log(message);
+            if (logLevel >= 3) {
+                logLive(message, "entry");
+            }
+        }
+    }
+    Inknote.log = log;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Storage;
     (function (Storage) {
         var defaults = {
@@ -4655,56 +4734,6 @@ var Inknote;
         //onFalse();
     }
     Inknote.check = check;
-})(Inknote || (Inknote = {}));
-var Inknote;
-(function (Inknote) {
-    (function (MessageType) {
-        MessageType[MessageType["Error"] = 0] = "Error";
-        MessageType[MessageType["Text"] = 1] = "Text";
-        MessageType[MessageType["Warning"] = 2] = "Warning";
-    })(Inknote.MessageType || (Inknote.MessageType = {}));
-    var MessageType = Inknote.MessageType;
-    var logLevel = Inknote.TempDataService.Instance.currentData.loggingLevel;
-    function logLive(message, className) {
-        if (window != null && document != null) {
-            var logContainer = document.getElementById("log");
-            var entry = document.createElement("div");
-            entry.className = className;
-            entry.textContent = message;
-            entry.onclick = function (e) {
-                var target = e.target;
-                target.remove();
-            };
-            logContainer.appendChild(entry);
-            setTimeout(function () {
-                if (logContainer.hasChildNodes()) {
-                    var firstChild = logContainer.childNodes[0];
-                    logContainer.removeChild(firstChild);
-                }
-            }, 1000);
-        }
-    }
-    function log(message, msgType) {
-        if (msgType == MessageType.Error) {
-            console.log("%c" + message, "color:red");
-            if (logLevel >= 1) {
-                logLive(message, "error");
-            }
-        }
-        else if (msgType == MessageType.Warning) {
-            console.log("%c" + message, "color: orange");
-            if (logLevel >= 2) {
-                logLive(message, "warning");
-            }
-        }
-        else {
-            console.log(message);
-            if (logLevel >= 3) {
-                logLive(message, "entry");
-            }
-        }
-    }
-    Inknote.log = log;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6887,7 +6916,8 @@ var Inknote;
             var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
             var compressedCurrentProject = Inknote.ProjectConverter.compress(currentProject);
             this._storage.push(compressedCurrentProject);
-            while (this._storage.length > 5) {
+            // maximum of 10 undos - more undos means more storage space is needed.
+            while (this._storage.length > 10) {
                 this._storage.shift();
             }
         };
@@ -9208,15 +9238,23 @@ var Modal;
         barCount.textContent = "bars: " + currentProject.instruments[0].bars.length;
         reportDetails.appendChild(barCount);
         var numberOfNotes = 0;
+        var noteTypeCount = [];
+        for (var i = 0; i < 12; i++) {
+            noteTypeCount.push({ count: 0 });
+        }
         for (var i = 0; i < currentProject.instruments.length; i++) {
             for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
                 for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
                     var item = currentProject.instruments[i].bars[j].items[k];
                     if (item instanceof Inknote.Model.Note) {
                         numberOfNotes++;
+                        noteTypeCount[item.value].count++;
                     }
                     else if (item instanceof Inknote.Model.Chord) {
                         numberOfNotes += item.notes.length;
+                        for (var l = 0; l < item.notes.length; l++) {
+                            noteTypeCount[item.notes[l].value].count++;
+                        }
                     }
                 }
             }
@@ -9225,6 +9263,30 @@ var Modal;
         noteCount.className = "form-row";
         noteCount.textContent = "notes: " + numberOfNotes;
         reportDetails.appendChild(noteCount);
+        var maxValue = Inknote.maxOutOf(noteTypeCount, function (x) {
+            return x.count;
+        });
+        for (var i = 0; i < 12; i++) {
+            var text = Inknote.Model.GetNoteNameFromNoteValue(i) + ": " + noteTypeCount[i].count;
+            var divBlock = document.createElement("div");
+            divBlock.className = "form-row";
+            divBlock.style.clear = "both";
+            divBlock.style.background = "rgba(190,190,190,0.1)";
+            reportDetails.appendChild(divBlock);
+            var labelBlock = document.createElement("span");
+            labelBlock.style.display = "inline-block";
+            labelBlock.textContent = text;
+            divBlock.appendChild(labelBlock);
+            var graphBlock = document.createElement("span");
+            graphBlock.style.display = "inline-block";
+            graphBlock.style.height = "18px";
+            graphBlock.style.width = Math.round(200 * noteTypeCount[i].count / maxValue) + "px";
+            ;
+            graphBlock.style.background = "red";
+            graphBlock.style.position = "absolute";
+            graphBlock.style.right = "0";
+            divBlock.appendChild(graphBlock);
+        }
         Modal.show("project-report");
     }
     Modal.generateProjectReport = generateProjectReport;
@@ -9502,13 +9564,14 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/notecontrols/restcontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
+// logging service
+/// <reference path="scripts/services/logger.ts" />
 // storage
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 // services
 /// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
-/// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />
