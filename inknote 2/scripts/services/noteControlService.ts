@@ -109,6 +109,8 @@
         }
 
         addInstrument(name: string): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             var barsCount = project.instruments[0].bars.length;
@@ -140,6 +142,7 @@
         }
 
         addBar(): void {
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -151,6 +154,8 @@
         }
 
         addNote(note: Model.Note): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             if (Audio.AudioService) {
@@ -209,6 +214,8 @@
         }
 
         addRest(): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             var rest = new Model.Rest(this.lengthControl.selectedLength);
@@ -265,6 +272,8 @@
         }
 
         editNoteLength() {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -294,6 +303,8 @@
         }
 
         editCurrentClef(goUp: boolean) {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -367,6 +378,8 @@
 
         editNoteValueAndOctave(value: Model.NoteValue, octave: number) {
 
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             var playedNotes: Model.Note[] = [];
@@ -411,6 +424,7 @@
         }
 
         noteValueUp() {
+            UndoService.Instance.store();
 
             var project = Managers.ProjectManager.Instance.currentProject;
 
@@ -446,6 +460,7 @@
         }
 
         noteValueDown() {
+            UndoService.Instance.store();
 
             var project = Managers.ProjectManager.Instance.currentProject;
 

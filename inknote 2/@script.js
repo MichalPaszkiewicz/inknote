@@ -6249,6 +6249,7 @@ var Inknote;
             return noteControls;
         };
         NoteControlService.prototype.addInstrument = function (name) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var barsCount = project.instruments[0].bars.length;
             var newInstrument = new Inknote.Model.Instrument(name);
@@ -6273,6 +6274,7 @@ var Inknote;
             }
         };
         NoteControlService.prototype.addNote = function (note) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             if (Inknote.Audio.AudioService) {
                 Inknote.Audio.AudioService.Instance.playNote(note);
@@ -6317,6 +6319,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.addRest = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var rest = new Inknote.Model.Rest(this.lengthControl.selectedLength);
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
@@ -6359,6 +6362,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteLength = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6384,6 +6388,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editCurrentClef = function (goUp) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6439,6 +6444,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.editNoteValueAndOctave = function (value, octave) {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             var playedNotes = [];
             for (var i = 0; i < project.instruments.length; i++) {
@@ -6472,6 +6478,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.noteValueUp = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6500,6 +6507,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.noteValueDown = function () {
+            Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
