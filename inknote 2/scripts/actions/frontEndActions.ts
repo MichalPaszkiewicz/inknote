@@ -363,6 +363,27 @@ module Modal {
     }
 }
 
+module Modal.SettingsModal {
+
+    if (typeof(window) != typeof(undefined)){
+        var logLevelRadioList = <NodeListOf<HTMLInputElement>>document.getElementsByName("logLevel");
+
+        for (var i = 0; i < logLevelRadioList.length; i++) {
+            if (logLevelRadioList[i].value == Inknote.TempDataService.Instance.currentData.loggingLevel + "") {
+                logLevelRadioList[i].checked = true;
+            }
+
+            logLevelRadioList[i].onclick = function (e) {
+                var target = <HTMLInputElement>e.target;
+
+                Inknote.TempDataService.Instance.currentData.loggingLevel = parseInt(target.value);
+                Inknote.TempDataService.Instance.update();
+            }
+        }
+    }
+
+}
+
 module Actions.Plugins {
 
     export function PluginMenuClick(ev: HTMLElement, ID: string) {

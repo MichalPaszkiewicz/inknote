@@ -79,6 +79,7 @@
 
     <div class="sub-menu menu" id="tools-menu" onclick="Menu.closeAllSubMenus()">
         <div class="menu-item" onclick="Modal.toggle('plugins');">plugins</div>
+        <div class="menu-item" onclick="Modal.toggle('temp-data');">settings</div>
     </div>
 
     <div class="sub-menu menu" id="help-menu" onclick="Menu.closeAllSubMenus()">
@@ -246,6 +247,35 @@
 
             </div> 
             <div class="button" onclick="Modal.toggle('project-report')">Close</div>
+        </div>
+    </div>
+
+    <div id="temp-data" class="hidden modal">
+        <div class="x" onclick="Modal.toggle('temp-data')">x</div>
+
+        <div class="overflower">
+            <h2>Settings</h2>
+
+            <div id="temp-data-details">
+                <h3>level of logging</h3>
+                <div class="form-row">
+                    <div class="label">0: display only errors</div>
+                    <input type="radio" name="logLevel" value="0" />
+                </div>
+                <div class="form-row">
+                    <div class="label">1: display errors</div>
+                    <input type="radio" name="logLevel" value="1" />
+                </div>
+                <div class="form-row">
+                    <div class="label">2: display errors and warnings</div>
+                    <input type="radio" name="logLevel" value="2" />
+                </div>
+                <div class="form-row">
+                    <div class="label">3: display all log entries</div>
+                    <input type="radio" name="logLevel" value="3" />
+                </div>
+            </div>
+            <div class="button" onclick="Modal.toggle('temp-data')">Close</div>
         </div>
     </div>
 

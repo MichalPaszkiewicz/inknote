@@ -9323,6 +9323,25 @@ var Modal;
     }
     Modal.generateProjectReport = generateProjectReport;
 })(Modal || (Modal = {}));
+var Modal;
+(function (Modal) {
+    var SettingsModal;
+    (function (SettingsModal) {
+        if (typeof (window) != typeof (undefined)) {
+            var logLevelRadioList = document.getElementsByName("logLevel");
+            for (var i = 0; i < logLevelRadioList.length; i++) {
+                if (logLevelRadioList[i].value == Inknote.TempDataService.Instance.currentData.loggingLevel + "") {
+                    logLevelRadioList[i].checked = true;
+                }
+                logLevelRadioList[i].onclick = function (e) {
+                    var target = e.target;
+                    Inknote.TempDataService.Instance.currentData.loggingLevel = parseInt(target.value);
+                    Inknote.TempDataService.Instance.update();
+                };
+            }
+        }
+    })(SettingsModal = Modal.SettingsModal || (Modal.SettingsModal = {}));
+})(Modal || (Modal = {}));
 var Actions;
 (function (Actions) {
     var Plugins;
