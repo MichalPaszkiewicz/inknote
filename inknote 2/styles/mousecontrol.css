@@ -16,6 +16,9 @@
 .mouse-control .mouse-option:hover {
   -webkit-filter: brightness(1.5);
 }
+.mouse-control .mouse-option#normal-mouse {
+  background: url(../assets/cursor.png);
+}
 .mouse-control .mouse-option#pencil-mouse {
   background: url(../assets/pencil.png);
 }

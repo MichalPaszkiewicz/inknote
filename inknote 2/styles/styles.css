@@ -71,6 +71,7 @@ canvas {
   user-select: none;
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  cursor: url('../assets/cursor.png'), default;
 }
 canvas.pencilMode {
   cursor: url('../assets/pencil.png'), default;
@@ -487,6 +488,9 @@ body #log .error {
 }
 .mouse-control .mouse-option:hover {
   -webkit-filter: brightness(1.5);
+}
+.mouse-control .mouse-option#normal-mouse {
+  background: url(../assets/cursor.png);
 }
 .mouse-control .mouse-option#pencil-mouse {
   background: url(../assets/pencil.png);

@@ -64,6 +64,7 @@ canvas {
   user-select: none;
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  cursor: url('../assets/cursor.png'), default;
 }
 canvas.pencilMode {
   cursor: url('../assets/pencil.png'), default;
