@@ -19,6 +19,15 @@
         private _currentMouse: MouseType = MouseType.NORMAL;
 
         set currentMouse(mouseType: MouseType) {
+            if (mouseType == MouseType.PENCIL) {
+                if (DrawService.Instance.canvas.className.indexOf("pencilMode") == -1) {
+                    DrawService.Instance.canvas.className += " pencilMode";
+                }
+            }
+            else {
+                DrawService.Instance.canvas.className = DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
+            }
+
             this._currentMouse = mouseType;
         }
 

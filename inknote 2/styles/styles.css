@@ -72,6 +72,9 @@ canvas {
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+canvas.pencilMode {
+  cursor: url('../assets/pencil.png'), default;
+}
 .button {
   background: gray;
   cursor: pointer;
@@ -466,5 +469,26 @@ body #log .warning {
 }
 body #log .error {
   background: red;
+}
+.mouse-control {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  height: 22px;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+.mouse-control .mouse-option {
+  background: red;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  cursor: pointer;
+}
+.mouse-control .mouse-option:hover {
+  -webkit-filter: brightness(1.5);
+}
+.mouse-control .mouse-option#pencil-mouse {
+  background: url(../assets/pencil.png);
 }
 /*# sourceMappingURL=styles.css.map */

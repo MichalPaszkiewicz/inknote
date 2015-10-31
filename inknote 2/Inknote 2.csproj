@@ -63,6 +63,12 @@
     <Content Include="styles\modal.min.css">
       <DependentUpon>modal.css</DependentUpon>
     </Content>
+    <Content Include="styles\mousecontrol.css">
+      <DependentUpon>mousecontrol.less</DependentUpon>
+    </Content>
+    <Content Include="styles\mousecontrol.min.css">
+      <DependentUpon>mousecontrol.css</DependentUpon>
+    </Content>
     <Content Include="styles\styles.css">
       <DependentUpon>styles.less</DependentUpon>
     </Content>
@@ -256,6 +262,10 @@
     <Content Include="styles\log.less" />
     <Content Include="styles\log.css.map">
       <DependentUpon>log.css</DependentUpon>
+    </Content>
+    <Content Include="styles\mousecontrol.less" />
+    <Content Include="styles\mousecontrol.css.map">
+      <DependentUpon>mousecontrol.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

@@ -8380,6 +8380,14 @@ var Inknote;
                     return this._currentMouse;
                 },
                 set: function (mouseType) {
+                    if (mouseType == MouseType.PENCIL) {
+                        if (Inknote.DrawService.Instance.canvas.className.indexOf("pencilMode") == -1) {
+                            Inknote.DrawService.Instance.canvas.className += " pencilMode";
+                        }
+                    }
+                    else {
+                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
+                    }
                     this._currentMouse = mouseType;
                 },
                 enumerable: true,
