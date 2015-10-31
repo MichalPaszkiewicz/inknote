@@ -645,6 +645,19 @@ var Inknote;
 (function (Inknote) {
     var Model;
     (function (Model) {
+        var Text = (function () {
+            function Text(txt) {
+                this.content = txt;
+            }
+            return Text;
+        })();
+        Model.Text = Text;
+    })(Model = Inknote.Model || (Inknote.Model = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Model;
+    (function (Model) {
         var Bar = (function () {
             function Bar() {
                 this.ID = Inknote.getID();
@@ -820,6 +833,18 @@ var Inknote;
             return CompressedTimeSignature;
         })();
         Compressed.CompressedTimeSignature = CompressedTimeSignature;
+    })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Compressed;
+    (function (Compressed) {
+        var CompressedText = (function () {
+            function CompressedText() {
+            }
+            return CompressedText;
+        })();
+        Compressed.CompressedText = CompressedText;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5606,6 +5631,11 @@ var Inknote;
         function compressTimeSignature(timeSignature) {
             return new Inknote.Compressed.CompressedTimeSignature(timeSignature.top, timeSignature.bottom);
         }
+        function compressText(txt) {
+            var result = new Inknote.Compressed.CompressedText();
+            result.c = txt.content;
+            return result;
+        }
         function compressAll(projects) {
             var result = [];
             for (var i = 0; i < projects.length; i++) {
@@ -5725,6 +5755,10 @@ var Inknote;
             if (clef.v == Inknote.Compressed.CompressedClefType.SUBBASS) {
                 result = new Inknote.Model.SubbassClef();
             }
+            return result;
+        }
+        function decompressText(txt) {
+            var result = new Inknote.Model.Text(txt.c);
             return result;
         }
         function decompressTimeSignature(timeSignature) {
@@ -8320,6 +8354,44 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Managers;
+    (function (Managers) {
+        (function (MouseType) {
+            MouseType[MouseType["NORMAL"] = 0] = "NORMAL";
+            MouseType[MouseType["PENCIL"] = 1] = "PENCIL";
+        })(Managers.MouseType || (Managers.MouseType = {}));
+        var MouseType = Managers.MouseType;
+        var MouseManager = (function () {
+            function MouseManager() {
+                this._currentMouse = MouseType.NORMAL;
+            }
+            Object.defineProperty(MouseManager, "Instance", {
+                get: function () {
+                    if (!MouseManager._instance) {
+                        MouseManager._instance = new MouseManager();
+                    }
+                    return MouseManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MouseManager.prototype, "currentMouse", {
+                get: function () {
+                    return this._currentMouse;
+                },
+                set: function (mouseType) {
+                    this._currentMouse = mouseType;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return MouseManager;
+        })();
+        Managers.MouseManager = MouseManager;
+    })(Managers = Inknote.Managers || (Inknote.Managers = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Plugins;
     (function (Plugins) {
         var Compressed;
@@ -9540,6 +9612,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/rest.ts" />
 /// <reference path="scripts/model/note.ts" />
 /// <reference path="scripts/model/chord.ts" />
+/// <reference path="scripts/model/text.ts" />
 /// <reference path="scripts/model/bar.ts" />
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
@@ -9552,6 +9625,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
 /// <reference path="scripts/model/compressed/compressedclef.ts" />
 /// <reference path="scripts/model/compressed/compressedtimesignature.ts" />
+/// <reference path="scripts/model/compressed/compressedtext.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />
@@ -9666,6 +9740,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
 /// <reference path="scripts/managers/pluginmanager.ts" />
+/// <reference path="scripts/managers/mousemanager.ts" />
 // plugins
 /// <reference path="scripts/plugins/compressedplugin.ts" />
 /// <reference path="scripts/plugins/plugin.ts" />

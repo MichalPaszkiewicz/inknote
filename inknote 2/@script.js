@@ -8354,6 +8354,44 @@ var Inknote;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
+    var Managers;
+    (function (Managers) {
+        (function (MouseType) {
+            MouseType[MouseType["NORMAL"] = 0] = "NORMAL";
+            MouseType[MouseType["PENCIL"] = 1] = "PENCIL";
+        })(Managers.MouseType || (Managers.MouseType = {}));
+        var MouseType = Managers.MouseType;
+        var MouseManager = (function () {
+            function MouseManager() {
+                this._currentMouse = MouseType.NORMAL;
+            }
+            Object.defineProperty(MouseManager, "Instance", {
+                get: function () {
+                    if (!MouseManager._instance) {
+                        MouseManager._instance = new MouseManager();
+                    }
+                    return MouseManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MouseManager.prototype, "currentMouse", {
+                get: function () {
+                    return this._currentMouse;
+                },
+                set: function (mouseType) {
+                    this._currentMouse = mouseType;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return MouseManager;
+        })();
+        Managers.MouseManager = MouseManager;
+    })(Managers = Inknote.Managers || (Inknote.Managers = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
     var Plugins;
     (function (Plugins) {
         var Compressed;
@@ -9702,6 +9740,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
 /// <reference path="scripts/managers/pluginmanager.ts" />
+/// <reference path="scripts/managers/mousemanager.ts" />
 // plugins
 /// <reference path="scripts/plugins/compressedplugin.ts" />
 /// <reference path="scripts/plugins/plugin.ts" />

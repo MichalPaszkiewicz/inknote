@@ -171,6 +171,7 @@
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
 /// <reference path="scripts/managers/pluginmanager.ts" />
+/// <reference path="scripts/managers/mousemanager.ts" />
 
 // plugins
 /// <reference path="scripts/plugins/compressedplugin.ts" />

@@ -141,6 +141,7 @@
     <TypeScriptCompile Include="scripts\landing\landing.ts" />
     <TypeScriptCompile Include="scripts\landing\metaball.ts" />
     <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\mouseManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
