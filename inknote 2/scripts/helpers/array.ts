@@ -65,6 +65,17 @@
         return max;
     }
 
+    export function getFirstItemWhere(items: any[], xAndY: (item: any) => boolean): any {
+        if (items === null || items === undefined) {
+            return null;
+        }
+        for (var i = 0; i < items.length; i++) {
+            if (xAndY(items[i])) {
+                return items[i];
+            }
+        }
+    }
+
     export function getItemsWhere(items: any[], xAndY: (item: any) => boolean): any[] {
         if (items === null || items === undefined) {
             return [];

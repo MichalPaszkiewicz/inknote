@@ -85,6 +85,17 @@ var Inknote;
         return max;
     }
     Inknote.minOutOf = minOutOf;
+    function getFirstItemWhere(items, xAndY) {
+        if (items === null || items === undefined) {
+            return null;
+        }
+        for (var i = 0; i < items.length; i++) {
+            if (xAndY(items[i])) {
+                return items[i];
+            }
+        }
+    }
+    Inknote.getFirstItemWhere = getFirstItemWhere;
     function getItemsWhere(items, xAndY) {
         if (items === null || items === undefined) {
             return [];
@@ -7922,13 +7933,34 @@ var Inknote;
             Object.defineProperty(ProjectManager.prototype, "currentProjectOverride", {
                 set: function (project) {
                     Inknote.log("current project overriden", Inknote.MessageType.Warning);
+                    Inknote.log(this._currentProject.ID + " -> " + project.ID, Inknote.MessageType.Error);
                     this._currentProject = project;
+                    var self = this;
+                    // for fixing undo, then save issue.
+                    var projectListItemToOverride = Inknote.getFirstItemWhere(this._projects, function (project) {
+                        return project.ID == self._currentProject.ID;
+                    });
+                    var itemIndex = this._projects.indexOf(projectListItemToOverride);
+                    this._projects[itemIndex] = project;
                 },
                 enumerable: true,
                 configurable: true
             });
             ProjectManager.prototype.save = function () {
-                if (this._projects.indexOf(this._currentProject) == -1) {
+                var self = this;
+                var projectAlreadyExists = Inknote.anyItemIs(this._projects, function (project) {
+                    return project.ID == self._currentProject.ID;
+                });
+                if (projectAlreadyExists === true) {
+                    // overwrite item with this ID.
+                    // * fixes issue with undoing then saving *
+                    var currentProjectInHere = Inknote.getFirstItemWhere(this._projects, function (project) {
+                        return project.ID == self._currentProject.ID;
+                    });
+                    var itemIndex = this._projects.indexOf(currentProjectInHere);
+                    this._projects[itemIndex] = this._currentProject;
+                }
+                else {
                     this._projects.push(this._currentProject);
                 }
                 var compressed = Inknote.ProjectConverter.compressAll(this._projects);
