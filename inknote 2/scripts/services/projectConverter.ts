@@ -196,6 +196,16 @@
 
     }
 
+    function compressText(txt: Model.Text): Compressed.CompressedText {
+
+        var result = new Compressed.CompressedText();
+
+        result.c = txt.content;
+
+        return result;
+
+    }
+
     export function compressAll(projects: Project[]): Compressed.CompressedProject[] {
         var result = [];
 
@@ -344,6 +354,14 @@
         }
 
         return result;
+    }
+
+    function decompressText(txt: Compressed.CompressedText): Model.Text {
+
+        var result = new Model.Text(txt.c);
+
+        return result;
+
     }
 
     function decompressTimeSignature(timeSignature: Compressed.CompressedTimeSignature): Model.TimeSignature {

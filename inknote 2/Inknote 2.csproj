@@ -23,6 +23,7 @@
       <DependentUpon>%40script.js</DependentUpon>
     </Content>
     <Content Include="assets\landing.png" />
+    <Content Include="assets\pencil.png" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="licence\index.html" />
@@ -160,6 +161,7 @@
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedRest.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedText.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedTimeSignature.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
@@ -176,6 +178,7 @@
     <TypeScriptCompile Include="scripts\model\rest.ts" />
     <TypeScriptCompile Include="scripts\model\settings.ts" />
     <TypeScriptCompile Include="scripts\model\tempData.ts" />
+    <TypeScriptCompile Include="scripts\model\text.ts" />
     <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
     <Content Include="build-plugins.bat" />
     <None Include="scripts\plugins\instances\snow-back.ts" />
