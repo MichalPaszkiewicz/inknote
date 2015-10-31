@@ -62,8 +62,8 @@
                     var hoverID = allItems[i].ID;
                     Managers.ProjectManager.Instance.hoverID = hoverID;
                     hovered = true;
-                    this.drawService.canvas.style.cursor = "pointer";
-                }
+                    this.drawService.canvas.style.cursor = "url('../assets/pointer.png'), pointer";
+                } 
             }
 
             var sortedScoreItems = <Notation[]>scoreItems.sort(function (a: Notation, b: Notation) { return b.order - a.order; });

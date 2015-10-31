@@ -11,6 +11,7 @@ body {
   margin: 0;
   height: 100%;
   width: 100%;
+  cursor: url('../assets/cursor.png'), default;
 }
 input[type*=checkbox] {
   width: 25px;
@@ -71,14 +72,13 @@ canvas {
   user-select: none;
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  cursor: url('../assets/cursor.png'), default;
 }
 canvas.pencilMode {
-  cursor: url('../assets/pencil.png'), default;
+  cursor: url('../assets/pencil.png'), crosshair;
 }
 .button {
   background: gray;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   padding: 5px;
   display: inline-block;
   color: white;
@@ -139,7 +139,7 @@ canvas.pencilMode {
   min-height: 100px;
 }
 .modal .x {
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   width: 20px;
   height: 20px;
   line-height: 20px;
@@ -237,7 +237,7 @@ body #drag-drop-bad {
 #landing {
   background: #FFA500;
   color: white;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   opacity: 1;
 }
 #landing .central {
@@ -273,7 +273,7 @@ body #drag-drop-bad {
   background: black;
   color: white;
   padding: 5px;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   -webkit-user-select: none;
   -moz-user-select: -moz-none;
   /*IE10*/
@@ -365,7 +365,7 @@ body .menu-button {
   height: 40px;
   border-radius: 0 15px 0 15px;
   box-shadow: 0 0 3px 1px gray;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   transition: border-radius 0.25s;
   -webkit-transition: border-radius 0.25s;
   -moz-transition: border-radius 0.25s;
@@ -430,7 +430,7 @@ body .menu .menu-item {
   border-radius: 60px;
   margin: 10px;
   color: white;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
   vertical-align: top;
   text-align: center;
   padding: 48px 0;
@@ -441,7 +441,7 @@ body .menu .menu-item:hover {
   background: #3c3838;
 }
 body .menu svg {
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
 }
 body .menu svg:hover path {
   fill: #3c3838;
@@ -460,7 +460,7 @@ body #log .error {
   margin: 10px;
   padding: 10px;
   color: white;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
 }
 body #log .entry {
   background: black;
@@ -484,7 +484,7 @@ body #log .error {
   height: 20px;
   width: 20px;
   display: inline-block;
-  cursor: pointer;
+  cursor: url('../assets/pointer.png'), pointer;
 }
 .mouse-control .mouse-option:hover {
   -webkit-filter: brightness(1.5);

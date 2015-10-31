@@ -3,6 +3,8 @@
     margin: 0;
     height: 100%;
     width: 100%;
+
+    cursor: url('../assets/cursor.png'), default;
 }
 
 input[type*=checkbox] {
@@ -67,17 +69,15 @@ canvas {
     display: block;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-    cursor: url('../assets/cursor.png'), default;
-
 }
 
 canvas.pencilMode{
-    cursor: url('../assets/pencil.png'), default;
+    cursor: url('../assets/pencil.png'), crosshair;
 }
 
 .button {
     background: gray;
-    cursor: pointer;
+    cursor: url('../assets/pointer.png'), pointer;
     padding: 5px;
     display: inline-block;
     color: white;
@@ -145,7 +145,7 @@ canvas.pencilMode{
     }
 
     .x {
-        cursor: pointer;
+        cursor: url('../assets/pointer.png'), pointer;
         width: 20px;
         height: 20px;
         line-height: 20px;

@@ -22,8 +22,10 @@
     <Content Include="%40script.min.js">
       <DependentUpon>%40script.js</DependentUpon>
     </Content>
+    <Content Include="assets\cursor.png" />
     <Content Include="assets\landing.png" />
     <Content Include="assets\pencil.png" />
+    <Content Include="assets\pointer.png" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="licence\index.html" />
