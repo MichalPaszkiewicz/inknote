@@ -29,7 +29,7 @@
                     logContainer.removeChild(firstChild);
                 }
 
-            }, 1000);
+            }, 3000);
         }
     }
 

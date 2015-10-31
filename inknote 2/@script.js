@@ -4423,7 +4423,7 @@ var Inknote;
                     var firstChild = logContainer.childNodes[0];
                     logContainer.removeChild(firstChild);
                 }
-            }, 1000);
+            }, 3000);
         }
     }
     function log(message, msgType) {
