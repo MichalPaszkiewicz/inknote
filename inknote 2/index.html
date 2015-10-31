@@ -124,6 +124,10 @@
             <div id="instrument-list">
 
             </div>
+
+            <div class="button" onclick="Modal.toggle('instruments')">Close</div>
+            <div class="button" onclick="Modal.toggle('instruments');Modal.toggle('synth')">synths</div>
+
         </div>
     </div>
 
@@ -187,6 +191,9 @@
             <div class="button" onclick="SynthBindings.addSynth()">add synth</div>
 
             <div class="button" onclick="Modal.toggle('synth')">Close</div>
+            <div class="button" onclick="Modal.toggle('synth');Modal.toggle('instruments')">instruments</div>
+
+
         </div>
 
     </div>
