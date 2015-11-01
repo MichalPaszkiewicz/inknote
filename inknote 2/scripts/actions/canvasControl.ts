@@ -198,7 +198,7 @@
                 if (e.movementY > 0 && canScroll(true) || e.movementY < 0 && canScroll(false)) {
                     ScrollService.Instance.y -= e.movementY;
                 }
-                drawService.canvas.style.cursor = "-webkit-grabbing";
+                drawService.canvas.style.cursor = "url('../assets/grabbing.png'), -webkit-grabbing";
             };
 
             drawService.canvas.addEventListener("mousemove", onMove, false);

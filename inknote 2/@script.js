@@ -8790,7 +8790,7 @@ var Inknote;
                 if (e.movementY > 0 && Inknote.canScroll(true) || e.movementY < 0 && Inknote.canScroll(false)) {
                     Inknote.ScrollService.Instance.y -= e.movementY;
                 }
-                drawService.canvas.style.cursor = "-webkit-grabbing";
+                drawService.canvas.style.cursor = "url('../assets/grabbing.png'), -webkit-grabbing";
             };
             drawService.canvas.addEventListener("mousemove", onMove, false);
             drawService.canvas.onmouseup = function (e) {
