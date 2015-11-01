@@ -54,9 +54,12 @@
 
             if (item == Page.Score) {
                 FrontEnd.showElement(document.getElementById("play"));
+                FrontEnd.showElement(document.getElementById("mouse-control"));
             }
             else {
                 FrontEnd.hideElement(document.getElementById("play"));
+                FrontEnd.hideElement(document.getElementById("mouse-control"));
+                MouseControl.SelectMouseType(0);
             }
 
             switch (item) {

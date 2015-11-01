@@ -30,7 +30,7 @@
         var isHidden = classes.indexOf("hidden") != -1;
 
         if (isHidden) {
-            item.className = item.className.replace("hidden", "");
+            item.className = item.className.replace(/hidden/g, "");
         }
     }
 
@@ -41,7 +41,7 @@
         var isHidden = classes.indexOf("select") != -1;
 
         if (isHidden) {
-            item.className = item.className.replace("select", "");
+            item.className = item.className.replace(/select/g, "");
         }
     }
 
@@ -374,7 +374,7 @@ module Modal.SettingsModal {
             }
 
             logLevelRadioList[i].onclick = function (e) {
-                var target = <HTMLInputElement>e.target;
+                var target = <HTMLInputElement>e.target
 
                 Inknote.TempDataService.Instance.currentData.loggingLevel = parseInt(target.value);
                 Inknote.TempDataService.Instance.update();
@@ -542,4 +542,36 @@ module SynthBindings {
     }
 
 
+}
+
+module MouseControl {
+
+    export function SelectMouseType(val: Inknote.Managers.MouseType) {
+        var options = <NodeListOf<HTMLDivElement>>document.getElementsByClassName("mouse-option");
+        
+        for (var i = 0; i < options.length; i++) {
+            FrontEnd.deSelect(options[i]);
+
+            if (parseInt(options[i].getAttribute("data-val")) == val) {
+                FrontEnd.select(options[i]);
+            }
+        }
+
+        Inknote.Managers.MouseManager.Instance.currentMouse = val;
+    }
+
+    if (typeof (window) != typeof(undefined)){
+        var options = <NodeListOf<HTMLDivElement>>document.getElementsByClassName("mouse-option");
+
+        for (var i = 0; i < options.length; i++) {
+
+            options[i].onclick = function (e) {
+
+                var target = <HTMLDivElement>e.target;
+                var val = parseInt(target.getAttribute("data-val"));
+
+                MouseControl.SelectMouseType(val);       
+            }
+        }
+    }
 }

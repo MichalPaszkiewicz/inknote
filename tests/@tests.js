@@ -7776,9 +7776,12 @@ var Inknote;
                     }
                     if (item == Page.Score) {
                         FrontEnd.showElement(document.getElementById("play"));
+                        FrontEnd.showElement(document.getElementById("mouse-control"));
                     }
                     else {
                         FrontEnd.hideElement(document.getElementById("play"));
+                        FrontEnd.hideElement(document.getElementById("mouse-control"));
+                        MouseControl.SelectMouseType(0);
                     }
                     switch (item) {
                         case Page.File:
@@ -8380,6 +8383,14 @@ var Inknote;
                     return this._currentMouse;
                 },
                 set: function (mouseType) {
+                    if (mouseType == MouseType.PENCIL) {
+                        if (Inknote.DrawService.Instance.canvas.className.indexOf("pencilMode") == -1) {
+                            Inknote.DrawService.Instance.canvas.className += " pencilMode";
+                        }
+                    }
+                    else {
+                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
+                    }
                     this._currentMouse = mouseType;
                 },
                 enumerable: true,
@@ -8669,7 +8680,7 @@ var Inknote;
                     var hoverID = allItems[i].ID;
                     Inknote.Managers.ProjectManager.Instance.hoverID = hoverID;
                     hovered = true;
-                    this.drawService.canvas.style.cursor = "pointer";
+                    this.drawService.canvas.style.cursor = "url('../assets/pointer.png'), pointer";
                 }
             }
             var sortedScoreItems = scoreItems.sort(function (a, b) { return b.order - a.order; });
@@ -8782,7 +8793,7 @@ var Inknote;
                 if (e.movementY > 0 && Inknote.canScroll(true) || e.movementY < 0 && Inknote.canScroll(false)) {
                     Inknote.ScrollService.Instance.y -= e.movementY;
                 }
-                drawService.canvas.style.cursor = "-webkit-grabbing";
+                drawService.canvas.style.cursor = "url('../assets/grabbing.png'), -webkit-grabbing";
             };
             drawService.canvas.addEventListener("mousemove", onMove, false);
             drawService.canvas.onmouseup = function (e) {
@@ -9136,7 +9147,7 @@ var FrontEnd;
         var classes = item.className;
         var isHidden = classes.indexOf("hidden") != -1;
         if (isHidden) {
-            item.className = item.className.replace("hidden", "");
+            item.className = item.className.replace(/hidden/g, "");
         }
     }
     FrontEnd.showElement = showElement;
@@ -9144,7 +9155,7 @@ var FrontEnd;
         var classes = item.className;
         var isHidden = classes.indexOf("select") != -1;
         if (isHidden) {
-            item.className = item.className.replace("select", "");
+            item.className = item.className.replace(/select/g, "");
         }
     }
     FrontEnd.deSelect = deSelect;
@@ -9533,6 +9544,30 @@ var SynthBindings;
         loadSynthData();
     }
 })(SynthBindings || (SynthBindings = {}));
+var MouseControl;
+(function (MouseControl) {
+    function SelectMouseType(val) {
+        var options = document.getElementsByClassName("mouse-option");
+        for (var i = 0; i < options.length; i++) {
+            FrontEnd.deSelect(options[i]);
+            if (parseInt(options[i].getAttribute("data-val")) == val) {
+                FrontEnd.select(options[i]);
+            }
+        }
+        Inknote.Managers.MouseManager.Instance.currentMouse = val;
+    }
+    MouseControl.SelectMouseType = SelectMouseType;
+    if (typeof (window) != typeof (undefined)) {
+        var options = document.getElementsByClassName("mouse-option");
+        for (var i = 0; i < options.length; i++) {
+            options[i].onclick = function (e) {
+                var target = e.target;
+                var val = parseInt(target.getAttribute("data-val"));
+                MouseControl.SelectMouseType(val);
+            };
+        }
+    }
+})(MouseControl || (MouseControl = {}));
 var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {

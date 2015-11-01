@@ -7776,9 +7776,12 @@ var Inknote;
                     }
                     if (item == Page.Score) {
                         FrontEnd.showElement(document.getElementById("play"));
+                        FrontEnd.showElement(document.getElementById("mouse-control"));
                     }
                     else {
                         FrontEnd.hideElement(document.getElementById("play"));
+                        FrontEnd.hideElement(document.getElementById("mouse-control"));
+                        MouseControl.SelectMouseType(0);
                     }
                     switch (item) {
                         case Page.File:
@@ -9144,7 +9147,7 @@ var FrontEnd;
         var classes = item.className;
         var isHidden = classes.indexOf("hidden") != -1;
         if (isHidden) {
-            item.className = item.className.replace("hidden", "");
+            item.className = item.className.replace(/hidden/g, "");
         }
     }
     FrontEnd.showElement = showElement;
@@ -9152,7 +9155,7 @@ var FrontEnd;
         var classes = item.className;
         var isHidden = classes.indexOf("select") != -1;
         if (isHidden) {
-            item.className = item.className.replace("select", "");
+            item.className = item.className.replace(/select/g, "");
         }
     }
     FrontEnd.deSelect = deSelect;
@@ -9541,6 +9544,30 @@ var SynthBindings;
         loadSynthData();
     }
 })(SynthBindings || (SynthBindings = {}));
+var MouseControl;
+(function (MouseControl) {
+    function SelectMouseType(val) {
+        var options = document.getElementsByClassName("mouse-option");
+        for (var i = 0; i < options.length; i++) {
+            FrontEnd.deSelect(options[i]);
+            if (parseInt(options[i].getAttribute("data-val")) == val) {
+                FrontEnd.select(options[i]);
+            }
+        }
+        Inknote.Managers.MouseManager.Instance.currentMouse = val;
+    }
+    MouseControl.SelectMouseType = SelectMouseType;
+    if (typeof (window) != typeof (undefined)) {
+        var options = document.getElementsByClassName("mouse-option");
+        for (var i = 0; i < options.length; i++) {
+            options[i].onclick = function (e) {
+                var target = e.target;
+                var val = parseInt(target.getAttribute("data-val"));
+                MouseControl.SelectMouseType(val);
+            };
+        }
+    }
+})(MouseControl || (MouseControl = {}));
 var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {

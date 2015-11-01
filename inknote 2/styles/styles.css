@@ -492,7 +492,13 @@ body #log .error {
 .mouse-control .mouse-option#normal-mouse {
   background: url(../assets/cursor.png);
 }
+.mouse-control .mouse-option#normal-mouse.select {
+  background: url(../assets/cursor-select.png);
+}
 .mouse-control .mouse-option#pencil-mouse {
   background: url(../assets/pencil.png);
+}
+.mouse-control .mouse-option#pencil-mouse.select {
+  background: url(../assets/pencil-select.png);
 }
 /*# sourceMappingURL=styles.css.map */
