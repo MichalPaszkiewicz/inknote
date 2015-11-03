@@ -85,7 +85,36 @@
             }
         }
 
+        pencilClick(e: MouseEvent | Touch) {
+            var scoreItems = ScoringService.Instance.getItems();
+
+            var bars = getItemsWhere(scoreItems, function (item: IDrawable) {
+                return item instanceof Drawing.Bar;
+            });
+
+            var inBar = <Drawing.Bar>getFirstItemWhere(bars, function (item: Drawing.Bar) {
+                return item.isOver(e.clientX, e.clientY - 50);
+            });
+
+            if (inBar) {
+                
+                NoteControlService.Instance.addNoteToBar(e.clientY - 50 - inBar.y, inBar.ID);
+
+            }
+
+            if (!inBar) {
+                log("the pencil can only be used to place notes within a bar");
+            }
+
+        }
+
         click(e: MouseEvent | Touch) {
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL) {
+                this.pencilClick(e);
+                return;
+            }
+
             var allItems = this.drawService.items;
             var selected = false;
 

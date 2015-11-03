@@ -153,6 +153,49 @@
 
         }
 
+        addNoteToBar(heightFromTopLine: number, barID: string): void {
+            UndoService.Instance.store();
+
+            // due to top line starting at 0;
+            heightFromTopLine += 5;
+
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                var clef = new Model.TrebleClef();
+
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+
+                    // loop through items looking for clef
+                    for (var k = 0; k < project.instruments[i].bars[j].items.length; k++) {
+                        var barItem = project.instruments[i].bars[j].items[k];
+
+                        if (barItem instanceof Model.Clef) {
+                            clef = barItem;
+                        }
+                    }
+
+                    if (project.instruments[i].bars[j].ID == barID) {
+
+                        var dif = clef.positionFromTreble;
+
+                        var distRound5 = Math.round(heightFromTopLine / 5);
+                        
+                        var topNoteOnTreble = new Model.Note(Model.NoteValue.F, 5, this.lengthControl.selectedLength);
+                        
+                        var note = getNoteFromStaveDifference(topNoteOnTreble, dif - distRound5);
+
+                         
+
+                        project.instruments[i].bars[j].items.push(note);
+
+                    }
+                }
+            }
+
+            ScoringService.Instance.refresh();
+        }
+
         addNote(note: Model.Note): void {
             UndoService.Instance.store();
 

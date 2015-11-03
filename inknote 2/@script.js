@@ -85,6 +85,38 @@ var Inknote;
         return max;
     }
     Inknote.minOutOf = minOutOf;
+    function getItemWithMax(items, xAndY) {
+        var maxValue = -Infinity;
+        var maxIndex;
+        if (items == null) {
+            return null;
+        }
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val > maxValue) {
+                maxValue = val;
+                maxIndex = i;
+            }
+        }
+        return items[maxIndex];
+    }
+    Inknote.getItemWithMax = getItemWithMax;
+    function getItemWithMin(items, xAndY) {
+        var minValue = Infinity;
+        var minIndex;
+        if (items == null) {
+            return null;
+        }
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val < minValue) {
+                minValue = val;
+                minIndex = i;
+            }
+        }
+        return items[minIndex];
+    }
+    Inknote.getItemWithMin = getItemWithMin;
     function getFirstItemWhere(items, xAndY) {
         if (items === null || items === undefined) {
             return null;
@@ -5906,6 +5938,32 @@ var Inknote;
         return distanceFromOctave + distanceOfNote;
     }
     Inknote.getIntervalDistance = getIntervalDistance;
+    function getNoteFromStaveDifference(note, staveDifference) {
+        var semiToneCounter = 0;
+        var resultNote;
+        if (staveDifference >= 0) {
+            for (var i = 0; i < staveDifference; i++) {
+                var gotAWhiteNote = false;
+                while (!gotAWhiteNote) {
+                    resultNote = getNoteOfDistance(note, semiToneCounter);
+                    gotAWhiteNote = Inknote.Model.IsWhiteKey(resultNote.value);
+                    semiToneCounter++;
+                }
+            }
+        }
+        else {
+            for (var i = 0; i > staveDifference; i--) {
+                var gotAWhiteNote = false;
+                while (!gotAWhiteNote) {
+                    resultNote = getNoteOfDistance(note, semiToneCounter);
+                    gotAWhiteNote = Inknote.Model.IsWhiteKey(resultNote.value);
+                    semiToneCounter--;
+                }
+            }
+        }
+        return resultNote;
+    }
+    Inknote.getNoteFromStaveDifference = getNoteFromStaveDifference;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -6346,6 +6404,32 @@ var Inknote;
             for (var i = 0; i < project.instruments.length; i++) {
                 this.addBarToInstrument(project.instruments[i]);
             }
+        };
+        NoteControlService.prototype.addNoteToBar = function (heightFromTopLine, barID) {
+            Inknote.UndoService.Instance.store();
+            // due to top line starting at 0;
+            heightFromTopLine += 5;
+            var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < project.instruments.length; i++) {
+                var clef = new Inknote.Model.TrebleClef();
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    // loop through items looking for clef
+                    for (var k = 0; k < project.instruments[i].bars[j].items.length; k++) {
+                        var barItem = project.instruments[i].bars[j].items[k];
+                        if (barItem instanceof Inknote.Model.Clef) {
+                            clef = barItem;
+                        }
+                    }
+                    if (project.instruments[i].bars[j].ID == barID) {
+                        var dif = clef.positionFromTreble;
+                        var distRound5 = Math.round(heightFromTopLine / 5);
+                        var topNoteOnTreble = new Inknote.Model.Note(Inknote.Model.NoteValue.F, 5, this.lengthControl.selectedLength);
+                        var note = Inknote.getNoteFromStaveDifference(topNoteOnTreble, dif - distRound5);
+                        project.instruments[i].bars[j].items.push(note);
+                    }
+                }
+            }
+            Inknote.ScoringService.Instance.refresh();
         };
         NoteControlService.prototype.addNote = function (note) {
             Inknote.UndoService.Instance.store();
@@ -8698,7 +8782,26 @@ var Inknote;
                 this.drawService.canvas.style.cursor = "";
             }
         };
+        CanvasControl.prototype.pencilClick = function (e) {
+            var scoreItems = Inknote.ScoringService.Instance.getItems();
+            var bars = Inknote.getItemsWhere(scoreItems, function (item) {
+                return item instanceof Inknote.Drawing.Bar;
+            });
+            var inBar = Inknote.getFirstItemWhere(bars, function (item) {
+                return item.isOver(e.clientX, e.clientY - 50);
+            });
+            if (inBar) {
+                Inknote.NoteControlService.Instance.addNoteToBar(e.clientY - 50 - inBar.y, inBar.ID);
+            }
+            if (!inBar) {
+                Inknote.log("the pencil can only be used to place notes within a bar");
+            }
+        };
         CanvasControl.prototype.click = function (e) {
+            if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL) {
+                this.pencilClick(e);
+                return;
+            }
             var allItems = this.drawService.items;
             var selected = false;
             var scoreItems = [];
