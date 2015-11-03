@@ -44,6 +44,11 @@
     export class CanvasControl {
 
         hover(e: MouseEvent) {
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL) {
+                return;
+            }
+
             var allItems = this.drawService.items;
             var hovered = false;
 
@@ -205,10 +210,13 @@
 
             drawService.canvas.onmouseup = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
             };
 
             drawService.canvas.onmouseout = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
+
             };
         }
 

@@ -8666,6 +8666,9 @@ var Inknote;
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {
+            if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL) {
+                return;
+            }
             var allItems = this.drawService.items;
             var hovered = false;
             var scoreItems = [];
@@ -8798,9 +8801,11 @@ var Inknote;
             drawService.canvas.addEventListener("mousemove", onMove, false);
             drawService.canvas.onmouseup = function (e) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
             };
             drawService.canvas.onmouseout = function (e) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
             };
         };
         CanvasControl.prototype.getTouchCopyByID = function (ID) {
