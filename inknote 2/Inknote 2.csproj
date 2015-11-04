@@ -29,6 +29,8 @@
     <Content Include="assets\pencil-select.png" />
     <Content Include="assets\pencil.png" />
     <Content Include="assets\pointer.png" />
+    <Content Include="assets\text-icon-select.png" />
+    <Content Include="assets\text-icon.png" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="licence\index.html" />

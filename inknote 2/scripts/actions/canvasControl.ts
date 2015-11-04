@@ -111,6 +111,20 @@
 
         textClick(e: MouseEvent | Touch) {
 
+            var scoreItems = ScoringService.Instance.getItems();
+
+            var notes = getItemsWhere(scoreItems, function (item: IDrawable) {
+                return item instanceof Drawing.Note;
+            });
+
+            var closestNote = getItemWithMin(notes, function (item: Drawing.Note) {
+                return Maths.pythagoras(e.clientX - item.x, e.clientY - 50 - item.y);
+            });
+
+            var addText = new Model.Text("add text");
+
+            ScoringService.Instance.refresh();
+
             log("text click");
 
         }

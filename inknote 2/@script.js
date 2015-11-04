@@ -8807,6 +8807,15 @@ var Inknote;
             }
         };
         CanvasControl.prototype.textClick = function (e) {
+            var scoreItems = Inknote.ScoringService.Instance.getItems();
+            var notes = Inknote.getItemsWhere(scoreItems, function (item) {
+                return item instanceof Inknote.Drawing.Note;
+            });
+            var closestNote = Inknote.getItemWithMin(notes, function (item) {
+                return Inknote.Maths.pythagoras(e.clientX - item.x, e.clientY - 50 - item.y);
+            });
+            var addText = new Inknote.Model.Text("add text");
+            Inknote.ScoringService.Instance.refresh();
             Inknote.log("text click");
         };
         CanvasControl.prototype.click = function (e) {
