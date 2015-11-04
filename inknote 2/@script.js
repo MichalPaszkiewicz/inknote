@@ -8446,6 +8446,7 @@ var Inknote;
         (function (MouseType) {
             MouseType[MouseType["NORMAL"] = 0] = "NORMAL";
             MouseType[MouseType["PENCIL"] = 1] = "PENCIL";
+            MouseType[MouseType["TEXT"] = 2] = "TEXT";
         })(Managers.MouseType || (Managers.MouseType = {}));
         var MouseType = Managers.MouseType;
         var MouseManager = (function () {
@@ -8472,8 +8473,13 @@ var Inknote;
                             Inknote.DrawService.Instance.canvas.className += " pencilMode";
                         }
                     }
+                    else if (mouseType == MouseType.TEXT) {
+                        if (Inknote.DrawService.Instance.canvas.className.indexOf("textMode") == -1) {
+                            Inknote.DrawService.Instance.canvas.className += " textMode";
+                        }
+                    }
                     else {
-                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
+                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/pencilMode/g, "").replace(/textMode/g, "");
                     }
                     this._currentMouse = mouseType;
                 },

@@ -69,6 +69,9 @@ canvas {
 canvas.pencilMode {
   cursor: url('../assets/pencil.png'), crosshair;
 }
+canvas.textMode {
+  cursor: text;
+}
 .button {
   background: gray;
   cursor: url('../assets/pointer.png'), pointer;

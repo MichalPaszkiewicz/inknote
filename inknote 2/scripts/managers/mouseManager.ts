@@ -2,7 +2,8 @@
 
     export enum MouseType{
         NORMAL,
-        PENCIL
+        PENCIL,
+        TEXT
     }
 
     export class MouseManager {
@@ -24,8 +25,13 @@
                     DrawService.Instance.canvas.className += " pencilMode";
                 }
             }
+            else if (mouseType == MouseType.TEXT) {
+                if (DrawService.Instance.canvas.className.indexOf("textMode") == -1) {
+                    DrawService.Instance.canvas.className += " textMode";
+                }
+            }
             else {
-                DrawService.Instance.canvas.className = DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
+                DrawService.Instance.canvas.className = DrawService.Instance.canvas.className.replace(/pencilMode/g, "").replace(/textMode/g, "");
             }
 
             this._currentMouse = mouseType;

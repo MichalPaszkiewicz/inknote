@@ -30,4 +30,16 @@
 .mouse-control .mouse-option#pencil-mouse.select {
   background: url(../assets/pencil-select.png);
 }
+.mouse-control .mouse-option#text-mouse {
+  background: url(../assets/text-icon.png);
+  background-size: 12px 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.mouse-control .mouse-option#text-mouse.select {
+  background: url(../assets/text-icon-select.png);
+  background-size: 12px 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 /*# sourceMappingURL=mousecontrol.css.map */
