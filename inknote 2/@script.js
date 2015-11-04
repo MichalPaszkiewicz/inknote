@@ -8469,11 +8469,13 @@ var Inknote;
                 },
                 set: function (mouseType) {
                     if (mouseType == MouseType.PENCIL) {
+                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/textMode/g, "");
                         if (Inknote.DrawService.Instance.canvas.className.indexOf("pencilMode") == -1) {
                             Inknote.DrawService.Instance.canvas.className += " pencilMode";
                         }
                     }
                     else if (mouseType == MouseType.TEXT) {
+                        Inknote.DrawService.Instance.canvas.className = Inknote.DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
                         if (Inknote.DrawService.Instance.canvas.className.indexOf("textMode") == -1) {
                             Inknote.DrawService.Instance.canvas.className += " textMode";
                         }

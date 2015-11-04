@@ -21,11 +21,13 @@
 
         set currentMouse(mouseType: MouseType) {
             if (mouseType == MouseType.PENCIL) {
+                DrawService.Instance.canvas.className = DrawService.Instance.canvas.className.replace(/textMode/g, "")
                 if (DrawService.Instance.canvas.className.indexOf("pencilMode") == -1) {
                     DrawService.Instance.canvas.className += " pencilMode";
                 }
             }
             else if (mouseType == MouseType.TEXT) {
+                DrawService.Instance.canvas.className = DrawService.Instance.canvas.className.replace(/pencilMode/g, "");
                 if (DrawService.Instance.canvas.className.indexOf("textMode") == -1) {
                     DrawService.Instance.canvas.className += " textMode";
                 }
