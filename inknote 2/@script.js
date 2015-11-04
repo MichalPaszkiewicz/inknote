@@ -8758,7 +8758,8 @@ var Inknote;
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {
-            if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL) {
+            if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL
+                || Inknote.Managers.MouseManager.Instance.currentMouse === Inknote.Managers.MouseType.TEXT) {
                 return;
             }
             var allItems = this.drawService.items;
@@ -8805,9 +8806,16 @@ var Inknote;
                 Inknote.log("the pencil can only be used to place notes within a bar");
             }
         };
+        CanvasControl.prototype.textClick = function (e) {
+            Inknote.log("text click");
+        };
         CanvasControl.prototype.click = function (e) {
             if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL) {
                 this.pencilClick(e);
+                return;
+            }
+            if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.TEXT) {
+                this.textClick(e);
                 return;
             }
             var allItems = this.drawService.items;

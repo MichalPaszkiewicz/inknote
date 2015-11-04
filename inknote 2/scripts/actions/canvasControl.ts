@@ -45,7 +45,8 @@
 
         hover(e: MouseEvent) {
 
-            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL) {
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL
+                || Managers.MouseManager.Instance.currentMouse === Managers.MouseType.TEXT) {
                 return;
             }
 
@@ -108,10 +109,21 @@
 
         }
 
+        textClick(e: MouseEvent | Touch) {
+
+            log("text click");
+
+        }
+
         click(e: MouseEvent | Touch) {
 
             if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL) {
                 this.pencilClick(e);
+                return;
+            }
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.TEXT) {
+                this.textClick(e);
                 return;
             }
 
