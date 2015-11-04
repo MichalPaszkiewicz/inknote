@@ -478,6 +478,8 @@ body #log .error {
   height: 22px;
   border: 1px solid black;
   box-sizing: border-box;
+  background: white;
+  box-shadow: black 1px 1px 3px 0px;
 }
 .mouse-control .mouse-option {
   background: red;
