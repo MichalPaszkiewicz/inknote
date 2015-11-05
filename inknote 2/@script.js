@@ -2290,6 +2290,9 @@ var Inknote;
             }
             DrawText.prototype.draw = function (ctx) {
                 ctx.fillStyle = Drawing.Colours.black;
+                if (this.select) {
+                    ctx.fillStyle = Drawing.Colours.orange;
+                }
                 ctx.font = Drawing.Fonts.small;
                 ctx.beginPath();
                 ctx.fillText(this.content, this.x, this.y);

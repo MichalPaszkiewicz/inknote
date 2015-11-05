@@ -7,6 +7,9 @@
         draw(ctx: CanvasRenderingContext2D) {
 
             ctx.fillStyle = Colours.black;
+            if (this.select) {
+                ctx.fillStyle = Colours.orange;
+            }
             ctx.font = Fonts.small;
 
             ctx.beginPath();
