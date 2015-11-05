@@ -73,6 +73,7 @@
 /// <reference path="scripts/drawings/note.ts" />
 /// <reference path="scripts/drawings/ledgerline.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
+/// <reference path="scripts/drawings/drawtext.ts" />
 /// <reference path="scripts/drawings/bar.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
 /// <reference path="scripts/drawings/name.ts" />

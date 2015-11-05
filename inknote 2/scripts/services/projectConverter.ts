@@ -123,6 +123,11 @@
 
                 result.items.push(compressedTimeSignature);
             }
+            if (bar.items[i] instanceof Model.Text) {
+                var compressedText = compressText(<Model.Text>bar.items[i]);
+
+                result.items.push(compressedText);
+            }
         }
 
         return result;
@@ -286,6 +291,11 @@
                 var decompressedTimeSignature = decompressTimeSignature(<Compressed.CompressedTimeSignature>bar.items[i]);
 
                 result.items.push(decompressedTimeSignature);
+            }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.TEXT) {
+                var decompressedText = decompressText(<Compressed.CompressedText>bar.items[i]);
+
+                result.items.push(decompressedText);
             }
             else {
                 log("object in bar unidentified", MessageType.Warning);

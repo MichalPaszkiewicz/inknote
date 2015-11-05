@@ -1,6 +1,7 @@
 ﻿module Inknote.Model {
 
-    export class Text {
+    export class Text implements IIdentifiable{
+        ID: string = getID();
 
         content: string;
 

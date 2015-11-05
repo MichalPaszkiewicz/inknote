@@ -327,6 +327,20 @@ module Inknote {
 
                             }
 
+                            if (item instanceof Model.Text) {
+                                var scoreText = new Drawing.DrawText();
+
+                                scoreText.content = item.content;
+
+                                var lastItem = this._items[this._items.length - 1];
+
+                                scoreText.x = lastItem.x;
+
+                                scoreText.y = Math.max(lastItem.y + 10, topLineHeight + 50);
+
+                                this.addItem(scoreText);
+                            }
+
                         }
 
                         // increase bar position after looping through items.

@@ -6,7 +6,8 @@
         REST,
         CHORD,
         CLEF,
-        TIMESIGNATURE
+        TIMESIGNATURE,
+        TEXT
 
     }
 

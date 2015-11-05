@@ -106,6 +106,7 @@
     <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
     <TypeScriptCompile Include="scripts\drawings\clef.ts" />
     <TypeScriptCompile Include="scripts\drawings\colours.ts" />
+    <TypeScriptCompile Include="scripts\drawings\drawText.ts" />
     <TypeScriptCompile Include="scripts\drawings\file.ts" />
     <TypeScriptCompile Include="scripts\drawings\flat.ts" />
     <TypeScriptCompile Include="scripts\drawings\fonts.ts" />

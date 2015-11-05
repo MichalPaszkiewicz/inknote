@@ -12,9 +12,9 @@
             return ClipboardService._instance;
         }
 
-        private clipboard: (Model.Bar | Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest)[];
+        private clipboard: (Model.Bar | Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest | Model.Text)[];
 
-        copyItem(item: Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest): Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest {
+        copyItem(item: Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest | Model.Text): Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest | Model.Text {
 
             var result = null;
 
@@ -26,10 +26,14 @@
                 return new Model.Rest(item.length);
             }
 
+            if (item instanceof Model.Text) {
+                return new Model.Text(item.content);
+            }
+
             return result;
         }
 
-        copyDrawItem(selectedItem: IDrawable): Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest {
+        copyDrawItem(selectedItem: IDrawable): Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest | Model.Text {
 
             var result = null;
 
@@ -99,7 +103,7 @@
             NoteControlService.Instance.deleteSelected();
         }
 
-        pasteItem(item: Model.Bar | Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest) {
+        pasteItem(item: Model.Bar | Model.TimeSignature | Model.Clef | Model.Chord | Model.Note | Model.Rest | Model.Text) {
 
             var selectedItem = ScoringService.Instance.SelectedItem;
 

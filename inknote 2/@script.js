@@ -679,6 +679,7 @@ var Inknote;
     (function (Model) {
         var Text = (function () {
             function Text(txt) {
+                this.ID = Inknote.getID();
                 this.content = txt;
             }
             return Text;
@@ -778,6 +779,7 @@ var Inknote;
             ItemIdentifier[ItemIdentifier["CHORD"] = 2] = "CHORD";
             ItemIdentifier[ItemIdentifier["CLEF"] = 3] = "CLEF";
             ItemIdentifier[ItemIdentifier["TIMESIGNATURE"] = 4] = "TIMESIGNATURE";
+            ItemIdentifier[ItemIdentifier["TEXT"] = 5] = "TEXT";
         })(Compressed.ItemIdentifier || (Compressed.ItemIdentifier = {}));
         var ItemIdentifier = Compressed.ItemIdentifier;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
@@ -873,6 +875,7 @@ var Inknote;
     (function (Compressed) {
         var CompressedText = (function () {
             function CompressedText() {
+                this.i = Compressed.ItemIdentifier.TEXT;
             }
             return CompressedText;
         })();
@@ -2274,6 +2277,27 @@ var Inknote;
             return HemiDemiSemiQuaverRest;
         })(Rest);
         Drawing.HemiDemiSemiQuaverRest = HemiDemiSemiQuaverRest;
+    })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Drawing;
+    (function (Drawing) {
+        var DrawText = (function (_super) {
+            __extends(DrawText, _super);
+            function DrawText() {
+                _super.apply(this, arguments);
+            }
+            DrawText.prototype.draw = function (ctx) {
+                ctx.fillStyle = Drawing.Colours.black;
+                ctx.font = Drawing.Fonts.small;
+                ctx.beginPath();
+                ctx.fillText(this.content, this.x, this.y);
+                return true;
+            };
+            return DrawText;
+        })(Inknote.Notation);
+        Drawing.DrawText = DrawText;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -4965,6 +4989,9 @@ var Inknote;
             if (item instanceof Inknote.Model.Rest) {
                 return new Inknote.Model.Rest(item.length);
             }
+            if (item instanceof Inknote.Model.Text) {
+                return new Inknote.Model.Text(item.content);
+            }
             return result;
         };
         ClipboardService.prototype.copyDrawItem = function (selectedItem) {
@@ -5423,6 +5450,14 @@ var Inknote;
                             }
                             if (item instanceof Inknote.Model.Chord) {
                             }
+                            if (item instanceof Inknote.Model.Text) {
+                                var scoreText = new Inknote.Drawing.DrawText();
+                                scoreText.content = item.content;
+                                var lastItem = this._items[this._items.length - 1];
+                                scoreText.x = lastItem.x;
+                                scoreText.y = Math.max(lastItem.y + 10, topLineHeight + 50);
+                                this.addItem(scoreText);
+                            }
                         }
                         // increase bar position after looping through items.
                         barX += tempBarLength;
@@ -5606,6 +5641,10 @@ var Inknote;
                     var compressedTimeSignature = compressTimeSignature(bar.items[i]);
                     result.items.push(compressedTimeSignature);
                 }
+                if (bar.items[i] instanceof Inknote.Model.Text) {
+                    var compressedText = compressText(bar.items[i]);
+                    result.items.push(compressedText);
+                }
             }
             return result;
         }
@@ -5732,6 +5771,10 @@ var Inknote;
                 else if (bar.items[i].i == Inknote.Compressed.ItemIdentifier.TIMESIGNATURE) {
                     var decompressedTimeSignature = decompressTimeSignature(bar.items[i]);
                     result.items.push(decompressedTimeSignature);
+                }
+                else if (bar.items[i].i == Inknote.Compressed.ItemIdentifier.TEXT) {
+                    var decompressedText = decompressText(bar.items[i]);
+                    result.items.push(decompressedText);
                 }
                 else {
                     Inknote.log("object in bar unidentified", Inknote.MessageType.Warning);
@@ -8815,8 +8858,21 @@ var Inknote;
                 return Inknote.Maths.pythagoras(e.clientX - item.x, e.clientY - 50 - item.y);
             });
             var addText = new Inknote.Model.Text("add text");
-            Inknote.ScoringService.Instance.refresh();
-            Inknote.log("text click");
+            var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+                for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                    for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                        var tempBar = currentProject.instruments[i].bars[j];
+                        var tempItem = tempBar.items[k];
+                        if (tempItem.ID == closestNote.ID) {
+                            tempBar.items.splice(j + 1, 0, addText);
+                            Inknote.ScoringService.Instance.refresh();
+                            return;
+                        }
+                    }
+                }
+            }
+            Inknote.log("text click not registered", Inknote.MessageType.Error);
         };
         CanvasControl.prototype.click = function (e) {
             if (Inknote.Managers.MouseManager.Instance.currentMouse == Inknote.Managers.MouseType.PENCIL) {
@@ -9821,6 +9877,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/drawings/note.ts" />
 /// <reference path="scripts/drawings/ledgerline.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
+/// <reference path="scripts/drawings/drawtext.ts" />
 /// <reference path="scripts/drawings/bar.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
 /// <reference path="scripts/drawings/name.ts" />

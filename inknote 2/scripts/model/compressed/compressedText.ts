@@ -2,6 +2,8 @@
 
     export class CompressedText {
 
+        i: ItemIdentifier = ItemIdentifier.TEXT;
+
         c: string;
 
     }

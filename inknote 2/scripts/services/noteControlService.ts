@@ -387,7 +387,7 @@
 
             for (var i = 0; i < project.instruments.length; i++) {
 
-                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef | Model.TimeSignature = null;
+                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef | Model.TimeSignature | Model.Text = null;
 
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];

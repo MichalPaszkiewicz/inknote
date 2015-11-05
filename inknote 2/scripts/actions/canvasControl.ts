@@ -117,15 +117,32 @@
                 return item instanceof Drawing.Note;
             });
 
-            var closestNote = getItemWithMin(notes, function (item: Drawing.Note) {
+            var closestNote = <Drawing.Note>getItemWithMin(notes, function (item: Drawing.Note) {
                 return Maths.pythagoras(e.clientX - item.x, e.clientY - 50 - item.y);
             });
 
             var addText = new Model.Text("add text");
 
-            ScoringService.Instance.refresh();
+            var currentProject = Managers.ProjectManager.Instance.currentProject;
 
-            log("text click");
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+                for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                    for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                        var tempBar = currentProject.instruments[i].bars[j];
+                        var tempItem = tempBar.items[k];
+
+                        if (tempItem.ID == closestNote.ID) {
+                            tempBar.items.splice(j + 1, 0, addText);
+
+                            ScoringService.Instance.refresh();
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+            log("text click not registered", MessageType.Error);
 
         }
 
