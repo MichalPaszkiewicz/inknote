@@ -8868,7 +8868,7 @@ var Inknote;
                         var tempBar = currentProject.instruments[i].bars[j];
                         var tempItem = tempBar.items[k];
                         if (tempItem.ID == closestNote.ID) {
-                            tempBar.items.splice(j + 1, 0, addText);
+                            tempBar.items.splice(k + 1, 0, addText);
                             Inknote.ScoringService.Instance.refresh();
                             return;
                         }

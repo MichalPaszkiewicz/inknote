@@ -132,7 +132,7 @@
                         var tempItem = tempBar.items[k];
 
                         if (tempItem.ID == closestNote.ID) {
-                            tempBar.items.splice(j + 1, 0, addText);
+                            tempBar.items.splice(k + 1, 0, addText);
 
                             ScoringService.Instance.refresh();
 
