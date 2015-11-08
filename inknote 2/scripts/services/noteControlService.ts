@@ -374,7 +374,8 @@
             UndoService.Instance.store();
 
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Note
-                || ScoringService.Instance.SelectedItem instanceof Drawing.Rest) {
+                || ScoringService.Instance.SelectedItem instanceof Drawing.Rest
+                || ScoringService.Instance.SelectedItem instanceof Drawing.DrawText) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {

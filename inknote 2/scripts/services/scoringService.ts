@@ -331,6 +331,8 @@ module Inknote {
                                 var scoreText = new Drawing.DrawText();
 
                                 scoreText.content = item.content;
+                                
+                                scoreText.ID = item.ID;
 
                                 var lastItem = this._items[this._items.length - 1];
 

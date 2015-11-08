@@ -5456,6 +5456,7 @@ var Inknote;
                             if (item instanceof Inknote.Model.Text) {
                                 var scoreText = new Inknote.Drawing.DrawText();
                                 scoreText.content = item.content;
+                                scoreText.ID = item.ID;
                                 var lastItem = this._items[this._items.length - 1];
                                 scoreText.x = lastItem.x;
                                 scoreText.y = Math.max(lastItem.y + 20, topLineHeight + 70);
@@ -6612,7 +6613,8 @@ var Inknote;
         NoteControlService.prototype.deleteSelected = function () {
             Inknote.UndoService.Instance.store();
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note
-                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest) {
+                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest
+                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.DrawText) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
