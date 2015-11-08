@@ -9225,6 +9225,18 @@ var Inknote;
                 case 32:
                     Inknote.Audio.AudioService.Instance.toggle();
                     break;
+                // <
+                case 188:
+                // [
+                case 219:
+                    Inknote.NoteControlService.Instance.piano.octave--;
+                    break;
+                // >
+                case 190:
+                // ]
+                case 221:
+                    Inknote.NoteControlService.Instance.piano.octave++;
+                    break;
                 default:
                     Inknote.log("key pressed: " + e.keyCode);
             }

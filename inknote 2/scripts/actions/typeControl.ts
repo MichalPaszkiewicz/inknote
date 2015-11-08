@@ -179,6 +179,18 @@
                 case 32:
                     Audio.AudioService.Instance.toggle();
                     break;
+                // <
+                case 188:
+                // [
+                case 219:
+                    NoteControlService.Instance.piano.octave--;
+                    break;
+                // >
+                case 190:
+                // ]
+                case 221:
+                    NoteControlService.Instance.piano.octave++;
+                    break;
                 default:
                     log("key pressed: " + e.keyCode);
             }
