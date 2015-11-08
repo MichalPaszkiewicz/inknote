@@ -4610,6 +4610,7 @@ var Inknote;
                     plugins[i].onSave();
                 }
             }
+            Inknote.log("saved projects");
         }
         Storage.saveProjects = saveProjects;
         function savePlugins() {

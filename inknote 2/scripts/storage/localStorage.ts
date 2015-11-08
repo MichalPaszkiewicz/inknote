@@ -87,6 +87,8 @@
             }
         }
 
+        log("saved projects");
+
     }
 
     export function savePlugins() {
