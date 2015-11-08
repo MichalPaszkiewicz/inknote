@@ -132,6 +132,16 @@
                         var tempItem = tempBar.items[k];
 
                         if (tempItem.ID == closestNote.ID) {
+
+                            var textToAdd = prompt("text to be added:", addText.content);
+
+                            if (textToAdd == null) {
+                                log("adding text cancelled", MessageType.Warning);
+                                return;
+                            }
+
+                            addText.content = textToAdd;
+
                             tempBar.items.splice(k + 1, 0, addText);
 
                             ScoringService.Instance.refresh();

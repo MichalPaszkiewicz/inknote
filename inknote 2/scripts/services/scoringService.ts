@@ -336,7 +336,7 @@ module Inknote {
 
                                 scoreText.x = lastItem.x;
 
-                                scoreText.y = Math.max(lastItem.y + 10, topLineHeight + 50);
+                                scoreText.y = Math.max(lastItem.y + 20, topLineHeight + 70);
 
                                 this.addItem(scoreText);
                             }

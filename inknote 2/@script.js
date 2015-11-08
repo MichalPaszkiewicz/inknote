@@ -5458,7 +5458,7 @@ var Inknote;
                                 scoreText.content = item.content;
                                 var lastItem = this._items[this._items.length - 1];
                                 scoreText.x = lastItem.x;
-                                scoreText.y = Math.max(lastItem.y + 10, topLineHeight + 50);
+                                scoreText.y = Math.max(lastItem.y + 20, topLineHeight + 70);
                                 this.addItem(scoreText);
                             }
                         }
@@ -8868,6 +8868,12 @@ var Inknote;
                         var tempBar = currentProject.instruments[i].bars[j];
                         var tempItem = tempBar.items[k];
                         if (tempItem.ID == closestNote.ID) {
+                            var textToAdd = prompt("text to be added:", addText.content);
+                            if (textToAdd == null) {
+                                Inknote.log("adding text cancelled", Inknote.MessageType.Warning);
+                                return;
+                            }
+                            addText.content = textToAdd;
                             tempBar.items.splice(k + 1, 0, addText);
                             Inknote.ScoringService.Instance.refresh();
                             return;
