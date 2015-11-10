@@ -16,7 +16,7 @@
 /// <reference path="scripts/helpers/canvas.ts" />
 /// <reference path="scripts/helpers/maths.ts" />
 /// <reference path="scripts/helpers/2d.ts" />
- 
+
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />

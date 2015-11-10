@@ -2,7 +2,7 @@
 
     var keysDown: number[] = [];
 
-    if (typeof document != "undefined" && typeof window != "undefined"){
+    if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
 
             keysDown.push(e.keyCode);
@@ -18,7 +18,7 @@
             // ctrl
             if (anyItemIs(keysDown, function (item: number) {
                 return item == 17;
-            })){
+            })) {
 
                 // c
                 // copy
@@ -79,7 +79,7 @@
                 return;
             }
 
-            if (Modal.isModalOpen === true){
+            if (Modal.isModalOpen === true) {
                 return;
             }
 
@@ -107,6 +107,10 @@
 
         if (!ProjectConverter.name.select) {
             switch (e.keyCode) {
+                // esc
+                case 27:
+                    Action(ActionType.ToPage, Managers.Page.File);
+                    break;
                 // a
                 case 65:
                     noteVal = Model.NoteValue.C;
@@ -210,7 +214,7 @@
         }
 
         if (ScoringService.Instance.SelectedItem instanceof Drawing.Clef) {
-            
+
             switch (e.keyCode) {
                 // up
                 case 38:
@@ -292,10 +296,19 @@
         }
 
         switch (e.keyCode) {
+            // esc
+            case 27:
+                Menu.closeAllSubMenus();
+                if (Menu.isMenuOpen) {
+                    Menu.toggle();
+                }
+                RightClickMenuService.Instance.visible = false;
+                return;
             // m
             case 77:
                 Menu.toggle();
                 return;
+            // n
             case 78:
                 Inknote.Action(ActionType.NewProject, Managers.Page.Score);
                 return;

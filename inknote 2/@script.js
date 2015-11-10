@@ -4609,6 +4609,104 @@ var Inknote;
 (function (Inknote) {
     var Storage;
     (function (Storage) {
+        var IDBTable = (function () {
+            function IDBTable(objectStore) {
+                this.objectStore = objectStore;
+            }
+            IDBTable.prototype.setStringItem = function (key, value) {
+                if (!key) {
+                    Inknote.log("you must have a key when setting a value", Inknote.MessageType.Error);
+                    return;
+                }
+                var getRequest = this.objectStore.get(key);
+                var self = this;
+                // if doesn't exist
+                getRequest.onerror = function (e) {
+                    self.objectStore.add(value, key);
+                };
+                // if exists
+                getRequest.onsuccess = function (e) {
+                    self.objectStore.delete(key);
+                    self.objectStore.add(value, key);
+                };
+            };
+            IDBTable.prototype.setItem = function (key, value) {
+                if (typeof (value) != typeof ("")) {
+                    value = JSON.stringify(value);
+                }
+                this.setStringItem(key, value);
+            };
+            IDBTable.prototype.getItemThen = function (key, callback) {
+                if (!key) {
+                    Inknote.log("you can only retrieve items if you have their keys", Inknote.MessageType.Error);
+                }
+                var getRequest = this.objectStore.get(key);
+                getRequest.onerror = function (e) {
+                    callback(null);
+                };
+                getRequest.onsuccess = function (e) {
+                    callback(getRequest.result);
+                };
+            };
+            return IDBTable;
+        })();
+        Storage.IDBTable = IDBTable;
+        var IDBDB = (function () {
+            function IDBDB(database) {
+                this.database = database;
+            }
+            IDBDB.prototype.createTable = function (key) {
+                this.database.createObjectStore(key);
+            };
+            IDBDB.prototype.getTableThen = function (key, callback) {
+                this.createTable(key);
+                var objectStore = this.database.transaction(key).objectStore(key);
+                var table = new IDBTable(objectStore);
+                callback(table);
+            };
+            return IDBDB;
+        })();
+        Storage.IDBDB = IDBDB;
+        var IDBManager = (function () {
+            function IDBManager() {
+            }
+            Object.defineProperty(IDBManager, "Instance", {
+                get: function () {
+                    if (!IDBManager._instance) {
+                        IDBManager._instance = new IDBManager();
+                    }
+                    return IDBManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(IDBManager.prototype, "isIDBWorking", {
+                get: function () {
+                    return typeof (IDBDatabase) == "function";
+                },
+                enumerable: true,
+                configurable: true
+            });
+            IDBManager.prototype.getDBThen = function (key, callBack) {
+                var DBOpenRequest = window.indexedDB.open(key);
+                DBOpenRequest.onerror = function (e) {
+                    Inknote.log("error loading indexedDB '" + key + "'", Inknote.MessageType.Error);
+                };
+                DBOpenRequest.onsuccess = function (e) {
+                    var db = DBOpenRequest.result;
+                    var idbdb = new IDBDB(db);
+                    callBack(idbdb);
+                };
+            };
+            return IDBManager;
+        })();
+        Storage.IDBManager = IDBManager;
+    })(Storage = Inknote.Storage || (Inknote.Storage = {}));
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Storage;
+    (function (Storage) {
         var defaults = {
             settings: "settings",
             projects: "projects",
@@ -9255,6 +9353,10 @@ var Inknote;
         var noteVal = null;
         if (!Inknote.ProjectConverter.name.select) {
             switch (e.keyCode) {
+                // esc
+                case 27:
+                    Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.File);
+                    break;
                 // a
                 case 65:
                     noteVal = Inknote.Model.NoteValue.C;
@@ -9423,10 +9525,19 @@ var Inknote;
             inst.deleteSelectedProject();
         }
         switch (e.keyCode) {
+            // esc
+            case 27:
+                Menu.closeAllSubMenus();
+                if (Menu.isMenuOpen) {
+                    Menu.toggle();
+                }
+                Inknote.RightClickMenuService.Instance.visible = false;
+                return;
             // m
             case 77:
                 Menu.toggle();
                 return;
+            // n
             case 78:
                 Inknote.Action(Inknote.ActionType.NewProject, Inknote.Managers.Page.Score);
                 return;
@@ -9933,104 +10044,6 @@ if (typeof window != "undefined") {
         console.log("%conly use this if you know what you are doing", "font-size: 15px; font-family: 'Courier New'");
     }
 }
-var Inknote;
-(function (Inknote) {
-    var Storage;
-    (function (Storage) {
-        var IDBTable = (function () {
-            function IDBTable(objectStore) {
-                this.objectStore = objectStore;
-            }
-            IDBTable.prototype.setStringItem = function (key, value) {
-                if (!key) {
-                    Inknote.log("you must have a key when setting a value", Inknote.MessageType.Error);
-                    return;
-                }
-                var getRequest = this.objectStore.get(key);
-                var self = this;
-                // if doesn't exist
-                getRequest.onerror = function (e) {
-                    self.objectStore.add(value, key);
-                };
-                // if exists
-                getRequest.onsuccess = function (e) {
-                    self.objectStore.delete(key);
-                    self.objectStore.add(value, key);
-                };
-            };
-            IDBTable.prototype.setItem = function (key, value) {
-                if (typeof (value) != typeof ("")) {
-                    value = JSON.stringify(value);
-                }
-                this.setStringItem(key, value);
-            };
-            IDBTable.prototype.getItemThen = function (key, callback) {
-                if (!key) {
-                    Inknote.log("you can only retrieve items if you have their keys", Inknote.MessageType.Error);
-                }
-                var getRequest = this.objectStore.get(key);
-                getRequest.onerror = function (e) {
-                    callback(null);
-                };
-                getRequest.onsuccess = function (e) {
-                    callback(getRequest.result);
-                };
-            };
-            return IDBTable;
-        })();
-        Storage.IDBTable = IDBTable;
-        var IDBDB = (function () {
-            function IDBDB(database) {
-                this.database = database;
-            }
-            IDBDB.prototype.createTable = function (key) {
-                this.database.createObjectStore(key);
-            };
-            IDBDB.prototype.getTableThen = function (key, callback) {
-                this.createTable(key);
-                var objectStore = this.database.transaction(key).objectStore(key);
-                var table = new IDBTable(objectStore);
-                callback(table);
-            };
-            return IDBDB;
-        })();
-        Storage.IDBDB = IDBDB;
-        var IDBManager = (function () {
-            function IDBManager() {
-            }
-            Object.defineProperty(IDBManager, "Instance", {
-                get: function () {
-                    if (!IDBManager._instance) {
-                        IDBManager._instance = new IDBManager();
-                    }
-                    return IDBManager._instance;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(IDBManager.prototype, "isIDBWorking", {
-                get: function () {
-                    return typeof (IDBDatabase) == "function";
-                },
-                enumerable: true,
-                configurable: true
-            });
-            IDBManager.prototype.getDBThen = function (key, callBack) {
-                var DBOpenRequest = window.indexedDB.open(key);
-                DBOpenRequest.onerror = function (e) {
-                    Inknote.log("error loading indexedDB '" + key + "'", Inknote.MessageType.Error);
-                };
-                DBOpenRequest.onsuccess = function (e) {
-                    var db = DBOpenRequest.result;
-                    var idbdb = new IDBDB(db);
-                    callBack(idbdb);
-                };
-            };
-            return IDBManager;
-        })();
-        Storage.IDBManager = IDBManager;
-    })(Storage = Inknote.Storage || (Inknote.Storage = {}));
-})(Inknote || (Inknote = {}));
 // every added file must be added here.
 // care must be taken to ensure there are no dependency loops.
 // rights
