@@ -2294,6 +2294,9 @@ var Inknote;
                     ctx.fillStyle = Drawing.Colours.orange;
                 }
                 ctx.font = Drawing.Fonts.small;
+                if (this.font != null && this.font != "") {
+                    ctx.font = this.font;
+                }
                 ctx.beginPath();
                 ctx.fillText(this.content, this.x, this.y);
                 return true;
@@ -6020,9 +6023,24 @@ var Inknote;
     var FileConverter;
     (function (FileConverter) {
         var splash = new Inknote.Drawing.LoadingSplash();
+        var noneFound = new Inknote.Drawing.DrawText();
+        noneFound.content = "no items found";
+        noneFound.x = 40;
+        noneFound.y = 60;
+        noneFound.font = Inknote.Drawing.Fonts.large;
         function toDrawing(drawer) {
             var items = [];
             var projects = Inknote.Managers.ProjectManager.Instance.allProjects;
+            var fileSearch = document.getElementById("file-search");
+            var fileSearchText = fileSearch.value;
+            if (!FrontEnd.isHidden(document.getElementById("search-bar"))) {
+                projects = Inknote.getItemsWhere(projects, function (project) {
+                    return project.name.toLowerCase().indexOf(fileSearchText.toLowerCase()) != -1;
+                });
+            }
+            if (projects.length == 0) {
+                items.push(noneFound);
+            }
             var canvas = drawer.canvas;
             var maxFiles = Math.floor(canvas.width / 200);
             var column = 0;
@@ -8113,6 +8131,17 @@ var Inknote;
                         FrontEnd.hideElement(document.getElementById("mouse-control"));
                         MouseControl.SelectMouseType(0);
                     }
+                    var pagePrefix = "page-item-";
+                    for (var i = 0; i < 6; i++) {
+                        var pageItemsToHide = document.getElementsByClassName(pagePrefix + pageName(i));
+                        for (var j = 0; j < pageItemsToHide.length; j++) {
+                            FrontEnd.hideElement(pageItemsToHide[j]);
+                        }
+                    }
+                    var pageItems = document.getElementsByClassName(pagePrefix + pageName(item));
+                    for (var i = 0; i < pageItems.length; i++) {
+                        FrontEnd.showElement(pageItems[i]);
+                    }
                     switch (item) {
                         case Page.File:
                             break;
@@ -9271,6 +9300,9 @@ var Inknote;
     var keysDown = [];
     if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
+            if (e.target == document.getElementById("file-search")) {
+                return;
+            }
             keysDown.push(e.keyCode);
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
@@ -9320,6 +9352,9 @@ var Inknote;
             }
         };
         window.onkeyup = function (ev) {
+            if (ev.target == document.getElementById("file-search")) {
+                return;
+            }
             keysDown = Inknote.getItemsWhere(keysDown, function (item) {
                 return item != ev.keyCode;
             });
@@ -9532,6 +9567,11 @@ var Inknote;
                     Menu.toggle();
                 }
                 Inknote.RightClickMenuService.Instance.visible = false;
+                FrontEnd.hideElement(document.getElementById("search-bar"));
+                return;
+            // SPACE
+            case 32:
+                FrontEnd.showElement(document.getElementById("search-bar"));
                 return;
             // m
             case 77:
@@ -9557,6 +9597,11 @@ var FrontEnd;
         }
     }
     FrontEnd.toggleElement = toggleElement;
+    function isHidden(item) {
+        var classes = item.className;
+        return classes.indexOf("hidden") != -1;
+    }
+    FrontEnd.isHidden = isHidden;
     function hideElement(item) {
         var classes = item.className;
         var isHidden = classes.indexOf("hidden") != -1;

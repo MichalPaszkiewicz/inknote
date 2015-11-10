@@ -76,6 +76,12 @@
     <Content Include="styles\mousecontrol.min.css">
       <DependentUpon>mousecontrol.css</DependentUpon>
     </Content>
+    <Content Include="styles\searchbar.css">
+      <DependentUpon>searchbar.less</DependentUpon>
+    </Content>
+    <Content Include="styles\searchbar.min.css">
+      <DependentUpon>searchbar.css</DependentUpon>
+    </Content>
     <Content Include="styles\styles.css">
       <DependentUpon>styles.less</DependentUpon>
     </Content>
@@ -276,6 +282,10 @@
     <Content Include="styles\mousecontrol.less" />
     <Content Include="styles\mousecontrol.css.map">
       <DependentUpon>mousecontrol.css</DependentUpon>
+    </Content>
+    <Content Include="styles\searchbar.less" />
+    <Content Include="styles\searchbar.css.map">
+      <DependentUpon>searchbar.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

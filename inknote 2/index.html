@@ -12,7 +12,12 @@
 <body>
     <div class="header">
         <h1 style="cursor: url('../assets/pointer.png'), pointer;" onclick="Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.Score)">inknote</h1>
-        <div class="button" onclick="Inknote.Action(Inknote.ActionType.OpenProject)">Projects</div>
+        <span class="page-item-Score">
+            <div class="button" onclick="Inknote.Action(Inknote.ActionType.OpenProject)">Projects</div>
+        </span>
+        <span class="page-item-File">
+            <div class="button" onclick="FrontEnd.showElement(document.getElementById('search-bar'))">Search</div>
+        </span>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.NewProject)">New</div>
         <div class="button" onclick="Inknote.Action(Inknote.ActionType.SaveProject)">Save</div>
         <div class="button" id="play" onclick="Inknote.Audio.AudioService.Instance.play()">Play</div>
@@ -100,6 +105,12 @@
             <div class="mouse-option select" id="normal-mouse" data-val="0"></div>
             <div class="mouse-option" id="pencil-mouse" data-val="1"></div>
             <div class="mouse-option" id="text-mouse" data-val="2"></div>
+        </div>
+
+        <div class="page-item-File">
+            <div class="hidden" id="search-bar">
+                <input type="text" id="file-search" placeholder="search files" />
+            </div>
         </div>
 
         <canvas id="my-canvas"></canvas>
@@ -222,12 +233,12 @@
             </div>
             <div class="form-row">
                 <span class="label">gain</span>
-                <input type="range" name="gain" min="0" max="1" step="0.01" id="synth-gain"/>
+                <input type="range" name="gain" min="0" max="1" step="0.01" id="synth-gain" />
             </div>
             <div class="form-row">
                 <span class="label">delay</span>
                 <input type="range" name="delay" min="0.1" max="2" step="0.05" id="synth-delay" />
-            </div> 
+            </div>
 
             <div class="button" onclick="Modal.toggle('synth-edit');Modal.toggle('synth')">Back</div>
             <div class="button" onclick="Modal.toggle('synth-edit')">Close</div>
@@ -251,7 +262,7 @@
         <div class="overflower">
             <div id="project-report-details">
 
-            </div> 
+            </div>
             <div class="button" onclick="Modal.toggle('project-report')">Close</div>
         </div>
     </div>

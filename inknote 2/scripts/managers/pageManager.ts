@@ -62,6 +62,22 @@
                 MouseControl.SelectMouseType(0);
             }
 
+            var pagePrefix = "page-item-";
+            
+            for (var i = 0; i < 6; i++) {
+                var pageItemsToHide = document.getElementsByClassName(pagePrefix + pageName(i));
+
+                for (var j = 0; j < pageItemsToHide.length; j++) {
+                    FrontEnd.hideElement(<HTMLElement>pageItemsToHide[j]);
+                }
+            }
+
+            var pageItems = document.getElementsByClassName(pagePrefix + pageName(item));
+
+            for (var i = 0; i < pageItems.length; i++) {
+                FrontEnd.showElement(<HTMLElement>pageItems[i]);
+            }
+
             switch (item) {
                 case Page.File:
                     break;

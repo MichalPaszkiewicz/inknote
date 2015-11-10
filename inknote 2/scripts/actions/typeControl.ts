@@ -5,6 +5,10 @@
     if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
 
+            if (e.target == document.getElementById("file-search")) {
+                return;
+            }
+
             keysDown.push(e.keyCode);
 
             if (CONFIRM_IS_OPEN) {
@@ -64,6 +68,10 @@
         }
 
         window.onkeyup = function (ev: KeyboardEvent) {
+
+            if (ev.target == document.getElementById("file-search")) {
+                return;
+            } 
 
             keysDown = getItemsWhere(keysDown, function (item: number) {
                 return item != ev.keyCode;
@@ -303,6 +311,11 @@
                     Menu.toggle();
                 }
                 RightClickMenuService.Instance.visible = false;
+                FrontEnd.hideElement(document.getElementById("search-bar"));
+                return;
+            // SPACE
+            case 32:
+                FrontEnd.showElement(document.getElementById("search-bar"));
                 return;
             // m
             case 77:

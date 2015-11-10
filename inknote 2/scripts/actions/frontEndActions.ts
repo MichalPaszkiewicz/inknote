@@ -13,6 +13,12 @@
         }
     }
 
+    export function isHidden(item: HTMLElement) {
+        var classes = item.className;
+
+        return classes.indexOf("hidden") != -1;
+    }
+
     export function hideElement(item: HTMLElement) {
         var classes = item.className;
 
