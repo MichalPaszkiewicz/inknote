@@ -119,6 +119,7 @@
 /// <reference path="scripts/services/logger.ts" />
 
 // storage
+/// <reference path="scripts/storage/cookiestorage.ts" />
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 

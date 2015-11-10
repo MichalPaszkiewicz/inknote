@@ -63,7 +63,11 @@
             return AudioService._instance;
         }
 
-        context: AudioContext = new AudioContext();
+        get isAudioWorking() {
+            return (typeof (AudioContext) == "function");
+        }
+
+        context: AudioContext = this.isAudioWorking ? new AudioContext() : null;
         masterGain: GainNode;
         waveShaper: WaveShaperNode;
         destination: AudioDestinationNode;
@@ -80,6 +84,11 @@
         indexChanged: Date;
 
         init() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             this.destination = this.context.destination;
             if (this.masterGain) {
                 this.masterGain.disconnect();
@@ -118,6 +127,11 @@
         }
 
         play() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             if (Managers.PageManager.Current.page != Managers.Page.Score) {
                 return;
             }
@@ -155,12 +169,20 @@
 
         playSound(sound: Sound) {
 
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             this.sounds.push(sound);
             sound.play(this.context, this.masterGain);
 
         }
 
         playNote(note: Model.Note, synth?: Synth) {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
              
             var frequency = getFrequencyFromNote(note);
             var playTime = getPlayingTime(note, this.bpm);
@@ -174,6 +196,10 @@
         }
 
         playNotes() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
 
             var minDifferenceTime = getPlayingTimeFromNoteLength(Model.NoteLength.HemiDemiSemiQuaver, this.bpm);
 
@@ -222,12 +248,22 @@
         }
 
         updateSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             for (var i = 0; i < this.sounds.length; i++) {
                 this.sounds[i].update();
             }
         }
 
         removeFinishedSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             var newSounds: Sound[] = [];
 
             for (var i = 0; i < this.sounds.length; i++) {
@@ -244,18 +280,34 @@
         }
 
         clearSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             for (var i = 0; i < this.sounds.length; i++) {
                 this.sounds[i].stop();
             }
         }
 
         stop() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
+
             this.playing = false;
             this.clearSounds();
             this.init();
         }
 
         update() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             if (Managers.PageManager.Current.page != Managers.Page.Score && this.playing === true) {
                 this.stop();
             }

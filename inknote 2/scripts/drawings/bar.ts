@@ -30,12 +30,13 @@
         draw(ctx: CanvasRenderingContext2D) {
 
             ctx.beginPath();
-            ctx.strokeStyle = Colours.black;
-            if (this.hover) {
+            if (this.hover || this.select) {
                 ctx.strokeStyle = Colours.orange;
             }
+            else {
+                ctx.strokeStyle = Colours.black;
+            }
             if (this.select) {
-                ctx.strokeStyle = Colours.orange;
                 ctx.lineWidth = 2;
             }
             ctx.moveTo(this.x, this.y);

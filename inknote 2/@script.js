@@ -2324,12 +2324,13 @@ var Inknote;
             };
             Bar.prototype.draw = function (ctx) {
                 ctx.beginPath();
-                ctx.strokeStyle = Drawing.Colours.black;
-                if (this.hover) {
+                if (this.hover || this.select) {
                     ctx.strokeStyle = Drawing.Colours.orange;
                 }
+                else {
+                    ctx.strokeStyle = Drawing.Colours.black;
+                }
                 if (this.select) {
-                    ctx.strokeStyle = Drawing.Colours.orange;
                     ctx.lineWidth = 2;
                 }
                 ctx.moveTo(this.x, this.y);
@@ -4542,6 +4543,67 @@ var Inknote;
         }
     }
     Inknote.log = log;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var Storage;
+    (function (Storage) {
+        var CookieManager = (function () {
+            function CookieManager() {
+            }
+            Object.defineProperty(CookieManager, "Instance", {
+                get: function () {
+                    if (!CookieManager._instance) {
+                        CookieManager._instance = new CookieManager();
+                    }
+                    return CookieManager._instance;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(CookieManager.prototype, "_cookieJSON", {
+                get: function () {
+                    if (typeof (document) == typeof (undefined)) {
+                        return {};
+                    }
+                    var cookieString = document.cookie;
+                    if (cookieString == "" || cookieString == null) {
+                        return {};
+                    }
+                    var jsonObject = JSON.parse(cookieString);
+                    if (typeof (jsonObject) != typeof ({})) {
+                        return {};
+                    }
+                    return jsonObject;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            CookieManager.prototype.getItem = function (key) {
+                return this._cookieJSON[key];
+            };
+            CookieManager.prototype._setStringItem = function (key, value) {
+                var cookieObject = this._cookieJSON;
+                cookieObject[key] = value;
+                document.cookie = JSON.stringify(cookieObject);
+                Inknote.log("saved " + key);
+            };
+            CookieManager.prototype.setItem = function (key, value) {
+                if (typeof (value) != typeof ("")) {
+                    value = JSON.stringify(value);
+                }
+                try {
+                    this._setStringItem(key, value);
+                }
+                catch (e) {
+                    Inknote.log("saving cookie failed.", Inknote.MessageType.Warning);
+                    console.log(e);
+                }
+            };
+            return CookieManager;
+        })();
+        Storage.CookieManager = CookieManager;
+    })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -7406,7 +7468,7 @@ var Inknote;
         }
         var AudioService = (function () {
             function AudioService() {
-                this.context = new AudioContext();
+                this.context = this.isAudioWorking ? new AudioContext() : null;
                 this.playing = false;
                 this.init();
             }
@@ -7420,6 +7482,13 @@ var Inknote;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(AudioService.prototype, "isAudioWorking", {
+                get: function () {
+                    return (typeof (AudioContext) == "function");
+                },
+                enumerable: true,
+                configurable: true
+            });
             Object.defineProperty(AudioService.prototype, "bpm", {
                 get: function () {
                     var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
@@ -7429,6 +7498,9 @@ var Inknote;
                 configurable: true
             });
             AudioService.prototype.init = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 this.destination = this.context.destination;
                 if (this.masterGain) {
                     this.masterGain.disconnect();
@@ -7459,6 +7531,9 @@ var Inknote;
                 }
             };
             AudioService.prototype.play = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 if (Inknote.Managers.PageManager.Current.page != Inknote.Managers.Page.Score) {
                     return;
                 }
@@ -7486,10 +7561,16 @@ var Inknote;
                 }
             };
             AudioService.prototype.playSound = function (sound) {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 this.sounds.push(sound);
                 sound.play(this.context, this.masterGain);
             };
             AudioService.prototype.playNote = function (note, synth) {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 var frequency = Audio.getFrequencyFromNote(note);
                 var playTime = Audio.getPlayingTime(note, this.bpm);
                 var newSound = new Audio.Sound(frequency, playTime);
@@ -7500,6 +7581,9 @@ var Inknote;
                 this.playSound(newSound);
             };
             AudioService.prototype.playNotes = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 var minDifferenceTime = Audio.getPlayingTimeFromNoteLength(Inknote.Model.NoteLength.HemiDemiSemiQuaver, this.bpm);
                 var currentTime = new Date();
                 if (this.indexChanged && (currentTime.getTime() - this.indexChanged.getTime() < minDifferenceTime)) {
@@ -7530,11 +7614,17 @@ var Inknote;
                 this.indexChanged = new Date();
             };
             AudioService.prototype.updateSounds = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 for (var i = 0; i < this.sounds.length; i++) {
                     this.sounds[i].update();
                 }
             };
             AudioService.prototype.removeFinishedSounds = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 var newSounds = [];
                 for (var i = 0; i < this.sounds.length; i++) {
                     if (!this.sounds[i].finished) {
@@ -7547,16 +7637,25 @@ var Inknote;
                 this.playing = false;
             };
             AudioService.prototype.clearSounds = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 for (var i = 0; i < this.sounds.length; i++) {
                     this.sounds[i].stop();
                 }
             };
             AudioService.prototype.stop = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 this.playing = false;
                 this.clearSounds();
                 this.init();
             };
             AudioService.prototype.update = function () {
+                if (!this.isAudioWorking) {
+                    return;
+                }
                 if (Inknote.Managers.PageManager.Current.page != Inknote.Managers.Page.Score && this.playing === true) {
                     this.stop();
                 }
@@ -9941,6 +10040,7 @@ if (typeof window != "undefined") {
 // logging service
 /// <reference path="scripts/services/logger.ts" />
 // storage
+/// <reference path="scripts/storage/cookiestorage.ts" />
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 // services
