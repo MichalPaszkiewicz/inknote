@@ -61,7 +61,7 @@
                 this._setStringItem(key, value);
             }
             catch(e){
-                log("saving cookie failed.", MessageType.Warning);
+                log("saving cookie failed.", MessageType.Error);
 
                 console.log(e);
             }

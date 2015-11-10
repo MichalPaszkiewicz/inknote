@@ -120,6 +120,7 @@
 
 // storage
 /// <reference path="scripts/storage/cookiestorage.ts" />
+/// <reference path="scripts/storage/idbstorage.ts" />
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 

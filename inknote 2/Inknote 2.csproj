@@ -234,6 +234,7 @@
     <TypeScriptCompile Include="scripts\services\undoService.ts" />
     <TypeScriptCompile Include="scripts\storage\cookieStorage.ts" />
     <TypeScriptCompile Include="scripts\storage\driveStorage.ts" />
+    <TypeScriptCompile Include="scripts\storage\idbStorage.ts" />
     <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
     <TypeScriptCompile Include="scripts\services\logger.ts" />
     <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
