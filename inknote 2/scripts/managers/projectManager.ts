@@ -77,7 +77,6 @@
 
         set currentProjectOverride(project: Project) {
             log("current project overriden", MessageType.Warning);
-            log(this._currentProject.ID + " -> " + project.ID, MessageType.Error);
 
             this._currentProject = project;
 

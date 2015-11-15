@@ -66,5 +66,56 @@
             }
         }
 
+        changeBarTimeSignature() {
+            
+            UndoService.Instance.store();
+
+            var top = prompt("amount of beats in the bar");
+
+            while (~~top == 0) {
+                top = prompt("amount of beats in the bar? must be a number greater than 0");
+            } 
+
+            var bottom = prompt("length of beat");
+
+            while (~~bottom % 2 != 0 || ~~bottom == 0) {
+                bottom = prompt("what is the length of the new beat? this must be a power of 2");
+            }
+
+            var barNumber: number = null;
+
+            var currentProject = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+
+                var tempInstrument = currentProject.instruments[i];
+
+                for (var j = 0; j < tempInstrument.bars.length; j++) {
+                    var tempBar = tempInstrument.bars[j];
+
+                    if (tempBar.ID == ScoringService.Instance.selectID) {
+                        barNumber = j;
+                    }
+                }
+            }
+
+            if (barNumber == null) {
+                return;
+            }
+
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+
+                var tempInstrument = currentProject.instruments[i];
+
+                var tempBar = tempInstrument.bars[barNumber];
+
+                tempBar.items.unshift(new Model.TimeSignature(~~top, ~~bottom));
+
+            }
+
+            ScoringService.Instance.refresh();
+
+        }
+
     }
 }
