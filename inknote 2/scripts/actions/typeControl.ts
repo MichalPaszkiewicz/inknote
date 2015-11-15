@@ -5,7 +5,7 @@
     if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
 
-            if (e.target == document.getElementById("file-search")) {
+            if (e.target == document.getElementById("file-search") && e.keyCode != 27) {
                 return;
             }
 
@@ -69,7 +69,7 @@
 
         window.onkeyup = function (ev: KeyboardEvent) {
 
-            if (ev.target == document.getElementById("file-search")) {
+            if (ev.target == document.getElementById("file-search") && ev.keyCode != 27) {
                 return;
             } 
 
@@ -87,7 +87,7 @@
                 return;
             }
 
-            if (Modal.isModalOpen === true) {
+            if (Modal.isModalOpen === true && ev.keyCode != 27) {
                 return;
             }
 
@@ -118,6 +118,8 @@
                 // esc
                 case 27:
                     Action(ActionType.ToPage, Managers.Page.File);
+                    Modal.cancelReport();
+                    Modal.hideAllModals();
                     break;
                 // a
                 case 65:
@@ -310,6 +312,8 @@
                 if (Menu.isMenuOpen) {
                     Menu.toggle();
                 }
+                Modal.cancelReport();
+                Modal.hideAllModals();
                 RightClickMenuService.Instance.visible = false;
                 FrontEnd.hideElement(document.getElementById("search-bar"));
                 return;

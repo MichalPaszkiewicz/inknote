@@ -9302,7 +9302,7 @@ var Inknote;
     var keysDown = [];
     if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
-            if (e.target == document.getElementById("file-search")) {
+            if (e.target == document.getElementById("file-search") && e.keyCode != 27) {
                 return;
             }
             keysDown.push(e.keyCode);
@@ -9354,7 +9354,7 @@ var Inknote;
             }
         };
         window.onkeyup = function (ev) {
-            if (ev.target == document.getElementById("file-search")) {
+            if (ev.target == document.getElementById("file-search") && ev.keyCode != 27) {
                 return;
             }
             keysDown = Inknote.getItemsWhere(keysDown, function (item) {
@@ -9368,7 +9368,7 @@ var Inknote;
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
             }
-            if (Modal.isModalOpen === true) {
+            if (Modal.isModalOpen === true && ev.keyCode != 27) {
                 return;
             }
             switch (Inknote.Managers.PageManager.Current.page) {
@@ -9393,6 +9393,8 @@ var Inknote;
                 // esc
                 case 27:
                     Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.File);
+                    Modal.cancelReport();
+                    Modal.hideAllModals();
                     break;
                 // a
                 case 65:
@@ -9568,6 +9570,8 @@ var Inknote;
                 if (Menu.isMenuOpen) {
                     Menu.toggle();
                 }
+                Modal.cancelReport();
+                Modal.hideAllModals();
                 Inknote.RightClickMenuService.Instance.visible = false;
                 FrontEnd.hideElement(document.getElementById("search-bar"));
                 return;
