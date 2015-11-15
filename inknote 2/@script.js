@@ -262,6 +262,7 @@ var Inknote;
             var permutatedArray = [lastValue].concat(copiedArray);
             return permutatedArray;
         }
+        Maths.permutateSimpleNumberArray = permutateSimpleNumberArray;
         function alignSimilarArrayTo(toBeAligned, toAlignTo) {
             var permutation = Inknote.copySimpleArrayFrom(toBeAligned);
             var bestValue = Infinity;
@@ -275,6 +276,7 @@ var Inknote;
                     score += Math.abs(permutation[j] - toAlignTo[j]);
                 }
                 if (score < bestValue) {
+                    bestValue = score;
                     bestPermutation = Inknote.copySimpleArrayFrom(permutation);
                 }
             }
