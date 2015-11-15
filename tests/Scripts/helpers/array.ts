@@ -494,4 +494,156 @@ module Inknote.Tests {
         });
     });
 
+    describe("getItemWithMax", function () {
+        
+        it("returns correct value from a number array", function () {
+
+            expect(getItemWithMax(numbersList, function (x: number) {
+                return x;
+            })).toBe(19);
+
+        });
+
+        it("returns correct value from an object array", function () {
+
+            var objectList = [];
+
+            var resultNum;
+
+            for (var i = 0; i < 20; i++) {
+
+                var num = { num: i + 10 };
+
+                if (num.num == 29) {
+                    resultNum = num;
+                }
+
+                objectList.push(num);
+            }
+
+            expect(getItemWithMax(objectList, function (x: { num: number }) {
+                return x.num;
+            })).toBe(resultNum);
+
+        });
+
+        it("returns null if null array", function () {
+
+            expect(getItemWithMax(null, function (x: number) {
+                return x;
+            })).toBe(null);
+
+        });
+
+        it("returns null if null array, even if expecting object", function () {
+
+            expect(getItemWithMax(null, function (x: any) {
+                return x.a.b.c.d.e.f;
+            })).toBe(null);
+
+        });
+
+    });
+
+    describe("getItemsWithMin", function () {
+
+        it("returns correct value from a number array", function () {
+
+            expect(getItemWithMin([4, 4, 3, 7, 8], function (x: number) {
+                return x;
+            })).toBe(3);
+
+        });
+
+        it("returns correct value from an object array", function () {
+
+            var objectList = [];
+
+            var resultNum;
+
+            for (var i = 0; i < 20; i++) {
+
+                var num = { num: i + 10 };
+
+                if (num.num == 10) {
+                    resultNum = num;
+                }
+
+                objectList.push(num);
+            }
+
+            expect(getItemWithMin(objectList, function (x: { num: number }) {
+                return x.num;
+            })).toBe(resultNum);
+
+        });
+
+        it("returns null if given null array", function () {
+
+            expect(getItemWithMin(null, function (x: number) {
+                return x;
+            })).toBe(null);
+
+        });
+
+        it("returns null if given null array, even if expecting object", function () {
+
+            expect(getItemWithMin(null, function (x: any) {
+                return x.a.b.c.d;
+            })).toBe(null);
+
+        });
+
+    });
+
+    describe("getFirstItemWhere", function () {
+
+        it("returns null if given null array", function () {
+
+            expect(getFirstItemWhere(null, function (x: number) {
+                return x == 5;
+            })).toBe(null);
+
+        });
+
+        it("returns null if given null array when expecting an object", function () {
+
+            expect(getFirstItemWhere(null, function (x: any) {
+                return x.a.b.c.d == 5;
+            })).toBe(null);
+
+        });
+
+        it("returns the first item from number array", function () {
+
+            expect(getFirstItemWhere([1, 2, 3, 4, 5, 4, 6, 2, 5], function (x: number) {
+                return x == 3;
+            })).toBe(3);
+
+        });
+
+        it("returns the first item from string array", function () {
+            
+            expect(getFirstItemWhere(["one", "two", "three", "four", "five"], function (x: string) {
+                return x.indexOf("f") != -1;
+            })).toBe("four");
+
+        });
+
+        it("returns the first item from an object array", function () {
+
+            var objectList = [{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }];
+            
+            var resultNum = { a: 7, b: 4 };
+
+            objectList.push(resultNum);
+
+            expect(getFirstItemWhere(objectList, function (x: any) {
+                return x.b == 4;
+            })).toBe(resultNum);
+
+        });
+
+    });
+
 }
