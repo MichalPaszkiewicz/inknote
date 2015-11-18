@@ -61,8 +61,10 @@
         <span class="score-item">
             <div class="menu-item" onclick="{var project = Inknote.Managers.ProjectManager.Instance.currentProject; Inknote.ProjectOptionsService.Instance.open(project);}">project details</div>
         </span>
-		<span class="desktop-item">
-            <span class="menu-item" onclick="Inknote.PrintService.Instance.print()">print</span>
+        <span class="score-item">
+            <span class="desktop-item">
+                <span class="menu-item" onclick="Inknote.PrintService.Instance.print()">print</span>
+            </span>
         </span>
     </div>
 
@@ -80,7 +82,8 @@
 
     <div class="sub-menu menu" id="bar-menu" onclick="Menu.closeAllSubMenus()">
         <div class="menu-item" onclick="{ Inknote.NoteControlService.Instance.addBar(); Inknote.ScoringService.Instance.refresh(); }">add bar</div>
-        <div class="menu-item" onclick="Inknote.BarService.Instance.changeBarTimeSignature();">time signature</div>    
+        <div class="menu-item" onclick="Inknote.BarService.Instance.changeBarTimeSignature();">time signature</div>
+        <div class="menu-item" onclick="Inknote.BarService.Instance.addClef();">add clef</div>		
 	</div>
 
     <div class="sub-menu menu" id="tools-menu" onclick="Menu.closeAllSubMenus()">

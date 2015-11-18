@@ -7015,6 +7015,32 @@ var Inknote;
             }
             Inknote.ScoringService.Instance.refresh();
         };
+        BarService.prototype.addClef = function () {
+            var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+            if (!Inknote.ScoringService.Instance.selectID || !(Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar)) {
+                var currentInstrument = currentProject.instruments[0];
+                if (currentInstrument.bars.length == 0) {
+                    Inknote.NoteControlService.Instance.addBar();
+                }
+                var currentBar = currentInstrument.bars[currentInstrument.bars.length - 1];
+                currentBar.items.push(new Inknote.Model.TrebleClef());
+                Inknote.ScoringService.Instance.refresh();
+                return;
+            }
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+                for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                    if (currentProject.instruments[i].bars[j].ID == Inknote.ScoringService.Instance.selectID) {
+                        currentProject.instruments[i].bars[j].items.push(new Inknote.Model.TrebleClef());
+                        Inknote.ScoringService.Instance.refresh();
+                        return;
+                    }
+                }
+            }
+        };
+        BarService.prototype.changeKey = function () {
+            // todo: implement this;
+            Inknote.log("change key not implemented", Inknote.MessageType.Error);
+        };
         return BarService;
     })();
     Inknote.BarService = BarService;

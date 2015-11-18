@@ -117,5 +117,42 @@
 
         }
 
+        addClef() {
+
+            var currentProject = Managers.ProjectManager.Instance.currentProject;
+
+            if (!ScoringService.Instance.selectID || !(ScoringService.Instance.SelectedItem instanceof Drawing.Bar)) {
+            
+                var currentInstrument = currentProject.instruments[0];
+
+                if (currentInstrument.bars.length == 0) {
+                    NoteControlService.Instance.addBar();
+                }
+
+                var currentBar = currentInstrument.bars[currentInstrument.bars.length - 1];
+
+                currentBar.items.push(new Model.TrebleClef());
+
+                ScoringService.Instance.refresh();
+
+                return;    
+            }
+            
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+                for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                    if (currentProject.instruments[i].bars[j].ID == ScoringService.Instance.selectID) {
+                        currentProject.instruments[i].bars[j].items.push(new Model.TrebleClef());
+                        ScoringService.Instance.refresh();
+                        return;
+                    }
+                }
+            }
+        }
+
+        changeKey() {
+            // todo: implement this;
+            Inknote.log("change key not implemented", MessageType.Error);
+        }
+
     }
 }
