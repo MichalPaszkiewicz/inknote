@@ -424,6 +424,7 @@ body .menu {
   width: 100%;
   background: rgba(0, 0, 0, 0.7);
   text-align: center;
+  z-index: 10;
 }
 body .menu .menu-item {
   display: inline-block;
