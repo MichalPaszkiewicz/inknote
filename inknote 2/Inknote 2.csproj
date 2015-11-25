@@ -94,6 +94,7 @@
     <TypeScriptCompile Include="scripts\actions\baseAction.ts" />
     <TypeScriptCompile Include="scripts\actions\canvasControl.ts" />
     <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
+    <TypeScriptCompile Include="scripts\actions\frontEndSearch.ts" />
     <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
     <TypeScriptCompile Include="scripts\actions\windowResize.ts" />
@@ -220,6 +221,7 @@
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
+    <TypeScriptCompile Include="scripts\services\gotoService.ts" />
     <TypeScriptCompile Include="scripts\services\httpService.ts" />
     <TypeScriptCompile Include="scripts\services\identifyService.ts" />
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
@@ -234,6 +236,7 @@
     <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
     <TypeScriptCompile Include="scripts\services\scoringService.ts" />
     <TypeScriptCompile Include="scripts\services\scrollService.ts" />
+    <TypeScriptCompile Include="scripts\services\smartSearchService.ts" />
     <TypeScriptCompile Include="scripts\services\tempDataService.ts" />
     <TypeScriptCompile Include="scripts\services\timeSignatureService.ts" />
     <TypeScriptCompile Include="scripts\services\transposeService.ts" />

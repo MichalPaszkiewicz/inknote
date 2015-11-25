@@ -10341,7 +10341,7 @@ var FrontEnd;
         function generateSearchResults(results) {
             var container = document.getElementById("smart-search-output");
             container.innerHTML = "";
-            var title = document.createElement("h2");
+            var title = document.createElement("h3");
             title.textContent = "results";
             container.appendChild(title);
             if (results.length == 0) {
