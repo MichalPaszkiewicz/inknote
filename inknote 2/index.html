@@ -117,6 +117,16 @@
             </div>
         </div>
 
+        <div class="hidden" id="smart-search">
+            <div class="negative button" onclick="FrontEnd.SmartSearch.closeSearch()">x</div>
+            <canvas id="smart-search-canvas"></canvas>
+            <input type="text" id="smart-search-text" placeholder="search project for text" />
+            <div id="smart-search-button" class="button" onclick="FrontEnd.SmartSearch.search();">search</div>
+            <div id="smart-search-output">
+
+            </div>
+        </div>
+
         <canvas id="my-canvas"></canvas>
 
         <!--<div class="footer-push"></div>-->

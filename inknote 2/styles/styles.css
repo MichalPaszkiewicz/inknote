@@ -557,4 +557,24 @@ body #log .error {
     width: 95%;
   }
 }
+#smart-search {
+  position: fixed;
+  background: #f1f1ec;
+  box-shadow: 5px 4px 9px 0px #191919;
+  width: 240px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#smart-search #smart-search-canvas {
+  width: 180px;
+  height: 50px;
+}
+#smart-search #smart-search-text {
+  margin: 10px 0;
+}
+#smart-search span {
+  min-width: 50px;
+  display: inline-block;
+  text-align: center;
+}
 /*# sourceMappingURL=styles.css.map */

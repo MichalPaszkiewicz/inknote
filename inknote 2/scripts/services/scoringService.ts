@@ -375,6 +375,10 @@ module Inknote {
             return null;
         }
 
+        set SelectedItem(item: IDrawable) {
+            this.selectID = item.ID;
+        }
+
         getPrintItems(): IDrawable[] {
             return this._items;
         }

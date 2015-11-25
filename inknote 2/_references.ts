@@ -153,7 +153,8 @@
 /// <reference path="scripts/services/undoservice.ts" />
 /// <reference path="scripts/services/httpservice.ts" />
 /// <reference path="scripts/services/printservice.ts" />
-
+/// <reference path="scripts/services/smartsearchservice.ts" />
+/// <reference path="scripts/services/gotoservice.ts" />
 
 // audio
 /// <reference path="scripts/audio/sound.ts" />
@@ -187,6 +188,7 @@
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/frontendsearch.ts" />
 /// <reference path="scripts/actions/windowresize.ts" />
 
 // app

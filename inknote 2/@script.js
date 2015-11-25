@@ -5652,6 +5652,9 @@ var Inknote;
                 }
                 return null;
             },
+            set: function (item) {
+                this.selectID = item.ID;
+            },
             enumerable: true,
             configurable: true
         });
@@ -7445,6 +7448,214 @@ var Inknote;
         return PrintService;
     })();
     Inknote.PrintService = PrintService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var SmartSearchResult = (function () {
+        function SmartSearchResult(projectIndex, instrumentIndex, barIndex, itemIndex) {
+            this.projectIndex = projectIndex;
+            this.instrumentIndex = instrumentIndex;
+            this.barIndex = barIndex;
+            this.itemIndex = itemIndex;
+        }
+        return SmartSearchResult;
+    })();
+    Inknote.SmartSearchResult = SmartSearchResult;
+    (function (SearchRange) {
+        SearchRange[SearchRange["CURRENT_PROJECT"] = 0] = "CURRENT_PROJECT";
+        SearchRange[SearchRange["ALL_PROJECTS"] = 1] = "ALL_PROJECTS";
+    })(Inknote.SearchRange || (Inknote.SearchRange = {}));
+    var SearchRange = Inknote.SearchRange;
+    var SmartSearchSettings = (function () {
+        function SmartSearchSettings() {
+        }
+        Object.defineProperty(SmartSearchSettings.prototype, "searchRange", {
+            get: function () {
+                if (Inknote.Managers.PageManager.Current.page == Inknote.Managers.Page.Score) {
+                    return SearchRange.CURRENT_PROJECT;
+                }
+                return SearchRange.ALL_PROJECTS;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return SmartSearchSettings;
+    })();
+    Inknote.SmartSearchSettings = SmartSearchSettings;
+    var SmartSearchService = (function () {
+        function SmartSearchService() {
+            this.settings = new SmartSearchSettings();
+        }
+        Object.defineProperty(SmartSearchService, "Instance", {
+            get: function () {
+                if (!SmartSearchService._instance) {
+                    SmartSearchService._instance = new SmartSearchService();
+                }
+                return SmartSearchService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SmartSearchService.prototype.find = function () {
+        };
+        SmartSearchService.prototype.findByTextAndMusic = function (text, music) {
+            var textResults = [];
+            var musicResults = [];
+            if (text == null || text == "") {
+                return this.findMusic(music);
+            }
+            if (music == null || music.length == 0) {
+                return this.findText(text);
+            }
+            textResults = this.findText(text);
+            musicResults = this.findMusic(music);
+            var finalResults = [];
+            for (var i = 0; i < musicResults.length; i++) {
+                if (Inknote.anyItemIs(textResults, function (item) {
+                    var sameInstrument = musicResults[i].instrumentIndex == item.instrumentIndex;
+                    var sameBar = musicResults[i].instrumentIndex == item.barIndex;
+                    var similarIndex = musicResults[i].itemIndex == item.itemIndex - 1;
+                    return sameInstrument && sameBar;
+                })) {
+                    finalResults.push(musicResults[i]);
+                }
+            }
+        };
+        SmartSearchService.prototype.findTextInProject = function (text, project) {
+            var results = [];
+            var projectIndex = Inknote.getIndexFromID(Inknote.Managers.ProjectManager.Instance.allProjects, project.ID);
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    for (var k = 0; k < project.instruments[i].bars[j].items.length; k++) {
+                        var tempItem = project.instruments[i].bars[j].items[k];
+                        if (tempItem instanceof Inknote.Model.Text) {
+                            if (tempItem.content.indexOf(text) != -1) {
+                                results.push(new SmartSearchResult(projectIndex, i, j, k));
+                            }
+                        }
+                    }
+                }
+            }
+            return results;
+        };
+        SmartSearchService.prototype.findText = function (text) {
+            var results = [];
+            if (this.settings.searchRange == SearchRange.ALL_PROJECTS) {
+                var projects = Inknote.Managers.ProjectManager.Instance.allProjects;
+                for (var i = 0; i < projects.length; i++) {
+                    results = results.concat(this.findTextInProject(text, projects[i]));
+                }
+            }
+            else {
+                results = this.findTextInProject(text, Inknote.Managers.ProjectManager.Instance.currentProject);
+            }
+            return results;
+        };
+        SmartSearchService.prototype.musicMatchesWithBar = function (music, bar) {
+            var musicIndex = 0;
+            var barIndex = 0;
+            if (music.length > bar.items.length) {
+                return false;
+            }
+            while (musicIndex < music.length && barIndex < bar.items.length) {
+                if (bar.items[barIndex] instanceof Inknote.Model.Note
+                    || bar.items[barIndex] instanceof Inknote.Model.Rest) {
+                    if (bar.items[barIndex] instanceof Inknote.Model.Note) {
+                        var barNote = bar.items[barIndex];
+                        if (music[musicIndex] instanceof Inknote.Model.Rest) {
+                            return false;
+                        }
+                        var musicNote = music[musicIndex];
+                        // with notes, not necessarily going for specific rhythm
+                        if (musicNote.value != barNote.value) {
+                            return false;
+                        }
+                    }
+                    else {
+                        var barRest = bar.items[barIndex];
+                        if (music[musicIndex] instanceof Inknote.Model.Note) {
+                            return false;
+                        }
+                        var musicRest = music[musicIndex];
+                        // with rests, can only be going for length.
+                        if (musicRest.length != barRest.length) {
+                            return false;
+                        }
+                    }
+                    musicIndex++;
+                }
+                else {
+                }
+                barIndex++;
+            }
+            return true;
+        };
+        SmartSearchService.prototype.findMusicInProject = function (music, project) {
+            var results = [];
+            var projectIndex = Inknote.getIndexFromID(Inknote.Managers.ProjectManager.Instance.allProjects, project.ID);
+            for (var i = 0; i < project.instruments.length; i++) {
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                    if (this.musicMatchesWithBar(music, project.instruments[i].bars[j])) {
+                        results.push(new SmartSearchResult(projectIndex, i, j, 0));
+                    }
+                }
+            }
+            return results;
+        };
+        SmartSearchService.prototype.findMusic = function (music) {
+            var results = [];
+            if (this.settings.searchRange == SearchRange.ALL_PROJECTS) {
+                var projects = Inknote.Managers.ProjectManager.Instance.allProjects;
+                for (var i = 0; i < projects.length; i++) {
+                    results = results.concat(this.findMusicInProject(music, projects[i]));
+                }
+            }
+            else {
+                results = this.findMusicInProject(music, Inknote.Managers.ProjectManager.Instance.currentProject);
+            }
+            return results;
+        };
+        return SmartSearchService;
+    })();
+    Inknote.SmartSearchService = SmartSearchService;
+})(Inknote || (Inknote = {}));
+var Inknote;
+(function (Inknote) {
+    var GoToService = (function () {
+        function GoToService() {
+        }
+        Object.defineProperty(GoToService, "Instance", {
+            get: function () {
+                if (!GoToService._instance) {
+                    GoToService._instance = new GoToService();
+                }
+                return GoToService._instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        GoToService.prototype.goToDrawingItem = function (item) {
+            Inknote.ScrollService.Instance.y = (Inknote.ScrollService.Instance.y + item.y) - 80;
+            Inknote.ScoringService.Instance.selectID = item.ID;
+            Inknote.ScoringService.Instance.refresh();
+        };
+        GoToService.prototype.goToID = function (id) {
+            var scoreItems = Inknote.ScoringService.Instance.getPrintItems();
+            var item = Inknote.getFirstItemWhere(scoreItems, function (item) {
+                return id == item.ID;
+            });
+            if (item == null) {
+                Inknote.log("no scoreable item with this id, so cannot go to it", Inknote.MessageType.Error);
+                return;
+            }
+            this.goToDrawingItem(item);
+        };
+        GoToService.prototype.goToModelItem = function (item) {
+            this.goToID(item.ID);
+        };
+        return GoToService;
+    })();
+    Inknote.GoToService = GoToService;
 })(Inknote || (Inknote = {}));
 var Inknote;
 (function (Inknote) {
@@ -9372,6 +9583,9 @@ var Inknote;
             if (e.target == document.getElementById("file-search") && e.keyCode != 27) {
                 return;
             }
+            if (e.target == document.getElementById("smart-search-text") && e.keyCode != 27) {
+                return;
+            }
             keysDown.push(e.keyCode);
             if (Inknote.CONFIRM_IS_OPEN) {
                 return;
@@ -9415,6 +9629,12 @@ var Inknote;
                     Inknote.PrintService.Instance.print();
                     e.preventDefault();
                 }
+                // f
+                // find
+                if (e.keyCode == 70) {
+                    FrontEnd.SmartSearch.openSearch();
+                    e.preventDefault();
+                }
             }
             if (e.keyCode == 8) {
                 e.preventDefault();
@@ -9422,6 +9642,9 @@ var Inknote;
         };
         window.onkeyup = function (ev) {
             if (ev.target == document.getElementById("file-search") && ev.keyCode != 27) {
+                return;
+            }
+            if (ev.target == document.getElementById("smart-search-text") && ev.keyCode != 27) {
                 return;
             }
             keysDown = Inknote.getItemsWhere(keysDown, function (item) {
@@ -9462,6 +9685,7 @@ var Inknote;
                     Inknote.Action(Inknote.ActionType.ToPage, Inknote.Managers.Page.File);
                     Modal.cancelReport();
                     Modal.hideAllModals();
+                    FrontEnd.SmartSearch.closeSearch();
                     break;
                 // a
                 case 65:
@@ -9641,6 +9865,7 @@ var Inknote;
                 Modal.hideAllModals();
                 Inknote.RightClickMenuService.Instance.visible = false;
                 FrontEnd.hideElement(document.getElementById("search-bar"));
+                FrontEnd.SmartSearch.closeSearch();
                 return;
             // SPACE
             case 32:
@@ -10109,6 +10334,101 @@ var MouseControl;
         }
     }
 })(MouseControl || (MouseControl = {}));
+var FrontEnd;
+(function (FrontEnd) {
+    var SmartSearch;
+    (function (SmartSearch) {
+        function generateSearchResults(results) {
+            var container = document.getElementById("smart-search-output");
+            container.innerHTML = "";
+            var title = document.createElement("h2");
+            title.textContent = "results";
+            container.appendChild(title);
+            if (results.length == 0) {
+                var resultsText = document.createElement("p");
+                resultsText.textContent = "no results found";
+                container.appendChild(resultsText);
+                return;
+            }
+            var headerDiv = document.createElement("div");
+            var col1 = document.createElement("span");
+            col1.textContent = "project";
+            var col2 = document.createElement("span");
+            col2.textContent = "instr";
+            var col3 = document.createElement("span");
+            col3.textContent = "bar";
+            var col4 = document.createElement("span");
+            col4.textContent = "item";
+            headerDiv.appendChild(col1);
+            headerDiv.appendChild(col2);
+            headerDiv.appendChild(col3);
+            headerDiv.appendChild(col4);
+            container.appendChild(headerDiv);
+            for (var i = 0; i < results.length; i++) {
+                var resultDiv = document.createElement("div");
+                var resCol1 = document.createElement("span");
+                resCol1.textContent = results[i].projectIndex + "";
+                var resCol2 = document.createElement("span");
+                resCol2.textContent = results[i].instrumentIndex + "";
+                var resCol3 = document.createElement("span");
+                resCol3.textContent = results[i].barIndex + "";
+                var resCol4 = document.createElement("span");
+                resCol4.textContent = results[i].itemIndex + "";
+                resultDiv.appendChild(resCol1);
+                resultDiv.appendChild(resCol2);
+                resultDiv.appendChild(resCol3);
+                resultDiv.appendChild(resCol4);
+                var proj = Inknote.Managers.ProjectManager.Instance.allProjects[results[i].projectIndex];
+                var instr = proj.instruments[results[i].instrumentIndex];
+                var bar = instr.bars[results[i].barIndex];
+                var idToSet = "";
+                if (results[i].itemIndex == null) {
+                    idToSet = bar.ID;
+                }
+                else {
+                    idToSet = bar.items[results[i].itemIndex].ID;
+                }
+                resultDiv.setAttribute("data-id", idToSet);
+                resultDiv.setAttribute("data-proj", proj.ID);
+                for (var j = 0; j < resultDiv.childNodes.length; j++) {
+                    var tempSpan = resultDiv.childNodes[j];
+                    tempSpan.setAttribute("data-proj", proj.ID);
+                    tempSpan.setAttribute("data-id", idToSet);
+                }
+                resultDiv.onclick = function (e) {
+                    var targetItem = e.target;
+                    var projID = targetItem.getAttribute("data-proj");
+                    if (projID != Inknote.Managers.ProjectManager.Instance.currentProject.ID) {
+                        Inknote.Managers.ProjectManager.Instance.openProjectFromID(projID);
+                    }
+                    if (Inknote.Managers.PageManager.Current.page != Inknote.Managers.Page.Score) {
+                        Inknote.Managers.PageManager.Current.page = Inknote.Managers.Page.Score;
+                    }
+                    var targetID = targetItem.getAttribute("data-id");
+                    Inknote.GoToService.Instance.goToID(targetID);
+                    FrontEnd.SmartSearch.closeSearch();
+                };
+                container.appendChild(resultDiv);
+            }
+        }
+        function search() {
+            var text = document.getElementById("smart-search-text").value;
+            var results = Inknote.SmartSearchService.Instance.findText(text);
+            generateSearchResults(results);
+        }
+        SmartSearch.search = search;
+        function openSearch() {
+            var searchContainer = document.getElementById("smart-search");
+            FrontEnd.showElement(searchContainer);
+        }
+        SmartSearch.openSearch = openSearch;
+        function closeSearch() {
+            var searchContainer = document.getElementById("smart-search");
+            FrontEnd.hideElement(searchContainer);
+        }
+        SmartSearch.closeSearch = closeSearch;
+    })(SmartSearch = FrontEnd.SmartSearch || (FrontEnd.SmartSearch = {}));
+})(FrontEnd || (FrontEnd = {}));
 var Inknote;
 (function (Inknote) {
     if (typeof window != "undefined") {
@@ -10302,6 +10622,8 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/services/undoservice.ts" />
 /// <reference path="scripts/services/httpservice.ts" />
 /// <reference path="scripts/services/printservice.ts" />
+/// <reference path="scripts/services/smartsearchservice.ts" />
+/// <reference path="scripts/services/gotoservice.ts" />
 // audio
 /// <reference path="scripts/audio/sound.ts" />
 /// <reference path="scripts/audio/frequencies.ts" />
@@ -10330,6 +10652,7 @@ if (typeof window != "undefined") {
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/frontendsearch.ts" />
 /// <reference path="scripts/actions/windowresize.ts" />
 // app
 /// <reference path="scripts/app.ts" />

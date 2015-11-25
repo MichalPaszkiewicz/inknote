@@ -9,6 +9,10 @@
                 return;
             }
 
+            if (e.target == document.getElementById("smart-search-text") && e.keyCode != 27) {
+                return;
+            }
+
             keysDown.push(e.keyCode);
 
             if (CONFIRM_IS_OPEN) {
@@ -60,6 +64,12 @@
                     e.preventDefault();
                 }
 
+                // f
+                // find
+                if (e.keyCode == 70) {
+                    FrontEnd.SmartSearch.openSearch();
+                    e.preventDefault();
+                }
             }
 
             if (e.keyCode == 8) {
@@ -72,6 +82,10 @@
             if (ev.target == document.getElementById("file-search") && ev.keyCode != 27) {
                 return;
             } 
+
+            if (ev.target == document.getElementById("smart-search-text") && ev.keyCode != 27) {
+                return;
+            }
 
             keysDown = getItemsWhere(keysDown, function (item: number) {
                 return item != ev.keyCode;
@@ -120,6 +134,7 @@
                     Action(ActionType.ToPage, Managers.Page.File);
                     Modal.cancelReport();
                     Modal.hideAllModals();
+                    FrontEnd.SmartSearch.closeSearch();
                     break;
                 // a
                 case 65:
@@ -316,6 +331,7 @@
                 Modal.hideAllModals();
                 RightClickMenuService.Instance.visible = false;
                 FrontEnd.hideElement(document.getElementById("search-bar"));
+                FrontEnd.SmartSearch.closeSearch();
                 return;
             // SPACE
             case 32:
