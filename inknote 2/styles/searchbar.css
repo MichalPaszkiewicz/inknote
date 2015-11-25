@@ -44,12 +44,21 @@
   padding: 10px;
   box-sizing: border-box;
 }
-#smart-search #smart-search-canvas {
-  width: 180px;
-  height: 50px;
-}
 #smart-search #smart-search-text {
   margin: 10px 0;
+  width: 212px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+#smart-search #smart-search-title {
+  text-align: center;
+  margin: 5px;
+  font-size: 20px;
+}
+#smart-search h3 {
+  margin: 5px;
+  font-size: 18px;
+  text-align: center;
 }
 #smart-search span {
   min-width: 50px;

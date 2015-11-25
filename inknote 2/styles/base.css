@@ -134,6 +134,7 @@ canvas.textMode {
   margin: 10px 0;
   min-height: 100px;
 }
+.x,
 .modal .x {
   cursor: url('../assets/pointer.png'), pointer;
   width: 20px;
@@ -146,6 +147,7 @@ canvas.textMode {
   right: 5px;
   top: 5px;
 }
+.x:hover,
 .modal .x:hover {
   color: darkred;
 }

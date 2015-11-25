@@ -1,4 +1,36 @@
 ﻿module FrontEnd.SmartSearch {
+    
+    var musicSearchNotes: Inknote.IDrawable[] = [];
+
+    function drawMusicSearch() {
+        var canvas = <HTMLCanvasElement>document.getElementById("smart-search-canvas");
+
+        canvas.width = 214;
+        canvas.height = 80;
+
+        var context = canvas.getContext("2d");
+
+        context.beginPath();
+        for (var i = 0; i < 5; i++) {
+            context.moveTo(0, i * 10 + 20);
+            context.lineTo(214, i * 10 + 20);
+
+        }
+        context.strokeStyle = Inknote.Drawing.Colours.black;
+        context.stroke();
+
+        var clef = new Inknote.Drawing.GClef(0);
+
+        clef.x = 20;
+        clef.y = 50;
+
+        clef.draw(context);
+
+        for (var i = 0; i < musicSearchNotes.length; i++) {
+            musicSearchNotes[i].draw(context, canvas);
+        }
+
+    }
 
     function generateSearchResults(results: Inknote.SmartSearchResult[]) {
 
@@ -25,7 +57,7 @@
 
         var col1 = document.createElement("span");
         col1.textContent = "project";
-        
+
         var col2 = document.createElement("span");
         col2.textContent = "instr";
 
@@ -44,7 +76,7 @@
 
         for (var i = 0; i < results.length; i++) {
             var resultDiv = document.createElement("div");
-            
+
             var resCol1 = document.createElement("span");
             resCol1.textContent = results[i].projectIndex + "";
 
@@ -110,11 +142,37 @@
 
     }
 
-    export function search(){
+    function getModelledNoteFromDrawingNote(note: Inknote.Drawing.Note): Inknote.Model.Note {
+        var clef = new Inknote.Model.TrebleClef();
+
+        var heightFromTopLine = note.y - 15;
+
+        var dif = clef.positionFromTreble;
+        var distRound5 = Math.round(heightFromTopLine / 5);
+        var topNoteOnTreble = new Inknote.Model.Note(Inknote.Model.NoteValue.F, 5, Inknote.Model.NoteLength.Crotchet);
+
+        var result = Inknote.getNoteFromStaveDifference(topNoteOnTreble, dif - distRound5);
+         
+        return result;
+    }
+
+    function getModelledMusicSearchItems(): (Inknote.Model.Note | Inknote.Model.Rest)[] {
+        var results = [];
+
+        for (var i = 0; i < musicSearchNotes.length; i++) {
+            results.push(getModelledNoteFromDrawingNote(<Inknote.Drawing.Note>musicSearchNotes[i]));
+        }
+
+        return results;
+    }
+
+    export function search() {
 
         var text = (<HTMLInputElement>document.getElementById("smart-search-text")).value;
 
-        var results = Inknote.SmartSearchService.Instance.findText(text);
+        var musicSearchItems = getModelledMusicSearchItems();
+
+        var results = Inknote.SmartSearchService.Instance.findByTextAndMusic(text, musicSearchItems);
 
         generateSearchResults(results);
 
@@ -124,12 +182,48 @@
         var searchContainer = document.getElementById("smart-search");
 
         FrontEnd.showElement(searchContainer);
+
+        drawMusicSearch();
     }
 
     export function closeSearch() {
         var searchContainer = document.getElementById("smart-search");
 
         FrontEnd.hideElement(searchContainer);
+    }
+
+    export function clearSearch() {
+        var searchText = <HTMLInputElement>document.getElementById("smart-search-text");
+        searchText.value = "";
+        var container = document.getElementById("smart-search-output");
+        container.innerHTML = "";
+        musicSearchNotes = [];
+        drawMusicSearch();
+    }
+
+    function addItemToMusicSearch(e: MouseEvent) {
+
+        if (musicSearchNotes.length >= 10) {
+            Inknote.log("cannot search for a series of notes longer than 10", Inknote.MessageType.Warning);
+            return;
+        }
+        
+        var hPos = 5 * Math.round(e.offsetY / 5);
+        var xPos = musicSearchNotes.length * 15 + 40;
+        
+        var newNote = new Inknote.Drawing.Crotchet(hPos > 35);
+        newNote.x = xPos;
+        newNote.y = hPos;
+
+        musicSearchNotes.push(newNote);
+
+        drawMusicSearch();
+    }
+
+    if (typeof (document) != typeof (undefined)) {
+        var smartSearchCanvas = document.getElementById("smart-search-canvas");
+
+        smartSearchCanvas.onclick = addItemToMusicSearch;
     }
 
 } 

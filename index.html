@@ -120,10 +120,11 @@
 		
 		
         <div class="hidden" id="smart-search">
-		 <div class="negative button" onclick="FrontEnd.SmartSearch.closeSearch()">x</div>
+		 <div class="x" onclick="FrontEnd.SmartSearch.closeSearch()">x</div>
             <canvas id="smart-search-canvas"></canvas>
             <input type="text" id="smart-search-text" placeholder="search project for text"/>
             <div id="smart-search-button" class="button" onclick="FrontEnd.SmartSearch.search();">search</div>
+            <div class="button" onclick="FrontEnd.SmartSearch.clearSearch();">clear</div>
             <div id="smart-search-output">
 
             </div>
