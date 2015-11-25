@@ -5659,6 +5659,12 @@ var Inknote;
             configurable: true
         });
         ScoringService.prototype.getPrintItems = function () {
+            if (this._projectID != Inknote.Managers.ProjectManager.Instance.currentProject.ID) {
+                this.refresh();
+            }
+            if (this.refresh) {
+                this.updateItems();
+            }
             return this._items;
         };
         ScoringService.prototype.getItems = function () {

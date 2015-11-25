@@ -380,6 +380,14 @@ module Inknote {
         }
 
         getPrintItems(): IDrawable[] {
+            if (this._projectID != Managers.ProjectManager.Instance.currentProject.ID) {
+                this.refresh();
+            }
+
+            if (this.refresh) {
+                this.updateItems();
+            }
+
             return this._items;
         }
 
