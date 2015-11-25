@@ -109,8 +109,18 @@
 
                 var tempBar = tempInstrument.bars[barNumber];
 
-                tempBar.items.unshift(new Model.TimeSignature(~~top, ~~bottom));
+                var replaced = false;
 
+                for (var j = 0; j < tempBar.items.length; j++) {
+                    if (tempBar.items[j] instanceof Model.TimeSignature) {
+                        replaced = true;
+                        tempBar.items[j] = new Model.TimeSignature(~~top, ~~bottom);
+                    }
+                }
+
+                if (replaced == false) {
+                    tempBar.items.unshift(new Model.TimeSignature(~~top, ~~bottom));
+                }
             }
 
             ScoringService.Instance.refresh();

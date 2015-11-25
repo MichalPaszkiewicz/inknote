@@ -375,7 +375,9 @@
 
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Note
                 || ScoringService.Instance.SelectedItem instanceof Drawing.Rest
-                || ScoringService.Instance.SelectedItem instanceof Drawing.DrawText) {
+                || ScoringService.Instance.SelectedItem instanceof Drawing.DrawText
+                || ScoringService.Instance.SelectedItem instanceof Drawing.TimeSignature
+                || ScoringService.Instance.SelectedItem instanceof Drawing.Clef) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {

@@ -6795,7 +6795,9 @@ var Inknote;
             Inknote.UndoService.Instance.store();
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Note
                 || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Rest
-                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.DrawText) {
+                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.DrawText
+                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.TimeSignature
+                || Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Clef) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
@@ -7011,7 +7013,16 @@ var Inknote;
             for (var i = 0; i < currentProject.instruments.length; i++) {
                 var tempInstrument = currentProject.instruments[i];
                 var tempBar = tempInstrument.bars[barNumber];
-                tempBar.items.unshift(new Inknote.Model.TimeSignature(~~top, ~~bottom));
+                var replaced = false;
+                for (var j = 0; j < tempBar.items.length; j++) {
+                    if (tempBar.items[j] instanceof Inknote.Model.TimeSignature) {
+                        replaced = true;
+                        tempBar.items[j] = new Inknote.Model.TimeSignature(~~top, ~~bottom);
+                    }
+                }
+                if (replaced == false) {
+                    tempBar.items.unshift(new Inknote.Model.TimeSignature(~~top, ~~bottom));
+                }
             }
             Inknote.ScoringService.Instance.refresh();
         };
