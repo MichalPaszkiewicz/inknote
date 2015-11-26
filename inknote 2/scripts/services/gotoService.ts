@@ -12,7 +12,7 @@
         }
 
         goToDrawingItem(item: IDrawable) {
-            ScrollService.Instance.y = (ScrollService.Instance.y + item.y) - 80;
+            ScrollService.Instance.y = item.y - 80;
             ScoringService.Instance.selectID = item.ID;
             ScoringService.Instance.refresh();
         }

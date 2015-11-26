@@ -7642,7 +7642,7 @@ var Inknote;
             configurable: true
         });
         GoToService.prototype.goToDrawingItem = function (item) {
-            Inknote.ScrollService.Instance.y = (Inknote.ScrollService.Instance.y + item.y) - 80;
+            Inknote.ScrollService.Instance.y = item.y - 80;
             Inknote.ScoringService.Instance.selectID = item.ID;
             Inknote.ScoringService.Instance.refresh();
         };
