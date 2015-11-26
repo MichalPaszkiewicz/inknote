@@ -201,6 +201,7 @@
                     NoteControlService.Instance.noteValueDown();
                     break;
                 // delete
+                case 8:
                 case 46:
                     NoteControlService.Instance.deleteSelected();
                     break;
@@ -219,6 +220,14 @@
                 // ]
                 case 221:
                     NoteControlService.Instance.piano.octave++;
+                    break;
+                // +
+                case 107:
+                    NoteControlService.Instance.show();
+                    break;
+                // -
+                case 109:
+                    NoteControlService.Instance.hide();
                     break;
                 default:
                     log("key pressed: " + e.keyCode);

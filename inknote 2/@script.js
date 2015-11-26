@@ -9760,6 +9760,7 @@ var Inknote;
                     Inknote.NoteControlService.Instance.noteValueDown();
                     break;
                 // delete
+                case 8:
                 case 46:
                     Inknote.NoteControlService.Instance.deleteSelected();
                     break;
@@ -9778,6 +9779,14 @@ var Inknote;
                 // ]
                 case 221:
                     Inknote.NoteControlService.Instance.piano.octave++;
+                    break;
+                // +
+                case 107:
+                    Inknote.NoteControlService.Instance.show();
+                    break;
+                // -
+                case 109:
+                    Inknote.NoteControlService.Instance.hide();
                     break;
                 default:
                     Inknote.log("key pressed: " + e.keyCode);
