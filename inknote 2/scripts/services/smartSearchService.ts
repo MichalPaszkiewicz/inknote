@@ -66,11 +66,12 @@
 
             for (var i = 0; i < musicResults.length; i++) {
                 if (anyItemIs(textResults, function (item: SmartSearchResult) {
+                    var sameProject = musicResults[i].projectIndex == item.projectIndex;
                     var sameInstrument = musicResults[i].instrumentIndex == item.instrumentIndex;
                     var sameBar = musicResults[i].barIndex == item.barIndex;
                     var similarIndex = musicResults[i].itemIndex == item.itemIndex - 1;
 
-                    return sameInstrument && sameBar;
+                    return sameProject && sameInstrument && sameBar;
                 })) {
                     finalResults.push(musicResults[i]);
                 }
