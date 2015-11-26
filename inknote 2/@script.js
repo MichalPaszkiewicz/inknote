@@ -7519,7 +7519,7 @@ var Inknote;
             for (var i = 0; i < musicResults.length; i++) {
                 if (Inknote.anyItemIs(textResults, function (item) {
                     var sameInstrument = musicResults[i].instrumentIndex == item.instrumentIndex;
-                    var sameBar = musicResults[i].instrumentIndex == item.barIndex;
+                    var sameBar = musicResults[i].barIndex == item.barIndex;
                     var similarIndex = musicResults[i].itemIndex == item.itemIndex - 1;
                     return sameInstrument && sameBar;
                 })) {
