@@ -6672,7 +6672,19 @@ var Inknote;
             Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
             if (Inknote.Audio.AudioService) {
-                Inknote.Audio.AudioService.Instance.playNote(note);
+                var playInstrument = project.instruments[0];
+                if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
+                    for (var i = 0; i < project.instruments.length; i++) {
+                        for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                            if (project.instruments[i].bars[j].ID == Inknote.ScoringService.Instance.selectID) {
+                                playInstrument = project.instruments[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+                var synth = playInstrument.synthID ? Inknote.Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
+                Inknote.Audio.AudioService.Instance.playNote(note, synth);
             }
             if (Inknote.ScoringService.Instance.SelectedItem instanceof Inknote.Drawing.Bar) {
                 for (var i = 0; i < project.instruments.length; i++) {
@@ -6844,6 +6856,7 @@ var Inknote;
         NoteControlService.prototype.editNoteValueAndOctave = function (value, octave) {
             Inknote.UndoService.Instance.store();
             var project = Inknote.Managers.ProjectManager.Instance.currentProject;
+            var playInstrument = project.instruments[0];
             var playedNotes = [];
             for (var i = 0; i < project.instruments.length; i++) {
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
@@ -6851,6 +6864,7 @@ var Inknote;
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
                         if (item.ID == Inknote.ScoringService.Instance.selectID) {
+                            playInstrument = project.instruments[i];
                             if (item instanceof Inknote.Model.Note) {
                                 item.value = value;
                                 item.octave = octave;
@@ -6869,8 +6883,9 @@ var Inknote;
                 }
             }
             if (Inknote.Audio.AudioService) {
+                var synth = playInstrument.synthID ? Inknote.Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
                 for (var i = 0; i < playedNotes.length; i++) {
-                    Inknote.Audio.AudioService.Instance.playNote(playedNotes[i]);
+                    Inknote.Audio.AudioService.Instance.playNote(playedNotes[i], synth);
                 }
             }
             Inknote.ScoringService.Instance.refresh();

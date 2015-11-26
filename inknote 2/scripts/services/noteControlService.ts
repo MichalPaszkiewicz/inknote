@@ -202,7 +202,22 @@
             var project = Managers.ProjectManager.Instance.currentProject;
 
             if (Audio.AudioService) {
-                Audio.AudioService.Instance.playNote(note);
+                var playInstrument = project.instruments[0];
+
+                if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                    for (var i = 0; i < project.instruments.length; i++) {
+                        for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                            if (project.instruments[i].bars[j].ID == ScoringService.Instance.selectID) {
+                                playInstrument = project.instruments[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                var synth = playInstrument.synthID ? Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
+
+                Audio.AudioService.Instance.playNote(note, synth);
             }
 
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
@@ -427,6 +442,8 @@
             UndoService.Instance.store();
 
             var project = Managers.ProjectManager.Instance.currentProject;
+            
+            var playInstrument = project.instruments[0];
 
             var playedNotes: Model.Note[] = [];
 
@@ -437,6 +454,9 @@
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
                         if (item.ID == ScoringService.Instance.selectID) {
+                            
+                            playInstrument = project.instruments[i];
+
                             if (item instanceof Model.Note) {
                                 item.value = value;
                                 item.octave = octave;
@@ -461,8 +481,10 @@
             }
 
             if (Audio.AudioService) {
+                var synth = playInstrument.synthID ? Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
+
                 for (var i = 0; i < playedNotes.length; i++) {
-                    Audio.AudioService.Instance.playNote(playedNotes[i]);
+                    Audio.AudioService.Instance.playNote(playedNotes[i], synth);
                 }
             }
 
