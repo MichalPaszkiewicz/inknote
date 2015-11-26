@@ -8147,12 +8147,20 @@ var Inknote;
                 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                  * input ----> dryGain ----------------|
                  *    |------> delay --> wetGain --> mixGain --> output
-                 *                |---<----|
+                 *                |         |
+                 *                |     compressor
+                 *                |         |
+                 *                |---<-----|
                  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
                 this.input.connect(this.dryGain);
                 this.input.connect(this.delayNode);
                 this.delayNode.connect(wetGain);
-                wetGain.connect(this.delayNode);
+                var compressor = audioContext.createDynamicsCompressor();
+                compressor.threshold.value = 0.5;
+                compressor.attack.value *= 5;
+                compressor.knee.value *= 4;
+                wetGain.connect(compressor);
+                compressor.connect(this.delayNode);
                 this.dryGain.connect(this.mixGain);
                 wetGain.connect(this.mixGain);
                 this.mixGain.connect(node);
