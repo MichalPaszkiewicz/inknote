@@ -19,7 +19,8 @@
 
             this._storage.push(compressedCurrentProject);
             
-            while (this._storage.length >= 5) {
+            // maximum of 10 undos - more undos means more storage space is needed.
+            while (this._storage.length > 10) {
                 this._storage.shift();
             }
         }

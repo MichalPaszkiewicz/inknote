@@ -6,7 +6,8 @@
         Form,
         File,
         List,
-        Licence
+        Licence,
+        Print
 
     }
 
@@ -23,6 +24,8 @@
                 return "List";
             case Page.Licence:
                 return "Licence";
+            case Page.Print:
+                return "Print";
         }
     }
 
@@ -42,6 +45,8 @@
             }
             Menu.closeAllSubMenus();
 
+            RightClickMenuService.Instance.visible = false;
+
             if (ScrollService && ScrollService.Instance) {
                 ScrollService.Instance.x = 0;
                 ScrollService.Instance.y = 0;
@@ -49,9 +54,28 @@
 
             if (item == Page.Score) {
                 FrontEnd.showElement(document.getElementById("play"));
+                FrontEnd.showElement(document.getElementById("mouse-control"));
             }
             else {
                 FrontEnd.hideElement(document.getElementById("play"));
+                FrontEnd.hideElement(document.getElementById("mouse-control"));
+                MouseControl.SelectMouseType(0);
+            }
+
+            var pagePrefix = "page-item-";
+            
+            for (var i = 0; i < 6; i++) {
+                var pageItemsToHide = document.getElementsByClassName(pagePrefix + pageName(i));
+
+                for (var j = 0; j < pageItemsToHide.length; j++) {
+                    FrontEnd.hideElement(<HTMLElement>pageItemsToHide[j]);
+                }
+            }
+
+            var pageItems = document.getElementsByClassName(pagePrefix + pageName(item));
+
+            for (var i = 0; i < pageItems.length; i++) {
+                FrontEnd.showElement(<HTMLElement>pageItems[i]);
             }
 
             switch (item) {
@@ -61,6 +85,7 @@
                     break;
                 case Page.List:
                     break;
+                case Page.Print:
                 case Page.Score:
                     pageURL += "=" + ProjectManager.Instance.currentProject.ID;
                     break;
@@ -84,7 +109,7 @@
             return PageManager._current;
         }
 
-        openNewPage(page: Page, ID: string) {
+        openNewPage(page: Page, ID: string): any {
             var newURL = "?"; 
             console.log(newURL);
             
@@ -92,7 +117,7 @@
             newURL += "=";
             newURL += ID;
 
-            window.open(newURL);
+            return window.open(newURL);
         }
 
         openPageFromURL() {

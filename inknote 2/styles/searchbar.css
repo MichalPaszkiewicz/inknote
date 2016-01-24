@@ -1,0 +1,68 @@
+﻿#search-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 200px;
+  background: black;
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+}
+#search-bar input {
+  width: 190px;
+  margin: auto;
+  line-height: 28px;
+  display: block;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: none;
+}
+@media (max-width: 540px) {
+  #search-bar {
+    bottom: 0;
+    margin: 0;
+    top: auto;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0;
+  }
+  #search-bar input {
+    padding: 0 10px;
+    line-height: 30px;
+    width: 95%;
+  }
+}
+#smart-search {
+  position: fixed;
+  background: #f1f1ec;
+  box-shadow: 5px 4px 9px 0px #191919;
+  width: 240px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#smart-search #smart-search-text {
+  margin: 10px 0;
+  width: 212px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+#smart-search #smart-search-title {
+  text-align: center;
+  margin: 5px;
+  font-size: 20px;
+}
+#smart-search h3 {
+  margin: 5px;
+  font-size: 18px;
+  text-align: center;
+}
+#smart-search span {
+  min-width: 50px;
+  display: inline-block;
+  text-align: center;
+}
+/*# sourceMappingURL=searchbar.css.map */

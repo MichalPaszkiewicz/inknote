@@ -16,7 +16,7 @@
 /// <reference path="scripts/helpers/canvas.ts" />
 /// <reference path="scripts/helpers/maths.ts" />
 /// <reference path="scripts/helpers/2d.ts" />
- 
+
 // model
 /// <reference path="scripts/model/settings.ts" />
 /// <reference path="scripts/model/drawoptions.ts" />
@@ -28,10 +28,12 @@
 /// <reference path="scripts/model/rest.ts" />
 /// <reference path="scripts/model/note.ts" />
 /// <reference path="scripts/model/chord.ts" />
+/// <reference path="scripts/model/text.ts" />
 /// <reference path="scripts/model/bar.ts" />
 /// <reference path="scripts/model/instrument.ts" />
 /// <reference path="scripts/model/project.ts" />
 /// <reference path="scripts/model/drawingsettings.ts" />
+/// <reference path="scripts/model/tempdata.ts" />
 
 // compressed
 /// <reference path="scripts/model/compressed/compresseditemidentifier.ts" />
@@ -40,6 +42,7 @@
 /// <reference path="scripts/model/compressed/compressedrest.ts" />
 /// <reference path="scripts/model/compressed/compressedclef.ts" />
 /// <reference path="scripts/model/compressed/compressedtimesignature.ts" />
+/// <reference path="scripts/model/compressed/compressedtext.ts" />
 /// <reference path="scripts/model/compressed/compressedBar.ts" />
 /// <reference path="scripts/model/compressed/compressedInstrument.ts" />
 /// <reference path="scripts/model/compressed/compressedproject.ts" />
@@ -68,7 +71,9 @@
 /// <reference path="scripts/drawings/flat.ts" />
 /// <reference path="scripts/drawings/natural.ts" />
 /// <reference path="scripts/drawings/note.ts" />
+/// <reference path="scripts/drawings/ledgerline.ts" />
 /// <reference path="scripts/drawings/rest.ts" />
+/// <reference path="scripts/drawings/drawtext.ts" />
 /// <reference path="scripts/drawings/bar.ts" />
 /// <reference path="scripts/drawings/loading.ts" /> 
 /// <reference path="scripts/drawings/name.ts" />
@@ -110,13 +115,18 @@
 /// <reference path="scripts/drawings/notecontrols/deletenotecontrol.ts" />
 /// <reference path="scripts/drawings/notecontrols/minimise.ts" /> 
 
+// logging service
+/// <reference path="scripts/services/logger.ts" />
+
 // storage
+/// <reference path="scripts/storage/cookiestorage.ts" />
+/// <reference path="scripts/storage/idbstorage.ts" />
 /// <reference path="scripts/storage/localstorage.ts" />
 /// <reference path="scripts/storage/drivestorage.ts" />
 
 // services
+/// <reference path="scripts/services/tempdataservice.ts" />
 /// <reference path="scripts/services/confirmservice.ts" />
-/// <reference path="scripts/services/logger.ts" />
 /// <reference path="scripts/services/identifyservice.ts" />
 /// <reference path="scripts/services/scrollservice.ts" />
 /// <reference path="scripts/services/licenceservice.ts" />
@@ -142,6 +152,9 @@
 /// <reference path="scripts/services/instrumentservice.ts" />
 /// <reference path="scripts/services/undoservice.ts" />
 /// <reference path="scripts/services/httpservice.ts" />
+/// <reference path="scripts/services/printservice.ts" />
+/// <reference path="scripts/services/smartsearchservice.ts" />
+/// <reference path="scripts/services/gotoservice.ts" />
 
 // audio
 /// <reference path="scripts/audio/sound.ts" />
@@ -162,6 +175,7 @@
 /// <reference path="scripts/managers/settingsmanager.ts" />
 /// <reference path="scripts/managers/projectmanager.ts" />
 /// <reference path="scripts/managers/pluginmanager.ts" />
+/// <reference path="scripts/managers/mousemanager.ts" />
 
 // plugins
 /// <reference path="scripts/plugins/compressedplugin.ts" />
@@ -174,6 +188,7 @@
 /// <reference path="scripts/actions/scrollcontrol.ts" />
 /// <reference path="scripts/actions/typecontrol.ts" />
 /// <reference path="scripts/actions/frontendactions.ts" />
+/// <reference path="scripts/actions/frontendsearch.ts" />
 /// <reference path="scripts/actions/windowresize.ts" />
 
 // app

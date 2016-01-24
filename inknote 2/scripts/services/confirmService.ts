@@ -19,7 +19,9 @@
         var listener = function () {
             FrontEnd.hideElement(confirmBox);
             FrontEnd.hideElement(confirmCover);
-            onTrue();
+            if (onTrue) {
+                onTrue();
+            }
             setTimeout(function () {
                 CONFIRM_IS_OPEN = false;
             }, 300);

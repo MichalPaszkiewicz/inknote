@@ -14,7 +14,33 @@
 
         oscillatorType: Audio.SoundType = Audio.SoundType.sine;
 
-        gain: number = 1;
+        get gain(): number {
+            return this.mixGain ? this.mixGain.gain.value : 1;
+        }
+
+        set gain(newGain: number) {
+            if (!this.mixGain) {
+                return;
+            }
+            this.mixGain.gain.value = newGain;
+        }
+
+        get delay(): number {
+            return this.delayNode ? this.delayNode.delayTime.value : 0.1;
+        }
+
+        set delay(delayTime: number) {
+            if (!this.delayNode) {
+                return;
+            }
+            this.delayNode.delayTime.value = delayTime;
+        }
+
+        private dryGain: GainNode;
+        private delayNode: DelayNode;
+        private mixGain: GainNode;
+
+        private connectedTo: any;
 
         connectTo(node: AudioNode, audioContext: AudioContext) {
 
@@ -28,17 +54,24 @@
                 throw Error("the input must be set first, before connecting the synth to further items");
             }
 
+            if (this.connectedTo == node) {
+                this.input.connect(this.dryGain);
+                this.input.connect(this.delayNode);
+                return; 
+            } 
+            this.connectedTo = node;
+
             var wetGain = audioContext.createGain();
             wetGain.gain.value = 0.5;
 
-            var dryGain = audioContext.createGain();
+            this.dryGain = audioContext.createGain();
 
-            var delay = audioContext.createDelay(1);
-            delay.delayTime.value = 0.2;
+            this.delayNode = audioContext.createDelay(1);
+            this.delayNode.delayTime.value = 0.1;
 
-            var mixGain = audioContext.createGain();
+            this.mixGain = audioContext.createGain();
             if (this.gain) {
-                mixGain.gain.value = this.gain;
+                this.mixGain.gain.value = this.gain;
             }
 
             var bq = audioContext.createBiquadFilter();
@@ -48,27 +81,35 @@
             /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
              * input ----> dryGain ----------------|
              *    |------> delay --> wetGain --> mixGain --> output
-             *                |---<----|
+             *                |         |
+             *                |     compressor
+             *                |         |
+             *                |---<-----|
              * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-            this.input.connect(dryGain);
-            this.input.connect(delay);
-            delay.connect(wetGain);
-            wetGain.connect(delay);
+            this.input.connect(this.dryGain);
+            this.input.connect(this.delayNode);
+            this.delayNode.connect(wetGain);
 
-            dryGain.connect(mixGain);
-            wetGain.connect(mixGain);
+            var compressor = audioContext.createDynamicsCompressor();
+            compressor.threshold.value = 0.5;
+            compressor.attack.value *= 5;
+            compressor.knee.value *= 4;
 
-            mixGain.connect(node);
+            wetGain.connect(compressor);
 
-        }
+            compressor.connect(this.delayNode);
+            
+            this.dryGain.connect(this.mixGain);
+            wetGain.connect(this.mixGain);
+
+            this.mixGain.connect(node);
+        } 
 
         constructor(public name: string) {
             if (!name) {
                 throw new Error("A synth must have a name!");
             }
         }
-
     }
-
 }

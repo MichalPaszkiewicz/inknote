@@ -58,6 +58,58 @@
                         ScoringService.Instance.refresh();
                     }
 
+                    var synthSelect = document.createElement("select");
+                    synthSelect.setAttribute("data-id", instruments[i].ID);
+
+                    var synthList = Audio.SynthManager.Instance.getSynths();
+
+                    var emptyOption = document.createElement("option");
+                    emptyOption.value = "";
+                    emptyOption.text = "none";
+                    if (!instruments[i].synthName && !instruments[i].synthID){
+                        emptyOption.selected = true;
+                    }           
+                    
+                    synthSelect.appendChild(emptyOption);         
+
+                    synthSelect.onchange = function (ev) {
+
+                        var ele = <HTMLSelectElement>ev.target;
+                        var id = ele.getAttribute("data-id");
+                        var proj = Managers.ProjectManager.Instance.currentProject;
+
+                        for (var j = 0; j < proj.instruments.length; j++) {
+                            if (proj.instruments[j].ID == id) {
+                                if (ele.value == "") {
+                                    proj.instruments[j].synthName = null;
+                                    proj.instruments[j].synthID = null;
+                                }
+                                else {
+                                    var breakPoint = ele.value.indexOf("|");
+                                    var synthID = ele.value.substring(0, breakPoint);
+                                    var synthName = ele.value.substring(breakPoint + 1);
+
+                                    proj.instruments[j].synthName = synthName;
+                                    proj.instruments[j].synthID = synthID;
+                                }
+                            }
+                        }
+                    }
+
+                    for (var j = 0; j < synthList.length; j++) {
+                        var optionItem = document.createElement("option");
+
+                        optionItem.value = synthList[j].ID + "|" + synthList[j].name;
+                        optionItem.textContent = synthList[j].name;
+
+                        synthSelect.appendChild(optionItem);
+
+                        if (synthList[j].ID == instruments[i].synthID) {
+                            optionItem.selected = true;
+                            synthSelect.value = optionItem.value;
+                        }
+                    }
+
                     var isVisible = document.createElement("input");
                     isVisible.type = "checkbox";
                     isVisible.checked = instruments[i].visible;
@@ -121,6 +173,7 @@
                     }
 
                     formRow.appendChild(instrumentHolder);
+                    formRow.appendChild(synthSelect);
                     formRow.appendChild(isVisible);
                     formRow.appendChild(up);
                     formRow.appendChild(down);

@@ -3,6 +3,8 @@
     margin: 0;
     height: 100%;
     width: 100%;
+
+    cursor: url('../assets/cursor.png'), default;
 }
 
 input[type*=checkbox] {
@@ -66,11 +68,20 @@ canvas {
     user-select: none;
     display: block;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+}
+
+canvas.pencilMode{
+    cursor: url('../assets/pencil.png'), crosshair;
+}
+
+canvas.textMode{
+    cursor: text;
 }
 
 .button {
     background: gray;
-    cursor: pointer;
+    cursor: url('../assets/pointer.png'), pointer;
     padding: 5px;
     display: inline-block;
     color: white;
@@ -137,8 +148,10 @@ canvas {
         min-height: 100px;
     }
 
-    .x {
-        cursor: pointer;
+}
+
+.x, .modal .x {
+        cursor: url('../assets/pointer.png'), pointer;
         width: 20px;
         height: 20px;
         line-height: 20px;
@@ -153,7 +166,6 @@ canvas {
             color: darkred;
         }
     }
-}
 
 @media(max-width: 1200px) {
     .modal {

@@ -8,7 +8,7 @@
         height: 40px;
         border-radius: 0 15px 0 15px;
         box-shadow: 0 0 3px 1px gray;
-        cursor: pointer;
+        cursor: url('../assets/pointer.png'), pointer;
         transition: border-radius 0.25s;
         -webkit-transition: border-radius 0.25s;
         -moz-transition: border-radius 0.25s;
@@ -76,6 +76,7 @@
         width: 100%;
         background: rgba(0,0,0,0.7);
         text-align: center;
+        z-index: 10;
 
         .menu-item {
             display: inline-block;
@@ -85,7 +86,7 @@
             border-radius: 60px;
             margin: 10px;
             color: white;
-            cursor: pointer;
+            cursor: url('../assets/pointer.png'), pointer;
             vertical-align: top;
             text-align: center;
             padding: 48px 0;
@@ -98,7 +99,7 @@
         }
 
         svg {
-            cursor: pointer;
+            cursor: url('../assets/pointer.png'), pointer;
         }
 
         svg:hover path {

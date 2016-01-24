@@ -84,6 +84,8 @@
     function compressInstrument(instrument: Model.Instrument): Compressed.Instrument {
         var result = new Compressed.Instrument(instrument.name);
         result.v = instrument.visible;
+        result.synthID = instrument.synthID;
+        result.synthName = instrument.synthName;
 
         for (var i = 0; i < instrument.bars.length; i++) {
             result.bars.push(compressBar(instrument.bars[i]));
@@ -120,6 +122,11 @@
                 var compressedTimeSignature = compressTimeSignature(<Model.TimeSignature>bar.items[i]);
 
                 result.items.push(compressedTimeSignature);
+            }
+            if (bar.items[i] instanceof Model.Text) {
+                var compressedText = compressText(<Model.Text>bar.items[i]);
+
+                result.items.push(compressedText);
             }
         }
 
@@ -194,6 +201,16 @@
 
     }
 
+    function compressText(txt: Model.Text): Compressed.CompressedText {
+
+        var result = new Compressed.CompressedText();
+
+        result.c = txt.content;
+
+        return result;
+
+    }
+
     export function compressAll(projects: Project[]): Compressed.CompressedProject[] {
         var result = [];
 
@@ -236,6 +253,8 @@
     function decompressInstrument(instrument: Compressed.Instrument): Model.Instrument {
         var result = new Model.Instrument(instrument.name);
         result.visible = instrument.v;
+        result.synthID = instrument.synthID;
+        result.synthName = instrument.synthName;
 
         for (var i = 0; i < instrument.bars.length; i++) {
             result.bars.push(decompressBar(instrument.bars[i]));
@@ -272,6 +291,11 @@
                 var decompressedTimeSignature = decompressTimeSignature(<Compressed.CompressedTimeSignature>bar.items[i]);
 
                 result.items.push(decompressedTimeSignature);
+            }
+            else if (bar.items[i].i == Compressed.ItemIdentifier.TEXT) {
+                var decompressedText = decompressText(<Compressed.CompressedText>bar.items[i]);
+
+                result.items.push(decompressedText);
             }
             else {
                 log("object in bar unidentified", MessageType.Warning);
@@ -340,6 +364,14 @@
         }
 
         return result;
+    }
+
+    function decompressText(txt: Compressed.CompressedText): Model.Text {
+
+        var result = new Model.Text(txt.c);
+
+        return result;
+
     }
 
     function decompressTimeSignature(timeSignature: Compressed.CompressedTimeSignature): Model.TimeSignature {

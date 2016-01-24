@@ -434,4 +434,216 @@ module Inknote.Tests {
         });
     });
 
+    describe("maxOutOf", function () {
+        
+        it("returns -Infinity when given null", function () {
+            expect(maxOutOf(null, function () { return 8 })).toBe(-Infinity);
+        });
+
+        it("returns -Infinity when given undefined", function () {
+            expect(maxOutOf(undefined, function () { return 8 })).toBe(-Infinity);
+        });
+
+        it("returns correct value when straight numbers", function () {
+            expect(maxOutOf([1, 2, 3, 4, 5], function (x) { return x })).toBe(5); 
+        });
+
+        it("returns correct value when all same", function () {
+            expect(maxOutOf([5, 5, 5, 5, 5], function (x) { return x })).toBe(5);
+        });
+
+        it("returns correct value from object", function () {
+            expect(maxOutOf([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }, { a: 5 }], function (x) {
+                return x.a;
+            })).toBe(5);
+        });
+
+        it("returns correct calculated value", function () {
+            expect(maxOutOf([1, 2, 3, 4, 5, 6], function (x) { return x * x })).toBe(36);
+        });
+    });
+
+    describe("minOutOf", function () {
+
+        it("returns Infinity when given null", function () {
+            expect(minOutOf(null, function () { return 8 })).toBe(Infinity);
+        });
+
+        it("returns Infinity when given undefined", function () {
+            expect(minOutOf(undefined, function () { return 8 })).toBe(Infinity);
+        });
+
+        it("returns correct value when straight numbers", function () {
+            expect(minOutOf([1, 2, 3, 4, 5], function (x) { return x })).toBe(1);
+        });
+
+        it("returns correct value when all same", function () {
+            expect(minOutOf([5, 5, 5, 5, 5], function (x) { return x })).toBe(5);
+        });
+
+        it("returns correct value from objects", function () {
+            expect(minOutOf([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }, { a: 5 }], function (x) {
+                return x.a;
+            })).toBe(1);
+        });
+
+        it("returns correct value from calculated values", function () {
+            expect(minOutOf([2, 3, 4, 5, 6, 7, 8], function (x) {
+                return x * x;
+            })).toBe(4);
+        });
+    });
+
+    describe("getItemWithMax", function () {
+        
+        it("returns correct value from a number array", function () {
+
+            expect(getItemWithMax(numbersList, function (x: number) {
+                return x;
+            })).toBe(19);
+
+        });
+
+        it("returns correct value from an object array", function () {
+
+            var objectList = [];
+
+            var resultNum;
+
+            for (var i = 0; i < 20; i++) {
+
+                var num = { num: i + 10 };
+
+                if (num.num == 29) {
+                    resultNum = num;
+                }
+
+                objectList.push(num);
+            }
+
+            expect(getItemWithMax(objectList, function (x: { num: number }) {
+                return x.num;
+            })).toBe(resultNum);
+
+        });
+
+        it("returns null if null array", function () {
+
+            expect(getItemWithMax(null, function (x: number) {
+                return x;
+            })).toBe(null);
+
+        });
+
+        it("returns null if null array, even if expecting object", function () {
+
+            expect(getItemWithMax(null, function (x: any) {
+                return x.a.b.c.d.e.f;
+            })).toBe(null);
+
+        });
+
+    });
+
+    describe("getItemsWithMin", function () {
+
+        it("returns correct value from a number array", function () {
+
+            expect(getItemWithMin([4, 4, 3, 7, 8], function (x: number) {
+                return x;
+            })).toBe(3);
+
+        });
+
+        it("returns correct value from an object array", function () {
+
+            var objectList = [];
+
+            var resultNum;
+
+            for (var i = 0; i < 20; i++) {
+
+                var num = { num: i + 10 };
+
+                if (num.num == 10) {
+                    resultNum = num;
+                }
+
+                objectList.push(num);
+            }
+
+            expect(getItemWithMin(objectList, function (x: { num: number }) {
+                return x.num;
+            })).toBe(resultNum);
+
+        });
+
+        it("returns null if given null array", function () {
+
+            expect(getItemWithMin(null, function (x: number) {
+                return x;
+            })).toBe(null);
+
+        });
+
+        it("returns null if given null array, even if expecting object", function () {
+
+            expect(getItemWithMin(null, function (x: any) {
+                return x.a.b.c.d;
+            })).toBe(null);
+
+        });
+
+    });
+
+    describe("getFirstItemWhere", function () {
+
+        it("returns null if given null array", function () {
+
+            expect(getFirstItemWhere(null, function (x: number) {
+                return x == 5;
+            })).toBe(null);
+
+        });
+
+        it("returns null if given null array when expecting an object", function () {
+
+            expect(getFirstItemWhere(null, function (x: any) {
+                return x.a.b.c.d == 5;
+            })).toBe(null);
+
+        });
+
+        it("returns the first item from number array", function () {
+
+            expect(getFirstItemWhere([1, 2, 3, 4, 5, 4, 6, 2, 5], function (x: number) {
+                return x == 3;
+            })).toBe(3);
+
+        });
+
+        it("returns the first item from string array", function () {
+            
+            expect(getFirstItemWhere(["one", "two", "three", "four", "five"], function (x: string) {
+                return x.indexOf("f") != -1;
+            })).toBe("four");
+
+        });
+
+        it("returns the first item from an object array", function () {
+
+            var objectList = [{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }];
+            
+            var resultNum = { a: 7, b: 4 };
+
+            objectList.push(resultNum);
+
+            expect(getFirstItemWhere(objectList, function (x: any) {
+                return x.b == 4;
+            })).toBe(resultNum);
+
+        });
+
+    });
+
 }

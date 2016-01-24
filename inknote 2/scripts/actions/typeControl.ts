@@ -2,8 +2,16 @@
 
     var keysDown: number[] = [];
 
-    if (typeof document != "undefined" && typeof window != "undefined"){
+    if (typeof document != "undefined" && typeof window != "undefined") {
         document.onkeydown = function (e) {
+
+            if (e.target == document.getElementById("file-search") && e.keyCode != 27) {
+                return;
+            }
+
+            if (e.target == document.getElementById("smart-search-text") && e.keyCode != 27) {
+                return;
+            }
 
             keysDown.push(e.keyCode);
 
@@ -18,7 +26,7 @@
             // ctrl
             if (anyItemIs(keysDown, function (item: number) {
                 return item == 17;
-            })){
+            })) {
 
                 // c
                 // copy
@@ -49,7 +57,19 @@
                     Action(ActionType.SaveProject);
                     e.preventDefault();
                 }
+                // p
+                // print
+                if (e.keyCode == 80) {
+                    PrintService.Instance.print();
+                    e.preventDefault();
+                }
 
+                // f
+                // find
+                if (e.keyCode == 70) {
+                    FrontEnd.SmartSearch.openSearch();
+                    e.preventDefault();
+                }
             }
 
             if (e.keyCode == 8) {
@@ -58,6 +78,14 @@
         }
 
         window.onkeyup = function (ev: KeyboardEvent) {
+
+            if (ev.target == document.getElementById("file-search") && ev.keyCode != 27) {
+                return;
+            } 
+
+            if (ev.target == document.getElementById("smart-search-text") && ev.keyCode != 27) {
+                return;
+            }
 
             keysDown = getItemsWhere(keysDown, function (item: number) {
                 return item != ev.keyCode;
@@ -73,7 +101,7 @@
                 return;
             }
 
-            if (Modal.isModalOpen === true){
+            if (Modal.isModalOpen === true && ev.keyCode != 27) {
                 return;
             }
 
@@ -101,6 +129,13 @@
 
         if (!ProjectConverter.name.select) {
             switch (e.keyCode) {
+                // esc
+                case 27:
+                    Action(ActionType.ToPage, Managers.Page.File);
+                    Modal.cancelReport();
+                    Modal.hideAllModals();
+                    FrontEnd.SmartSearch.closeSearch();
+                    break;
                 // a
                 case 65:
                     noteVal = Model.NoteValue.C;
@@ -166,12 +201,36 @@
                     NoteControlService.Instance.noteValueDown();
                     break;
                 // delete
+                case 8:
                 case 46:
                     NoteControlService.Instance.deleteSelected();
                     break;
                 // SPACE
                 case 32:
                     Audio.AudioService.Instance.toggle();
+                    break;
+                // <
+                case 188:
+                // [
+                case 219:
+                    NoteControlService.Instance.piano.octave--;
+                    break;
+                // >
+                case 190:
+                // ]
+                case 221:
+                    NoteControlService.Instance.piano.octave++;
+                    break;
+                // +
+                case 107:
+                    NoteControlService.Instance.show();
+                    break;
+                // -
+                case 109:
+                    NoteControlService.Instance.hide();
+                    break;
+                default:
+                    log("key pressed: " + e.keyCode);
             }
         }
 
@@ -189,7 +248,7 @@
         }
 
         if (ScoringService.Instance.SelectedItem instanceof Drawing.Clef) {
-            
+
             switch (e.keyCode) {
                 // up
                 case 38:
@@ -271,10 +330,27 @@
         }
 
         switch (e.keyCode) {
+            // esc
+            case 27:
+                Menu.closeAllSubMenus();
+                if (Menu.isMenuOpen) {
+                    Menu.toggle();
+                }
+                Modal.cancelReport();
+                Modal.hideAllModals();
+                RightClickMenuService.Instance.visible = false;
+                FrontEnd.hideElement(document.getElementById("search-bar"));
+                FrontEnd.SmartSearch.closeSearch();
+                return;
+            // SPACE
+            case 32:
+                FrontEnd.showElement(document.getElementById("search-bar"));
+                return;
             // m
             case 77:
                 Menu.toggle();
                 return;
+            // n
             case 78:
                 Inknote.Action(ActionType.NewProject, Managers.Page.Score);
                 return;

@@ -102,4 +102,37 @@
 
         return distanceFromOctave + distanceOfNote;
     }
+
+    export function getNoteFromStaveDifference(note: Model.Note, staveDifference: number) {
+
+        var semiToneCounter = 0;
+        var resultNote: Model.Note;
+
+        if (staveDifference >= 0) {
+            for (var i = 0; i < staveDifference; i++) {
+                var gotAWhiteNote = false;
+                while (!gotAWhiteNote) {
+                    resultNote = getNoteOfDistance(note, semiToneCounter);
+
+                    gotAWhiteNote = Model.IsWhiteKey(resultNote.value);
+
+                    semiToneCounter++;
+                }
+            }
+        }
+        else {
+            for (var i = 0; i > staveDifference; i--) {
+                var gotAWhiteNote = false;
+                while (!gotAWhiteNote) {
+                    resultNote = getNoteOfDistance(note, semiToneCounter);
+
+                    gotAWhiteNote = Model.IsWhiteKey(resultNote.value);
+
+                    semiToneCounter--;
+                }
+            }
+        }
+
+        return resultNote;
+    }
 } 

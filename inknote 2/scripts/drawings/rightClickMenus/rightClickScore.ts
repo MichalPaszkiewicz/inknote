@@ -28,6 +28,12 @@
                 InstrumentService.Instance.addInstrument();
 
             }));
+            this.items.push(new ClickableMenuItem("print", function () {
+                PrintService.Instance.print();
+            }));
+            this.items.push(new ClickableMenuItem("note count", function () {
+                Modal.generateProjectReport();
+            }));
 
         }
 

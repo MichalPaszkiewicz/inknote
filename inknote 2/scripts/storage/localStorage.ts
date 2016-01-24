@@ -4,11 +4,12 @@
         settings: "settings",
         projects: "projects",
         plugins: "plugins",
-        synths: "synths"
+        synths: "synths",
+        temp: "temp"
     }
-
+    
     function getLocal(key: string): any {
-
+        
         if (typeof localStorage == "undefined") {
             log("Local storage is undefined", MessageType.Error);
             return null;
@@ -86,6 +87,8 @@
             }
         }
 
+        log("saved projects");
+
     }
 
     export function savePlugins() {
@@ -115,7 +118,7 @@
 
     }
 
-    export function getSynths() {
+    export function getSynths(): Audio.Synth[] {
 
         var result = getLocal(defaults.synths);
 
@@ -123,7 +126,37 @@
             return [];
         }
 
+        var synthResult = [];
+        for (var i = 0; i < result.length; i++) {
+            var item = new Audio.Synth(result[i].name);
+            item.gain = result[i].gain;
+            item.ID = result[i].ID;
+            item.name = result[i].name;
+            item.oscillatorType = result[i].oscillatorType;
+            synthResult.push(item);
+        }
+
+        return synthResult;
+    }
+
+    export function saveTemp() {
+
+        saveLocal(defaults.temp, Inknote.TempDataService.Instance.currentData);
+
+        log("saved temp data");
+
+    }
+
+    export function getTemp(): TempData {
+
+        var result = getLocal(defaults.temp);
+
+        if (result == null || result == undefined) {
+            return new TempData();
+        }
+
         return result;
+
     }
 
 } 

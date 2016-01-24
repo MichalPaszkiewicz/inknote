@@ -10,7 +10,7 @@
         return dr <= radius;
     }
 
-    function permutateSimpleNumberArray(array: number[]): number[] {
+    export function permutateSimpleNumberArray(array: number[]): number[] {
         var copiedArray = <number[]>copySimpleArrayFrom(array);
 
         var lastValue = copiedArray.pop();
@@ -36,6 +36,7 @@
             }
 
             if (score < bestValue) {
+                bestValue = score;
                 bestPermutation = <number[]>copySimpleArrayFrom(permutation);
             }
         }

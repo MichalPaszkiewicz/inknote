@@ -44,6 +44,12 @@
     export class CanvasControl {
 
         hover(e: MouseEvent) {
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL
+                || Managers.MouseManager.Instance.currentMouse === Managers.MouseType.TEXT) {
+                return;
+            }
+
             var allItems = this.drawService.items;
             var hovered = false;
 
@@ -62,8 +68,8 @@
                     var hoverID = allItems[i].ID;
                     Managers.ProjectManager.Instance.hoverID = hoverID;
                     hovered = true;
-                    this.drawService.canvas.style.cursor = "pointer";
-                }
+                    this.drawService.canvas.style.cursor = "url('../assets/pointer.png'), pointer";
+                } 
             }
 
             var sortedScoreItems = <Notation[]>scoreItems.sort(function (a: Notation, b: Notation) { return b.order - a.order; });
@@ -80,7 +86,88 @@
             }
         }
 
+        pencilClick(e: MouseEvent | Touch) {
+            var scoreItems = ScoringService.Instance.getItems();
+
+            var bars = getItemsWhere(scoreItems, function (item: IDrawable) {
+                return item instanceof Drawing.Bar;
+            });
+
+            var inBar = <Drawing.Bar>getFirstItemWhere(bars, function (item: Drawing.Bar) {
+                return item.isOver(e.clientX, e.clientY - 50);
+            });
+
+            if (inBar) {
+                
+                NoteControlService.Instance.addNoteToBar(e.clientY - 50 - inBar.y, inBar.ID);
+
+            }
+
+            if (!inBar) {
+                log("the pencil can only be used to place notes within a bar");
+            }
+
+        }
+
+        textClick(e: MouseEvent | Touch) {
+
+            var scoreItems = ScoringService.Instance.getItems();
+
+            var notes = getItemsWhere(scoreItems, function (item: IDrawable) {
+                return item instanceof Drawing.Note;
+            });
+
+            var closestNote = <Drawing.Note>getItemWithMin(notes, function (item: Drawing.Note) {
+                return Maths.pythagoras(e.clientX - item.x, e.clientY - 50 - item.y);
+            });
+
+            var addText = new Model.Text("add text");
+
+            var currentProject = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < currentProject.instruments.length; i++) {
+                for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                    for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                        var tempBar = currentProject.instruments[i].bars[j];
+                        var tempItem = tempBar.items[k];
+
+                        if (tempItem.ID == closestNote.ID) {
+
+                            var textToAdd = prompt("text to be added:", addText.content);
+
+                            if (textToAdd == null) {
+                                log("adding text cancelled", MessageType.Warning);
+                                return;
+                            }
+
+                            addText.content = textToAdd;
+
+                            tempBar.items.splice(k + 1, 0, addText);
+
+                            ScoringService.Instance.refresh();
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+            log("text click not registered", MessageType.Error);
+
+        }
+
         click(e: MouseEvent | Touch) {
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.PENCIL) {
+                this.pencilClick(e);
+                return;
+            }
+
+            if (Managers.MouseManager.Instance.currentMouse == Managers.MouseType.TEXT) {
+                this.textClick(e);
+                return;
+            }
+
             var allItems = this.drawService.items;
             var selected = false;
 
@@ -198,17 +285,20 @@
                 if (e.movementY > 0 && canScroll(true) || e.movementY < 0 && canScroll(false)) {
                     ScrollService.Instance.y -= e.movementY;
                 }
-                drawService.canvas.style.cursor = "-webkit-grabbing";
+                drawService.canvas.style.cursor = "url('../assets/grabbing.png'), -webkit-grabbing";
             };
 
             drawService.canvas.addEventListener("mousemove", onMove, false);
 
             drawService.canvas.onmouseup = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
             };
 
             drawService.canvas.onmouseout = function (e: MouseEvent) {
                 drawService.canvas.removeEventListener("mousemove", onMove, false);
+                drawService.canvas.style.cursor = "";
+
             };
         }
 

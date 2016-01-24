@@ -37,6 +37,85 @@
         return count;
     }
 
+    export function maxOutOf(items: any[], xAndY: (item: any) => number) {
+        if (items === null || items === undefined) {
+            return -Infinity;
+        }
+        var max = -Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val > max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+
+    export function minOutOf(items: any[], xAndY: (item: any) => number) {
+        if (items === null || items === undefined) {
+            return Infinity;
+        }
+        var max = Infinity;
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+            if (val < max) {
+                max = val;
+            }
+        }
+        return max;
+    }
+
+    export function getItemWithMax(items: any[], xAndY: (item: any) => number): any {
+        var maxValue = -Infinity;
+        var maxIndex;
+
+        if (items == null) {
+            return null;
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+
+            if (val > maxValue) {
+                maxValue = val;
+                maxIndex = i;
+            }
+        }
+
+        return items[maxIndex];
+    }
+
+    export function getItemWithMin(items: any[], xAndY: (item: any) => number): any {
+        var minValue = Infinity;
+        var minIndex;
+
+        if (items == null) {
+            return null;
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            var val = xAndY(items[i]);
+
+            if (val < minValue) {
+                minValue = val;
+                minIndex = i;
+            }
+        }
+
+        return items[minIndex];
+    }
+
+    export function getFirstItemWhere(items: any[], xAndY: (item: any) => boolean): any {
+        if (items === null || items === undefined) {
+            return null;
+        }
+        for (var i = 0; i < items.length; i++) {
+            if (xAndY(items[i])) {
+                return items[i];
+            }
+        }
+    }
+
     export function getItemsWhere(items: any[], xAndY: (item: any) => boolean): any[] {
         if (items === null || items === undefined) {
             return [];

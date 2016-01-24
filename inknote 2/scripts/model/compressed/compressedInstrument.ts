@@ -3,6 +3,8 @@
     export class Instrument {
 
         bars: Bar[];
+        synthID: string;
+        synthName: string;
 
         v: boolean = true;
 

@@ -63,7 +63,11 @@
             return AudioService._instance;
         }
 
-        context: AudioContext = new AudioContext();
+        get isAudioWorking() {
+            return (typeof (AudioContext) == "function");
+        }
+
+        context: AudioContext = this.isAudioWorking ? new AudioContext() : null;
         masterGain: GainNode;
         waveShaper: WaveShaperNode;
         destination: AudioDestinationNode;
@@ -80,6 +84,11 @@
         indexChanged: Date;
 
         init() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             this.destination = this.context.destination;
             if (this.masterGain) {
                 this.masterGain.disconnect();
@@ -118,6 +127,11 @@
         }
 
         play() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             if (Managers.PageManager.Current.page != Managers.Page.Score) {
                 return;
             }
@@ -155,22 +169,37 @@
 
         playSound(sound: Sound) {
 
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             this.sounds.push(sound);
             sound.play(this.context, this.masterGain);
 
         }
 
-        playNote(note: Model.Note) {
+        playNote(note: Model.Note, synth?: Synth) {
 
+            if (!this.isAudioWorking) {
+                return;
+            }
+             
             var frequency = getFrequencyFromNote(note);
             var playTime = getPlayingTime(note, this.bpm);
             var newSound = new Sound(frequency, playTime);
+            if (synth) {
+                newSound.synth = synth;
+            }
             newSound.note = note;
             this.playSound(newSound);
 
         }
 
         playNotes() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
 
             var minDifferenceTime = getPlayingTimeFromNoteLength(Model.NoteLength.HemiDemiSemiQuaver, this.bpm);
 
@@ -182,8 +211,6 @@
 
             var proj = Managers.ProjectManager.Instance.currentProject;
 
-            var notesToPlay: Model.Note[] = [];
-
             if (this.barIndex >= proj.instruments[0].bars.length) {
                 this.stop();
                 return;
@@ -191,6 +218,10 @@
 
             for (var i = 0; i < proj.instruments.length; i++) {
                 var tempBar = proj.instruments[i].bars[this.barIndex];
+
+                var currentInstrument = proj.instruments[i];
+
+                var synth = currentInstrument.synthID ? SynthManager.Instance.getSynth(currentInstrument.synthID, currentInstrument.synthName) : null;
 
                 var tempItems: (Model.Note | Model.Rest)[] = getItemsWhere(tempBar.items, function (item) {
                     return item instanceof Model.Note || item instanceof Model.Rest;
@@ -202,13 +233,10 @@
 
                 if (tempItem instanceof Model.Note) {
 
-                    notesToPlay.push(tempItem);
+                    this.playNote(tempItem, synth);
+                    
                 }
 
-            }
-
-            for (var i = 0; i < notesToPlay.length; i++) {
-                this.playNote(notesToPlay[i]);
             }
 
             if (this.beatIndex + 1 >= this.timeSignature.top * 16) {
@@ -220,12 +248,22 @@
         }
 
         updateSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             for (var i = 0; i < this.sounds.length; i++) {
                 this.sounds[i].update();
             }
         }
 
         removeFinishedSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             var newSounds: Sound[] = [];
 
             for (var i = 0; i < this.sounds.length; i++) {
@@ -242,18 +280,34 @@
         }
 
         clearSounds() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             for (var i = 0; i < this.sounds.length; i++) {
                 this.sounds[i].stop();
             }
         }
 
         stop() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
+
             this.playing = false;
             this.clearSounds();
             this.init();
         }
 
         update() {
+
+            if (!this.isAudioWorking) {
+                return;
+            }
+
             if (Managers.PageManager.Current.page != Managers.Page.Score && this.playing === true) {
                 this.stop();
             }

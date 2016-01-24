@@ -22,7 +22,15 @@
     <Content Include="%40script.min.js">
       <DependentUpon>%40script.js</DependentUpon>
     </Content>
+    <Content Include="assets\cursor-select.png" />
+    <Content Include="assets\cursor.png" />
+    <Content Include="assets\grabbing.png" />
     <Content Include="assets\landing.png" />
+    <Content Include="assets\pencil-select.png" />
+    <Content Include="assets\pencil.png" />
+    <Content Include="assets\pointer.png" />
+    <Content Include="assets\text-icon-select.png" />
+    <Content Include="assets\text-icon.png" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="licence\index.html" />
@@ -44,6 +52,12 @@
     <Content Include="styles\fontfaces.min.css">
       <DependentUpon>fontfaces.css</DependentUpon>
     </Content>
+    <Content Include="styles\log.css">
+      <DependentUpon>log.less</DependentUpon>
+    </Content>
+    <Content Include="styles\log.min.css">
+      <DependentUpon>log.css</DependentUpon>
+    </Content>
     <Content Include="styles\menu.css">
       <DependentUpon>menu.less</DependentUpon>
     </Content>
@@ -55,6 +69,18 @@
     </Content>
     <Content Include="styles\modal.min.css">
       <DependentUpon>modal.css</DependentUpon>
+    </Content>
+    <Content Include="styles\mousecontrol.css">
+      <DependentUpon>mousecontrol.less</DependentUpon>
+    </Content>
+    <Content Include="styles\mousecontrol.min.css">
+      <DependentUpon>mousecontrol.css</DependentUpon>
+    </Content>
+    <Content Include="styles\searchbar.css">
+      <DependentUpon>searchbar.less</DependentUpon>
+    </Content>
+    <Content Include="styles\searchbar.min.css">
+      <DependentUpon>searchbar.css</DependentUpon>
     </Content>
     <Content Include="styles\styles.css">
       <DependentUpon>styles.less</DependentUpon>
@@ -68,6 +94,7 @@
     <TypeScriptCompile Include="scripts\actions\baseAction.ts" />
     <TypeScriptCompile Include="scripts\actions\canvasControl.ts" />
     <TypeScriptCompile Include="scripts\actions\frontEndActions.ts" />
+    <TypeScriptCompile Include="scripts\actions\frontEndSearch.ts" />
     <TypeScriptCompile Include="scripts\actions\scrollControl.ts" />
     <TypeScriptCompile Include="scripts\actions\typeControl.ts" />
     <TypeScriptCompile Include="scripts\actions\windowResize.ts" />
@@ -86,11 +113,13 @@
     <TypeScriptCompile Include="scripts\drawings\chordSymbol.ts" />
     <TypeScriptCompile Include="scripts\drawings\clef.ts" />
     <TypeScriptCompile Include="scripts\drawings\colours.ts" />
+    <TypeScriptCompile Include="scripts\drawings\drawText.ts" />
     <TypeScriptCompile Include="scripts\drawings\file.ts" />
     <TypeScriptCompile Include="scripts\drawings\flat.ts" />
     <TypeScriptCompile Include="scripts\drawings\fonts.ts" />
     <TypeScriptCompile Include="scripts\drawings\keyboard.ts" />
     <TypeScriptCompile Include="scripts\drawings\keyboardKey.ts" />
+    <TypeScriptCompile Include="scripts\drawings\ledgerLine.ts" />
     <TypeScriptCompile Include="scripts\drawings\licence.ts" />
     <TypeScriptCompile Include="scripts\drawings\loading.ts" />
     <TypeScriptCompile Include="scripts\drawings\name.ts" />
@@ -133,6 +162,7 @@
     <TypeScriptCompile Include="scripts\landing\landing.ts" />
     <TypeScriptCompile Include="scripts\landing\metaball.ts" />
     <TypeScriptCompile Include="scripts\managers\machineManager.ts" />
+    <TypeScriptCompile Include="scripts\managers\mouseManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pageManager.ts" />
     <TypeScriptCompile Include="scripts\managers\pluginManager.ts" />
     <TypeScriptCompile Include="scripts\managers\projectManager.ts" />
@@ -153,6 +183,7 @@
     <TypeScriptCompile Include="scripts\model\compressed\compressedProject.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedNote.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedRest.ts" />
+    <TypeScriptCompile Include="scripts\model\compressed\compressedText.ts" />
     <TypeScriptCompile Include="scripts\model\compressed\compressedTimeSignature.ts" />
     <TypeScriptCompile Include="scripts\model\drawingSettings.ts" />
     <TypeScriptCompile Include="scripts\model\drawOptions.ts" />
@@ -168,6 +199,8 @@
     <TypeScriptCompile Include="scripts\model\project.ts" />
     <TypeScriptCompile Include="scripts\model\rest.ts" />
     <TypeScriptCompile Include="scripts\model\settings.ts" />
+    <TypeScriptCompile Include="scripts\model\tempData.ts" />
+    <TypeScriptCompile Include="scripts\model\text.ts" />
     <TypeScriptCompile Include="scripts\model\timeSignature.ts" />
     <Content Include="build-plugins.bat" />
     <None Include="scripts\plugins\instances\snow-back.ts" />
@@ -188,6 +221,7 @@
     <TypeScriptCompile Include="scripts\services\confirmService.ts" />
     <TypeScriptCompile Include="scripts\services\drawService.ts" />
     <TypeScriptCompile Include="scripts\services\fileConverter.ts" />
+    <TypeScriptCompile Include="scripts\services\gotoService.ts" />
     <TypeScriptCompile Include="scripts\services\httpService.ts" />
     <TypeScriptCompile Include="scripts\services\identifyService.ts" />
     <TypeScriptCompile Include="scripts\services\idrawableService.ts" />
@@ -196,15 +230,20 @@
     <TypeScriptCompile Include="scripts\services\licenceService.ts" />
     <TypeScriptCompile Include="scripts\services\noteControlService.ts" />
     <TypeScriptCompile Include="scripts\services\noteService.ts" />
+    <TypeScriptCompile Include="scripts\services\printService.ts" />
     <TypeScriptCompile Include="scripts\services\projectOptionsService.ts" />
     <TypeScriptCompile Include="scripts\services\restService.ts" />
     <TypeScriptCompile Include="scripts\services\rightClickMenuService.ts" />
     <TypeScriptCompile Include="scripts\services\scoringService.ts" />
     <TypeScriptCompile Include="scripts\services\scrollService.ts" />
+    <TypeScriptCompile Include="scripts\services\smartSearchService.ts" />
+    <TypeScriptCompile Include="scripts\services\tempDataService.ts" />
     <TypeScriptCompile Include="scripts\services\timeSignatureService.ts" />
     <TypeScriptCompile Include="scripts\services\transposeService.ts" />
     <TypeScriptCompile Include="scripts\services\undoService.ts" />
+    <TypeScriptCompile Include="scripts\storage\cookieStorage.ts" />
     <TypeScriptCompile Include="scripts\storage\driveStorage.ts" />
+    <TypeScriptCompile Include="scripts\storage\idbStorage.ts" />
     <TypeScriptCompile Include="scripts\storage\localStorage.ts" />
     <TypeScriptCompile Include="scripts\services\logger.ts" />
     <TypeScriptCompile Include="scripts\services\projectConverter.ts" />
@@ -238,6 +277,18 @@
     <Content Include="styles\styles.less" />
     <Content Include="styles\styles.css.map">
       <DependentUpon>styles.css</DependentUpon>
+    </Content>
+    <Content Include="styles\log.less" />
+    <Content Include="styles\log.css.map">
+      <DependentUpon>log.css</DependentUpon>
+    </Content>
+    <Content Include="styles\mousecontrol.less" />
+    <Content Include="styles\mousecontrol.css.map">
+      <DependentUpon>mousecontrol.css</DependentUpon>
+    </Content>
+    <Content Include="styles\searchbar.less" />
+    <Content Include="styles\searchbar.css.map">
+      <DependentUpon>searchbar.css</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

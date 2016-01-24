@@ -23,23 +23,28 @@
         width: number;
         height: number;
 
-        hidden: boolean = false;
+        hidden: boolean = TempDataService.Instance.currentData.noteControlsHidden;
 
         hiddenY: number = 0;
+        firstOpen: boolean = true;
 
         hide() {
             this.hidden = true;
+            TempDataService.Instance.currentData.noteControlsHidden = true;
+            TempDataService.Instance.update();
         }
 
         show() {
             this.hidden = false;
+            TempDataService.Instance.currentData.noteControlsHidden = false;
+            TempDataService.Instance.update();
         }
 
         ID: string = "note_control";
 
         getItems(drawer: DrawService): IDrawable[] {
             if (this.hidden) {
-                if (this.hiddenY > drawer.canvas.height / 2) {
+                if (this.hiddenY > drawer.canvas.height / 2 || this.firstOpen) {
                     this.hiddenY = drawer.canvas.height / 2;
                 }
                 else if (this.hiddenY < drawer.canvas.height / 2) {
@@ -98,11 +103,14 @@
             this.minimise.y = this.y - this.minimise.height;
             noteControls.push(this.minimise);
 
+            this.firstOpen = false;
 
             return noteControls;
         }
 
         addInstrument(name: string): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             var barsCount = project.instruments[0].bars.length;
@@ -134,6 +142,7 @@
         }
 
         addBar(): void {
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -144,11 +153,71 @@
 
         }
 
+        addNoteToBar(heightFromTopLine: number, barID: string): void {
+            UndoService.Instance.store();
+
+            // due to top line starting at 0;
+            heightFromTopLine += 5;
+
+            var project = Managers.ProjectManager.Instance.currentProject;
+
+            for (var i = 0; i < project.instruments.length; i++) {
+                var clef = new Model.TrebleClef();
+
+                for (var j = 0; j < project.instruments[i].bars.length; j++) {
+
+                    // loop through items looking for clef
+                    for (var k = 0; k < project.instruments[i].bars[j].items.length; k++) {
+                        var barItem = project.instruments[i].bars[j].items[k];
+
+                        if (barItem instanceof Model.Clef) {
+                            clef = barItem;
+                        }
+                    }
+
+                    if (project.instruments[i].bars[j].ID == barID) {
+
+                        var dif = clef.positionFromTreble;
+
+                        var distRound5 = Math.round(heightFromTopLine / 5);
+                        
+                        var topNoteOnTreble = new Model.Note(Model.NoteValue.F, 5, this.lengthControl.selectedLength);
+                        
+                        var note = getNoteFromStaveDifference(topNoteOnTreble, dif - distRound5);
+
+                         
+
+                        project.instruments[i].bars[j].items.push(note);
+
+                    }
+                }
+            }
+
+            ScoringService.Instance.refresh();
+        }
+
         addNote(note: Model.Note): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             if (Audio.AudioService) {
-                Audio.AudioService.Instance.playNote(note);
+                var playInstrument = project.instruments[0];
+
+                if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
+                    for (var i = 0; i < project.instruments.length; i++) {
+                        for (var j = 0; j < project.instruments[i].bars.length; j++) {
+                            if (project.instruments[i].bars[j].ID == ScoringService.Instance.selectID) {
+                                playInstrument = project.instruments[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                var synth = playInstrument.synthID ? Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
+
+                Audio.AudioService.Instance.playNote(note, synth);
             }
 
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
@@ -203,6 +272,8 @@
         }
 
         addRest(): void {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             var rest = new Model.Rest(this.lengthControl.selectedLength);
@@ -259,6 +330,8 @@
         }
 
         editNoteLength() {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -288,6 +361,8 @@
         }
 
         editCurrentClef(goUp: boolean) {
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
 
             for (var i = 0; i < project.instruments.length; i++) {
@@ -310,8 +385,14 @@
         }
 
         deleteSelected() {
+
+            UndoService.Instance.store();
+
             if (ScoringService.Instance.SelectedItem instanceof Drawing.Note
-                || ScoringService.Instance.SelectedItem instanceof Drawing.Rest) {
+                || ScoringService.Instance.SelectedItem instanceof Drawing.Rest
+                || ScoringService.Instance.SelectedItem instanceof Drawing.DrawText
+                || ScoringService.Instance.SelectedItem instanceof Drawing.TimeSignature
+                || ScoringService.Instance.SelectedItem instanceof Drawing.Clef) {
                 NoteControlService.Instance.deleteItem();
             }
             else if (ScoringService.Instance.SelectedItem instanceof Drawing.Bar) {
@@ -324,7 +405,7 @@
 
             for (var i = 0; i < project.instruments.length; i++) {
 
-                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef | Model.TimeSignature = null;
+                var previousItem: Model.Rest | Model.Note | Model.Chord | Model.Clef | Model.TimeSignature | Model.Text = null;
 
                 for (var j = 0; j < project.instruments[i].bars.length; j++) {
                     var bar = project.instruments[i].bars[j];
@@ -358,7 +439,11 @@
 
         editNoteValueAndOctave(value: Model.NoteValue, octave: number) {
 
+            UndoService.Instance.store();
+
             var project = Managers.ProjectManager.Instance.currentProject;
+            
+            var playInstrument = project.instruments[0];
 
             var playedNotes: Model.Note[] = [];
 
@@ -369,6 +454,9 @@
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
                         if (item.ID == ScoringService.Instance.selectID) {
+                            
+                            playInstrument = project.instruments[i];
+
                             if (item instanceof Model.Note) {
                                 item.value = value;
                                 item.octave = octave;
@@ -393,8 +481,10 @@
             }
 
             if (Audio.AudioService) {
+                var synth = playInstrument.synthID ? Audio.SynthManager.Instance.getSynth(playInstrument.synthID, playInstrument.synthName) : null;
+
                 for (var i = 0; i < playedNotes.length; i++) {
-                    Audio.AudioService.Instance.playNote(playedNotes[i]);
+                    Audio.AudioService.Instance.playNote(playedNotes[i], synth);
                 }
             }
 
@@ -402,6 +492,7 @@
         }
 
         noteValueUp() {
+            UndoService.Instance.store();
 
             var project = Managers.ProjectManager.Instance.currentProject;
 
@@ -411,9 +502,9 @@
 
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == ScoringService.Instance.selectID) {
+                        if (item.ID == ScoringService.Instance.selectID || ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Model.Note) {
-                                var newVal = item.value + 1;
+                                var newVal = item.value + 1; 
                                 item.value = newVal % 12;
                                 item.octave = newVal % 12 == Model.NoteValue.C ? item.octave + 1 : item.octave;
                             }
@@ -421,7 +512,11 @@
 
                             }
                             else if (item instanceof Model.Chord) {
-
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 1;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Model.NoteValue.C ? item.notes[l].octave + 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }
@@ -433,6 +528,7 @@
         }
 
         noteValueDown() {
+            UndoService.Instance.store();
 
             var project = Managers.ProjectManager.Instance.currentProject;
 
@@ -442,7 +538,7 @@
 
                     for (var k = 0; k < bar.items.length; k++) {
                         var item = bar.items[k];
-                        if (item.ID == ScoringService.Instance.selectID) {
+                        if (item.ID == ScoringService.Instance.selectID || ScoringService.Instance.selectID == bar.ID) {
                             if (item instanceof Model.Note) {
                                 var newVal = item.value + 11;
                                 item.value = newVal % 12;
@@ -452,7 +548,11 @@
 
                             }
                             else if (item instanceof Model.Chord) {
-
+                                for (var l = 0; l < item.notes.length; l++) {
+                                    var newVal = item.notes[l].value + 11;
+                                    item.notes[l].value = newVal % 12;
+                                    item.notes[l].octave = newVal % 12 == Model.NoteValue.B ? item.notes[l].octave - 1 : item.notes[l].octave;
+                                }
                             }
                         }
                     }

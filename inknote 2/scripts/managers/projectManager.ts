@@ -77,12 +77,41 @@
 
         set currentProjectOverride(project: Project) {
             log("current project overriden", MessageType.Warning);
+
             this._currentProject = project;
+
+            var self = this;
+
+            // for fixing undo, then save issue.
+            var projectListItemToOverride = getFirstItemWhere(this._projects, function (project: Project) {
+                return project.ID == self._currentProject.ID;
+            });
+
+            var itemIndex = this._projects.indexOf(projectListItemToOverride);
+
+            this._projects[itemIndex] = project;
         }
 
         save() {
-            if (this._projects.indexOf(this._currentProject) == -1) {
-                this._projects.push(this._currentProject);
+            var self = this;
+
+            var projectAlreadyExists = Inknote.anyItemIs(this._projects, function (project: Project) {
+                return project.ID == self._currentProject.ID;
+            });
+
+            if (projectAlreadyExists === true) {
+                // overwrite item with this ID.
+                // * fixes issue with undoing then saving *
+                var currentProjectInHere = getFirstItemWhere(this._projects, function (project: Project) {
+                    return project.ID == self._currentProject.ID;
+                });
+
+                var itemIndex = this._projects.indexOf(currentProjectInHere);
+
+                this._projects[itemIndex] = this._currentProject;
+            }
+            else {
+                this._projects.push(this._currentProject);   
             }
             var compressed = ProjectConverter.compressAll(this._projects);
             Storage.saveProjects(compressed);

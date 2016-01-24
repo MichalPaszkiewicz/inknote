@@ -14,6 +14,8 @@
         select: boolean;
         hasError: boolean = false;
 
+        barNumber: number;
+
         isOver(x, y) {
 
             var isLeft = x < this.x + this.width;
@@ -28,12 +30,13 @@
         draw(ctx: CanvasRenderingContext2D) {
 
             ctx.beginPath();
-            ctx.strokeStyle = Colours.black;
-            if (this.hover) {
+            if (this.hover || this.select) {
                 ctx.strokeStyle = Colours.orange;
             }
+            else {
+                ctx.strokeStyle = Colours.black;
+            }
             if (this.select) {
-                ctx.strokeStyle = Colours.orange;
                 ctx.lineWidth = 2;
             }
             ctx.moveTo(this.x, this.y);
@@ -62,6 +65,14 @@
                 ctx.fillRect(this.x, this.y, this.width, this.height);
 
                 ctx.globalAlpha = 1;
+            }
+
+            if (this.barNumber) {
+                ctx.beginPath();
+
+                ctx.fillStyle = Colours.black;
+
+                ctx.fillText(this.barNumber + "", this.x, this.y - 5);
             }
 
             return true;

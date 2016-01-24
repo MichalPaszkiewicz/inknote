@@ -13,6 +13,12 @@
         }
     }
 
+    export function isHidden(item: HTMLElement) {
+        var classes = item.className;
+
+        return classes.indexOf("hidden") != -1;
+    }
+
     export function hideElement(item: HTMLElement) {
         var classes = item.className;
 
@@ -30,7 +36,7 @@
         var isHidden = classes.indexOf("hidden") != -1;
 
         if (isHidden) {
-            item.className = item.className.replace("hidden", "");
+            item.className = item.className.replace(/hidden/g, "");
         }
     }
 
@@ -41,7 +47,7 @@
         var isHidden = classes.indexOf("select") != -1;
 
         if (isHidden) {
-            item.className = item.className.replace("select", "");
+            item.className = item.className.replace(/select/g, "");
         }
     }
 
@@ -96,11 +102,15 @@ module Menu {
 
     export var scoreItems: NodeList;
 
+    export var desktopItems: NodeList;
+
     var menuButton: HTMLDivElement;
     var menu: HTMLDivElement;
 
     if (typeof (window) != typeof (undefined)) {
         scoreItems = document.getElementsByClassName("score-item");
+
+        desktopItems = document.getElementsByClassName("desktop-item");
 
         menuButton = <HTMLDivElement>document.getElementsByClassName("menu-button")[0];
         menu = <HTMLDivElement>document.getElementById("main-menu");
@@ -116,6 +126,17 @@ module Menu {
             else {
                 FrontEnd.hideElement(<HTMLElement>scoreItems[i]);
             }
+        }
+
+        for (var i = 0; i < desktopItems.length; i++) {
+
+            if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
+                FrontEnd.showElement(<HTMLElement>desktopItems[i]);
+            }
+            else {
+                FrontEnd.hideElement(<HTMLElement>desktopItems[i]);
+            }
+
         }
     }
 
@@ -267,6 +288,106 @@ module Modal {
         hide("report");
     }
 
+    export function generateProjectReport() {
+
+        var currentProject = Inknote.Managers.ProjectManager.Instance.currentProject;
+
+        var reportDetails = document.getElementById("project-report-details");
+        reportDetails.innerHTML = "";
+
+        var header = document.createElement("h2");
+        header.textContent = currentProject.name + " report";
+        reportDetails.appendChild(header);
+
+        var barCount = document.createElement("div");
+        barCount.className = "form-row";
+        barCount.textContent = "bars: " + currentProject.instruments[0].bars.length;
+        reportDetails.appendChild(barCount);
+
+        var numberOfNotes = 0;
+
+        var noteTypeCount = [];
+
+        for (var i = 0; i < 12; i++) {
+            noteTypeCount.push({ count: 0 });
+        }
+
+        for (var i = 0; i < currentProject.instruments.length; i++) {
+            for (var j = 0; j < currentProject.instruments[i].bars.length; j++) {
+                for (var k = 0; k < currentProject.instruments[i].bars[j].items.length; k++) {
+                    var item = currentProject.instruments[i].bars[j].items[k];
+
+                    if (item instanceof Inknote.Model.Note) {
+                        numberOfNotes++;
+                        noteTypeCount[item.value].count++;
+                    }
+                    else if (item instanceof Inknote.Model.Chord) {
+                        numberOfNotes += item.notes.length;
+                        for (var l = 0; l < item.notes.length; l++) {
+                            noteTypeCount[item.notes[l].value].count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        var noteCount = document.createElement("div");
+        noteCount.className = "form-row";
+        noteCount.textContent = "notes: " + numberOfNotes;
+        reportDetails.appendChild(noteCount);
+
+        var maxValue = Inknote.maxOutOf(noteTypeCount, function (x) {
+            return x.count;
+        });
+
+        for (var i = 0; i < 12; i++) {
+            var text = Inknote.Model.GetNoteNameFromNoteValue(i) + ": " + noteTypeCount[i].count;
+
+            var divBlock = document.createElement("div");
+            divBlock.className = "form-row";
+            divBlock.style.clear = "both";
+            divBlock.style.background = "rgba(190,190,190,0.1)";
+            reportDetails.appendChild(divBlock);
+
+            var labelBlock = document.createElement("span");
+            labelBlock.style.display = "inline-block";
+            labelBlock.textContent = text;
+            divBlock.appendChild(labelBlock);
+
+            var graphBlock = document.createElement("span");
+            graphBlock.style.display = "inline-block";
+            graphBlock.style.height = "18px";
+            graphBlock.style.width = Math.round(200 * noteTypeCount[i].count / maxValue) + "px";;
+            graphBlock.style.background = "red";
+            graphBlock.style.position = "absolute";
+            graphBlock.style.right = "0";
+
+            divBlock.appendChild(graphBlock);
+        }
+
+        Modal.show("project-report");
+    }
+}
+
+module Modal.SettingsModal {
+
+    if (typeof(window) != typeof(undefined)){
+        var logLevelRadioList = <NodeListOf<HTMLInputElement>>document.getElementsByName("logLevel");
+
+        for (var i = 0; i < logLevelRadioList.length; i++) {
+            if (logLevelRadioList[i].value == Inknote.TempDataService.Instance.currentData.loggingLevel + "") {
+                logLevelRadioList[i].checked = true;
+            }
+
+            logLevelRadioList[i].onclick = function (e) {
+                var target = <HTMLInputElement>e.target
+
+                Inknote.TempDataService.Instance.currentData.loggingLevel = parseInt(target.value);
+                Inknote.TempDataService.Instance.update();
+            }
+        }
+    }
+
 }
 
 module Actions.Plugins {
@@ -315,13 +436,15 @@ module SynthBindings {
         var synthGainInput = <HTMLInputElement>document.getElementById("synth-gain");
         synthGainInput.valueAsNumber = currentSynth.gain;
 
+        var synthDelayInput = <HTMLInputElement>document.getElementById("synth-delay");
+        synthDelayInput.valueAsNumber = currentSynth.delay;
     }
 
     export function loadSynthData() {
 
         var synths = Inknote.Audio.SynthManager.Instance.getSynths();
         var synthDiv = <HTMLDivElement>document.getElementById("synth-list");
-        
+
         synthDiv.innerHTML = "";
 
         for (var i = 0; i < synths.length; i++) {
@@ -385,7 +508,7 @@ module SynthBindings {
 
         Inknote.Audio.SynthManager.Instance.addSynth(newSynth);
         loadSynthData();
-        
+
         Inknote.Audio.SynthService.setSynth(newSynth.ID, newSynth.name);
         SynthBindings.getSynthValues();
 
@@ -412,8 +535,49 @@ module SynthBindings {
             Inknote.Audio.SynthService.Instance.changeGain(value);
         };
 
+        var synthDelayInput = document.getElementById("synth-delay");
+        synthDelayInput.onchange = function (e) {
+            var input = <HTMLInputElement>e.target;
+
+            var value = input.valueAsNumber;
+
+            Inknote.Audio.SynthService.Instance.changeDelay(value);
+        };
+
         loadSynthData();
     }
 
 
+}
+
+module MouseControl {
+
+    export function SelectMouseType(val: Inknote.Managers.MouseType) {
+        var options = <NodeListOf<HTMLDivElement>>document.getElementsByClassName("mouse-option");
+        
+        for (var i = 0; i < options.length; i++) {
+            FrontEnd.deSelect(options[i]);
+
+            if (parseInt(options[i].getAttribute("data-val")) == val) {
+                FrontEnd.select(options[i]);
+            }
+        }
+
+        Inknote.Managers.MouseManager.Instance.currentMouse = val;
+    }
+
+    if (typeof (window) != typeof(undefined)){
+        var options = <NodeListOf<HTMLDivElement>>document.getElementsByClassName("mouse-option");
+
+        for (var i = 0; i < options.length; i++) {
+
+            options[i].onclick = function (e) {
+
+                var target = <HTMLDivElement>e.target;
+                var val = parseInt(target.getAttribute("data-val"));
+
+                MouseControl.SelectMouseType(val);       
+            }
+        }
+    }
 }
