@@ -1,0 +1,13 @@
+{
+    "name": "inknote"
+  , "version": "2.0.0"
+  , "description": "inknote app"
+  , "author": "Michal Paszkiewicz"
+  , "engines": { "node": ">= 0.4.x < 0.7.0" }
+  , "scripts": {
+    "test": "jasmine @tests.js"
+  }
+  , "devDependencies": {
+    "jasmine": "~2.3.2"
+  }
+}
