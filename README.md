@@ -51,21 +51,6 @@ Upcoming updates
 - Scoring intellisense.
 - Loading from/Converting to MIDI files.
 
-Update 18/12/2015
-------------------
-- Change time signature
-- Change clef
-- About page
-- Search functionality on both files and scores
-- Display bar numbers
-- Visible logging options
-- Saving temp settings in local storage
-- Ledger lines
-- Project note count/statistics
-- Pencil control
-- Text control
-- Basic synths
-
 Update 29/09/2015
 ------------------
 - Complete revamp of project.
