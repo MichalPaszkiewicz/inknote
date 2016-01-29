@@ -199,6 +199,9 @@ canvas.textMode {
   z-index: 4999;
   background: rgba(0, 0, 0, 0.5);
 }
+.lightgray-hover:hover {
+  background: lightgray;
+}
 body .cover {
   position: fixed;
   height: 100%;

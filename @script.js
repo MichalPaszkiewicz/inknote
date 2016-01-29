@@ -10485,6 +10485,16 @@ var FrontEnd;
             }
         }
         function generateSearchResults(results) {
+            try {
+                tryGenerateSearchResults(results);
+            }
+            catch (e) {
+                if (Inknote.log) {
+                    Inknote.log(e, Inknote.MessageType.Error);
+                }
+            }
+        }
+        function tryGenerateSearchResults(results) {
             var container = document.getElementById("smart-search-output");
             container.innerHTML = "";
             var title = document.createElement("h3");
@@ -10512,6 +10522,7 @@ var FrontEnd;
             container.appendChild(headerDiv);
             for (var i = 0; i < results.length; i++) {
                 var resultDiv = document.createElement("div");
+                resultDiv.className = "lightgray-hover";
                 var resCol1 = document.createElement("span");
                 resCol1.textContent = results[i].projectIndex + "";
                 var resCol2 = document.createElement("span");
