@@ -8,7 +8,7 @@
         allowOnSave: boolean;
         allowBeforeDraw: boolean;
         allowOnPluginLoad: boolean;
-        allowOnPluginUnLoad: boolean; 
+        allowOnPluginUnload: boolean; 
         allowOnAppStart: boolean;
 
         get active() {
@@ -73,8 +73,8 @@
                 }
             }
             else{
-                if(this.onPluginUnLoad){
-                    this.onPluginUnLoad();
+                if(this.onPluginUnload){
+                    this.onPluginUnload();
                 }
             }
         }
@@ -91,7 +91,7 @@
         onPluginLoad: () => void;
         allowOnPluginLoad: boolean = true;
         
-        onPluginUnLoad: () => void;
+        onPluginUnload: () => void;
         allowOnPluginUnload: boolean = true;
         
         onAppStart: () => void;
@@ -112,7 +112,7 @@
             if(this.onPluginLoad){
                 fns.push("on plugin load");
             }
-            if(this.onPluginUnLoad){
+            if(this.onPluginUnload){
                 fns.push("on plugin unload");
             }
             if(this.onAppStart){
@@ -138,8 +138,8 @@
                 if(existingName.allowOnPluginLoad != null){
                     this.allowOnPluginLoad = existingName.allowOnPluginLoad;
                 }
-                if(existingName.allowOnPluginUnLoad != null){
-                    this.allowOnPluginUnload = existingName.allowOnPluginUnLoad;
+                if(existingName.allowOnPluginUnload != null){
+                    this.allowOnPluginUnload = existingName.allowOnPluginUnload;
                 }
                 if(existingName.allowOnAppStart != null){
                     this.allowOnAppStart = existingName.allowOnAppStart;
