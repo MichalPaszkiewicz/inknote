@@ -8854,15 +8854,18 @@ var Inknote;
                     plugCheck.id = "plugin-" + plugin;
                     plugCheck.onclick = function (ev) {
                         var target = ev.target;
+                        var pNameIndex = +target.id.split("-")[1];
                         if (target.checked) {
                             Inknote.check("Are you sure you want this plugin?", function () {
-                                self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                                self.setPluginNameVal(pNameIndex + "", target.checked);
+                                self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                             }, function () {
                                 target.checked = !target.checked;
                             });
                         }
                         else {
-                            self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                            self.setPluginNameVal(pNameIndex + "", target.checked);
+                            self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                         }
                     };
                     plugDiv.appendChild(plugCheck);
@@ -8935,6 +8938,30 @@ var Inknote;
                     Inknote.Storage.savePlugins();
                 }, 200);
             };
+            PluginManager.prototype.setPluginOnLoadPlugin = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnPluginLoad = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
+            PluginManager.prototype.setPluginOnUnloadPlugin = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnPluginUnload = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
+            PluginManager.prototype.setPluginOnAppStart = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnAppStart = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
             PluginManager.prototype.generateEventListHtml = function () {
                 var self = this;
                 var pluginsByEvents = this.getPluginsByEvents();
@@ -8985,6 +9012,32 @@ var Inknote;
                                         self.setPluginOnSaveAllow(target.id, target.checked);
                                     };
                                     break;
+                                case "on plugin load":
+                                    plgCheck.checked = plugin.allowOnPluginLoad;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onpluginload..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnLoadPlugin(target.id, target.checked);
+                                    };
+                                    break;
+                                case "on plugin unload":
+                                    plgCheck.checked = plugin.allowOnPluginUnload;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onpluginunload..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnUnloadPlugin(target.id, target.checked);
+                                    };
+                                    break;
+                                case "on app start":
+                                    plgCheck.checked = plugin.allowOnAppStart;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onappstart..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnAppStart(target.id, target.checked);
+                                    };
                             }
                             var plgRow = document.createElement("div");
                             plgRow.appendChild(plgCheck);
@@ -9168,8 +9221,8 @@ var Inknote;
                     if (existingName.allowOnPluginLoad != null) {
                         this.allowOnPluginLoad = existingName.allowOnPluginLoad;
                     }
-                    if (existingName.allowOnPluginUnLoad != null) {
-                        this.allowOnPluginUnload = existingName.allowOnPluginUnLoad;
+                    if (existingName.allowOnPluginUnload != null) {
+                        this.allowOnPluginUnload = existingName.allowOnPluginUnload;
                     }
                     if (existingName.allowOnAppStart != null) {
                         this.allowOnAppStart = existingName.allowOnAppStart;
@@ -9195,8 +9248,8 @@ var Inknote;
                         }
                     }
                     else {
-                        if (this.onPluginUnLoad) {
-                            this.onPluginUnLoad();
+                        if (this.onPluginUnload) {
+                            this.onPluginUnload();
                         }
                     }
                 },
@@ -9217,7 +9270,7 @@ var Inknote;
                 if (this.onPluginLoad) {
                     fns.push("on plugin load");
                 }
-                if (this.onPluginUnLoad) {
+                if (this.onPluginUnload) {
                     fns.push("on plugin unload");
                 }
                 if (this.onAppStart) {
@@ -10432,6 +10485,16 @@ var FrontEnd;
             }
         }
         function generateSearchResults(results) {
+            try {
+                tryGenerateSearchResults(results);
+            }
+            catch (e) {
+                if (Inknote.log) {
+                    Inknote.log(e, Inknote.MessageType.Error);
+                }
+            }
+        }
+        function tryGenerateSearchResults(results) {
             var container = document.getElementById("smart-search-output");
             container.innerHTML = "";
             var title = document.createElement("h3");
@@ -10459,6 +10522,7 @@ var FrontEnd;
             container.appendChild(headerDiv);
             for (var i = 0; i < results.length; i++) {
                 var resultDiv = document.createElement("div");
+                resultDiv.className = "lightgray-hover";
                 var resCol1 = document.createElement("span");
                 resCol1.textContent = results[i].projectIndex + "";
                 var resCol2 = document.createElement("span");

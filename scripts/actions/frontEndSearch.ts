@@ -31,8 +31,19 @@
         }
 
     }
+    
+    function generateSearchResults(results: Inknote.SmartSearchResult[]){
+        try{
+            tryGenerateSearchResults(results);
+        }
+        catch(e){
+            if(Inknote.log){
+                Inknote.log(e, Inknote.MessageType.Error);
+            }            
+        }
+    }
 
-    function generateSearchResults(results: Inknote.SmartSearchResult[]) {
+    function tryGenerateSearchResults(results: Inknote.SmartSearchResult[]) {
 
         var container = document.getElementById("smart-search-output");
 
@@ -76,6 +87,7 @@
 
         for (var i = 0; i < results.length; i++) {
             var resultDiv = document.createElement("div");
+            resultDiv.className = "lightgray-hover";
 
             var resCol1 = document.createElement("span");
             resCol1.textContent = results[i].projectIndex + "";

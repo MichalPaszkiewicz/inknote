@@ -33,7 +33,7 @@ Made with AngularJS, NodeJS and MongoDB.
 Upcoming updates
 ------------------
 - Score chords.
-- Change instance time/key signatures.
+- Key signatures.
 - Other musical symbols - ties, dynamics, staccato, etc.
 - Keyboard setup options.
 - Add collaboration option.
@@ -51,6 +51,19 @@ Upcoming updates
 - Scoring intellisense.
 - Loading from/Converting to MIDI files.
 
+Update 29/01/2016
+------------------
+- Refactoring to use tsconfig instead of existing as a visual studio project
+- More plugin events available
+- Add text
+- Allows changing time signature per bar
+- Allows changing clef per bar
+- Mouse editing modes (normal/pencil/text)
+- Search on files
+- Smart search on music
+- Sound on adding/editing notes
+- Basic synth sounds
+
 Update 29/09/2015
 ------------------
 - Complete revamp of project.
@@ -62,9 +75,13 @@ Update 29/09/2015
 
 Contribute
 -----------------
-This project needs to be loaded using Visual Studio. 
+This project is written primarily in typescript, so you will need to download typescript in order to edit this project.
 
-You can get a free version of visual studio [here](https://www.visualstudio.com/products/free-developer-offers-vs.aspx).
+TypeScript can be found [here](http://www.typescriptlang.org/#Download).
+
+It is highly recommended to edit this project in Visual Studio Code, which has great support for typescript.
+
+Visual Studio Code can be downloaded from [here](https://code.visualstudio.com/).
 
 Feel free to contribute by sending pull requests, and submitting issues and suggestions.
 

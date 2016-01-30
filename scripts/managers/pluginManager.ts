@@ -112,17 +112,22 @@
                 plugCheck.onclick = function (ev) {
                     var target = <HTMLInputElement>ev.target;
 
+                    var pNameIndex: number = +target.id.split("-")[1];
+
                     if (target.checked) {
 
                         check("Are you sure you want this plugin?", function () {
-                            self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                            self.setPluginNameVal(pNameIndex + "", target.checked);
+                            
+                            self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                         }, function () {
                                 target.checked = !target.checked;
                             });
 
                     }
                     else {
-                        self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                        self.setPluginNameVal(pNameIndex + "", target.checked);
+                        self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                     }
                 }
 
