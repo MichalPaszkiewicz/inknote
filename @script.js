@@ -9329,33 +9329,40 @@ var Inknote;
     var ActionType = Inknote.ActionType;
     function Action(aType, page) {
         //Managers.ProjectManager
-        Inknote.ScrollService.Instance.x = 0;
-        Inknote.ScrollService.Instance.y = 0;
-        Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
-        Inknote.Managers.ProjectManager.Instance.selectID = "";
-        switch (aType) {
-            case ActionType.NewProject:
-                newProject();
-                break;
-            case ActionType.OpenProject:
-                openProject();
-                break;
-            case ActionType.SaveProject:
-                saveProject();
-                break;
-            case ActionType.ToPage:
-                if (!page) {
-                    page = Inknote.Managers.Page.Score;
-                }
-                moveToPage(page);
-                break;
-            default:
-                Inknote.log("Unknown action type", Inknote.MessageType.Error);
+        try {
+            Inknote.ScrollService.Instance.x = 0;
+            Inknote.ScrollService.Instance.y = 0;
+            Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
+            Inknote.Managers.ProjectManager.Instance.selectID = "";
+            switch (aType) {
+                case ActionType.NewProject:
+                    newProject();
+                    break;
+                case ActionType.OpenProject:
+                    openProject();
+                    break;
+                case ActionType.SaveProject:
+                    saveProject();
+                    break;
+                case ActionType.ToPage:
+                    if (!page) {
+                        page = Inknote.Managers.Page.Score;
+                    }
+                    moveToPage(page);
+                    break;
+                default:
+                    Inknote.log("Unknown action type", Inknote.MessageType.Error);
+            }
+            // project manager needs to be static.
+            setTimeout(function () {
+                Inknote.Managers.ProjectManager.Instance.currentProject.pause = false;
+            }, 100);
         }
-        // project manager needs to be static.
-        setTimeout(function () {
-            Inknote.Managers.ProjectManager.Instance.currentProject.pause = false;
-        }, 100);
+        catch (e) {
+            if (Inknote.log) {
+                Inknote.log(e, Inknote.MessageType.Error);
+            }
+        }
     }
     Inknote.Action = Action;
     function newProject() {
@@ -9407,25 +9414,60 @@ var Inknote;
             };
             this.drawService.canvas.onclick = function (e) {
                 if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
-                    self.click(e);
+                    try {
+                        self.click(e);
+                    }
+                    catch (e) {
+                        if (Inknote.log) {
+                            Inknote.log(e, Inknote.MessageType.Error);
+                        }
+                    }
                 }
             };
             this.drawService.canvas.ondblclick = function (e) {
-                self.dblClick(e);
+                try {
+                    self.dblClick(e);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             this.drawService.canvas.onmousedown = function (e) {
-                self.mouseDown(e, drawService);
+                try {
+                    self.mouseDown(e, drawService);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             // right click
             this.drawService.canvas.oncontextmenu = function (e) {
-                self.rightClick(e);
+                try {
+                    self.rightClick(e);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             this.drawService.canvas.addEventListener("touchstart", function (e) {
-                self.touchStart(e, self.drawService);
-                //var me = new MouseEvent(null);
-                // todo: get correct touch object.
-                var touch = e.touches[0];
-                self.click(touch);
+                try {
+                    self.touchStart(e, self.drawService);
+                    //var me = new MouseEvent(null);
+                    // todo: get correct touch object.
+                    var touch = e.touches[0];
+                    self.click(touch);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {

@@ -379,32 +379,66 @@
 
             this.drawService.canvas.onclick = function (e: MouseEvent) {
                 if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
-                    self.click(e);
+                    try{
+                        self.click(e);
+                    }
+                    catch(e){
+                        if(Inknote.log){
+                            Inknote.log(e, Inknote.MessageType.Error);
+                        }
+                    }
                 }
             }; 
 
             this.drawService.canvas.ondblclick = function (e: MouseEvent) {
-                self.dblClick(e);
+                try{
+                    self.dblClick(e);
+                }
+                catch(e){
+                    if(Inknote.log){
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
 
             this.drawService.canvas.onmousedown = function (e: MouseEvent) {
-                self.mouseDown(e, drawService);
+                try{
+                    self.mouseDown(e, drawService);
+                }
+                catch(e){
+                    if(Inknote.log){
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
 
             // right click
             this.drawService.canvas.oncontextmenu = function (e: MouseEvent) {
-                self.rightClick(e);
+                try{
+                    self.rightClick(e);
+                }
+                catch(e){
+                    if(Inknote.log){
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
 
             this.drawService.canvas.addEventListener("touchstart", function (e: TouchEvent) {
-                self.touchStart(e, self.drawService);
-
-                //var me = new MouseEvent(null);
-
-                // todo: get correct touch object.
-                var touch = e.touches[0];
-
-                self.click(touch);
+                try{
+                    self.touchStart(e, self.drawService);
+    
+                    //var me = new MouseEvent(null);
+                    // todo: get correct touch object.
+                    var touch = e.touches[0];
+    
+                    self.click(touch);
+                }
+                catch(e){
+                    if(Inknote.log){
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             }, false);
 
         }

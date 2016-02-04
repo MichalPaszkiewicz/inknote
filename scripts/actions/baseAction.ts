@@ -10,37 +10,44 @@
     export function Action(aType: ActionType, page?: Managers.Page) {
         //Managers.ProjectManager
 
-        ScrollService.Instance.x = 0;
-        ScrollService.Instance.y = 0;
-
-        Managers.ProjectManager.Instance.currentProject.pause = true;
-
-        Managers.ProjectManager.Instance.selectID = "";
-
-        switch (aType) {
-            case ActionType.NewProject:
-                newProject();
-                break;
-            case ActionType.OpenProject:
-                openProject();
-                break;
-            case ActionType.SaveProject:
-                saveProject();
-                break;
-            case ActionType.ToPage:
-                if (!page) {
-                    page = Managers.Page.Score;
-                }
-                moveToPage(page);
-                break;
-            default:
-                log("Unknown action type", MessageType.Error);
+        try{
+            ScrollService.Instance.x = 0;
+            ScrollService.Instance.y = 0;
+    
+            Managers.ProjectManager.Instance.currentProject.pause = true;
+    
+            Managers.ProjectManager.Instance.selectID = "";
+    
+            switch (aType) {
+                case ActionType.NewProject:
+                    newProject();
+                    break;
+                case ActionType.OpenProject:
+                    openProject();
+                    break;
+                case ActionType.SaveProject:
+                    saveProject();
+                    break;
+                case ActionType.ToPage:
+                    if (!page) {
+                        page = Managers.Page.Score;
+                    }
+                    moveToPage(page);
+                    break;
+                default:
+                    log("Unknown action type", MessageType.Error);
+            }
+    
+            // project manager needs to be static.
+            setTimeout(function () {
+                Managers.ProjectManager.Instance.currentProject.pause = false;
+            }, 100);
         }
-
-        // project manager needs to be static.
-        setTimeout(function () {
-            Managers.ProjectManager.Instance.currentProject.pause = false;
-        }, 100);
+        catch(e){
+            if(Inknote.log){
+                Inknote.log(e, Inknote.MessageType.Error);
+            }
+        }
 
     }
 
