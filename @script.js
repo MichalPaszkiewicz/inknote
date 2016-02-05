@@ -211,7 +211,7 @@ var Inknote;
                 newString += textArray[i].toUpperCase();
             }
             else {
-                newString += textArray[i].toLowerCase();
+                newString += textArray[i];
             }
         }
         return newString;

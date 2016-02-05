@@ -211,7 +211,7 @@ var Inknote;
                 newString += textArray[i].toUpperCase();
             }
             else {
-                newString += textArray[i].toLowerCase();
+                newString += textArray[i];
             }
         }
         return newString;
@@ -8854,15 +8854,18 @@ var Inknote;
                     plugCheck.id = "plugin-" + plugin;
                     plugCheck.onclick = function (ev) {
                         var target = ev.target;
+                        var pNameIndex = +target.id.split("-")[1];
                         if (target.checked) {
                             Inknote.check("Are you sure you want this plugin?", function () {
-                                self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                                self.setPluginNameVal(pNameIndex + "", target.checked);
+                                self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                             }, function () {
                                 target.checked = !target.checked;
                             });
                         }
                         else {
-                            self.setPluginNameVal(target.id.split("-")[1], target.checked);
+                            self.setPluginNameVal(pNameIndex + "", target.checked);
+                            self.findPluginByName(self._pluginNames[pNameIndex].name).active = target.checked;
                         }
                     };
                     plugDiv.appendChild(plugCheck);
@@ -8935,6 +8938,30 @@ var Inknote;
                     Inknote.Storage.savePlugins();
                 }, 200);
             };
+            PluginManager.prototype.setPluginOnLoadPlugin = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnPluginLoad = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
+            PluginManager.prototype.setPluginOnUnloadPlugin = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnPluginUnload = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
+            PluginManager.prototype.setPluginOnAppStart = function (ID, value) {
+                var name = ID.split("...")[1];
+                var plugin = this.findPluginByName(name);
+                plugin.allowOnAppStart = value;
+                setTimeout(function () {
+                    Inknote.Storage.savePlugins();
+                }, 200);
+            };
             PluginManager.prototype.generateEventListHtml = function () {
                 var self = this;
                 var pluginsByEvents = this.getPluginsByEvents();
@@ -8985,6 +9012,32 @@ var Inknote;
                                         self.setPluginOnSaveAllow(target.id, target.checked);
                                     };
                                     break;
+                                case "on plugin load":
+                                    plgCheck.checked = plugin.allowOnPluginLoad;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onpluginload..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnLoadPlugin(target.id, target.checked);
+                                    };
+                                    break;
+                                case "on plugin unload":
+                                    plgCheck.checked = plugin.allowOnPluginUnload;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onpluginunload..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnUnloadPlugin(target.id, target.checked);
+                                    };
+                                    break;
+                                case "on app start":
+                                    plgCheck.checked = plugin.allowOnAppStart;
+                                    var pluginName = plugin.name;
+                                    plgCheck.id = "onappstart..." + pluginName;
+                                    plgCheck.onclick = function (ev) {
+                                        var target = ev.target;
+                                        self.setPluginOnAppStart(target.id, target.checked);
+                                    };
                             }
                             var plgRow = document.createElement("div");
                             plgRow.appendChild(plgCheck);
@@ -9151,6 +9204,9 @@ var Inknote;
                 this.allowOnSave = true;
                 this.allowBeforeDraw = true;
                 this.allowOnDraw = true;
+                this.allowOnPluginLoad = true;
+                this.allowOnPluginUnload = true;
+                this.allowOnAppStart = true;
                 var existingName = Inknote.Managers.PluginManager.Instance.findPluginNameByName(name);
                 if (existingName) {
                     if (existingName.allowOnDraw != null) {
@@ -9161,6 +9217,15 @@ var Inknote;
                     }
                     if (existingName.allowBeforeDraw != null) {
                         this.allowBeforeDraw = existingName.allowBeforeDraw;
+                    }
+                    if (existingName.allowOnPluginLoad != null) {
+                        this.allowOnPluginLoad = existingName.allowOnPluginLoad;
+                    }
+                    if (existingName.allowOnPluginUnload != null) {
+                        this.allowOnPluginUnload = existingName.allowOnPluginUnload;
+                    }
+                    if (existingName.allowOnAppStart != null) {
+                        this.allowOnAppStart = existingName.allowOnAppStart;
                     }
                     this.active = existingName.active;
                 }
@@ -9178,6 +9243,14 @@ var Inknote;
                         this.allowOnDraw = true;
                         this.allowOnSave = true;
                         this.allowBeforeDraw = true;
+                        if (this.onPluginLoad) {
+                            this.onPluginLoad();
+                        }
+                    }
+                    else {
+                        if (this.onPluginUnload) {
+                            this.onPluginUnload();
+                        }
                     }
                 },
                 enumerable: true,
@@ -9194,6 +9267,15 @@ var Inknote;
                 if (this.beforeDraw) {
                     fns.push("before draw");
                 }
+                if (this.onPluginLoad) {
+                    fns.push("on plugin load");
+                }
+                if (this.onPluginUnload) {
+                    fns.push("on plugin unload");
+                }
+                if (this.onAppStart) {
+                    fns.push("on app start");
+                }
                 return fns;
             };
             return InknotePlugin;
@@ -9208,7 +9290,8 @@ var Inknote;
         var pluginList = [
             new Plugins.InknotePluginName("snow background", "./plugins/snow-back.js", "covers the background with snow"),
             new Plugins.InknotePluginName("plugin2", "./plugins/plugin2.js", "testing on draw"),
-            new Plugins.InknotePluginName("data storage", "./plugins/data-storage.js", "testing on save")
+            new Plugins.InknotePluginName("data storage", "./plugins/data-storage.js", "testing on save"),
+            new Plugins.InknotePluginName("fire background", "./plugins/fire-bground.js", "covers the background with flames")
         ];
         Inknote.Managers.PluginManager.Instance.addPluginNames(pluginList);
         function getPluginNameFromCompressed(compressed) {
@@ -9246,33 +9329,40 @@ var Inknote;
     var ActionType = Inknote.ActionType;
     function Action(aType, page) {
         //Managers.ProjectManager
-        Inknote.ScrollService.Instance.x = 0;
-        Inknote.ScrollService.Instance.y = 0;
-        Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
-        Inknote.Managers.ProjectManager.Instance.selectID = "";
-        switch (aType) {
-            case ActionType.NewProject:
-                newProject();
-                break;
-            case ActionType.OpenProject:
-                openProject();
-                break;
-            case ActionType.SaveProject:
-                saveProject();
-                break;
-            case ActionType.ToPage:
-                if (!page) {
-                    page = Inknote.Managers.Page.Score;
-                }
-                moveToPage(page);
-                break;
-            default:
-                Inknote.log("Unknown action type", Inknote.MessageType.Error);
+        try {
+            Inknote.ScrollService.Instance.x = 0;
+            Inknote.ScrollService.Instance.y = 0;
+            Inknote.Managers.ProjectManager.Instance.currentProject.pause = true;
+            Inknote.Managers.ProjectManager.Instance.selectID = "";
+            switch (aType) {
+                case ActionType.NewProject:
+                    newProject();
+                    break;
+                case ActionType.OpenProject:
+                    openProject();
+                    break;
+                case ActionType.SaveProject:
+                    saveProject();
+                    break;
+                case ActionType.ToPage:
+                    if (!page) {
+                        page = Inknote.Managers.Page.Score;
+                    }
+                    moveToPage(page);
+                    break;
+                default:
+                    Inknote.log("Unknown action type", Inknote.MessageType.Error);
+            }
+            // project manager needs to be static.
+            setTimeout(function () {
+                Inknote.Managers.ProjectManager.Instance.currentProject.pause = false;
+            }, 100);
         }
-        // project manager needs to be static.
-        setTimeout(function () {
-            Inknote.Managers.ProjectManager.Instance.currentProject.pause = false;
-        }, 100);
+        catch (e) {
+            if (Inknote.log) {
+                Inknote.log(e, Inknote.MessageType.Error);
+            }
+        }
     }
     Inknote.Action = Action;
     function newProject() {
@@ -9324,25 +9414,60 @@ var Inknote;
             };
             this.drawService.canvas.onclick = function (e) {
                 if (Inknote.Managers.MachineManager.Instance.machineType == Inknote.Managers.MachineType.Desktop) {
-                    self.click(e);
+                    try {
+                        self.click(e);
+                    }
+                    catch (e) {
+                        if (Inknote.log) {
+                            Inknote.log(e, Inknote.MessageType.Error);
+                        }
+                    }
                 }
             };
             this.drawService.canvas.ondblclick = function (e) {
-                self.dblClick(e);
+                try {
+                    self.dblClick(e);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             this.drawService.canvas.onmousedown = function (e) {
-                self.mouseDown(e, drawService);
+                try {
+                    self.mouseDown(e, drawService);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             // right click
             this.drawService.canvas.oncontextmenu = function (e) {
-                self.rightClick(e);
+                try {
+                    self.rightClick(e);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             };
             this.drawService.canvas.addEventListener("touchstart", function (e) {
-                self.touchStart(e, self.drawService);
-                //var me = new MouseEvent(null);
-                // todo: get correct touch object.
-                var touch = e.touches[0];
-                self.click(touch);
+                try {
+                    self.touchStart(e, self.drawService);
+                    //var me = new MouseEvent(null);
+                    // todo: get correct touch object.
+                    var touch = e.touches[0];
+                    self.click(touch);
+                }
+                catch (e) {
+                    if (Inknote.log) {
+                        Inknote.log(e, Inknote.MessageType.Error);
+                    }
+                }
             }, false);
         }
         CanvasControl.prototype.hover = function (e) {
@@ -10402,6 +10527,16 @@ var FrontEnd;
             }
         }
         function generateSearchResults(results) {
+            try {
+                tryGenerateSearchResults(results);
+            }
+            catch (e) {
+                if (Inknote.log) {
+                    Inknote.log(e, Inknote.MessageType.Error);
+                }
+            }
+        }
+        function tryGenerateSearchResults(results) {
             var container = document.getElementById("smart-search-output");
             container.innerHTML = "";
             var title = document.createElement("h3");
@@ -10429,6 +10564,7 @@ var FrontEnd;
             container.appendChild(headerDiv);
             for (var i = 0; i < results.length; i++) {
                 var resultDiv = document.createElement("div");
+                resultDiv.className = "lightgray-hover";
                 var resCol1 = document.createElement("span");
                 resCol1.textContent = results[i].projectIndex + "";
                 var resCol2 = document.createElement("span");
@@ -10575,6 +10711,14 @@ var Inknote;
             projectManager.openProjectFromURL();
             Main.x = new Inknote.DrawService("my-canvas");
             var y = new Inknote.CanvasControl(Main.x);
+            if (Inknote.Managers.PluginManager) {
+                var plugins = Inknote.Managers.PluginManager.Instance.plugins.filter(function (plugin) {
+                    return plugin.allowOnAppStart && !!plugin.onAppStart;
+                });
+                plugins.forEach(function (plugin) {
+                    plugin.onAppStart();
+                });
+            }
         }
     })(Main = Inknote.Main || (Inknote.Main = {}));
 })(Inknote || (Inknote = {}));
@@ -11323,6 +11467,22 @@ var Inknote;
                 expect(result[1]).toBe(5);
                 expect(result[2]).toBe(2);
                 expect(result[3]).toBe(3);
+            });
+        });
+    })(Tests = Inknote.Tests || (Inknote.Tests = {}));
+})(Inknote || (Inknote = {}));
+/// <reference path="../../../scripts/_references.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+var Inknote;
+(function (Inknote) {
+    var Tests;
+    (function (Tests) {
+        describe("pascalCase", function () {
+            it("returns pascal case string when given pascal case string", function () {
+                expect(Inknote.pascalCase("AlreadyPascalCase")).toBe("AlreadyPascalCase");
+            });
+            it("returns pascal case string when not given pascal case string", function () {
+                expect(Inknote.pascalCase("notAlreadyPascalCase")).toBe("NotAlreadyPascalCase");
             });
         });
     })(Tests = Inknote.Tests || (Inknote.Tests = {}));
