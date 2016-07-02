@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 // |__|  A......................................
 //  __                                          
 // |__|  MIND_BENDINGLY_AWESOME.................
@@ -306,7 +311,7 @@ var Inknote;
                 configurable: true
             });
             return Vector2;
-        })();
+        }());
         Maths.Vector2 = Vector2;
     })(Maths = Inknote.Maths || (Inknote.Maths = {}));
 })(Inknote || (Inknote = {}));
@@ -328,7 +333,7 @@ var Inknote;
             }
         }
         return Setting;
-    })();
+    }());
     Inknote.Setting = Setting;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -337,14 +342,9 @@ var Inknote;
         function DrawOptions() {
         }
         return DrawOptions;
-    })();
+    }());
     Inknote.DrawOptions = DrawOptions;
 })(Inknote || (Inknote = {}));
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var Inknote;
 (function (Inknote) {
     var Model;
@@ -354,7 +354,7 @@ var Inknote;
                 this.ID = Inknote.getID();
             }
             return Clef;
-        })();
+        }());
         Model.Clef = Clef;
         (function (ClefType) {
             ClefType[ClefType["GClef"] = 0] = "GClef";
@@ -371,7 +371,7 @@ var Inknote;
                 this.drawLocation = 8;
             }
             return FrenchViolinClef;
-        })(Clef);
+        }(Clef));
         Model.FrenchViolinClef = FrenchViolinClef;
         var TrebleClef = (function (_super) {
             __extends(TrebleClef, _super);
@@ -382,7 +382,7 @@ var Inknote;
                 this.drawLocation = 6;
             }
             return TrebleClef;
-        })(Clef);
+        }(Clef));
         Model.TrebleClef = TrebleClef;
         var SopranoClef = (function (_super) {
             __extends(SopranoClef, _super);
@@ -393,7 +393,7 @@ var Inknote;
                 this.drawLocation = 8;
             }
             return SopranoClef;
-        })(Clef);
+        }(Clef));
         Model.SopranoClef = SopranoClef;
         var MezzoSopranoClef = (function (_super) {
             __extends(MezzoSopranoClef, _super);
@@ -404,7 +404,7 @@ var Inknote;
                 this.drawLocation = 6;
             }
             return MezzoSopranoClef;
-        })(Clef);
+        }(Clef));
         Model.MezzoSopranoClef = MezzoSopranoClef;
         var AltoClef = (function (_super) {
             __extends(AltoClef, _super);
@@ -415,7 +415,7 @@ var Inknote;
                 this.drawLocation = 4;
             }
             return AltoClef;
-        })(Clef);
+        }(Clef));
         Model.AltoClef = AltoClef;
         var TenorClef = (function (_super) {
             __extends(TenorClef, _super);
@@ -426,7 +426,7 @@ var Inknote;
                 this.drawLocation = 2;
             }
             return TenorClef;
-        })(Clef);
+        }(Clef));
         Model.TenorClef = TenorClef;
         var BaritoneClef = (function (_super) {
             __extends(BaritoneClef, _super);
@@ -437,7 +437,7 @@ var Inknote;
                 this.drawLocation = 4;
             }
             return BaritoneClef;
-        })(Clef);
+        }(Clef));
         Model.BaritoneClef = BaritoneClef;
         var BassClef = (function (_super) {
             __extends(BassClef, _super);
@@ -448,7 +448,7 @@ var Inknote;
                 this.drawLocation = 2;
             }
             return BassClef;
-        })(Clef);
+        }(Clef));
         Model.BassClef = BassClef;
         var SubbassClef = (function (_super) {
             __extends(SubbassClef, _super);
@@ -459,7 +459,7 @@ var Inknote;
                 this.drawLocation = 0;
             }
             return SubbassClef;
-        })(Clef);
+        }(Clef));
         Model.SubbassClef = SubbassClef;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -477,7 +477,7 @@ var Inknote;
                 }
             }
             return TimeSignature;
-        })();
+        }());
         Model.TimeSignature = TimeSignature;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -526,7 +526,7 @@ var Inknote;
             return IS;
         };
         return Notation;
-    })();
+    }());
     Inknote.Notation = Notation;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -629,7 +629,7 @@ var Inknote;
                 this.ID = Inknote.getID();
             }
             return Rest;
-        })();
+        }());
         Model.Rest = Rest;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -657,7 +657,7 @@ var Inknote;
                 this.length = length;
             }
             return Note;
-        })();
+        }());
         Model.Note = Note;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -671,7 +671,7 @@ var Inknote;
                 this.notes = notes;
             }
             return Chord;
-        })();
+        }());
         Model.Chord = Chord;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -685,7 +685,7 @@ var Inknote;
                 this.content = txt;
             }
             return Text;
-        })();
+        }());
         Model.Text = Text;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -699,7 +699,7 @@ var Inknote;
                 this.items = [];
             }
             return Bar;
-        })();
+        }());
         Model.Bar = Bar;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -715,7 +715,7 @@ var Inknote;
                 this.visible = true;
             }
             return Instrument;
-        })();
+        }());
         Model.Instrument = Instrument;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -736,7 +736,7 @@ var Inknote;
             }
         }
         return Project;
-    })();
+    }());
     Inknote.Project = Project;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -757,7 +757,7 @@ var Inknote;
             configurable: true
         });
         return DrawingSettings;
-    })();
+    }());
     Inknote.DrawingSettings = DrawingSettings;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -766,9 +766,10 @@ var Inknote;
         function TempData() {
             this.noteControlsHidden = false;
             this.loggingLevel = 2;
+            this.allowBarOverflow = true;
         }
         return TempData;
-    })();
+    }());
     Inknote.TempData = TempData;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -798,7 +799,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.NOTE;
             }
             return CompressedNote;
-        })();
+        }());
         Compressed.CompressedNote = CompressedNote;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -812,7 +813,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.CHORD;
             }
             return CompressedChord;
-        })();
+        }());
         Compressed.CompressedChord = CompressedChord;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -826,7 +827,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.REST;
             }
             return CompressedRest;
-        })();
+        }());
         Compressed.CompressedRest = CompressedRest;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -852,7 +853,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.CLEF;
             }
             return CompressedClef;
-        })();
+        }());
         Compressed.CompressedClef = CompressedClef;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -867,7 +868,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.TIMESIGNATURE;
             }
             return CompressedTimeSignature;
-        })();
+        }());
         Compressed.CompressedTimeSignature = CompressedTimeSignature;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -880,7 +881,7 @@ var Inknote;
                 this.i = Compressed.ItemIdentifier.TEXT;
             }
             return CompressedText;
-        })();
+        }());
         Compressed.CompressedText = CompressedText;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -895,7 +896,7 @@ var Inknote;
                 this.items = [];
             }
             return Bar;
-        })();
+        }());
         Compressed.Bar = Bar;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -910,7 +911,7 @@ var Inknote;
                 this.bars = [];
             }
             return Instrument;
-        })();
+        }());
         Compressed.Instrument = Instrument;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -929,7 +930,7 @@ var Inknote;
                 }
             }
             return CompressedProject;
-        })();
+        }());
         Compressed.CompressedProject = CompressedProject;
     })(Compressed = Inknote.Compressed || (Inknote.Compressed = {}));
 })(Inknote || (Inknote = {}));
@@ -952,7 +953,7 @@ var Inknote;
                 return this.flats.length;
             };
             return Key;
-        })();
+        }());
         Model.Key = Key;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -967,7 +968,7 @@ var Inknote;
                 this.intervals = intervals;
             }
             return KeyType;
-        })();
+        }());
         Model.KeyType = KeyType;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -1012,7 +1013,7 @@ var Inknote;
             for (var i = 0; i < keyTypes.length; i++) {
                 var kt = keyTypes[i];
                 for (var j in Model.NoteValue) {
-                    if (isNaN(j)) {
+                    if (isNaN(+j)) {
                         var allKeyNotes = [];
                         var baseNote = new Model.Note(parseInt(Model.NoteValue[j]), 4, 1);
                         baseNote.value = (baseNote.value + transpose) % 12;
@@ -1043,7 +1044,7 @@ var Inknote;
                 return getKeys(transpose);
             };
             return KeyHolder;
-        })();
+        }());
         Model.KeyHolder = KeyHolder;
     })(Model = Inknote.Model || (Inknote.Model = {}));
 })(Inknote || (Inknote = {}));
@@ -1111,7 +1112,7 @@ var Inknote;
                 configurable: true
             });
             return DoReMiChordNotation;
-        })();
+        }());
         ChordNotation.DoReMiChordNotation = DoReMiChordNotation;
     })(ChordNotation = Inknote.ChordNotation || (Inknote.ChordNotation = {}));
 })(Inknote || (Inknote = {}));
@@ -1158,7 +1159,7 @@ var Inknote;
                 configurable: true
             });
             return StandardChordNotation;
-        })();
+        }());
         ChordNotation.StandardChordNotation = StandardChordNotation;
     })(ChordNotation = Inknote.ChordNotation || (Inknote.ChordNotation = {}));
 })(Inknote || (Inknote = {}));
@@ -1206,7 +1207,7 @@ var Inknote;
                 configurable: true
             });
             return UPPER_lowerChordNotation;
-        })();
+        }());
         ChordNotation.UPPER_lowerChordNotation = UPPER_lowerChordNotation;
     })(ChordNotation = Inknote.ChordNotation || (Inknote.ChordNotation = {}));
 })(Inknote || (Inknote = {}));
@@ -1262,7 +1263,7 @@ var Inknote;
                 return true;
             };
             return Licence;
-        })();
+        }());
         Drawing.Licence = Licence;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1377,7 +1378,7 @@ var Inknote;
                 return true;
             };
             return Background;
-        })();
+        }());
         Drawing.Background = Background;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1418,7 +1419,7 @@ var Inknote;
                 return true;
             };
             return Stave;
-        })();
+        }());
         Drawing.Stave = Stave;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1434,7 +1435,7 @@ var Inknote;
                 this.lineHeight = 10;
             }
             return Clef;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Clef = Clef;
         var GClef = (function (_super) {
             __extends(GClef, _super);
@@ -1478,7 +1479,7 @@ var Inknote;
                 return true;
             };
             return GClef;
-        })(Clef);
+        }(Clef));
         Drawing.GClef = GClef;
         var CClef = (function (_super) {
             __extends(CClef, _super);
@@ -1525,7 +1526,7 @@ var Inknote;
                 return true;
             };
             return CClef;
-        })(Clef);
+        }(Clef));
         Drawing.CClef = CClef;
         var FClef = (function (_super) {
             __extends(FClef, _super);
@@ -1561,7 +1562,7 @@ var Inknote;
                 return true;
             };
             return FClef;
-        })(Clef);
+        }(Clef));
         Drawing.FClef = FClef;
         function getDrawingFromClef(clef) {
             var drawing = null;
@@ -1611,7 +1612,7 @@ var Inknote;
                 return true;
             };
             return TimeSignature;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.TimeSignature = TimeSignature;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1660,7 +1661,7 @@ var Inknote;
                 return true;
             };
             return Sharp;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Sharp = Sharp;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1704,7 +1705,7 @@ var Inknote;
                 return true;
             };
             return Flat;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Flat = Flat;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1753,7 +1754,7 @@ var Inknote;
                 return true;
             };
             return Natural;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Natural = Natural;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -1877,7 +1878,7 @@ var Inknote;
                 this.isPlaying = false;
             }
             return Note;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Note = Note;
         var Breve = (function (_super) {
             __extends(Breve, _super);
@@ -1918,7 +1919,7 @@ var Inknote;
                 return true;
             };
             return Breve;
-        })(Note);
+        }(Note));
         Drawing.Breve = Breve;
         var SemiBreve = (function (_super) {
             __extends(SemiBreve, _super);
@@ -1931,7 +1932,7 @@ var Inknote;
                 return true;
             };
             return SemiBreve;
-        })(Note);
+        }(Note));
         Drawing.SemiBreve = SemiBreve;
         var Minim = (function (_super) {
             __extends(Minim, _super);
@@ -1944,7 +1945,7 @@ var Inknote;
                 return true;
             };
             return Minim;
-        })(Note);
+        }(Note));
         Drawing.Minim = Minim;
         var Crotchet = (function (_super) {
             __extends(Crotchet, _super);
@@ -1957,7 +1958,7 @@ var Inknote;
                 return true;
             };
             return Crotchet;
-        })(Note);
+        }(Note));
         Drawing.Crotchet = Crotchet;
         var Quaver = (function (_super) {
             __extends(Quaver, _super);
@@ -1970,7 +1971,7 @@ var Inknote;
                 return true;
             };
             return Quaver;
-        })(Note);
+        }(Note));
         Drawing.Quaver = Quaver;
         var SemiQuaver = (function (_super) {
             __extends(SemiQuaver, _super);
@@ -1983,7 +1984,7 @@ var Inknote;
                 return true;
             };
             return SemiQuaver;
-        })(Note);
+        }(Note));
         Drawing.SemiQuaver = SemiQuaver;
         var DemiSemiQuaver = (function (_super) {
             __extends(DemiSemiQuaver, _super);
@@ -1996,7 +1997,7 @@ var Inknote;
                 return true;
             };
             return DemiSemiQuaver;
-        })(Note);
+        }(Note));
         Drawing.DemiSemiQuaver = DemiSemiQuaver;
         var HemiDemiSemiQuaver = (function (_super) {
             __extends(HemiDemiSemiQuaver, _super);
@@ -2009,7 +2010,7 @@ var Inknote;
                 return true;
             };
             return HemiDemiSemiQuaver;
-        })(Note);
+        }(Note));
         Drawing.HemiDemiSemiQuaver = HemiDemiSemiQuaver;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2038,7 +2039,7 @@ var Inknote;
                 return true;
             };
             return LedgerLine;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.LedgerLine = LedgerLine;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2171,7 +2172,7 @@ var Inknote;
                 _super.apply(this, arguments);
             }
             return Rest;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Rest = Rest;
         var BreveRest = (function (_super) {
             __extends(BreveRest, _super);
@@ -2186,7 +2187,7 @@ var Inknote;
                 return true;
             };
             return BreveRest;
-        })(Rest);
+        }(Rest));
         Drawing.BreveRest = BreveRest;
         var SemiBreveRest = (function (_super) {
             __extends(SemiBreveRest, _super);
@@ -2199,7 +2200,7 @@ var Inknote;
                 return true;
             };
             return SemiBreveRest;
-        })(Rest);
+        }(Rest));
         Drawing.SemiBreveRest = SemiBreveRest;
         var MinimRest = (function (_super) {
             __extends(MinimRest, _super);
@@ -2212,7 +2213,7 @@ var Inknote;
                 return true;
             };
             return MinimRest;
-        })(Rest);
+        }(Rest));
         Drawing.MinimRest = MinimRest;
         var CrotchetRest = (function (_super) {
             __extends(CrotchetRest, _super);
@@ -2225,7 +2226,7 @@ var Inknote;
                 return true;
             };
             return CrotchetRest;
-        })(Rest);
+        }(Rest));
         Drawing.CrotchetRest = CrotchetRest;
         var QuaverRest = (function (_super) {
             __extends(QuaverRest, _super);
@@ -2238,7 +2239,7 @@ var Inknote;
                 return true;
             };
             return QuaverRest;
-        })(Rest);
+        }(Rest));
         Drawing.QuaverRest = QuaverRest;
         var SemiQuaverRest = (function (_super) {
             __extends(SemiQuaverRest, _super);
@@ -2251,7 +2252,7 @@ var Inknote;
                 return true;
             };
             return SemiQuaverRest;
-        })(Rest);
+        }(Rest));
         Drawing.SemiQuaverRest = SemiQuaverRest;
         var DemiSemiQuaverRest = (function (_super) {
             __extends(DemiSemiQuaverRest, _super);
@@ -2264,7 +2265,7 @@ var Inknote;
                 return true;
             };
             return DemiSemiQuaverRest;
-        })(Rest);
+        }(Rest));
         Drawing.DemiSemiQuaverRest = DemiSemiQuaverRest;
         var HemiDemiSemiQuaverRest = (function (_super) {
             __extends(HemiDemiSemiQuaverRest, _super);
@@ -2277,7 +2278,7 @@ var Inknote;
                 return true;
             };
             return HemiDemiSemiQuaverRest;
-        })(Rest);
+        }(Rest));
         Drawing.HemiDemiSemiQuaverRest = HemiDemiSemiQuaverRest;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2304,7 +2305,7 @@ var Inknote;
                 return true;
             };
             return DrawText;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.DrawText = DrawText;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2366,7 +2367,7 @@ var Inknote;
                 return true;
             };
             return Bar;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.Bar = Bar;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2409,7 +2410,7 @@ var Inknote;
                 return Inknote.Maths.isWithinRadius(x, y, this.x, this.y, 10);
             };
             return LoadingSplash;
-        })();
+        }());
         Drawing.LoadingSplash = LoadingSplash;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2489,7 +2490,7 @@ var Inknote;
                 return y < this.y + 100 && y > this.y + 65 && x > canvas.width / 2 - 150 && x < canvas.width / 2 + 150;
             };
             return Name;
-        })();
+        }());
         Drawing.Name = Name;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2568,7 +2569,7 @@ var Inknote;
                 return false;
             };
             return File;
-        })();
+        }());
         Drawing.File = File;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2618,7 +2619,7 @@ var Inknote;
                 return isRight && isLeft && isDown && isUp;
             };
             return KeyboardKey;
-        })();
+        }());
         Drawing.KeyboardKey = KeyboardKey;
         function keysFromString(text, x, y, totalWidth, itemHeight) {
             var charArray = text.split("");
@@ -2732,7 +2733,7 @@ var Inknote;
                 }
             };
             return Keyboard;
-        })();
+        }());
         Drawing.Keyboard = Keyboard;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2787,7 +2788,7 @@ var Inknote;
                 ctx.fill();
             };
             return BottomMenuButton;
-        })();
+        }());
         Drawing.BottomMenuButton = BottomMenuButton;
         function createMenuFromArray(items, x, y, width, height) {
             var correctItems = [];
@@ -2909,7 +2910,7 @@ var Inknote;
                 }
             };
             return BottomMenu;
-        })();
+        }());
         Drawing.BottomMenu = BottomMenu;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2937,7 +2938,7 @@ var Inknote;
                 configurable: true
             });
             return ScoreMenu;
-        })();
+        }());
         Drawing.ScoreMenu = ScoreMenu;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -2963,7 +2964,7 @@ var Inknote;
                 return true;
             };
             return ChordSymbol;
-        })(Inknote.Notation);
+        }(Inknote.Notation));
         Drawing.ChordSymbol = ChordSymbol;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -3006,7 +3007,7 @@ var Inknote;
                 return true;
             };
             return TempoMark;
-        })();
+        }());
         Drawing.TempoMark = TempoMark;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -3108,7 +3109,7 @@ var Inknote;
                     return true;
                 };
                 return ScrollBar;
-            })();
+            }());
             ScrollBar_1.ScrollBar = ScrollBar;
         })(ScrollBar = Drawing.ScrollBar || (Drawing.ScrollBar = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3125,7 +3126,7 @@ var Inknote;
                     _super.apply(this, arguments);
                 }
                 return FileScroll;
-            })(ScrollBar.ScrollBar);
+            }(ScrollBar.ScrollBar));
             ScrollBar.FileScroll = FileScroll;
         })(ScrollBar = Drawing.ScrollBar || (Drawing.ScrollBar = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3195,7 +3196,7 @@ var Inknote;
                     return true;
                 };
                 return ScrollThumbnail;
-            })();
+            }());
             ScrollBar.ScrollThumbnail = ScrollThumbnail;
         })(ScrollBar = Drawing.ScrollBar || (Drawing.ScrollBar = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3213,7 +3214,7 @@ var Inknote;
                     this.width = 25;
                 }
                 return ProjectScroll;
-            })(ScrollBar.ScrollBar);
+            }(ScrollBar.ScrollBar));
             ScrollBar.ProjectScroll = ProjectScroll;
         })(ScrollBar = Drawing.ScrollBar || (Drawing.ScrollBar = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3230,7 +3231,7 @@ var Inknote;
                     this.click = click;
                 }
                 return ClickableMenuItem;
-            })();
+            }());
             RightClickMenus.ClickableMenuItem = ClickableMenuItem;
             var RightClickMenu = (function () {
                 function RightClickMenu() {
@@ -3321,7 +3322,7 @@ var Inknote;
                     this.items[itemNo].click();
                 };
                 return RightClickMenu;
-            })();
+            }());
             RightClickMenus.RightClickMenu = RightClickMenu;
         })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3361,7 +3362,7 @@ var Inknote;
                     this.fileID = ID;
                 }
                 return RightClickFile;
-            })(RightClickMenus.RightClickMenu);
+            }(RightClickMenus.RightClickMenu));
             RightClickMenus.RightClickFile = RightClickFile;
         })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3398,7 +3399,7 @@ var Inknote;
                     }));
                 }
                 return RightClickScore;
-            })(RightClickMenus.RightClickMenu);
+            }(RightClickMenus.RightClickMenu));
             RightClickMenus.RightClickScore = RightClickScore;
         })(RightClickMenus = Drawing.RightClickMenus || (Drawing.RightClickMenus = {}));
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
@@ -3449,7 +3450,7 @@ var Inknote;
                 ctx.fill();
             };
             return Metaball;
-        })();
+        }());
         Landing.Metaball = Metaball;
         var MetaballList = (function () {
             function MetaballList(amount, canvas) {
@@ -3520,7 +3521,7 @@ var Inknote;
                 }
             };
             return MetaballList;
-        })();
+        }());
         Landing.MetaballList = MetaballList;
     })(Landing = Inknote.Landing || (Inknote.Landing = {}));
 })(Inknote || (Inknote = {}));
@@ -3579,7 +3580,7 @@ var Inknote;
                 }
             };
             return Landing;
-        })();
+        }());
         Landing_1.Landing = Landing;
     })(Landing = Inknote.Landing || (Inknote.Landing = {}));
 })(Inknote || (Inknote = {}));
@@ -3661,7 +3662,7 @@ var Inknote;
                 return willSplash;
             };
             return DropFile;
-        })();
+        }());
         DropCanvas.DropFile = DropFile;
         var Splash = (function () {
             function Splash(index, strength) {
@@ -3669,7 +3670,7 @@ var Inknote;
                 this.strength = strength;
             }
             return Splash;
-        })();
+        }());
         DropCanvas.Splash = Splash;
         function updateFiles(files, springs, springTop) {
             var splashes = [];
@@ -3718,7 +3719,7 @@ var Inknote;
                 this.velocity += this.acceleration;
             };
             return Spring;
-        })();
+        }());
         DropCanvas.Spring = Spring;
         function updateSprings(springs) {
             for (var i = 0; i < springs.length; i++) {
@@ -3785,7 +3786,7 @@ var Inknote;
                 ctx.fill();
             };
             return Droplet;
-        })();
+        }());
         DropCanvas.Droplet = Droplet;
     })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
 })(Inknote || (Inknote = {}));
@@ -3948,7 +3949,7 @@ var Inknote;
                 }
             };
             return DropCanvas;
-        })();
+        }());
         DropCanvas_1.DropCanvas = DropCanvas;
     })(DropCanvas = Inknote.DropCanvas || (Inknote.DropCanvas = {}));
 })(Inknote || (Inknote = {}));
@@ -3980,7 +3981,7 @@ var Inknote;
                 return true;
             };
             return NoteControlBackground;
-        })();
+        }());
         Drawing.NoteControlBackground = NoteControlBackground;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4082,7 +4083,7 @@ var Inknote;
                 }
             };
             return PianoKey;
-        })();
+        }());
         Drawing.PianoKey = PianoKey;
         var WhiteKey = (function (_super) {
             __extends(WhiteKey, _super);
@@ -4091,7 +4092,7 @@ var Inknote;
                 this.colour = PianoKeyColour.WHITE;
             }
             return WhiteKey;
-        })(PianoKey);
+        }(PianoKey));
         Drawing.WhiteKey = WhiteKey;
         var BlackKey = (function (_super) {
             __extends(BlackKey, _super);
@@ -4100,7 +4101,7 @@ var Inknote;
                 this.colour = PianoKeyColour.BLACK;
             }
             return BlackKey;
-        })(PianoKey);
+        }(PianoKey));
         Drawing.BlackKey = BlackKey;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4267,7 +4268,7 @@ var Inknote;
                 }
             };
             return Piano;
-        })();
+        }());
         Drawing.Piano = Piano;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4339,7 +4340,7 @@ var Inknote;
                 return true;
             };
             return LengthControlBar;
-        })();
+        }());
         Drawing.LengthControlBar = LengthControlBar;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4384,7 +4385,7 @@ var Inknote;
                 return true;
             };
             return RestControl;
-        })();
+        }());
         Drawing.RestControl = RestControl;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4438,7 +4439,7 @@ var Inknote;
                 return true;
             };
             return DeleteNoteControl;
-        })();
+        }());
         Drawing.DeleteNoteControl = DeleteNoteControl;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4496,7 +4497,7 @@ var Inknote;
                 return true;
             };
             return Minimise;
-        })();
+        }());
         Drawing.Minimise = Minimise;
     })(Drawing = Inknote.Drawing || (Inknote.Drawing = {}));
 })(Inknote || (Inknote = {}));
@@ -4606,7 +4607,7 @@ var Inknote;
                 }
             };
             return CookieManager;
-        })();
+        }());
         Storage.CookieManager = CookieManager;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
@@ -4654,7 +4655,7 @@ var Inknote;
                 };
             };
             return IDBTable;
-        })();
+        }());
         Storage.IDBTable = IDBTable;
         var IDBDB = (function () {
             function IDBDB(database) {
@@ -4670,7 +4671,7 @@ var Inknote;
                 callback(table);
             };
             return IDBDB;
-        })();
+        }());
         Storage.IDBDB = IDBDB;
         var IDBManager = (function () {
             function IDBManager() {
@@ -4704,7 +4705,7 @@ var Inknote;
                 };
             };
             return IDBManager;
-        })();
+        }());
         Storage.IDBManager = IDBManager;
     })(Storage = Inknote.Storage || (Inknote.Storage = {}));
 })(Inknote || (Inknote = {}));
@@ -4937,7 +4938,7 @@ var Inknote;
             Inknote.Storage.saveTemp();
         };
         return TempDataService;
-    })();
+    }());
     Inknote.TempDataService = TempDataService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5095,7 +5096,7 @@ var Inknote;
             }
         };
         return ScrollService;
-    })();
+    }());
     Inknote.ScrollService = ScrollService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5115,7 +5116,7 @@ var Inknote;
             configurable: true
         });
         return LicenceService;
-    })();
+    }());
     Inknote.LicenceService = LicenceService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5237,7 +5238,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         return ClipboardService;
-    })();
+    }());
     Inknote.ClipboardService = ClipboardService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5281,7 +5282,7 @@ var Inknote;
             this.visible = true;
         };
         return RightClickMenuService;
-    })();
+    }());
     Inknote.RightClickMenuService = RightClickMenuService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -5385,7 +5386,7 @@ var Inknote;
             this.items.push(Inknote.Drawing.Background.Instance);
         };
         return DrawService;
-    })();
+    }());
     Inknote.DrawService = DrawService;
 })(Inknote || (Inknote = {}));
 // this file is for drawing score.
@@ -5429,7 +5430,7 @@ var Inknote;
             this.barIndices = [];
         }
         return BarLine;
-    })();
+    }());
     function splitBarsToLines(barLengths, splitLength) {
         var barLines = [];
         var tempBarLine = new BarLine();
@@ -5721,7 +5722,7 @@ var Inknote;
             }
         };
         return ScoringService;
-    })();
+    }());
     Inknote.ScoringService = ScoringService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -6413,7 +6414,7 @@ var Inknote;
             enumerable: true,
             configurable: true
         });
-        TimeSignatureService.prototype.barIsFull = function (bar, instrument) {
+        TimeSignatureService.prototype.getTimeSignatureAtPoint = function (bar, instrument) {
             var timeSignature = new Inknote.Model.TimeSignature(4, 4);
             for (var i = 0; i < instrument.bars.length; i++) {
                 for (var j = 0; j < instrument.bars[i].items.length; j++) {
@@ -6425,42 +6426,43 @@ var Inknote;
                     break;
                 }
             }
-            var countables = Inknote.getItemsWhere(bar.items, function (item) {
+            return timeSignature;
+        };
+        TimeSignatureService.prototype.getCountables = function (bar) {
+            return Inknote.getItemsWhere(bar.items, function (item) {
                 var isRest = item instanceof Inknote.Model.Rest;
                 var isNote = item instanceof Inknote.Model.Note;
                 var isChord = item instanceof Inknote.Model.Chord;
                 return isRest || isNote;
             });
+        };
+        TimeSignatureService.prototype.barIsFull = function (bar, instrument) {
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
             var count = Inknote.sum(countables, function (item) {
                 return getCrotchetsFromNoteLength(item.length);
             });
             return count >= timeSignature.top;
         };
         TimeSignatureService.prototype.barHasError = function (bar, instrument) {
-            var timeSignature = new Inknote.Model.TimeSignature(4, 4);
-            for (var i = 0; i < instrument.bars.length; i++) {
-                for (var j = 0; j < instrument.bars[i].items.length; j++) {
-                    if (instrument.bars[i].items[j] instanceof Inknote.Model.TimeSignature) {
-                        timeSignature = instrument.bars[i].items[j];
-                    }
-                }
-                if (instrument.bars[i].ID === bar.ID) {
-                    break;
-                }
-            }
-            var countables = Inknote.getItemsWhere(bar.items, function (item) {
-                var isRest = item instanceof Inknote.Model.Rest;
-                var isNote = item instanceof Inknote.Model.Note;
-                var isChord = item instanceof Inknote.Model.Chord;
-                return isRest || isNote;
-            });
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
             var count = Inknote.sum(countables, function (item) {
                 return getCrotchetsFromNoteLength(item.length);
             });
             return count != timeSignature.top;
         };
+        TimeSignatureService.prototype.barIsOverflowing = function (bar, instrument) {
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
+            var count = Inknote.sum(countables, function (item) {
+                return getCrotchetsFromNoteLength(item.length);
+            });
+            // to ensure no floating point error 0.00001
+            return count > timeSignature.top + 0.00001;
+        };
         return TimeSignatureService;
-    })();
+    }());
     Inknote.TimeSignatureService = TimeSignatureService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -6722,6 +6724,17 @@ var Inknote;
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
             }
+            if (!Inknote.TempDataService.Instance.currentData.allowBarOverflow) {
+                // if dontAllowOverflow setting is on, do the following.
+                var testFutureBar = new Inknote.Model.Bar();
+                testFutureBar.items = bar.items.map(function (item) { return item; });
+                testFutureBar.items.push(note);
+                if (Inknote.TimeSignatureService.Instance.barIsOverflowing(testFutureBar, instrument)) {
+                    Inknote.log("this note would make this bar too long!", Inknote.MessageType.Warning);
+                    Inknote.ScoringService.Instance.refresh();
+                    return;
+                }
+            }
             bar.items.push(note);
             Inknote.ScoringService.Instance.refresh();
         };
@@ -6764,6 +6777,17 @@ var Inknote;
             if (Inknote.TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
+            }
+            if (!Inknote.TempDataService.Instance.currentData.allowBarOverflow) {
+                // if dontAllowOverflow setting is on, do the following.
+                var testFutureBar = new Inknote.Model.Bar();
+                testFutureBar.items = bar.items.map(function (item) { return item; });
+                testFutureBar.items.push(rest);
+                if (Inknote.TimeSignatureService.Instance.barIsOverflowing(testFutureBar, instrument)) {
+                    Inknote.log("this rest would make this bar too long!", Inknote.MessageType.Warning);
+                    Inknote.ScoringService.Instance.refresh();
+                    return;
+                }
             }
             bar.items.push(rest);
             Inknote.ScoringService.Instance.refresh();
@@ -6949,7 +6973,7 @@ var Inknote;
             Inknote.ScoringService.Instance.refresh();
         };
         return NoteControlService;
-    })();
+    }());
     Inknote.NoteControlService = NoteControlService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7077,7 +7101,7 @@ var Inknote;
             Inknote.log("change key not implemented", Inknote.MessageType.Error);
         };
         return BarService;
-    })();
+    }());
     Inknote.BarService = BarService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7148,7 +7172,7 @@ var Inknote;
             Modal.toggle("project-options");
         };
         return ProjectOptionsService;
-    })();
+    }());
     Inknote.ProjectOptionsService = ProjectOptionsService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7343,7 +7367,7 @@ var Inknote;
             });
         };
         return InstrumentService;
-    })();
+    }());
     Inknote.InstrumentService = InstrumentService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7382,7 +7406,7 @@ var Inknote;
             }
         };
         return UndoService;
-    })();
+    }());
     Inknote.UndoService = UndoService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7417,7 +7441,7 @@ var Inknote;
             request.send(data);
         };
         return HttpService;
-    })();
+    }());
     Inknote.HttpService = HttpService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7467,7 +7491,7 @@ var Inknote;
             });
         };
         return PrintService;
-    })();
+    }());
     Inknote.PrintService = PrintService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7480,7 +7504,7 @@ var Inknote;
             this.itemIndex = itemIndex;
         }
         return SmartSearchResult;
-    })();
+    }());
     Inknote.SmartSearchResult = SmartSearchResult;
     (function (SearchRange) {
         SearchRange[SearchRange["CURRENT_PROJECT"] = 0] = "CURRENT_PROJECT";
@@ -7501,7 +7525,7 @@ var Inknote;
             configurable: true
         });
         return SmartSearchSettings;
-    })();
+    }());
     Inknote.SmartSearchSettings = SmartSearchSettings;
     var SmartSearchService = (function () {
         function SmartSearchService() {
@@ -7639,7 +7663,7 @@ var Inknote;
             return results;
         };
         return SmartSearchService;
-    })();
+    }());
     Inknote.SmartSearchService = SmartSearchService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7677,7 +7701,7 @@ var Inknote;
             this.goToID(item.ID);
         };
         return GoToService;
-    })();
+    }());
     Inknote.GoToService = GoToService;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -7773,7 +7797,7 @@ var Inknote;
                 }
             };
             return Sound;
-        })();
+        }());
         Audio.Sound = Sound;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
@@ -8086,7 +8110,7 @@ var Inknote;
                 this.removeFinishedSounds();
             };
             return AudioService;
-        })();
+        }());
         Audio.AudioService = AudioService;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
@@ -8181,7 +8205,7 @@ var Inknote;
                 this.mixGain.connect(node);
             };
             return Synth;
-        })();
+        }());
         Audio.Synth = Synth;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
@@ -8258,7 +8282,7 @@ var Inknote;
                 return result;
             };
             return SynthManager;
-        })();
+        }());
         Audio.SynthManager = SynthManager;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
@@ -8292,7 +8316,7 @@ var Inknote;
                 this.synth.delay = value;
             };
             return SynthService;
-        })();
+        }());
         Audio.SynthService = SynthService;
     })(Audio = Inknote.Audio || (Inknote.Audio = {}));
 })(Inknote || (Inknote = {}));
@@ -8330,7 +8354,7 @@ var Inknote;
                 configurable: true
             });
             return VersionManager;
-        })();
+        }());
         Managers.VersionManager = VersionManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -8382,7 +8406,7 @@ var Inknote;
                 configurable: true
             });
             return MachineManager;
-        })();
+        }());
         Managers.MachineManager = MachineManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -8509,7 +8533,7 @@ var Inknote;
                 }
             };
             return PageManager;
-        })();
+        }());
         Managers.PageManager = PageManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -8568,7 +8592,7 @@ var Inknote;
                 configurable: true
             });
             return SettingsManager;
-        })();
+        }());
         Managers.SettingsManager = SettingsManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -8751,7 +8775,7 @@ var Inknote;
                 }
             };
             return ProjectManager;
-        })();
+        }());
         Managers.ProjectManager = ProjectManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -9076,7 +9100,7 @@ var Inknote;
                 return items[0];
             };
             return PluginManager;
-        })();
+        }());
         Managers.PluginManager = PluginManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -9130,7 +9154,7 @@ var Inknote;
                 configurable: true
             });
             return MouseManager;
-        })();
+        }());
         Managers.MouseManager = MouseManager;
     })(Managers = Inknote.Managers || (Inknote.Managers = {}));
 })(Inknote || (Inknote = {}));
@@ -9148,7 +9172,7 @@ var Inknote;
                     this.allowOnDraw = true;
                 }
                 return InknotePlugin;
-            })();
+            }());
             Compressed.InknotePlugin = InknotePlugin;
         })(Compressed = Plugins.Compressed || (Plugins.Compressed = {}));
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
@@ -9194,7 +9218,7 @@ var Inknote;
                 configurable: true
             });
             return InknotePluginName;
-        })();
+        }());
         Plugins.InknotePluginName = InknotePluginName;
         var InknotePlugin = (function () {
             function InknotePlugin(name) {
@@ -9279,7 +9303,7 @@ var Inknote;
                 return fns;
             };
             return InknotePlugin;
-        })();
+        }());
         Plugins.InknotePlugin = InknotePlugin;
     })(Plugins = Inknote.Plugins || (Inknote.Plugins = {}));
 })(Inknote || (Inknote = {}));
@@ -9395,7 +9419,7 @@ var Inknote;
             this.pageY = pageY;
         }
         return TouchCopy;
-    })();
+    }());
     function copyTouch(touch) {
         return new TouchCopy(touch.identifier, touch.pageX, touch.pageY);
     }
@@ -9710,7 +9734,7 @@ var Inknote;
             e.preventDefault();
         };
         return CanvasControl;
-    })();
+    }());
     Inknote.CanvasControl = CanvasControl;
 })(Inknote || (Inknote = {}));
 var Inknote;
@@ -10355,6 +10379,12 @@ var Modal;
                     Inknote.TempDataService.Instance.update();
                 };
             }
+            var allowBarOverflowToggle = document.getElementById("allowBarOverflow");
+            allowBarOverflowToggle.onchange = function (e) {
+                var target = e.target;
+                Inknote.TempDataService.Instance.currentData.allowBarOverflow = target.checked;
+                Inknote.TempDataService.Instance.update();
+            };
         }
     })(SettingsModal = Modal.SettingsModal || (Modal.SettingsModal = {}));
 })(Modal || (Modal = {}));

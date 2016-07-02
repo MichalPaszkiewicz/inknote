@@ -386,6 +386,14 @@ module Modal.SettingsModal {
                 Inknote.TempDataService.Instance.update();
             }
         }
+
+        var allowBarOverflowToggle = <HTMLInputElement>document.getElementById("allowBarOverflow");
+        allowBarOverflowToggle.onchange = function(e){
+            var target = <HTMLInputElement>e.target;
+
+            Inknote.TempDataService.Instance.currentData.allowBarOverflow = target.checked;
+            Inknote.TempDataService.Instance.update();
+        }        
     }
 
 }

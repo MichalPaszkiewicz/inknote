@@ -266,6 +266,18 @@
                 bar = instrument.bars[instrument.bars.length - 1];
             }
 
+            if(!TempDataService.Instance.currentData.allowBarOverflow){
+                // if dontAllowOverflow setting is on, do the following.
+                var testFutureBar = new Model.Bar();
+                testFutureBar.items = bar.items.map((item) => {return item});
+                testFutureBar.items.push(note);
+                if(TimeSignatureService.Instance.barIsOverflowing(testFutureBar, instrument)){
+                    log("this note would make this bar too long!", MessageType.Warning);
+                    ScoringService.Instance.refresh();
+                    return;
+                }
+            }
+
             bar.items.push(note);
 
             ScoringService.Instance.refresh();
@@ -322,6 +334,18 @@
             if (TimeSignatureService.Instance.barIsFull(bar, instrument)) {
                 this.addBar();
                 bar = instrument.bars[instrument.bars.length - 1];
+            }
+
+            if(!TempDataService.Instance.currentData.allowBarOverflow){
+                // if dontAllowOverflow setting is on, do the following.
+                var testFutureBar = new Model.Bar();
+                testFutureBar.items = bar.items.map((item) => {return item});
+                testFutureBar.items.push(rest);
+                if(TimeSignatureService.Instance.barIsOverflowing(testFutureBar, instrument)){
+                    log("this rest would make this bar too long!", MessageType.Warning);
+                    ScoringService.Instance.refresh();
+                    return;
+                }
             }
 
             bar.items.push(rest);

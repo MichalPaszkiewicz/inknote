@@ -42,8 +42,7 @@
             return TimeSignatureService._instance;
         }
 
-        barIsFull(bar: Model.Bar, instrument: Model.Instrument): boolean {
-
+        getTimeSignatureAtPoint(bar: Model.Bar, instrument: Model.Instrument): Model.TimeSignature{
             var timeSignature = new Model.TimeSignature(4, 4);
 
             for (var i = 0; i < instrument.bars.length; i++) {
@@ -56,56 +55,54 @@
                     break;
                 }
             }
+            return timeSignature;
+        }
 
-            var countables: (Model.Rest | Model.Chord)[] = getItemsWhere(bar.items, function (item) {
+        getCountables(bar: Model.Bar): (Model.Rest | Model.Note | Model.Chord)[]{
+            return getItemsWhere(bar.items, function (item) {
                 var isRest = item instanceof Model.Rest;
                 var isNote = item instanceof Model.Note;
                 var isChord = item instanceof Model.Chord;
 
                 return isRest || isNote;
             });
+        }
 
-            var count = sum(countables, function (item: Model.Rest | Model.Note) {
+        barIsFull(bar: Model.Bar, instrument: Model.Instrument): boolean {
 
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
+
+            var count = sum(countables, function (item: Model.Note | Model.Rest) {
                 return getCrotchetsFromNoteLength(item.length);
-
             });
 
             return count >= timeSignature.top;
-
         }
 
         barHasError(bar: Model.Bar, instrument: Model.Instrument): boolean {
 
-            var timeSignature = new Model.TimeSignature(4, 4);
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
 
-            for (var i = 0; i < instrument.bars.length; i++) {
-                for (var j = 0; j < instrument.bars[i].items.length; j++) {
-                    if (instrument.bars[i].items[j] instanceof Model.TimeSignature) {
-                        timeSignature = <Model.TimeSignature>instrument.bars[i].items[j];
-                    }
-                }
-                if (instrument.bars[i].ID === bar.ID) {
-                    break;
-                }
-            }
-
-            var countables: (Model.Rest | Model.Chord)[] = getItemsWhere(bar.items, function (item) {
-                var isRest = item instanceof Model.Rest;
-                var isNote = item instanceof Model.Note;
-                var isChord = item instanceof Model.Chord;
-
-                return isRest || isNote;
-            });
-
-            var count = sum(countables, function (item: Model.Rest | Model.Note) {
-
+            var count = sum(countables, function (item: Model.Note | Model.Rest) {
                 return getCrotchetsFromNoteLength(item.length);
-
             });
 
             return count != timeSignature.top;
+        }
 
+        barIsOverflowing(bar: Model.Bar, instrument: Model.Instrument): boolean {
+            
+            var timeSignature = this.getTimeSignatureAtPoint(bar, instrument);
+            var countables = this.getCountables(bar);
+
+            var count = sum(countables, function(item: Model.Note | Model.Rest){
+                return getCrotchetsFromNoteLength(item.length)
+            });
+
+            // to ensure no floating point error 0.00001
+            return count > timeSignature.top + 0.00001;
         }
 
     }

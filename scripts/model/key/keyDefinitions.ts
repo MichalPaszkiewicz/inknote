@@ -56,7 +56,7 @@
             var kt = keyTypes[i];
 
             for (var j in NoteValue) {
-                if (isNaN(j)) {
+                if (isNaN(+j)) {
                     var allKeyNotes = [];
                     var baseNote = new Note(parseInt(NoteValue[j]), 4, 1);
                     baseNote.value = (baseNote.value + transpose) % 12;
